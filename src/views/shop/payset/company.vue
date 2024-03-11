@@ -34,7 +34,7 @@
       <el-table-column ref="table" prop="licenseUrl" label="营业执照">
         <template slot-scope="scope">
           <div>
-            <a :href="scope.row.licenseUrl" style="color: #42b983" target="_blank">
+            <a :href="scope.row.licenseUrl" style="color: rgb(64, 158, 255)" target="_blank">
               <img :src="scope.row.licenseUrl" alt="点击打开" class="el-shop">
             </a>
           </div>
@@ -43,7 +43,7 @@
       <el-table-column ref="table" prop="sealUrl" label="公章">
         <template slot-scope="scope">
           <div>
-            <a :href="scope.row.sealUrl" style="color: #42b983" target="_blank">
+            <a :href="scope.row.sealUrl" style="color: rgb(64, 158, 255)" target="_blank">
               <img :src="scope.row.sealUrl" alt="点击打开" class="el-shop">
             </a>
 

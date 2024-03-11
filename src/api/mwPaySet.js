@@ -29,3 +29,18 @@ export function get() {
     method: 'get'
   })
 }
+
+export function getAppPayConfig() {
+  return request({
+    url: 'api/pay/config',
+    method: 'get'
+  })
+}
+
+export function setAppPayConfig(data) {
+  return request({
+    url: 'api/pay/config',
+    method: 'post',
+    data
+  })
+}

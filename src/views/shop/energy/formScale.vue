@@ -4,14 +4,8 @@
       <el-form-item label="uid">
         <el-input v-model="form.uid" :disabled="isAdd ? false : true" style="width: 150px;" />
       </el-form-item>
-      <el-form-item label="体验倍数">
-        <el-input v-model="form.expScale" style="width: 150px;" />
-      </el-form-item>
       <el-form-item label="月卡倍数">
         <el-input v-model="form.monthScale" style="width: 150px;" />
-      </el-form-item>
-      <el-form-item label="体验有效期">
-        <el-input v-model="form.expInvalidDay" style="width: 150px;" />
       </el-form-item>
       <el-form-item label="月卡有效期">
         <el-input v-model="form.monthInvalidDay" style="width: 150px;" />
@@ -43,8 +37,6 @@ export default {
       loading: false, dialog: false,
       form: {
         uid: '',
-        expScale: 3.0,
-        expInvalidDay: 15,
         monthScale: 2.0,
         monthInvalidDay: 60,
         opePwd: ''
@@ -112,8 +104,6 @@ export default {
       this.$refs['form'].resetFields()
       this.form = {
         uid: '',
-        expScale: 3.0,
-        expInvalidDay: 15,
         monthScale: 2.0,
         monthInvalidDay: 60,
         opePwd: ''

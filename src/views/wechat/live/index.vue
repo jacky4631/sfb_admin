@@ -127,12 +127,12 @@
         <el-table-column v-if="columns.visible('name')" prop="name" label="直播间标题" />
         <el-table-column v-if="columns.visible('coverImge')" prop="coverImge" label="背景图">
           <template slot-scope="scope">
-            <a :href="scope.row.coverImge" style="color: #42b983" target="_blank"><img :src="scope.row.coverImge" alt="点击打开" class="el-avatar"></a>
+            <a :href="scope.row.coverImge" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.coverImge" alt="点击打开" class="el-avatar"></a>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('shareImge')" prop="shareImge" label="分享图片" >
           <template slot-scope="scope">
-            <a :href="scope.row.shareImge" style="color: #42b983" target="_blank"><img :src="scope.row.shareImge" alt="点击打开" class="el-avatar"></a>
+            <a :href="scope.row.shareImge" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.shareImge" alt="点击打开" class="el-avatar"></a>
           </template>
         </el-table-column>
 <!--        101：直播中，102：未开始，103 已结束，104 禁播，105：暂停，106：异常，107：已过期-->
@@ -163,7 +163,7 @@
         <el-table-column v-if="columns.visible('anchorWechat')" prop="anchorWechat" label="主播微信号" />
         <el-table-column v-if="columns.visible('anchorImge')" prop="anchorImge" label="主播头像" >
           <template slot-scope="scope">
-            <a :href="scope.row.anchorImge" style="color: #42b983" target="_blank"><img :src="scope.row.anchorImge" alt="点击打开" class="el-avatar"></a>
+            <a :href="scope.row.anchorImge" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.anchorImge" alt="点击打开" class="el-avatar"></a>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('type')" prop="type" label="直播类型" >

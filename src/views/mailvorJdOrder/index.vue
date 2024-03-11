@@ -50,10 +50,10 @@
       <editOrder ref="form3" :is-add="isAdd" />
 
       <!--表格渲染-->
-      <el-table ref="multipleTable" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" height="600" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
         <el-table-column prop="id" label="id" :show-overflow-tooltip="true" width="155"/>
-        <el-table-column prop="orderId" label="订单号" :show-overflow-tooltip="true" width="155"/>
+        <el-table-column prop="orderId" fixed label="订单号" :show-overflow-tooltip="true" width="155"/>
         <el-table-column prop="orderTime" label="下单时间" :show-overflow-tooltip="true" width="155">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.orderTime) }}</span>
@@ -76,7 +76,7 @@
         </el-table-column>
         <el-table-column prop="estimateFee" label="预估佣金" />
         <el-table-column prop="hb" label="拆红包金额" width="100" />
-        <el-table-column prop="innerType" label="流量=1 能量=2" width="135"/>
+        <el-table-column prop="innerType" label="热度=2" width="135"/>
         <el-table-column prop="uid" label="用户ID" />
         <el-table-column prop="skuName" label="商品名称"  :show-overflow-tooltip="true" width="155"/>
         <el-table-column prop="positionId" label="推广位ID，同uid" width="100"/>
@@ -216,8 +216,7 @@
         listContent: [],
         queryTypeOptions: [
           { key: '0', display_name: '用户订单' },
-          { key: '1', display_name: '体验订单' },
-          { key: '2', display_name: '能量订单' },
+          { key: '2', display_name: '热度订单' },
         ],
         bindOptions: [
           { key: '0', display_name: '未拆' },

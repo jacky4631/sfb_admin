@@ -14,8 +14,17 @@
         icon="el-icon-refresh"
         @click="toQuery"
       >刷新</el-button>
+
+      <el-button class="filter-item" size="mini" type="warning" icon="el-icon-document" @click="editHbUnlockConfig">订单解锁配置</el-button>
+
+
+      <el-button class="filter-item" size="mini" type="warning" icon="el-icon-document" @click="editAppDataConfig">APP基础信息配置</el-button>
+      <el-button class="filter-item" size="mini" type="warning" icon="el-icon-document" @click="editAppShareConfig">APP分享图配置</el-button>
     </div>
     <!--表单组件-->
+    <hbUnlockConfigForm ref="formhbunlockconfig" />
+    <appDataConfigForm ref="formappdataconfig" />
+    <appShareConfigForm ref="formappshareconfig" />
     <eForm ref="form" :is-add="isAdd" />
     <pForm ref="formp" :is-add="isAdd" />
     <energyForm ref="forme" :is-add="isAdd" />
@@ -34,7 +43,7 @@
       <el-table-column prop="code" label="邀请码"  width="120"/>
       <el-table-column ref="table" prop="avatar" label="用户头像">
         <template slot-scope="scope">
-          <a :href="scope.row.avatar" style="color: #42b983" target="_blank"><img :src="scope.row.avatar" alt="点击打开" class="el-avatar"></a>
+          <a :href="scope.row.avatar" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.avatar" alt="点击打开" class="el-avatar"></a>
         </template>
       </el-table-column>
       <el-table-column prop="phone" label="手机号码" width="140"/>
@@ -181,7 +190,7 @@
                   size="mini"
                   type="primary"
                   @click="editE(scope.row)"
-                >修改能量</el-button>
+                >修改热度</el-button>
               </el-dropdown-item>
               <el-dropdown-item>
                 <el-button
@@ -243,7 +252,10 @@
 <script>
 import checkPermission from '@/utils/permission'
 import initData from '@/mixins/crud'
-import { del, onStatus } from '@/api/mwUser'
+import { del, onStatus, getHbUnlockConfig } from '@/api/mwUser'
+import hbUnlockConfigForm from './formhbunlockconfig'
+import appDataConfigForm from './formappdataconfig'
+import appShareConfigForm from './formappshareconfig'
 import eForm from './form'
 import pForm from './formp'
 import energyForm from './forme'
@@ -255,9 +267,11 @@ import extractForm from './formExtract.vue'
 import detail from './detail'
 import userExtra from './userExtra'
 import { formatTime } from '@/utils/index'
+import {getAppDataConfig, getAppShareConfig} from "../../../api/mwUser";
 export default {
   name: 'Member',
-  components: {eForm, pForm, energyForm, iForm, wForm, rForm, bankForm, extractForm, detail, userExtra},
+  components: {eForm, pForm, energyForm, iForm, wForm, rForm, bankForm, extractForm, detail,
+    userExtra, hbUnlockConfigForm, appDataConfigForm, appShareConfigForm},
   mixins: [initData],
   data() {
     return {
@@ -405,6 +419,21 @@ export default {
         ptype: 1,
         money: 0
       }
+      _this.dialog = true
+    },
+    async editHbUnlockConfig() {
+      const _this = this.$refs.formhbunlockconfig
+      _this.form = await getHbUnlockConfig();
+      _this.dialog = true
+    },
+    async editAppDataConfig() {
+      const _this = this.$refs.formappdataconfig
+      _this.form = await getAppDataConfig();
+      _this.dialog = true
+    },
+    async editAppShareConfig() {
+      const _this = this.$refs.formappshareconfig
+      _this.form = await getAppShareConfig();
       _this.dialog = true
     },
     editE(data) {

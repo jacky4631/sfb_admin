@@ -16,7 +16,7 @@
       </el-form-item>
       <el-form-item label="文件存储方式">
         <el-radio v-model="form.file_store_mode" :label="1">本地存储</el-radio>
-        <el-radio v-model="form.file_store_mode" :label="2">云存储</el-radio>
+        <el-radio v-model="form.file_store_mode" :label="2">云存储（阿里OSS）</el-radio>
       </el-form-item>
       <el-form-item label="包邮金额">
         <el-input v-model="form.store_free_postage" style="width: 370px;" />

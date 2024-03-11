@@ -25,9 +25,22 @@
           @click="add"
         >新增</el-button>
       </div>
+
+      <!-- 新增 -->
+      <div style="display: inline-block;margin: 0px 2px;">
+        <el-button
+          v-permission="['admin','PAYSET_ALL','PAYSET_CREATE']"
+          class="filter-item"
+          size="mini"
+          type="warning"
+          icon="el-icon-document"
+          @click="config"
+        >APP支付开关</el-button>
+      </div>
     </div>
     <!--表单组件-->
     <eForm ref="form" :is-add="isAdd" />
+    <configForm ref="formconfig"/>
     <!--表格渲染-->
     <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="id" label="通道id" />
@@ -138,10 +151,11 @@
 <script>
 import checkPermission from '@/utils/permission'
 import initData from '@/mixins/crud'
-import { del } from '@/api/mwPaySet'
+import { del, getAppPayConfig } from '@/api/mwPaySet'
 import eForm from './form'
+import configForm from './formconfig'
 export default {
-  components: { eForm },
+  components: { eForm, configForm },
   mixins: [initData],
   data() {
     return {
@@ -198,6 +212,11 @@ export default {
       this.isAdd = false
       const _this = this.$refs.form
       _this.form = data
+      _this.dialog = true
+    },
+    async config() {
+      const _this = this.$refs.formconfig
+      _this.form = await getAppPayConfig();
       _this.dialog = true
     }
   }

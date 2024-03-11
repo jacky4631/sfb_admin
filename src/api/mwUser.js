@@ -107,3 +107,44 @@ export function getUserExtra(uid) {
     method: 'get'
   })
 }
+export function setHbUnlockConfig(data) {
+  return request({
+    url: 'api/order/unlock/config',
+    method: 'post',
+    data
+  })
+}
+export function getHbUnlockConfig() {
+  return request({
+    url: 'api/order/unlock/config',
+    method: 'get'
+  })
+}
+
+export function setAppDataConfig(data) {
+  return request({
+    url: 'api/app/data/config',
+    method: 'post',
+    data
+  })
+}
+export function getAppDataConfig() {
+  return request({
+    url: 'api/app/data/config',
+    method: 'get'
+  })
+}
+
+export function setAppShareConfig(data) {
+  return request({
+    url: 'api/app/share/config',
+    method: 'post',
+    data
+  })
+}
+export function getAppShareConfig() {
+  return request({
+    url: 'api/app/share/config',
+    method: 'get'
+  })
+}

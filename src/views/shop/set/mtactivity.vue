@@ -22,7 +22,7 @@
       <el-table-column prop="map.activityId" label="活动id" />
       <el-table-column prop="map.img" label="图片地址">
         <template slot-scope="scope">
-          <a :href="scope.row.map.img" style="color: #42b983" target="_blank">
+          <a :href="scope.row.map.img" style="color: rgb(64, 158, 255)" target="_blank">
             <img :src="scope.row.map.img" alt="点击打开" class="el-shop">
           </a>
         </template>

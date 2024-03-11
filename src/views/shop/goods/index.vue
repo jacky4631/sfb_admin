@@ -40,7 +40,7 @@
       <el-table-column prop="id" label="商品id" />
       <el-table-column ref="table" prop="image" label="商品图片">
         <template slot-scope="scope">
-          <a :href="scope.row.image" style="color: #42b983" target="_blank"><img :src="scope.row.image" alt="点击打开" class="el-avatar"></a>
+          <a :href="scope.row.image" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.image" alt="点击打开" class="el-avatar"></a>
         </template>
       </el-table-column>
       <el-table-column prop="storeName" label="商品名称" />

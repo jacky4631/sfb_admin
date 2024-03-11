@@ -7,7 +7,7 @@
         <!-- 搜索 -->
         <el-input v-model="search" clearable placeholder="输入订单号" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" />
         <el-input v-model="query.uid" clearable placeholder="输入用户id" style="width: 150px;" class="filter-item" @keyup.enter.native="toQuery" />
-        <el-input v-model="logId" clearable placeholder="能量记录id" style="width: 150px;" class="filter-item" @keyup.enter.native="toQuery" />
+        <el-input v-model="logId" clearable placeholder="热度记录id" style="width: 150px;" class="filter-item" @keyup.enter.native="toQuery" />
         <el-select v-model="platform" clearable placeholder="平台" class="filter-item" style="width: 130px">
           <el-option v-for="item in platformOptions" :key="item.key" :label="item.display_name" :value="item.key" />
         </el-select>
@@ -44,7 +44,7 @@
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
         <el-table-column prop="id" label="id"/>
         <el-table-column prop="uid" label="用户id"/>
-        <el-table-column prop="logId" label="能量记录id" />
+        <el-table-column prop="logId" label="热度记录id" />
         <el-table-column prop="releaseTime" label="发放时间" width="135">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.releaseTime) }}</span>

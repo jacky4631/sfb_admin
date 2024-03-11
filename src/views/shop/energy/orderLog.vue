@@ -36,7 +36,7 @@
       <el-table-column prop="uid" label="用户id" />
       <el-table-column prop="money" label="金额"/>
       <el-table-column prop="count" label="订单数量"/>
-      <el-table-column prop="energy" label="用户当前能量值"/>
+      <el-table-column prop="energy" label="用户当前热度"/>
       <el-table-column prop="platform" label="平台">
         <template slot-scope="scope">
           <span v-if="scope.row.platform == 'jd'">京东</span>
@@ -49,8 +49,7 @@
       <el-table-column prop="type" label="类型">
         <template slot-scope="scope">
           <span v-if="scope.row.type == 0">赠送</span>
-          <span v-else-if="scope.row.type == 1">推广</span>
-          <span v-else>体验</span>
+          <span v-else>推广</span>
         </template>
       </el-table-column>
       <el-table-column :show-overflow-tooltip="true" prop="addTime" label="创建日期">
@@ -82,8 +81,7 @@ export default {
       search: '', type: '', createTime: '',
       typeOptions: [
         { key: '0', display_name: '赠送' },
-        { key: '1', display_name: '推广' },
-        { key: '2', display_name: '体验' }
+        { key: '1', display_name: '推广' }
       ],
     }
   },

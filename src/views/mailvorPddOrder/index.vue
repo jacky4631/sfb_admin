@@ -62,9 +62,9 @@
       <editOrder ref="form3" :is-add="isAdd" />
 
       <!--表格渲染-->
-      <el-table ref="multipleTable" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" height="600" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
-        <el-table-column prop="orderSn" label="订单编号"  width="185" :show-overflow-tooltip="true"/>
+        <el-table-column prop="orderSn" label="订单编号" fixed width="185" :show-overflow-tooltip="true"/>
 
         <el-table-column prop="orderCreateTime" label="订单生成时间"  width="150" :show-overflow-tooltip="true">
           <template slot-scope="scope">
@@ -90,7 +90,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="hb" label="拆红包金额（元）" width="135" />
-        <el-table-column prop="innerType" label="流量=1 能量=2" width="135"/>
+        <el-table-column prop="innerType" label="热度=2" width="135"/>
         <el-table-column prop="uid" label="用户ID" />
         <el-table-column prop="priceCompareStatus" label="比价=1" />
         <el-table-column prop="goodsName" label="商品名称"  width="100" :show-overflow-tooltip="true"/>
@@ -276,8 +276,7 @@
         listContent: [],
         queryTypeOptions: [
           { key: '0', display_name: '用户订单' },
-          { key: '1', display_name: '体验订单' },
-          { key: '2', display_name: '能量订单' },
+          { key: '2', display_name: '热度订单' },
         ],
         bindOptions: [
           { key: '0', display_name: '未拆' },

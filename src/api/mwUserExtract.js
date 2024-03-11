@@ -32,6 +32,21 @@ export function extracts(data) {
 }
 export function addInvalidExtract(data) {
   return request({
+    url: 'api/extract/ban',
+    method: 'post',
+    data
+  })
+}
+
+export function getExtractConfig() {
+  return request({
+    url: 'api/extract/config',
+    method: 'get'
+  })
+}
+
+export function editExtractConfig(data) {
+  return request({
     url: 'api/extract/config',
     method: 'post',
     data

@@ -39,9 +39,7 @@
       <el-table ref="multipleTable" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50" />
         <el-table-column prop="uid" label="uid"/>
-        <el-table-column prop="expScale" label="体验倍数" />
         <el-table-column prop="monthScale" label="月卡倍数" />
-        <el-table-column prop="expInvalidDay" label="体验有效期/天" width="135"/>
         <el-table-column prop="monthInvalidDay" label="月卡有效期/天" width="135"/>
 
         <el-table-column prop="createTime" label="创建时间" width="135">

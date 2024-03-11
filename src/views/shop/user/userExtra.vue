@@ -1,48 +1,5 @@
 <template>
   <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" title="更多信息" width="1000px">
-      <el-form ref="form" :model="extra" size="small" label-width="100px">
-        <el-form-item label="淘店体验">
-            <div>
-              <el-tag v-if="extra.level == null || extra.level == 0" style="background-color: #B68567; color: white">否</el-tag>
-              <el-tag v-else-if="extra.level == 5" style="background-color: #8A77C5; color: white">是</el-tag>
-              <el-tag v-else="extra.level == 99" style="background-color: #e72525; color: white">已过期</el-tag>
-              {{ extra.expired != null ? '过期时间:' +extra.expired : '' }}
-            </div>
-        </el-form-item>
-        <el-form-item label="京店体验">
-          <div>
-            <el-tag v-if="extra.levelJd == null || extra.levelJd == 0" style="background-color: #B68567; color: white">否</el-tag>
-            <el-tag v-else-if="extra.levelJd == 5" style="background-color: #8A77C5; color: white">是</el-tag>
-            <el-tag v-else="extra.levelJd == 99" style="background-color: #e72525; color: white">已过期</el-tag>
-            {{ extra.expiredJd != null ? '过期时间:' +extra.expiredJd : '' }}
-          </div>
-        </el-form-item>
-        <el-form-item label="多店体验">
-          <div>
-            <el-tag v-if="extra.levelPdd == null || extra.levelPdd == 0" style="background-color: #B68567; color: white">否</el-tag>
-            <el-tag v-else-if="extra.levelPdd == 5" style="background-color: #8A77C5; color: white">是</el-tag>
-            <el-tag v-else="extra.levelPdd == 99" style="background-color: #e72525; color: white">已过期</el-tag>
-            {{ extra.expiredPdd != null ? '过期时间:' +extra.expiredPdd : '' }}
-          </div>
-        </el-form-item>
-        <el-form-item label="抖店体验">
-          <div>
-            <el-tag v-if="extra.levelDy == null || extra.levelDy == 0" style="background-color: #B68567; color: white">否</el-tag>
-            <el-tag v-else-if="extra.levelDy == 5" style="background-color: #8A77C5; color: white">是</el-tag>
-            <el-tag v-else="extra.levelDy == 99" style="background-color: #e72525; color: white">已过期</el-tag>
-            {{ extra.expiredDy != null ? '过期时间:' +extra.expiredDy : '' }}
-          </div>
-        </el-form-item>
-        <el-form-item label="唯品店体验">
-          <div>
-            <el-tag v-if="extra.levelVip == null || extra.levelVip == 0" style="background-color: #B68567; color: white">否</el-tag>
-            <el-tag v-else-if="extra.levelVip == 5" style="background-color: #8A77C5; color: white">是</el-tag>
-            <el-tag v-else="extra.levelVip == 99" style="background-color: #e72525; color: white">已过期</el-tag>
-            {{ extra.expiredVip != null ? '过期时间:' +extra.expiredVip : '' }}
-          </div>
-        </el-form-item>
-      </el-form>
-
           <el-table
             :data="tableData"
             border
@@ -60,13 +17,13 @@
               <template slot-scope="scope">
                 <div>
                   <el-tag v-if="scope.row.name == 'sfb'" style="background-color: #85c577; color: white">苏分宝</el-tag>
-                  <el-tag v-else  style="background-color: #B68567; color: white">{{scope.row.name}}}</el-tag>
+                  <el-tag v-else  style="background-color: #B68567; color: white">{{scope.row.name}}</el-tag>
                 </div>
               </template>
             </el-table-column>
             <el-table-column
               prop="openId"
-              label="微信openId"
+              label="微信openId(unionId)"
               width="280">
             </el-table-column>
             <el-table-column

@@ -46,5 +46,5 @@ module.exports = {
   /**
    * 备案号
    */
-  caseNumber: '苏ICP备17030620号'
+  caseNumber: '苏ICP备17030620号-5'
 }

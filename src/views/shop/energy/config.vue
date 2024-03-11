@@ -2,32 +2,32 @@
   <div class="app-container">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="200px">
       <el-form-item label="淘宝加盟">
-        自身获得能量值<el-input v-model="form.tbConfig.value" style="width: 170px;" />个,
-        一级获得能量值<el-input v-model="form.tbConfig.valueOne" style="width: 170px;" />个,
-        二级获得能量值<el-input v-model="form.tbConfig.valueTwo" style="width: 170px;" />个
+        自身获得热度值<el-input v-model="form.tbConfig.value" style="width: 170px;" />个,
+        一级获得热度值<el-input v-model="form.tbConfig.valueOne" style="width: 170px;" />个,
+        二级获得热度值<el-input v-model="form.tbConfig.valueTwo" style="width: 170px;" />个
       </el-form-item>
       <el-form-item label="京东加盟">
-        自身获得能量值<el-input v-model="form.jdConfig.value" style="width: 170px;" />个,
-        一级获得能量值<el-input v-model="form.jdConfig.valueOne" style="width: 170px;" />个,
-        二级获得能量值<el-input v-model="form.jdConfig.valueTwo" style="width: 170px;" />个
+        自身获得热度值<el-input v-model="form.jdConfig.value" style="width: 170px;" />个,
+        一级获得热度值<el-input v-model="form.jdConfig.valueOne" style="width: 170px;" />个,
+        二级获得热度值<el-input v-model="form.jdConfig.valueTwo" style="width: 170px;" />个
       </el-form-item>
       <el-form-item label="拼多多加盟">
-        自身获得能量值<el-input v-model="form.pddConfig.value" style="width: 170px;" />个,
-        一级获得能量值<el-input v-model="form.pddConfig.valueOne" style="width: 170px;" />个,
-        二级获得能量值<el-input v-model="form.pddConfig.valueTwo" style="width: 170px;" />个
+        自身获得热度值<el-input v-model="form.pddConfig.value" style="width: 170px;" />个,
+        一级获得热度值<el-input v-model="form.pddConfig.valueOne" style="width: 170px;" />个,
+        二级获得热度值<el-input v-model="form.pddConfig.valueTwo" style="width: 170px;" />个
       </el-form-item>
       <el-form-item label="抖音加盟">
-        自身获得能量值<el-input v-model="form.dyConfig.value" style="width: 170px;" />个,
-        一级获得能量值<el-input v-model="form.dyConfig.valueOne" style="width: 170px;" />个,
-        二级获得能量值<el-input v-model="form.dyConfig.valueTwo" style="width: 170px;" />个
+        自身获得热度值<el-input v-model="form.dyConfig.value" style="width: 170px;" />个,
+        一级获得热度值<el-input v-model="form.dyConfig.valueOne" style="width: 170px;" />个,
+        二级获得热度值<el-input v-model="form.dyConfig.valueTwo" style="width: 170px;" />个
       </el-form-item>
       <el-form-item label="唯品会加盟">
-        自身获得能量值<el-input v-model="form.vipConfig.value" style="width: 170px;" />个,
-        一级获得能量值<el-input v-model="form.vipConfig.valueOne" style="width: 170px;" />个,
-        二级获得能量值<el-input v-model="form.vipConfig.valueTwo" style="width: 170px;" />个
+        自身获得热度值<el-input v-model="form.vipConfig.value" style="width: 170px;" />个,
+        一级获得热度值<el-input v-model="form.vipConfig.valueOne" style="width: 170px;" />个,
+        二级获得热度值<el-input v-model="form.vipConfig.valueTwo" style="width: 170px;" />个
       </el-form-item>
 
-      <el-form-item label="能量每日扣除">
+      <el-form-item label="热度每日扣除">
         赠送<el-input v-model="form.dayEnergy" style="width: 170px;" />，
         推广<el-input v-model="form.dayTuiEnergy" style="width: 170px;" />，
         推广最大值<el-input v-model="form.dayTuiEnergyMax" style="width: 170px;" />
@@ -36,12 +36,12 @@
         <el-input v-model="form.unlockMin" style="width: 170px;" />天-
         <el-input v-model="form.unlockMax" style="width: 170px;" />天
       </el-form-item>
-      <el-form-item label="推广能量订单">
+      <el-form-item label="推广热度订单">
         <div
           class="list-group-item"
           v-for="(item,index) in form.orderConfigs"
           :key="index">
-          能量范围 ><el-input v-model="item.min" style="width: 100px;" /><=<el-input v-model="item.max" style="width: 100px;" />，每天产生
+          热度范围 ><el-input v-model="item.min" style="width: 100px;" /><=<el-input v-model="item.max" style="width: 100px;" />，每天产生
           <el-input v-model="item.countMin" style="width: 100px;" />-<el-input v-model="item.countMax" style="width: 100px;" />条，总提成
           <el-input v-model="item.feeMin" style="width: 100px;" />-<el-input v-model="item.feeMax" style="width: 100px;" />元的订单<br>
         </div>

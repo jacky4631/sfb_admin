@@ -90,7 +90,7 @@
       </el-table-column>
       <el-table-column prop="salesState" label="售后状态" width="100px" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.salesState === 0" :style="'color: #42b983'">正常</span>
+          <span v-if="scope.row.salesState === 0" :style="'color: rgb(64, 158, 255)'">正常</span>
           <span v-if="scope.row.salesState === 1" :style="'color: #409EFF'">用户已取消</span>
           <span v-if="scope.row.salesState === 2" :style="'color: #F56C6C'">已拒绝用户</span>
         </template>

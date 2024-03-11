@@ -26,7 +26,7 @@
       <el-table-column prop="author" label="作者" />
       <el-table-column ref="table" prop="imageInput" label="封面">
         <template slot-scope="scope">
-          <a :href="scope.row.imageInput" style="color: #42b983" target="_blank"><img :src="scope.row.imageInput" alt="点击打开" class="el-avatar"></a>
+          <a :href="scope.row.imageInput" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.imageInput" alt="点击打开" class="el-avatar"></a>
         </template>
       </el-table-column>
       <el-table-column :show-overflow-tooltip="true" prop="createTime" label="创建日期">

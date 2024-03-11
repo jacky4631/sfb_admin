@@ -104,7 +104,7 @@
       formatTime,
       checkPermission,
       beforeInit() {
-        this.url = 'api/extract/config/list'
+        this.url = 'api/extract/ban/list'
         const sort = 'uid,desc'
         this.params = {
           page: this.page,

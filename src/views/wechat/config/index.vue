@@ -7,10 +7,10 @@
       <el-form-item label="公众号AppSecret">
         <el-input v-model="form.wechat_appsecret" style="width: 370px;" />
       </el-form-item>
-      <el-form-item label="苏分宝微信开放平台AppID">
+      <el-form-item label="微信开放平台AppID">
         <el-input v-model="form.wxapp_appId" style="width: 370px;" />
       </el-form-item>
-      <el-form-item label="苏分宝微信开放平台AppSecret">
+      <el-form-item label="微信开放平台AppSecret">
         <el-input v-model="form.wxapp_secret" style="width: 370px;" />
       </el-form-item>
       <el-form-item label="微信验证TOKEN">

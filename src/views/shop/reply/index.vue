@@ -25,7 +25,7 @@
       <el-table-column prop="" label="评论图片">
         <template slot-scope="scope">
           <div v-if="scope.row.pics">
-            <a v-for="pic in handlePic(scope.row.pics)" :href="pic" style="color: #42b983" target="_blank">
+            <a v-for="pic in handlePic(scope.row.pics)" :href="pic" style="color: rgb(64, 158, 255)" target="_blank">
               <img :src="pic" alt="点击打开" class="el-avatar">
             </a>
           </div>

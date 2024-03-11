@@ -44,7 +44,7 @@
       <el-table-column prop="productId" label="关联商品id" />
       <el-table-column prop="coverImgUrl" label="商品图片" >
         <template slot-scope="scope">
-          <a :href="scope.row.coverImgeUrl" style="color: #42b983" target="_blank"><img :src="scope.row.coverImgeUrl" alt="点击打开" class="el-avatar"></a>
+          <a :href="scope.row.coverImgeUrl" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.coverImgeUrl" alt="点击打开" class="el-avatar"></a>
         </template>
       </el-table-column>
       <el-table-column prop="url" label="商品小程序路径" />

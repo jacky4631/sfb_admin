@@ -16,7 +16,7 @@
             <div class="img-box">
               <img
                 class="img"
-                src="https://image.xxx.cn/3.jpg"
+                src="https://image.dayouqiantu.cn/3.jpg"
               />
             </div>
             <div class="price-box">
@@ -34,7 +34,7 @@
             <div class="img-box">
               <img
                 class="img"
-                src="https://image.xxx.cn/3.jpg"
+                src="https://image.dayouqiantu.cn/3.jpg"
               />
             </div>
             <div class="price-box">
@@ -52,7 +52,7 @@
             <div class="img-box">
               <img
                 class="img"
-                src="https://image.xxx.cn/3.jpg"
+                src="https://image.dayouqiantu.cn/3.jpg"
               />
             </div>
             <div class="price-box">
@@ -70,7 +70,7 @@
             <div class="img-box">
               <img
                 class="img"
-                src="https://image.xxx.cn/3.jpg"
+                src="https://image.dayouqiantu.cn/3.jpg"
               />
             </div>
             <div class="price-box">

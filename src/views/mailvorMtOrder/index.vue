@@ -66,9 +66,9 @@
       <editOrder ref="form3" :is-add="isAdd" />
 
       <!--表格渲染-->
-      <el-table ref="multipleTable" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" height="600" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
-        <el-table-column prop="uniqueItemIdStr" label="子订单编号" width="155"/>
+        <el-table-column prop="uniqueItemIdStr" fixed label="子订单编号" width="155"/>
 
         <el-table-column prop="orderPayTime" label="支付时间" width="135">
           <template slot-scope="scope">
@@ -158,7 +158,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="innerType" label="流量=1 能量=2" width="135"/>
+        <el-table-column prop="innerType" label="热度=2" width="135"/>
         <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true" width="200">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -285,8 +285,7 @@
         ],
         queryTypeOptions: [
           { key: '0', display_name: '用户订单' },
-          { key: '1', display_name: '体验订单' },
-          { key: '2', display_name: '能量订单' },
+          { key: '2', display_name: '热度订单' },
         ],
         exportOptions: [
           {value: '', label: '批量导出'},

@@ -11,7 +11,7 @@
             <div class="min-goods">
               <div class="img-box">
                 <div class="tag">hot</div>
-                <img class="img" src="https://image.xxx.cn/3.jpg" />
+                <img class="img" src="https://image.dayouqiantu.cn/3.jpg" />
               </div>
               <div class="price-box">
                 <div class="y-f">
@@ -24,7 +24,7 @@
             <div class="min-goods">
               <div class="img-box">
                 <div class="tag">hot</div>
-                <img class="img" src="https://image.xxx.cn/3.jpg" />
+                <img class="img" src="https://image.dayouqiantu.cn/3.jpg" />
               </div>
               <div class="price-box">
                 <div class="y-f">
@@ -37,7 +37,7 @@
             <div class="min-goods">
               <div class="img-box">
                 <div class="tag">hot</div>
-                <img class="img" src="https://image.xxx.cn/3.jpg" />
+                <img class="img" src="https://image.dayouqiantu.cn/3.jpg" />
               </div>
               <div class="price-box">
                 <div class="y-f">
@@ -50,7 +50,7 @@
             <div class="min-goods">
               <div class="img-box">
                 <div class="tag">hot</div>
-                <img class="img" src="https://image.xxx.cn/3.jpg" />
+                <img class="img" src="https://image.dayouqiantu.cn/3.jpg" />
               </div>
               <div class="price-box">
                 <div class="y-f">

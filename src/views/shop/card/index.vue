@@ -26,13 +26,13 @@
       <el-table-column prop="cardNo" label="身份证" width="150"/>
       <el-table-column ref="table" prop="cardFPath" label="身份证人像面"width="100">
         <template slot-scope="scope">
-          <a :href="scope.row.cardFPath" style="color: #42b983" target="_blank"><img :src="scope.row.cardFPath" alt="点击打开" class="el-shop"></a>
+          <a :href="scope.row.cardFPath" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.cardFPath" alt="点击打开" class="el-shop"></a>
         </template>
       </el-table-column>
 
       <el-table-column ref="table" prop="cardBPath" label="身份证国徽面" width="100">
         <template slot-scope="scope">
-          <a :href="scope.row.cardBPath" style="color: #42b983" target="_blank">
+          <a :href="scope.row.cardBPath" style="color: rgb(64, 158, 255)" target="_blank">
             <img :src="scope.row.cardBPath" alt="点击打开" class="el-shop"></a>
         </template>
       </el-table-column>
@@ -40,13 +40,13 @@
         <template slot-scope="scope">
           <div>
             <el-tag v-if="scope.row.contractPath == null" >无</el-tag>
-            <el-tag v-else ><a :href="scope.row.contractPath" style="color: #42b983" target="_blank">点击打开</a></el-tag>
+            <el-tag v-else ><a :href="scope.row.contractPath" style="color: rgb(64, 158, 255)" target="_blank">点击打开</a></el-tag>
           </div>
         </template>
       </el-table-column>
       <el-table-column ref="table" prop="facePath" label="人脸认证照片" width="100">
         <template slot-scope="scope">
-          <a :href="scope.row.facePath" style="color: #42b983" target="_blank"><img :src="scope.row.facePath" alt="点击打开" class="el-shop"></a>
+          <a :href="scope.row.facePath" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.facePath" alt="点击打开" class="el-shop"></a>
         </template>
       </el-table-column>
 

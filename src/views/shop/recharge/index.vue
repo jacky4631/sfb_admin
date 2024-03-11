@@ -35,8 +35,7 @@
         <el-table-column prop="paid" label="加盟类型" width="100px">
           <template slot-scope="scope">
             <div>
-              <el-tag v-if="scope.row.type === 1">体验</el-tag>
-              <el-tag v-else-if="scope.row.type === 2">月卡</el-tag>
+              <el-tag v-if="scope.row.type === 2">月卡</el-tag>
               <el-tag v-else>年卡</el-tag>
             </div>
           </template>
@@ -66,7 +65,7 @@
           <template slot-scope="scope">
             <div>
               <el-tag v-if="scope.row.result == null" >无</el-tag>
-              <el-tag v-else ><a :href="scope.row.result" style="color: #42b983" target="_blank">{{ scope.row.result }}</a></el-tag>
+              <el-tag v-else ><a :href="scope.row.result" style="color: rgb(64, 158, 255)" target="_blank">{{ scope.row.result }}</a></el-tag>
             </div>
           </template>
         </el-table-column>
@@ -104,7 +103,6 @@ export default {
       typeOptions: [
         { key: '0', display_name: '年卡' },
         { key: '2', display_name: '月卡' },
-        { key: '1', display_name: '体验' },
       ]
     }
   },

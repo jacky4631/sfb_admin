@@ -27,9 +27,12 @@
         @click="toQuery"
       >刷新</el-button>
 
+      <el-button class="filter-item" size="mini" type="warning" icon="el-icon-document" @click="config">提现配置</el-button>
+
     </div>
     <!--表单组件-->
     <eForm ref="form" :is-add="isAdd" />
+    <configForm ref="formcofnig" :is-add="isAdd" />
     <!--表格渲染-->
     <el-table ref="table" v-loading="loading" :data="data" size="small" style="width: 100%;"
               @selection-change="selectionChangeHandler">
@@ -120,12 +123,13 @@
 <script>
 import checkPermission from '@/utils/permission'
 import initData from '@/mixins/crud'
-import { del,extracts } from '@/api/mwUserExtract'
+import { del,extracts,getExtractConfig } from '@/api/mwUserExtract'
 import eForm from './form'
+import configForm from './formconfig'
 import { formatTimeTwo } from '@/utils/index'
 import md5 from 'js-md5';
 export default {
-  components: { eForm},
+  components: { eForm, configForm},
   mixins: [initData],
   data() {
     return {
@@ -208,6 +212,11 @@ export default {
         status: data.status,
         wechat: data.wechat
       }
+      _this.dialog = true
+    },
+    async config(data) {
+      const _this = this.$refs.formcofnig
+      _this.form = await getExtractConfig();
       _this.dialog = true
     },
     doExtract() {

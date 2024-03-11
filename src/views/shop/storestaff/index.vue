@@ -53,7 +53,7 @@
         <el-table-column v-if="columns.visible('nickname')" prop="nickname" label="微信昵称" />
         <el-table-column v-if="columns.visible('avatar')" prop="avatar" label="店员头像" >
           <template slot-scope="scope">
-            <a :href="scope.row.avatar" style="color: #42b983" target="_blank"><img :src="scope.row.avatar" alt="点击打开" class="el-avatar"></a>
+            <a :href="scope.row.avatar" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.avatar" alt="点击打开" class="el-avatar"></a>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('staffName')" prop="staffName" label="店员名称" />

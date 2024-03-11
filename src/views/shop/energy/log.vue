@@ -40,7 +40,7 @@
         <el-table-column prop="id" label="id"/>
         <el-table-column prop="uid" label="用户id"/>
         <el-table-column prop="oid" label="用户oid"/>
-        <el-table-column prop="energy" label="能量">
+        <el-table-column prop="energy" label="热度">
           <template slot-scope="scope">
             <div v-if="scope.row.type === 1">+{{ scope.row.energy }}</div>
             <div v-else >-{{ scope.row.energy }}</div>

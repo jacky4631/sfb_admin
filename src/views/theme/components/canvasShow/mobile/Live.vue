@@ -35,14 +35,14 @@ export default {
           roomId: '28',
           id: null,
           name: '打印资料',
-          coverImge: 'https://image.xxx.cn/WechatIMG229.jpeg',
-          shareImge: 'https://image.xxx.cn/WechatIMG229.jpeg',
+          coverImge: 'https://image.dayouqiantu.cn/WechatIMG229.jpeg',
+          shareImge: 'https://image.dayouqiantu.cn/WechatIMG229.jpeg',
           liveStatus: 107,
           startTime: 1600358400,
           endTime: 1600441200,
           anchorName: 'mshop',
           anchorWechat: 'zimengzhiqiu',
-          anchorImge: 'https://image.xxx.cn/zj.png',
+          anchorImge: 'https://image.dayouqiantu.cn/zj.png',
           type: 0,
           screenType: 0,
           closeLike: 0,
@@ -58,14 +58,14 @@ export default {
           roomId: '29',
           id: null,
           name: '我们能印什么',
-          coverImge: 'https://image.xxx.cn/WechatIMG230.jpeg',
-          shareImge: 'https://image.xxx.cn/WechatIMG230.jpeg',
+          coverImge: 'https://image.dayouqiantu.cn/WechatIMG230.jpeg',
+          shareImge: 'https://image.dayouqiantu.cn/WechatIMG230.jpeg',
           liveStatus: 107,
           startTime: 1600358400,
           endTime: 1600441200,
           anchorName: 'mshop',
           anchorWechat: 'zimengzhiqiu',
-          anchorImge: 'https://image.xxx.cn/zj.png',
+          anchorImge: 'https://image.dayouqiantu.cn/zj.png',
           type: 0,
           screenType: 0,
           closeLike: 0,
@@ -81,14 +81,14 @@ export default {
           roomId: '27',
           id: null,
           name: '广告布定制',
-          coverImge: 'https://image.xxx.cn/WechatIMG232.jpeg',
-          shareImge: 'https://image.xxx.cn/WechatIMG232.jpeg',
+          coverImge: 'https://image.dayouqiantu.cn/WechatIMG232.jpeg',
+          shareImge: 'https://image.dayouqiantu.cn/WechatIMG232.jpeg',
           liveStatus: 107,
           startTime: 1600272000,
           endTime: 1600354800,
           anchorName: 'mshop',
           anchorWechat: 'zimengzhiqiu',
-          anchorImge: 'https://image.xxx.cn/zj.png',
+          anchorImge: 'https://image.dayouqiantu.cn/zj.png',
           type: 0,
           screenType: 0,
           closeLike: 0,
@@ -104,14 +104,14 @@ export default {
           roomId: '30',
           id: null,
           name: '专业打印',
-          coverImge: 'https://image.xxx.cn/3.jpg',
-          shareImge: 'https://image.xxx.cn/3.jpg',
+          coverImge: 'https://image.dayouqiantu.cn/3.jpg',
+          shareImge: 'https://image.dayouqiantu.cn/3.jpg',
           liveStatus: 103,
           startTime: 1600077780,
           endTime: 1600077820,
           anchorName: 'mshop',
           anchorWechat: 'zimengzhiqiu',
-          anchorImge: 'https://image.xxx.cn/zj.png',
+          anchorImge: 'https://image.dayouqiantu.cn/zj.png',
           type: 0,
           screenType: 0,
           closeLike: 0,
@@ -126,31 +126,31 @@ export default {
       ],
       liveStatus: {
         101: {
-          img: 'https://wx.xxx.co/static/images/live.png',
+          img: 'https://wx.yixiang.co/static/images/live.png',
           title: '直播中'
         },
         102: {
-          img: 'https://wx.xxx.co/static/images/prevue.png',
+          img: 'https://wx.yixiang.co/static/images/prevue.png',
           title: '未开始'
         },
         103: {
-          img: 'https://wx.xxx.co/static/images/playback.png',
+          img: 'https://wx.yixiang.co/static/images/playback.png',
           title: '已结束'
         },
         104: {
-          img: 'https://wx.xxx.co/static/images/104.png',
+          img: 'https://wx.yixiang.co/static/images/104.png',
           title: '禁播'
         },
         105: {
-          img: 'https://wx.xxx.co/static/images/105.png',
+          img: 'https://wx.yixiang.co/static/images/105.png',
           title: '暂停中'
         },
         106: {
-          img: 'https://wx.xxx.co/static/images/106.png',
+          img: 'https://wx.yixiang.co/static/images/106.png',
           title: '异常'
         },
         107: {
-          img: 'https://wx.xxx.co/static/images/past.png',
+          img: 'https://wx.yixiang.co/static/images/past.png',
           title: '已过期'
         }
       }

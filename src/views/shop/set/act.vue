@@ -24,7 +24,7 @@
       <el-table-column prop="map.url" label="链接url" />
       <el-table-column ref="table" label="图片">
         <template slot-scope="scope">
-          <a :href="scope.row.map.pic" style="color: #42b983" target="_blank"><img :src="scope.row.map.pic" alt="点击打开" class="el-avatar"></a>
+          <a :href="scope.row.map.pic" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.map.pic" alt="点击打开" class="el-avatar"></a>
         </template>
       </el-table-column>
       <el-table-column v-if="checkPermission(['admin','MWSYSTEMGROUPDATA_ALL','MWSYSTEMGROUPDATA_EDIT','MWSYSTEMGROUPDATA_DELETE'])" label="操作" width="150px" align="center">

@@ -29,7 +29,7 @@
       </el-table-column>
       <el-table-column prop="uid" label="参与人" width="150" >
         <template slot-scope="scope">
-          头像：<a :href="scope.row.userImg" style="color: #42b983" target="_blank"><img :src="scope.row.userImg" alt="点击打开" class="el-avatar"></a><br>
+          头像：<a :href="scope.row.userImg" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.userImg" alt="点击打开" class="el-avatar"></a><br>
           昵称：{{ scope.row.nickname }}<br>
           用户ID：{{ scope.row.uid }}<br>
           手机号：{{ scope.row.phone }}
@@ -38,7 +38,7 @@
       <el-table-column prop="createTime" label="开团时间" />
       <el-table-column label="拼团产品"width="200">
         <template slot-scope="scope">
-          产品主图：<a :href="scope.row.image" style="color: #42b983" target="_blank"><img :src="scope.row.image" alt="点击打开" class="el-avatar"></a><br>
+          产品主图：<a :href="scope.row.image" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.image" alt="点击打开" class="el-avatar"></a><br>
           拼团名称：{{ scope.row.product }}<br>
           拼团 ID：{{ scope.row.cid }}
         </template>

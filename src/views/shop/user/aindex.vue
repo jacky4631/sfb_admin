@@ -25,7 +25,7 @@
       <el-table-column prop="nickname" label="用户昵称" />
       <el-table-column ref="table" prop="avatar" label="用户头像">
         <template slot-scope="scope">
-          <a :href="scope.row.avatar" style="color: #42b983" target="_blank"><img :src="scope.row.avatar" alt="点击打开" class="el-avatar"></a>
+          <a :href="scope.row.avatar" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.avatar" alt="点击打开" class="el-avatar"></a>
         </template>
       </el-table-column>
       <el-table-column prop="phone" label="手机号码" />
