@@ -205,6 +205,14 @@ server{
 
 
 ### 后台前端工程（VUE端） sfb_server_qd
+1、根目录新建文件.env.production
+```
+ENV = 'production'
+
+# 接口地址 改成自己域名
+VUE_APP_BASE_API  = 'http://admin.xxx.com/api'
+VUE_APP_WS_API = 'ws://admin.xxx.com/api'
+```
 1、输入命令：npm run build:prod 编译打包
 
 2、把打包后的dist目录代码上传到服务器
