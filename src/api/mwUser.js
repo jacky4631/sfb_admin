@@ -148,3 +148,17 @@ export function getAppShareConfig() {
     method: 'get'
   })
 }
+
+export function setAppLoginWhitelistConfig(data) {
+  return request({
+    url: 'api/app/login/whitelist',
+    method: 'post',
+    data
+  })
+}
+export function getAppLoginWhitelistConfig() {
+  return request({
+    url: 'api/app/login/whitelist',
+    method: 'get'
+  })
+}

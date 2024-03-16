@@ -20,11 +20,14 @@
 
       <el-button class="filter-item" size="mini" type="warning" icon="el-icon-document" @click="editAppDataConfig">APP基础信息配置</el-button>
       <el-button class="filter-item" size="mini" type="warning" icon="el-icon-document" @click="editAppShareConfig">APP分享图配置</el-button>
+      <el-button class="filter-item" size="mini" type="warning" icon="el-icon-document" @click="editAppLoginWhitelistConfig">APP登录白名单配置</el-button>
+
     </div>
     <!--表单组件-->
     <hbUnlockConfigForm ref="formhbunlockconfig" />
     <appDataConfigForm ref="formappdataconfig" />
     <appShareConfigForm ref="formappshareconfig" />
+    <appLoginWhitelistConfigForm ref="formapploginwhitelistconfig" />
     <eForm ref="form" :is-add="isAdd" />
     <pForm ref="formp" :is-add="isAdd" />
     <energyForm ref="forme" :is-add="isAdd" />
@@ -256,6 +259,7 @@ import { del, onStatus, getHbUnlockConfig } from '@/api/mwUser'
 import hbUnlockConfigForm from './formhbunlockconfig'
 import appDataConfigForm from './formappdataconfig'
 import appShareConfigForm from './formappshareconfig'
+import appLoginWhitelistConfigForm from './formapploginwhitelistconfig'
 import eForm from './form'
 import pForm from './formp'
 import energyForm from './forme'
@@ -267,11 +271,11 @@ import extractForm from './formExtract.vue'
 import detail from './detail'
 import userExtra from './userExtra'
 import { formatTime } from '@/utils/index'
-import {getAppDataConfig, getAppShareConfig} from "../../../api/mwUser";
+import {getAppDataConfig, getAppShareConfig, getAppLoginWhitelistConfig} from "../../../api/mwUser";
 export default {
   name: 'Member',
   components: {eForm, pForm, energyForm, iForm, wForm, rForm, bankForm, extractForm, detail,
-    userExtra, hbUnlockConfigForm, appDataConfigForm, appShareConfigForm},
+    userExtra, hbUnlockConfigForm, appDataConfigForm, appShareConfigForm, appLoginWhitelistConfigForm},
   mixins: [initData],
   data() {
     return {
@@ -434,6 +438,11 @@ export default {
     async editAppShareConfig() {
       const _this = this.$refs.formappshareconfig
       _this.form = await getAppShareConfig();
+      _this.dialog = true
+    },
+    async editAppLoginWhitelistConfig() {
+      const _this = this.$refs.formapploginwhitelistconfig
+      _this.whitelistStr = await getAppLoginWhitelistConfig();
       _this.dialog = true
     },
     editE(data) {
