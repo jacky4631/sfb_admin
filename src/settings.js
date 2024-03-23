@@ -42,7 +42,7 @@ module.exports = {
   /**
    * 底部文字，支持html语法
    */
-  footerTxt: '© 2018-2023 MSHOP <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">All Rights Reserved</a>',
+  footerTxt: '© 2018-2024 MSHOP <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">All Rights Reserved</a>',
   /**
    * 备案号
    */
