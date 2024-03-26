@@ -67,23 +67,23 @@ export const panelList = [
             menus: [
               {
                 imageArr: [
-                  'https://image.dayouqiantu.cn/5e85bfa61251d.png'
+                  'https://image.xxx.com/5e85bfa61251d.png'
                 ],
                 uniapp_url: '/pages/shop/GoodsList/index',
                 name: '全部商品',
                 id: 180,
-                pic: 'https://image.dayouqiantu.cn/all.png',
+                pic: 'https://image.xxx.com/all.png',
                 sort: 9,
                 url: '/goods_list',
                 wxapp_url: '/pages/shop/GoodsClass/main',
                 status: 1
               },
               {
-                imageArr: ['https://image.dayouqiantu.cn/news.png'],
+                imageArr: ['https://image.xxx.com/news.png'],
                 uniapp_url: '/pages/shop/news/NewsList/index',
                 name: '图文资讯',
                 id: 196,
-                pic: 'https://image.dayouqiantu.cn/xw.png',
+                pic: 'https://image.xxx.com/xw.png',
                 sort: 8,
                 url: '/news_list',
                 wxapp_url: '/pages/shop/news/NewsList/main',
@@ -91,70 +91,70 @@ export const panelList = [
               },
               {
                 imageArr: [
-                  'https://image.dayouqiantu.cn/5e4e939507b5e.png'
+                  'https://image.xxx.com/5e4e939507b5e.png'
                 ],
                 uniapp_url: '/pages/shop/GoodsCollection/index',
                 name: '我的收藏',
                 id: 197,
-                pic: 'https://image.dayouqiantu.cn/colle.png',
+                pic: 'https://image.xxx.com/colle.png',
                 sort: 7,
                 url: '/collection',
                 wxapp_url: '/pages/shop/GoodsCollection/main',
                 status: 1
               },
               {
-                imageArr: ['https://image.dayouqiantu.cn/coupon.png'],
+                imageArr: ['https://image.xxx.com/coupon.png'],
                 uniapp_url: '',
                 name: '优惠券',
                 id: 199,
-                pic: 'https://image.dayouqiantu.cn/cou.png',
+                pic: 'https://image.xxx.com/cou.png',
                 sort: 6,
                 url: '/user/get_coupon',
                 wxapp_url: '/pages/user/coupon/GetCoupon/main',
                 status: 1
               },
               {
-                imageArr: ['https://image.dayouqiantu.cn/pink.png'],
+                imageArr: ['https://image.xxx.com/pink.png'],
                 uniapp_url: '/pages/activity/GoodsGroup/index',
                 name: '拼团专区',
                 id: 200,
                 pic:
-                  'https://image.dayouqiantu.cn/62ac09d2914d36c65b9b59d2147d809a.png',
+                  'https://image.xxx.com/62ac09d2914d36c65b9b59d2147d809a.png',
                 sort: 5,
                 url: '/activity/group',
                 wxapp_url: '/pages/activity/GoodsGroup/main',
                 status: 1
               },
               {
-                imageArr: ['https://image.dayouqiantu.cn/sign.png'],
+                imageArr: ['https://image.xxx.com/sign.png'],
                 uniapp_url: '/pages/user/signIn/Sign/index',
                 name: '积分签到',
                 id: 209,
                 pic:
-                  'https://image.dayouqiantu.cn/29ea4acebbf99e7eaf6f85af2b6d79ae.png',
+                  'https://image.xxx.com/29ea4acebbf99e7eaf6f85af2b6d79ae.png',
                 sort: 4,
                 url: '/user/sign',
                 wxapp_url: '/pages/user/signIn/Sign/main',
                 status: 1
               },
               {
-                imageArr: ['https://image.dayouqiantu.cn/sekill.png'],
+                imageArr: ['https://image.xxx.com/sekill.png'],
                 uniapp_url: '/pages/activity/GoodsSeckill/index',
                 name: '秒杀专区',
                 id: 216,
                 pic:
-                  'https://image.dayouqiantu.cn/b0344c148141b50d68db9722708ea49e.png',
+                  'https://image.xxx.com/b0344c148141b50d68db9722708ea49e.png',
                 sort: 3,
                 url: '/activity/goods_seckill',
                 wxapp_url: '/pages/activity/GoodsSeckill/main',
                 status: 1
               },
               {
-                imageArr: ['https://image.dayouqiantu.cn/bargin.png'],
+                imageArr: ['https://image.xxx.com/bargin.png'],
                 uniapp_url: '/pages/activity/GoodsBargain/index',
                 name: '砍价专区',
                 id: 217,
-                pic: 'https://image.dayouqiantu.cn/bar.png',
+                pic: 'https://image.xxx.com/bar.png',
                 sort: 2,
                 url: '/activity/bargain',
                 wxapp_url: '/pages/activity/GoodsBargain/main',
@@ -173,21 +173,21 @@ export const panelList = [
             detail: {
               list: [
                 {
-                  image: 'https://wx.yixiang.co/static/images/index001.png',
+                  image: 'https://wx.xxx.com/static/images/index001.png',
                   url: '',
                   uniapp_url: '',
                   wxapp_url: '',
                   path_type: 1
                 },
                 {
-                  image: 'https://wx.yixiang.co/static/images/index002.png',
+                  image: 'https://wx.xxx.com/static/images/index002.png',
                   url: '',
                   uniapp_url: '',
                   wxapp_url: '',
                   path_type: 1
                 },
                 {
-                  image: 'https://wx.yixiang.co/static/images/index003.png',
+                  image: 'https://wx.xxx.com/static/images/index003.png',
                   url: '',
                   uniapp_url: '',
                   wxapp_url: '',
@@ -409,14 +409,14 @@ export const panelList = [
               {
                 title: '轮播1',
                 des: '',
-                pic: 'https://image.dayouqiantu.cn/1.jpg',
+                pic: 'https://image.xxx.com/1.jpg',
                 url: '',
                 linkTo: ''
               },
               {
                 title: '轮播2',
                 des: '',
-                pic: 'https://image.dayouqiantu.cn/5c9f05aee5059.jpg',
+                pic: 'https://image.xxx.com/5c9f05aee5059.jpg',
                 url: '',
                 linkTo: ''
               }
@@ -434,21 +434,21 @@ export const panelList = [
                 {
                   'title': '新款商品1',
                   'id': '1',
-                  'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                  'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                   'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                   'price': '123'
                 },
                 {
                   'title': '新款商品2',
                   'id': '1',
-                  'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                  'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                   'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                   'price': '123'
                 },
                 {
                   'title': '新款商品3',
                   'id': '1',
-                  'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                  'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                   'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                   'price': '123',
                   'type': 0
@@ -456,7 +456,7 @@ export const panelList = [
                 {
                   'title': '新款商品4',
                   'id': '1',
-                  'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                  'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                   'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                   'price': '123'
                 }
@@ -474,21 +474,21 @@ export const panelList = [
               {
                 'title': '爆款商品1',
                 'id': '1',
-                'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                 'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                 'price': '123'
               },
               {
                 'title': '爆款商品2',
                 'id': '1',
-                'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                 'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                 'price': '123'
               },
               {
                 'title': '爆款商品3',
                 'id': '1',
-                'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                 'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                 'price': '123',
                 'type': 0
@@ -496,7 +496,7 @@ export const panelList = [
               {
                 'title': '爆款商品4',
                 'id': '1',
-                'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                 'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                 'price': '123'
               }
@@ -514,21 +514,21 @@ export const panelList = [
               {
                 'title': '秒杀商品1',
                 'id': '1',
-                'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                 'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                 'price': '123'
               },
               {
                 'title': '秒杀商品2',
                 'id': '1',
-                'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                 'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                 'price': '123'
               },
               {
                 'title': '秒杀商品3',
                 'id': '1',
-                'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                 'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                 'price': '123',
                 'type': 0
@@ -547,7 +547,7 @@ export const panelList = [
               {
                 'title': '拼团商品1',
                 'id': '1',
-                'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                 'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                 'price': 123,
                 'people': 3,
@@ -556,7 +556,7 @@ export const panelList = [
               {
                 'title': '拼团商品2',
                 'id': '1',
-                'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                 'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                 'price': 123,
                 'people': 3,
@@ -565,7 +565,7 @@ export const panelList = [
               {
                 'title': '拼团商品3',
                 'id': '1',
-                'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                 'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                 'price': 123,
                 'people': 3,
@@ -574,7 +574,7 @@ export const panelList = [
               {
                 'title': '拼团商品4',
                 'id': '1',
-                'pic': 'https://wxapi.yixiang.co/api/file/pic/20210222213116280067.jpeg',
+                'pic': 'https://wxapi.xxx.com/api/file/pic/20210222213116280067.jpeg',
                 'storeName': '测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品',
                 'price': 123,
                 'people': 3,
