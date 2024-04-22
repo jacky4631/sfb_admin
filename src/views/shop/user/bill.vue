@@ -91,7 +91,7 @@
       </el-table-column>
       <el-table-column prop="unlockTime" label="解锁时间" />
       <el-table-column prop="createTime" label="创建时间" />
-      <el-table-column prop="updateTime" label="创建时间" />
+      <el-table-column prop="updateTime" label="更新时间" />
     </el-table>
     <!--分页组件-->
     <el-pagination
