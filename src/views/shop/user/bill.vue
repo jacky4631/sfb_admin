@@ -22,6 +22,14 @@
           :value="item.value"
         />
       </el-select>
+      <el-select v-model="unlockStatus" clearable placeholder="解锁状态" class="filter-item" style="width: 130px">
+        <el-option
+          v-for="item in unlockStatusOptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
       <el-date-picker
         class="filter-item"
         v-model="startTime"
@@ -74,7 +82,16 @@
       </el-table-column>
       <el-table-column prop="balance" label="余额"/>
       <el-table-column prop="platform" label="平台"/>
+      <el-table-column prop="unlockStatus" label="解锁状态">
+        <template slot-scope="scope">
+          <span style="color: grey" v-if="scope.row.unlockStatus == 2">已失效</span>
+          <span style="color: red" v-else-if="scope.row.unlockStatus == 1">未解锁</span>
+          <span style="color: blue" v-else>已解锁</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="unlockTime" label="解锁时间" />
       <el-table-column prop="createTime" label="创建时间" />
+      <el-table-column prop="updateTime" label="创建时间" />
     </el-table>
     <!--分页组件-->
     <el-pagination
@@ -102,7 +119,7 @@ export default {
   mixins: [initData],
   data() {
     return {
-      delLoading: false, origUid: '', uid: '', mark: '', category: '', type: '',inOuttype:'',startTime: '',endTime: '',shibai: '',
+      delLoading: false, origUid: '', uid: '', mark: '', category: '', type: '',inOuttype:'',startTime: '',endTime: '',shibai: '',unlockStatus: '',
       queryTypeOptions: [
         { key: 'nickname', display_name: '用户昵称' },
         { key: 'phone', display_name: '手机号码' },
@@ -111,6 +128,11 @@ export default {
       categoryOptions: [
         { value: 'now_money', label: '余额' },
         { value: 'integral', label: '积分' }
+      ],
+      unlockStatusOptions: [
+        { value: 1, label: '未解锁' },
+        { value: 2, label: '已失效' },
+        { value: 0, label: '已解锁' }
       ],
       typeOptions: [
         { value: 'brokerage', label: '佣金' },
@@ -173,7 +195,8 @@ export default {
         endTime: this.endTime,
         title: this.shibai,
         origUid: this.origUid,
-        uid: this.uid
+        uid: this.uid,
+        unlockStatus: this.unlockStatus
       }
       const query = this.query
       const type = query.type
