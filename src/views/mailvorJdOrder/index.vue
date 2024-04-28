@@ -64,7 +64,7 @@
             <el-tag v-if="scope.row.validCode === 16" style="cursor: pointer" :type="'success'">{{ jdOrderStatusParse(scope.row.validCode) }}</el-tag>
             <el-tag v-else-if="scope.row.validCode === 17" style="cursor: pointer" :type=" '' ">{{ jdOrderStatusParse(scope.row.validCode) }}</el-tag>
             <el-tag v-else-if="scope.row.validCode === 15" style="cursor: pointer" :type=" 'warning' ">{{ jdOrderStatusParse(scope.row.validCode) }}</el-tag>
-            <el-tag v-else style="cursor: pointer" :type="'warning'">{{ jdOrderStatusParse(scope.row.tkStatus) }}</el-tag>
+            <el-tag v-else style="cursor: pointer" :type="'warning'">{{ jdOrderStatusParse(scope.row.validCode) }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="bind" label="拆红包" width="120">
