@@ -86,7 +86,7 @@
         <template slot-scope="scope">
           <span style="color: grey" v-if="scope.row.unlockStatus == 2">已失效</span>
           <span style="color: red" v-else-if="scope.row.unlockStatus == 1">未解锁</span>
-          <span style="color: blue" v-else>已解锁</span>
+          <span style="color: limegreen" v-else>已解锁</span>
         </template>
       </el-table-column>
       <el-table-column prop="unlockTime" label="解锁时间" />

@@ -11,10 +11,10 @@
         <el-radio v-model="form.store_brokerage_open" :label="2">关闭</el-radio>
         <p style="color: red">订单分销和会员升级分销</p>
       </el-form-item>
-      <el-form-item label="登录强制邀请码">
+      <el-form-item label="登录强制跳转邀请码页面">
         <el-radio v-model="form.login_must_code" :label="1">开启</el-radio>
         <el-radio v-model="form.login_must_code" :label="2">关闭</el-radio>
-        <p style="color: red">不强制的时候，app端可跳过输入邀请码</p>
+        <p style="color: red">关闭的时候，app端登录直接跳过邀请码页面</p>
       </el-form-item>
       <el-form-item label="淘宝扣除服务费后比例">
         <el-input v-model="form.tk_tb_rebate_scale" style="width: 170px;" />%
@@ -22,7 +22,7 @@
       </el-form-item>
       <el-form-item label="【拆红包】比例">
         <el-input v-model="form.tk_hb_rebate_scale" style="width: 170px;" />%
-        <p style="color: red">推荐设置70，如果上面设置90，最终比例就是70*90=63%，优先取“会员管理”>“会员等级”的比例</p>
+        <p style="color: red">推荐设置70，优先取“会员管理”>“会员等级”的比例</p>
       </el-form-item>
       <el-form-item label="【拆红包】显示倍数区间">
         <el-input v-model="form.tk_hb_min_times" style="width: 80px;" />倍-
