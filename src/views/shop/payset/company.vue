@@ -30,28 +30,28 @@
     <!--表格渲染-->
     <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="id" label="主体id" />
-      <el-table-column prop="company" label="主体名称" width="300px"/>
-      <el-table-column ref="table" prop="licenseUrl" label="营业执照">
-        <template slot-scope="scope">
-          <div>
-            <a :href="scope.row.licenseUrl" style="color: rgb(64, 158, 255)" target="_blank">
-              <img :src="scope.row.licenseUrl" alt="点击打开" class="el-shop">
-            </a>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column ref="table" prop="sealUrl" label="公章">
-        <template slot-scope="scope">
-          <div>
-            <a :href="scope.row.sealUrl" style="color: rgb(64, 158, 255)" target="_blank">
-              <img :src="scope.row.sealUrl" alt="点击打开" class="el-shop">
-            </a>
+      <el-table-column prop="company" label="主体名称"/>
+<!--      <el-table-column ref="table" prop="licenseUrl" label="营业执照">-->
+<!--        <template slot-scope="scope">-->
+<!--          <div>-->
+<!--            <a :href="scope.row.licenseUrl" style="color: rgb(64, 158, 255)" target="_blank">-->
+<!--              <img :src="scope.row.licenseUrl" alt="点击打开" class="el-shop">-->
+<!--            </a>-->
+<!--          </div>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column ref="table" prop="sealUrl" label="公章">-->
+<!--        <template slot-scope="scope">-->
+<!--          <div>-->
+<!--            <a :href="scope.row.sealUrl" style="color: rgb(64, 158, 255)" target="_blank">-->
+<!--              <img :src="scope.row.sealUrl" alt="点击打开" class="el-shop">-->
+<!--            </a>-->
 
-          </div>
-        </template>
-      </el-table-column>
+<!--          </div>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
 
-      <el-table-column prop="phone" label="手机号码" />
+<!--      <el-table-column prop="phone" label="手机号码" />-->
 
       <el-table-column  prop="createTime" label="创建时间" width="140">
         <template slot-scope="scope">

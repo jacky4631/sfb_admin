@@ -2,14 +2,14 @@
   <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel"
              :visible.sync="dialog" :title="isAdd ? '新增' : '编辑'" width="750px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
-      <el-form-item label="通道id">
-        <el-input v-model="form.id" style="width: 100px"/>
-        &nbsp;通道名称
+      <el-form-item label="通道名称">
+<!--        <el-input v-model="form.id" style="width: 100px"/>-->
+        &nbsp;
         <el-input v-model="form.channelName" style="width: 350px"/>
       </el-form-item>
-      <el-form-item label="app简称">
-        <el-input v-model="form.name" style="width: 100px"/>
-      </el-form-item>
+<!--      <el-form-item label="app简称">-->
+<!--        <el-input v-model="form.name" style="width: 100px"/>-->
+<!--      </el-form-item>-->
       <el-form-item label="通道商">
         <el-select v-model="form.channelKey" clearable class="filter-item">
           <el-option v-for="item in channelKeyOptions" :key="item.key" :label="item.display_name" :value="item.key" />
@@ -44,13 +44,13 @@
         </template>
       </el-form-item>
       <el-form-item label="通道类型" width="140">
-        <el-radio v-model="form.type" :label="0">IOS支付</el-radio>
-        <el-radio v-model="form.type" :label="1">支付宝原生</el-radio>
-        <el-radio v-model="form.type" :label="2">支付宝三方</el-radio>
-        <el-radio v-model="form.type" :label="6">微信原生</el-radio>
-        <el-radio v-model="form.type" :label="7">微信三方</el-radio>
-        <el-radio v-model="form.type" :label="12">银行卡快捷</el-radio>
-        <el-radio v-model="form.type" :label="13">银行卡绑卡</el-radio>
+        <el-radio v-model="form.type" :label="0">iOS</el-radio>
+        <el-radio v-model="form.type" :label="1">支付宝-原生</el-radio>
+        <el-radio v-model="form.type" :label="2">支付宝-三方</el-radio>
+        <el-radio v-model="form.type" :label="6">微信支付-原生</el-radio>
+        <el-radio v-model="form.type" :label="7">微信支付-三方</el-radio>
+        <el-radio v-model="form.type" :label="12">银行卡-快捷支付</el-radio>
+        <el-radio v-model="form.type" :label="13">银行卡-绑卡支付</el-radio>
       </el-form-item>
       <el-form-item label="通道开关">
         <el-radio v-model="form.status" :label="8">开</el-radio>
@@ -86,15 +86,15 @@ export default {
 
     return {
       channelKeyOptions: [
-        { key: 'iospay', display_name: 'IOS支付' },
-        { key: 'adapay', display_name: '汇付天下' },
-        { key: 'allinpay', display_name: '通联支付收银宝' },
+        { key: 'wechatpay', display_name: '微信' },
         { key: 'alipay', display_name: '支付宝' },
         { key: 'alipayweb', display_name: '支付宝网页' },
-        { key: 'wechatpay', display_name: '微信' },
+        { key: 'adapay', display_name: '汇付天下' },
         { key: 'yeepay_bank', display_name: '易宝银行卡快捷' },
         { key: 'ysepay_bank_bind', display_name: '银盛银行卡绑卡' },
-        { key: 'ysepay', display_name: '银盛支付宝' }
+        { key: 'ysepay', display_name: '银盛支付宝' },
+        { key: 'iospay', display_name: 'iOS内购（暂不可用）' },
+        { key: 'allinpay', display_name: '通联支付收银宝' }
       ],
       extractOptions: [
         { key: 1, display_name: '是' },
@@ -102,7 +102,7 @@ export default {
       ],
       loading: false, dialog: false,
       form: {
-        id: 0,
+        id: '',
         channelName: '',
         channelKey: '',
         name: '',
@@ -113,7 +113,7 @@ export default {
         amount: 0,
         status: 0,
         extract: 0,
-        companyId: 0,
+        companyId: '',
         cycleTime: ''
       },
       rules: {

@@ -1,21 +1,21 @@
 <template>
   <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="isAdd ? '新增' : '编辑'" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
-      <el-form-item label="主体id">
-        <el-input v-model="form.id"/>
-      </el-form-item>
+<!--      <el-form-item label="主体id">-->
+<!--        <el-input v-model="form.id"/>-->
+<!--      </el-form-item>-->
       <el-form-item label="主体名称">
         <el-input v-model="form.company"/>
       </el-form-item>
-      <el-form-item label="营业执照">
-        <el-input v-model="form.licenseUrl"/>
-      </el-form-item>
-      <el-form-item label="公章">
-        <el-input v-model="form.sealUrl"/>
-      </el-form-item>
-      <el-form-item label="手机号">
-        <el-input v-model="form.phone"/>
-      </el-form-item>
+<!--      <el-form-item label="营业执照">-->
+<!--      <el-input v-model="form.licenseUrl"/>-->
+<!--    </el-form-item>-->
+<!--      <el-form-item label="公章">-->
+<!--        <el-input v-model="form.sealUrl"/>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="手机号">-->
+<!--        <el-input v-model="form.phone"/>-->
+<!--      </el-form-item>-->
     </el-form>
     <div slot="footer" class="dialog-footer">
       <!--<el-input v-model="form.groupName" />-->

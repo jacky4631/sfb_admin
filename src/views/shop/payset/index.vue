@@ -45,7 +45,7 @@
     <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="id" label="通道id" />
       <el-table-column prop="channelName" label="通道名称" width="250px"/>
-      <el-table-column prop="name" label="app简称" width="250px"/>
+<!--      <el-table-column prop="name" label="app简称" width="250px"/>-->
       <el-table-column prop="channelKey" label="通道商" width="150px">
         <template slot-scope="scope">
           <div>
@@ -65,13 +65,13 @@
       <el-table-column label="通道类型" align="center" width="140">
         <template slot-scope="scope">
           <div>
-            <el-tag v-if="scope.row.type === 0" style="cursor: pointer" :type="''">IOS支付</el-tag>
-            <el-tag v-else-if="scope.row.type === 1" style="cursor: pointer" :type="''">支付宝原生</el-tag>
-            <el-tag v-else-if="scope.row.type === 2" style="cursor: pointer" :type="''">支付宝三方</el-tag>
-            <el-tag v-else-if="scope.row.type === 6" style="cursor: pointer" :type="''">微信原生</el-tag>
-            <el-tag v-else-if="scope.row.type === 7" style="cursor: pointer" :type="''">微信三方</el-tag>
-            <el-tag v-else-if="scope.row.type === 12" style="cursor: pointer" :type="''">银行卡快捷</el-tag>
-            <el-tag v-else-if="scope.row.type === 13" style="cursor: pointer" :type="''">银行卡绑卡</el-tag>
+            <el-tag v-if="scope.row.type === 0" style="cursor: pointer" :type="''">iOS</el-tag>
+            <el-tag v-else-if="scope.row.type === 1" style="cursor: pointer" :type="''">支付宝-原生</el-tag>
+            <el-tag v-else-if="scope.row.type === 2" style="cursor: pointer" :type="''">支付宝-三方</el-tag>
+            <el-tag v-else-if="scope.row.type === 6" style="cursor: pointer" :type="''">微信支付-原生</el-tag>
+            <el-tag v-else-if="scope.row.type === 7" style="cursor: pointer" :type="''">微信支付-三方</el-tag>
+            <el-tag v-else-if="scope.row.type === 12" style="cursor: pointer" :type="''">银行卡-快捷支付</el-tag>
+            <el-tag v-else-if="scope.row.type === 13" style="cursor: pointer" :type="''">银行卡-绑卡支付</el-tag>
             <el-tag v-else style="cursor: pointer" :type=" 'warning' ">未知</el-tag>
           </div>
         </template>
@@ -160,15 +160,15 @@ export default {
   data() {
     return {
       channelKeyOptions: [
-        { key: 'iospay', display_name: 'IOS支付' },
-        { key: 'adapay', display_name: '汇付天下' },
-        { key: 'allinpay', display_name: '通联支付收银宝' },
+        { key: 'wechatpay', display_name: '微信' },
         { key: 'alipay', display_name: '支付宝' },
         { key: 'alipayweb', display_name: '支付宝网页' },
-        { key: 'wechatpay', display_name: '微信' },
-        { key: 'yeepay_bank', display_name: '易宝银行卡' },
+        { key: 'adapay', display_name: '汇付天下' },
+        { key: 'yeepay_bank', display_name: '易宝银行卡快捷' },
         { key: 'ysepay_bank_bind', display_name: '银盛银行卡绑卡' },
-        { key: 'ysepay', display_name: '银盛支付宝' }
+        { key: 'ysepay', display_name: '银盛支付宝' },
+        { key: 'iospay', display_name: 'iOS内购（暂不可用）' },
+        { key: 'allinpay', display_name: '通联支付收银宝' }
       ],
       delLoading: false,
     }
