@@ -66,6 +66,7 @@
 import { encrypt } from '@/utils/rsaEncrypt'
 import { add, edit } from '@/api/mwPaySet'
 import picUpload from '@/components/pic-upload'
+import {getChannelKeyOptions, getTypeOptions} from "@/utils/tk-order-parse";
 export default {
   components: { picUpload },
   props: {
@@ -77,26 +78,8 @@ export default {
   data() {
 
     return {
-      typeOptions: [
-        { key: 0, label: 'iOS支付', parent: ['iospay']},
-        { key: 1, label: '支付宝-原生', parent: ['alipay']},
-        { key: 2, label: '支付宝-三方', parent: ['alipay', 'allinpay','adapay','ysepay']},
-        { key: 6, label: '微信支付-原生', parent: ['wechatpay']},
-        { key: 7, label: '微信支付-三方', parent: ['wechatpay']},
-        { key: 12, label: '银行卡-快捷支付', parent: ['yeepay']},
-        { key: 13, label: '银行卡-绑卡支付', parent: ['ysepay']},
-      ],
-      channelKeyOptions: [
-        { key: 'wechatpay', label: '微信', parent: [6] },
-        { key: 'alipay', label: '支付宝', parent: [1]  },
-        { key: 'alipayweb', label: '支付宝网页', parent: [2]  },
-        { key: 'adapay', label: '汇付天下', parent: [2]  },
-        { key: 'yeepay_bank', label: '易宝银行卡快捷', parent: [12] },
-        { key: 'ysepay_bank_bind', label: '银盛银行卡绑卡', parent: [13] },
-        { key: 'ysepay', label: '银盛支付宝', parent: [2]  },
-        { key: 'iospay', label: 'iOS内购（暂不可用）', parent: [0]  },
-        { key: 'allinpay', label: '通联支付', parent: [2]  }
-      ],
+      typeOptions: getTypeOptions(),
+      channelKeyOptions: getChannelKeyOptions(),
 
       extractOptions: [
         { key: 1, display_name: '是' },
@@ -123,6 +106,8 @@ export default {
     }
   },
   methods: {
+    getChannelKeyOptions,
+    getTypeOptions,
     onTypeChange() {
       this.form.channelKey = ''
     },

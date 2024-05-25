@@ -49,30 +49,18 @@
       <el-table-column label="通道类型" align="center" width="140">
         <template slot-scope="scope">
           <div>
-            <el-tag v-if="scope.row.type === 0" style="cursor: pointer" :type="''">iOS</el-tag>
-            <el-tag v-else-if="scope.row.type === 1" style="cursor: pointer" :type="''">支付宝-原生</el-tag>
-            <el-tag v-else-if="scope.row.type === 2" style="cursor: pointer" :type="''">支付宝-三方</el-tag>
-            <el-tag v-else-if="scope.row.type === 6" style="cursor: pointer" :type="''">微信支付-原生</el-tag>
-            <el-tag v-else-if="scope.row.type === 7" style="cursor: pointer" :type="''">微信支付-三方</el-tag>
-            <el-tag v-else-if="scope.row.type === 12" style="cursor: pointer" :type="''">银行卡-快捷支付</el-tag>
-            <el-tag v-else-if="scope.row.type === 13" style="cursor: pointer" :type="''">银行卡-绑卡支付</el-tag>
-            <el-tag v-else style="cursor: pointer" :type=" 'warning' ">未知</el-tag>
+            <el-tag style="cursor: pointer" :type="''">
+              {{ getTypeLabel(scope.row.type)}}
+            </el-tag>
           </div>
         </template>
       </el-table-column>
       <el-table-column prop="channelKey" label="通道商" width="150px">
         <template slot-scope="scope">
           <div>
-            <el-tag v-if="scope.row.channelKey === 'iospay'" style="cursor: pointer" :type="''">IOS支付</el-tag>
-            <el-tag v-else-if="scope.row.channelKey === 'adapay'" style="cursor: pointer" :type="''">汇付天下</el-tag>
-            <el-tag v-else-if="scope.row.channelKey === 'allinpay'" style="cursor: pointer" :type="''">通联支付收银宝</el-tag>
-            <el-tag v-else-if="scope.row.channelKey === 'alipay'" style="cursor: pointer" :type="''">支付宝</el-tag>
-            <el-tag v-else-if="scope.row.channelKey === 'alipayweb'" style="cursor: pointer" :type="''">支付宝网页</el-tag>
-            <el-tag v-else-if="scope.row.channelKey === 'wechatpay'" style="cursor: pointer" :type="''">微信</el-tag>
-            <el-tag v-else-if="scope.row.channelKey === 'yeepay_bank'" style="cursor: pointer" :type="''">易宝银行卡快捷</el-tag>
-            <el-tag v-else-if="scope.row.channelKey === 'ysepay_bank_bind'" style="cursor: pointer" :type="''">银盛银行卡绑卡</el-tag>
-            <el-tag v-else-if="scope.row.channelKey === 'ysepay'" style="cursor: pointer" :type="''">银盛支付宝</el-tag>
-            <el-tag v-else style="cursor: pointer" :type=" 'warning' ">未知</el-tag>
+            <el-tag style="cursor: pointer" :type="''">
+              {{ getChannelLabel(scope.row.channelKey)}}
+            </el-tag>
           </div>
         </template>
       </el-table-column>
@@ -154,6 +142,7 @@ import initData from '@/mixins/crud'
 import { del, getAppPayConfig } from '@/api/mwPaySet'
 import eForm from './form'
 import configForm from './formconfig'
+import {getChannelLabel, getTypeLabel} from "@/utils/tk-order-parse";
 export default {
   components: { eForm, configForm },
   mixins: [initData],
@@ -179,6 +168,8 @@ export default {
     })
   },
   methods: {
+    getChannelLabel,
+    getTypeLabel,
     checkPermission,
     beforeInit() {
       this.url = 'api/payset'

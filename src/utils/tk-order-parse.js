@@ -105,3 +105,45 @@ export function mtItemBizStatusParse(status) {
       return ''
   }
 }
+export function getTypeOptions() {
+  return [
+    { key: 0, label: 'iOS支付', parent: ['iospay'] },
+    { key: 1, label: '支付宝-原生', parent: ['alipay'] },
+    { key: 2, label: '支付宝-三方', parent: ['alipay', 'allinpay', 'adapay', 'ysepay'] },
+    { key: 6, label: '微信支付-原生', parent: ['wechatpay'] },
+    { key: 7, label: '微信支付-三方', parent: ['wechatpay'] },
+    { key: 12, label: '银行卡-快捷支付', parent: ['yeepay'] },
+    { key: 13, label: '银行卡-绑卡支付', parent: ['ysepay'] }
+  ]
+}
+export function getChannelKeyOptions() {
+  return [
+    { key: 'wechatpay', label: '微信', parent: [6] },
+    { key: 'alipay', label: '支付宝', parent: [1] },
+    { key: 'alipayweb', label: '支付宝网页', parent: [2] },
+    { key: 'adapay', label: '汇付天下', parent: [2] },
+    { key: 'yeepay_bank', label: '易宝银行卡快捷', parent: [12] },
+    { key: 'ysepay_bank_bind', label: '银盛银行卡绑卡', parent: [13] },
+    { key: 'ysepay', label: '银盛支付宝', parent: [2] },
+    { key: 'iospay', label: 'iOS内购（暂不可用）', parent: [0] },
+    { key: 'allinpay', label: '通联支付', parent: [2] }
+  ]
+}
+export function getTypeLabel(type) {
+  const typeCur = getTypeOptions().filter((typeObj) => {
+    return typeObj['key'] === type
+  })
+  if (typeCur != null && typeCur.length > 0) {
+    return typeCur[0]['label']
+  }
+  return '未知'
+}
+export function getChannelLabel(key) {
+  const channelCur = getChannelKeyOptions().filter((typeObj) => {
+    return typeObj['key'] === key
+  })
+  if (channelCur != null && channelCur.length > 0) {
+    return channelCur[0]['label']
+  }
+  return '未知'
+}
