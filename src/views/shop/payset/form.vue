@@ -3,54 +3,46 @@
              :visible.sync="dialog" :title="isAdd ? '新增' : '编辑'" width="750px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
       <el-form-item label="通道名称">
-<!--        <el-input v-model="form.id" style="width: 100px"/>-->
-        &nbsp;
-        <el-input v-model="form.channelName" style="width: 350px"/>
+        <el-input v-model="form.channelName" style="width: 40%"/>
+        主体id
+
+        <el-input v-model="form.companyId" style="width: 40%"/>
       </el-form-item>
 <!--      <el-form-item label="app简称">-->
 <!--        <el-input v-model="form.name" style="width: 100px"/>-->
 <!--      </el-form-item>-->
-      <el-form-item label="通道商">
-        <el-select v-model="form.channelKey" clearable class="filter-item">
-          <el-option v-for="item in channelKeyOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-        </el-select>
-      </el-form-item>
       <el-form-item label="回调地址">
-        <el-input v-model="form.notifyUrl"/>
+        <el-input v-model="form.notifyUrl" type="textarea" rows= '1'/>
       </el-form-item>
       <el-form-item label="最大额度(元)">
-        <el-input v-model="form.maxAmount" style="width: 150px"/>
+        <el-input v-model="form.maxAmount" style="width: 150px" clearable/>
         &nbsp;剩余额度(元)
-        <el-input v-model="form.amount" style="width: 150px"/>
+        <el-input v-model="form.amount" style="width: 150px" clearable/>
+        重置时间
+        <el-time-picker
+          v-model="form.cycleTime"
+          value-format="HH:mm:ss"
+          disabled-date="disabledDateFun"
+          placeholder="选择时间"
+          style="width: 150px"
+        />
       </el-form-item>
       <el-form-item label="可提现">
-        <el-select v-model="form.extract" clearable class="filter-item">
+        <el-select v-model="form.extract" clearable class="filter-item" style="width: 40%">
           <el-option v-for="item in extractOptions" :key="item.key" :label="item.display_name" :value="item.key" />
         </el-select>
       </el-form-item>
-      <el-form-item label="主体id">
-        <el-input v-model="form.companyId"/>
+
+      <el-form-item label="通道类型">
+        <el-select v-model="form.type" clearable class="filter-item" style="width: 40%" @change="onTypeChange">
+          <el-option v-for="item in typeOptions" :key="item.key" :label="item.label" :value="item.key"/>
+        </el-select>
       </el-form-item>
-      <el-form-item label="刷新时间">
-        <template>
-          <el-date-picker
-            default-time="['00:00:00']"
-            v-model="form.cycleTime"
-            type="datetime"
-            value-format="HH:mm:ss"
-            disabled-date="disabledDateFun"
-            placeholder="选择时间"
-          />
-        </template>
-      </el-form-item>
-      <el-form-item label="通道类型" width="140">
-        <el-radio v-model="form.type" :label="0">iOS</el-radio>
-        <el-radio v-model="form.type" :label="1">支付宝-原生</el-radio>
-        <el-radio v-model="form.type" :label="2">支付宝-三方</el-radio>
-        <el-radio v-model="form.type" :label="6">微信支付-原生</el-radio>
-        <el-radio v-model="form.type" :label="7">微信支付-三方</el-radio>
-        <el-radio v-model="form.type" :label="12">银行卡-快捷支付</el-radio>
-        <el-radio v-model="form.type" :label="13">银行卡-绑卡支付</el-radio>
+      <el-form-item label="通道商">
+        <el-select v-model="form.channelKey" clearable class="filter-item" style="width: 40%">
+          <el-option v-for="item in channelKeyOptions" :key="item.key" :label="item.label" :value="item.key"
+                     :disabled="item.parent.indexOf(form.type)<0"/>
+        </el-select>
       </el-form-item>
       <el-form-item label="通道开关">
         <el-radio v-model="form.status" :label="8">开</el-radio>
@@ -58,7 +50,7 @@
       </el-form-item>
 
       <el-form-item label="证书信息">
-        <el-input v-model="form.certProfileEnc" type="textarea" rows= '4' style="height: 100px"/>
+        <el-input v-model="form.certProfileEnc" type="textarea" rows= '6' style="height: 150px"/>
         <p style="color: red">证书信息不再展示，需要更新通过印笔复制json串保存</p>
       </el-form-item>
     </el-form>
@@ -85,17 +77,27 @@ export default {
   data() {
 
     return {
-      channelKeyOptions: [
-        { key: 'wechatpay', display_name: '微信' },
-        { key: 'alipay', display_name: '支付宝' },
-        { key: 'alipayweb', display_name: '支付宝网页' },
-        { key: 'adapay', display_name: '汇付天下' },
-        { key: 'yeepay_bank', display_name: '易宝银行卡快捷' },
-        { key: 'ysepay_bank_bind', display_name: '银盛银行卡绑卡' },
-        { key: 'ysepay', display_name: '银盛支付宝' },
-        { key: 'iospay', display_name: 'iOS内购（暂不可用）' },
-        { key: 'allinpay', display_name: '通联支付收银宝' }
+      typeOptions: [
+        { key: 0, label: 'iOS支付', parent: ['iospay']},
+        { key: 1, label: '支付宝-原生', parent: ['alipay']},
+        { key: 2, label: '支付宝-三方', parent: ['alipay', 'allinpay','adapay','ysepay']},
+        { key: 6, label: '微信支付-原生', parent: ['wechatpay']},
+        { key: 7, label: '微信支付-三方', parent: ['wechatpay']},
+        { key: 12, label: '银行卡-快捷支付', parent: ['yeepay']},
+        { key: 13, label: '银行卡-绑卡支付', parent: ['ysepay']},
       ],
+      channelKeyOptions: [
+        { key: 'wechatpay', label: '微信', parent: [6] },
+        { key: 'alipay', label: '支付宝', parent: [1]  },
+        { key: 'alipayweb', label: '支付宝网页', parent: [2]  },
+        { key: 'adapay', label: '汇付天下', parent: [2]  },
+        { key: 'yeepay_bank', label: '易宝银行卡快捷', parent: [12] },
+        { key: 'ysepay_bank_bind', label: '银盛银行卡绑卡', parent: [13] },
+        { key: 'ysepay', label: '银盛支付宝', parent: [2]  },
+        { key: 'iospay', label: 'iOS内购（暂不可用）', parent: [0]  },
+        { key: 'allinpay', label: '通联支付', parent: [2]  }
+      ],
+
       extractOptions: [
         { key: 1, display_name: '是' },
         { key: 0, display_name: '否' },
@@ -105,22 +107,25 @@ export default {
         id: '',
         channelName: '',
         channelKey: '',
-        name: '',
         certProfileE: '',
         certProfileEnc: '',
         notifyUrl: '',
-        maxAmount: 0,
-        amount: 0,
+        type: '',
+        maxAmount: 100000,
+        amount: 100000,
         status: 0,
         extract: 0,
         companyId: '',
-        cycleTime: ''
+        cycleTime: '00:00:00'
       },
       rules: {
       }
     }
   },
   methods: {
+    onTypeChange() {
+      this.form.channelKey = ''
+    },
     cancel() {
       this.resetForm()
     },
@@ -176,18 +181,19 @@ export default {
       this.dialog = false
       this.$refs['form'].resetFields()
       this.form = {
-        id: 0,
+        id: '',
         channelName: '',
+        channelKey: '',
         certProfileE: '',
         certProfileEnc: '',
-        name: '',
         notifyUrl: '',
-        maxAmount: 0,
-        amount: 0,
+        type: '',
+        maxAmount: 100000,
+        amount: 100000,
         status: 0,
         extract: 0,
-        companyId: 0,
-        cycleTime: ''
+        companyId: '',
+        cycleTime: '00:00:00'
       }
     }
   }

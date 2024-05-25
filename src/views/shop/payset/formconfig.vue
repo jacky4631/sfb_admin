@@ -53,10 +53,6 @@
 import { setAppPayConfig } from '@/api/mwPaySet'
 export default {
   props: {
-    isAdd: {
-      type: Boolean,
-      required: true
-    }
   },
   data() {
     return {
