@@ -1,22 +1,23 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="150px">
-      <el-form-item label="微信APP支付AppID">
-        <el-input v-model="form.wx_native_app_appId" style="width: 370px;" />
-        <p style="color: red">微信开放平台审核通过的应用APPID（请登录open.weixin.qq.com查看，注意与公众号的APPID不同）</p>
-      </el-form-item>
-      <el-form-item label="商户id">
-        <el-input v-model="form.wxpay_mchId" style="width: 370px;" type="password" />
-      </el-form-item>
-      <el-form-item label="商户密钥">
-        <el-input v-model="form.wxpay_mchKey" style="width: 370px;" type="password" />
-      </el-form-item>
-      <el-form-item label="微信证书">
-        <file-upload v-model="form.wxpay_keyPath" style="width: 500px;" />
-      </el-form-item>
-      <el-form-item label="">
-        <el-button type="primary" @click="doSubmit">提交</el-button>
-      </el-form-item>
+      <p style="color: red">改处功能已废弃，使用“财务管理”->“支付通道设置”，新建通道</p>
+<!--      <el-form-item label="微信APP支付AppID">-->
+<!--        <el-input v-model="form.wx_native_app_appId" style="width: 370px;" />-->
+<!--        <p style="color: red">微信开放平台审核通过的应用APPID（请登录open.weixin.qq.com查看，注意与公众号的APPID不同）</p>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="商户id">-->
+<!--        <el-input v-model="form.wxpay_mchId" style="width: 370px;" type="password" />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="商户密钥">-->
+<!--        <el-input v-model="form.wxpay_mchKey" style="width: 370px;" type="password" />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="微信证书">-->
+<!--        <file-upload v-model="form.wxpay_keyPath" style="width: 500px;" />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="">-->
+<!--        <el-button type="primary" @click="doSubmit">提交</el-button>-->
+<!--      </el-form-item>-->
 
     </el-form>
 
