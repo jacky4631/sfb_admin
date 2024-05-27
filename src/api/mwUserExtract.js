@@ -37,6 +37,12 @@ export function addInvalidExtract(data) {
     data
   })
 }
+export function delInvalidExtract(uid) {
+  return request({
+    url: 'api/extract/ban/' + uid,
+    method: 'delete'
+  })
+}
 
 export function getExtractConfig() {
   return request({
