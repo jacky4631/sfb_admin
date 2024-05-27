@@ -105,17 +105,17 @@
         <el-table-column prop="hb" label="拆红包金额" width="100" />
         <el-table-column prop="uid" label="用户ID" />
 
-        <el-table-column prop="actualItemAmount" label="子订单实际支付价格，单位元" />
-        <el-table-column prop="actualOrderAmount" label="订单实际支付总价格，单位元" />
+        <el-table-column prop="actualItemAmount" label="支付价格元" />
+        <el-table-column prop="actualOrderAmount" label="支付总价格元" />
 
         <el-table-column prop="shopName" label="商户名称"  width="300"/>
         <el-table-column prop="cityName" label="城市名称" />
         <el-table-column prop="cat0Name" label="一级行业" />
         <el-table-column prop="cat1Name" label="二级行业" />
         <el-table-column prop="orderType" label="订单类型" />
-        <el-table-column prop="couponDiscountAmount" label="抵用券满减金额，单位元" />
-        <el-table-column prop="couponPriceLimit" label="抵用券门槛，单位元" />
-        <el-table-column prop="balanceAmount" label="佣金金额,单位元" />
+        <el-table-column prop="couponDiscountAmount" label="券满减金额元" />
+        <el-table-column prop="couponPriceLimit" label="券门槛元" />
+        <el-table-column prop="balanceAmount" label="佣金金额元" />
         <el-table-column prop="balanceCommissionRatio" label="佣金比例" />
         <el-table-column prop="orderUserId" label="用户Id" />
 
@@ -369,7 +369,7 @@
         this.isAdd = false
         const _this = this.$refs.form3
         _this.form = {
-          orderId: data.uniqueItemIdStr,
+          orderId: data.orderIdStr,
           uid: data.uid,
         }
         _this.dialog = true
