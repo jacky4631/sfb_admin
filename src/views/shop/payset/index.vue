@@ -156,7 +156,7 @@ export default {
         { key: 'yeepay_bank', display_name: '易宝银行卡快捷' },
         { key: 'ysepay_bank_bind', display_name: '银盛银行卡绑卡' },
         { key: 'ysepay', display_name: '银盛支付宝' },
-        { key: 'iospay', display_name: 'iOS内购（暂不可用）' },
+        { key: 'iospay', display_name: 'iOS内购' },
         { key: 'allinpay', display_name: '通联支付收银宝' }
       ],
       delLoading: false,

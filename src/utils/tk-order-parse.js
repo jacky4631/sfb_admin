@@ -125,7 +125,7 @@ export function getChannelKeyOptions() {
     { key: 'yeepay_bank', label: '易宝银行卡快捷', parent: [12] },
     { key: 'ysepay_bank_bind', label: '银盛银行卡绑卡', parent: [13] },
     { key: 'ysepay', label: '银盛支付宝', parent: [2] },
-    { key: 'iospay', label: 'iOS内购（暂不可用）', parent: [0] },
+    { key: 'iospay', label: 'iOS内购', parent: [0] },
     { key: 'allinpay', label: '通联支付', parent: [2] }
   ]
 }
