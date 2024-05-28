@@ -66,7 +66,7 @@
       <editOrder ref="form3" :is-add="isAdd" />
 
       <!--表格渲染-->
-      <el-table ref="multipleTable" height="600" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" height="460" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
         <el-table-column prop="uniqueItemIdStr" fixed label="子订单编号" width="155"/>
 
@@ -76,7 +76,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="orderIdStr" label="订单编号" width="175"/>
-        <el-table-column prop="itemStatus" label="子订单状态" >
+        <el-table-column prop="itemStatus" label="订单状态" >
           <template slot-scope="scope">
             <el-tag v-if="scope.row.itemStatus === 0" style="cursor: pointer" :type="'success'">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemStatus === 1" style="cursor: pointer" :type=" '' ">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
@@ -85,7 +85,7 @@
             <el-tag v-else-if="scope.row.itemStatus === 5" style="cursor: pointer" :type=" 'warning' ">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="itemBizStatus" label="订单状态(聚合)" >
+        <el-table-column prop="itemBizStatus" label="聚合状态" >
           <template slot-scope="scope">
             <el-tag v-if="scope.row.itemBizStatus === 1" style="cursor: pointer" :type="'success'">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemBizStatus === 3" style="cursor: pointer" :type=" '' ">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
@@ -104,24 +104,24 @@
         </el-table-column>
         <el-table-column prop="hb" label="拆红包金额" width="100" />
         <el-table-column prop="uid" label="用户ID" />
+        <el-table-column prop="balanceAmount" label="佣金元" />
 
         <el-table-column prop="actualItemAmount" label="支付价格元" />
         <el-table-column prop="actualOrderAmount" label="支付总价格元" />
+        <el-table-column prop="balanceCommissionRatio" label="佣金比例" />
 
         <el-table-column prop="shopName" label="商户名称"  width="300"/>
+        <el-table-column prop="promotionId" label="推广位Id" />
+        <el-table-column prop="utmSource" label="媒体Code" />
         <el-table-column prop="cityName" label="城市名称" />
         <el-table-column prop="cat0Name" label="一级行业" />
         <el-table-column prop="cat1Name" label="二级行业" />
         <el-table-column prop="orderType" label="订单类型" />
         <el-table-column prop="couponDiscountAmount" label="券满减金额元" />
         <el-table-column prop="couponPriceLimit" label="券门槛元" />
-        <el-table-column prop="balanceAmount" label="佣金金额元" />
-        <el-table-column prop="balanceCommissionRatio" label="佣金比例" />
         <el-table-column prop="orderUserId" label="用户Id" />
 
         <el-table-column prop="orderPlatform" label="点评 美团" />
-        <el-table-column prop="promotionId" label="推广位Id" />
-        <el-table-column prop="utmSource" label="媒体Code" />
         <el-table-column prop="utmMedium" label="子媒体信息" width="300"/>
         <el-table-column prop="modifyTime" label="最新更改时间" width="135">
           <template slot-scope="scope">

@@ -44,7 +44,7 @@
       <editOrder ref="form3" :is-add="isAdd" />
 
       <!--表格渲染-->
-      <el-table ref="multipleTable" height="600" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" height="460" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
         <el-table-column prop="orderId" label="订单号" fixed :show-overflow-tooltip="true" width="155"/>
 

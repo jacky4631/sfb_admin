@@ -84,7 +84,7 @@
           </template>
         </el-table-column>
         <el-table-column v-permission="['admin','mwAppVersion:edit','mwAppVersion:del']" label="操作" width="150px"
-                         align="center">
+                         align="center" fixed="right">
           <template slot-scope="scope">
             <udOperation
               :data="scope.row"

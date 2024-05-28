@@ -50,7 +50,7 @@
       <editOrder ref="form3" :is-add="isAdd" />
 
       <!--表格渲染-->
-      <el-table ref="multipleTable" height="600" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" height="460" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
         <el-table-column prop="id" label="id" :show-overflow-tooltip="true" width="155"/>
         <el-table-column prop="orderId" fixed label="订单号" :show-overflow-tooltip="true" width="155"/>

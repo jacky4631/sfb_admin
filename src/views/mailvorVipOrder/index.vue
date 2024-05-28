@@ -62,7 +62,7 @@
       <editOrder ref="form3" :is-add="isAdd" />
 
       <!--表格渲染-->
-      <el-table ref="multipleTable" height="600" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" height="460" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
         <el-table-column prop="orderSn" fixed label="订单号"   :show-overflow-tooltip="true" width="155"/>
         <el-table-column prop="orderTime" label="下单时间"   :show-overflow-tooltip="true" width="155">
@@ -107,11 +107,11 @@
         </el-table-column>
         <el-table-column prop="newCustomer" label="1-新客 2-老客" />
         <el-table-column prop="orderSource" label="订单来源"   :show-overflow-tooltip="true"/>
-        <el-table-column prop="orderTrackReason" label="订单归因方式：0-常规推广,1-惊喜红包,2-锁粉,3-超级红包" />
+        <el-table-column prop="orderTrackReason" label="订单归因方式" />
         <el-table-column prop="pid" label="推广PID"   :show-overflow-tooltip="true" width="155"/>
         <el-table-column prop="selfBuy" label="自推自买=1" />
         <el-table-column prop="settled" label="结算状态 1=已结算" />
-        <el-table-column prop="status" label="订单状态:0-不合格，1-待定，2-已完结" />
+        <el-table-column prop="status" label="订单状态:2-已完结" />
         <el-table-column prop="createTime" label="创建时间" width="200">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
