@@ -162,7 +162,7 @@ server{
  #error_page   404   /404.html;
  #include enable-php.conf;
    
- location / {
+ location /api {
   proxy_pass http://127.0.0.1:8000;
   proxy_set_header X-Forwarded-Proto $scheme;
          proxy_set_header X-Forwarded-Port $server_port;
@@ -188,7 +188,7 @@ server{
  #error_page   404   /404.html;
  #include enable-php.conf;
    
- location / {
+ location /api {
   proxy_pass http://127.0.0.1:8008;
   proxy_set_header X-Forwarded-Proto $scheme;
          proxy_set_header X-Forwarded-Port $server_port;
@@ -210,14 +210,14 @@ server{
 ENV = 'production'
 
 # 接口地址 改成自己域名
-VUE_APP_BASE_API  = 'http://admin.xxx.com/api'
-VUE_APP_WS_API = 'ws://admin.xxx.com/api'
+VUE_APP_BASE_API  = 'http://admin.xxx.com/admin'
+VUE_APP_WS_API = 'ws://admin.xxx.com/admin'
 ```
-1、输入命令：npm run build:prod 编译打包
+2、输入命令：npm run build 编译打包
 
-2、把打包后的dist目录代码上传到服务器
+3、把打包后的dist目录代码上传到服务器
 
-3、配置nginx如下：
+4、配置nginx如下：
 ```
 server
 {
@@ -258,7 +258,7 @@ server
             expires      12h;
         }
  
- location /api {
+    location /admin {
         proxy_pass http://127.0.0.1:8001;
         proxy_set_header Host $Host:$server_port;
         proxy_set_header X-Real-IP $remote_addr;
