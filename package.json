@@ -1,7 +1,7 @@
 {
   "name": "mshop-web",
-  "version": "2.4.0",
-  "description": "mshop3.3 前端源码",
+  "version": "5.1.0",
+  "description": "mshop5.1 前端源码",
   "author": "",
   "license": "Apache-2.0",
   "scripts": {
