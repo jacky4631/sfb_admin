@@ -433,6 +433,9 @@ export default {
     async editAppDataConfig() {
       const _this = this.$refs.formappdataconfig
       _this.form = await getAppDataConfig();
+      if(_this.form.huodong == null) {
+        _this.form.huodong = {}
+      }
       _this.dialog = true
     },
     async editAppShareConfig() {
