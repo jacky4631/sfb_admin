@@ -21,6 +21,11 @@
         <el-radio v-model="form.skipCode" :label="`1`">跳过</el-radio>
         <el-radio v-model="form.skipCode" :label="`0`">强制</el-radio>
       </el-form-item>
+
+      <el-form-item :hide-required-asterisk="true" label="分销级别*" label-width="200px">
+        <el-radio v-model="form.spreadLevel" :label="2">2级</el-radio>
+        <el-radio v-model="form.spreadLevel" :label="3">3级</el-radio>
+      </el-form-item>
       <el-form-item label="支付宝红包id" label-width="200px">
         <el-input v-model="form.alired" style="width: 470px;" />
       </el-form-item>
@@ -83,7 +88,8 @@ export default {
           contractPreviewUrl:"",
           yeePaySuccUrl: "https://cash.yeepay.com/newwap/pages/mobile/success",
           yeePayFailUrl: "https://cash.yeepay.com/newwap/pages/mobile/fail",
-          skipCode:"1"
+          skipCode:"1",
+          spreadLevel: 3
         },
       rules: {
       }
@@ -133,7 +139,8 @@ export default {
         contractPreviewUrl:"",
         yeePaySuccUrl: "https://cash.yeepay.com/newwap/pages/mobile/success",
         yeePayFailUrl: "https://cash.yeepay.com/newwap/pages/mobile/fail",
-        skipCode:"1"
+        skipCode:"1",
+        spreadLevel: 3
       }
     }
   }
