@@ -135,9 +135,6 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="操作密码" prop="opepwd">
-              <el-input v-model="form.opepwd" auto-complete="on" style="width: 370px;" />
-            </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button type="text" @click="crud.cancelCU">取消</el-button>
@@ -214,7 +211,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 let userRoles = []
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '用户', url: 'api/users', crudMethod: { ...crudUser }})
-const defaultForm = { username: null, nickName: null, sex: '男', email: null, enabled: 'false', roles: [], job: { id: null }, dept: { id: null }, phone: null,opepwd:'' }
+const defaultForm = { username: null, nickName: null, sex: '男', email: null, enabled: 'false', roles: [], job: { id: null }, dept: { id: null }, phone: null}
 export default {
   name: 'User',
   components: { Treeselect, crudOperation, rrOperation, udOperation, pagination },

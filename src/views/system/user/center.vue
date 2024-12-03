@@ -56,9 +56,6 @@
                     <el-radio label="女">女</el-radio>
                   </el-radio-group>
                 </el-form-item>
-                <el-form-item label="操作密码">
-                  <el-input type="password" v-model="form.opepwd" style="width: 370px;" />
-                </el-form-item>
                 <el-form-item label="">
                   <el-button :loading="saveLoading" size="mini" type="primary" @click="doSubmit">保存配置</el-button>
                 </el-form-item>
@@ -162,7 +159,7 @@ export default {
     ])
   },
   created() {
-    this.form = { id: this.user.id, nickName: this.user.nickName, sex: this.user.sex, phone: this.user.phone, opepwd: ''}
+    this.form = { id: this.user.id, nickName: this.user.nickName, sex: this.user.sex, phone: this.user.phone }
     store.dispatch('GetInfo').then(() => {})
   },
   methods: {

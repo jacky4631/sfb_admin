@@ -3,8 +3,6 @@ import { encrypt } from '@/utils/rsaEncrypt'
 import md5 from 'js-md5'
 
 export function add(data) {
-  data.opePwd = md5(data.opepwd)
-  data.opepwd = ''
   return request({
     url: 'api/users',
     method: 'post',
@@ -21,8 +19,6 @@ export function del(ids) {
 }
 
 export function edit(data) {
-  data.opePwd = md5(data.opepwd)
-  data.opepwd = ''
   return request({
     url: 'api/users',
     method: 'put',
@@ -31,8 +27,6 @@ export function edit(data) {
 }
 
 export function editUser(data) {
-  data.opePwd = md5(data.opepwd)
-  data.opepwd = ''
   return request({
     url: 'api/users/center',
     method: 'put',
@@ -44,7 +38,6 @@ export function updatePass(user) {
   const data = {
     oldPass: encrypt(user.oldPass),
     newPass: encrypt(user.newPass),
-    opePwd: md5(user.opepwd)
   }
   return request({
     url: 'api/users/updatePass/',

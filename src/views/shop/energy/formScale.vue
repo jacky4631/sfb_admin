@@ -10,9 +10,6 @@
       <el-form-item label="月卡有效期">
         <el-input v-model="form.monthInvalidDay" style="width: 150px;" />
       </el-form-item>
-      <el-form-item label="操作密码">
-        <el-input v-model="form.opePwdBak" style="width: 370px;" />
-      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="text" @click="cancel">取消</el-button>
@@ -38,8 +35,7 @@ export default {
       form: {
         uid: '',
         monthScale: 2.0,
-        monthInvalidDay: 60,
-        opePwd: ''
+        monthInvalidDay: 60
       },
     }
   },
@@ -48,15 +44,6 @@ export default {
       this.resetForm()
     },
     doSubmit() {
-      let opePwd = this.form.opePwdBak;
-      if(opePwd == null || opePwd === '') {
-        this.$notify({
-          title: '操作密码不能为空',
-          type: 'error',
-          duration: 2500
-        })
-        return
-      }
       this.loading = true
       if(this.isAdd) {
         this.doAdd();
@@ -66,7 +53,6 @@ export default {
 
     },
     doAdd() {
-      this.form.opePwd = md5(this.form.opePwdBak)
       addScale(this.form).then(res => {
         this.resetForm()
         this.$notify({
@@ -78,12 +64,10 @@ export default {
         this.$parent.init()
       }).catch(err => {
         this.loading = false
-        this.form.opePwd=''
         console.log(err.response.data.message)
       })
     },
     doEdit() {
-      this.form.opePwd = md5(this.form.opePwdBak)
       editScale(this.form).then(res => {
         this.resetForm()
         this.$notify({
@@ -95,7 +79,6 @@ export default {
         this.$parent.init()
       }).catch(err => {
         this.loading = false
-        this.form.opePwd=''
         console.log(err.response.data.message)
       })
     },
@@ -105,8 +88,7 @@ export default {
       this.form = {
         uid: '',
         monthScale: 2.0,
-        monthInvalidDay: 60,
-        opePwd: ''
+        monthInvalidDay: 60
       }
     }
   }

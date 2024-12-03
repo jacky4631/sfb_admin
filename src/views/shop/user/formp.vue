@@ -11,9 +11,6 @@
       <el-form-item label="用户余额">
         <el-input v-model="form.money" style="width: 370px;" />
       </el-form-item>
-      <el-form-item label="操作密码">
-        <el-input v-model="form.opePwd" style="width: 370px;" />
-      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="text" @click="cancel">取消</el-button>
@@ -39,8 +36,7 @@ export default {
         uid: '',
         nickname: '',
         money: '',
-        ptype: '1',
-        opePwd: ''
+        ptype: '1'
       },
       rules: {
       }
@@ -51,22 +47,12 @@ export default {
       this.resetForm()
     },
     doSubmit() {
-      let opePwd = this.form.opePwd;
-      if(opePwd == null || opePwd === '') {
-        this.$notify({
-          title: '操作密码不能为空',
-          type: 'error',
-          duration: 2500
-        })
-        return
-      }
       this.loading = true
       if (this.isAdd) {
         this.doAdd()
       } else this.doEdit()
     },
     doAdd() {
-      this.form.opePwd = md5(this.form.opePwd)
       add(this.form).then(res => {
         this.resetForm()
         this.$notify({
@@ -78,12 +64,10 @@ export default {
         this.$parent.init()
       }).catch(err => {
         this.loading = false
-        this.form.opePwd=''
         console.log(err.response.data.message)
       })
     },
     doEdit() {
-      this.form.opePwd = md5(this.form.opePwd)
       editp(this.form).then(res => {
         this.resetForm()
         this.$notify({
@@ -95,7 +79,6 @@ export default {
         this.$parent.init()
       }).catch(err => {
         this.loading = false
-        this.form.opePwd=''
         console.log(err.response.data.message)
       })
     },
@@ -137,8 +120,7 @@ export default {
         loginType: '',
         tbPid: '',
         jdPid: '',
-        pddPid: '',
-        opePwd: ''
+        pddPid: ''
       }
     }
   }

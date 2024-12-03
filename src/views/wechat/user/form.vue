@@ -98,7 +98,6 @@ export default {
         nickname: '',
         headimgurl: '',
         sex: '',
-        opePwd: '',
         city: '',
         language: '',
         province: '',

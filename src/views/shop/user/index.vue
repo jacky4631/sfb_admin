@@ -409,8 +409,7 @@ export default {
         pddPid: data.pddPid,
         code: data.code,
         aliProfile: data.aliProfile,
-        wxProfile: data.wxProfile,
-        opePwd: data.opePwd
+        wxProfile: data.wxProfile
       }
       _this.dialog = true
     },

@@ -223,27 +223,22 @@ export default {
       this.$confirm(`确认提现选中的${this.dataSelections.length}条记录?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        showInput: true,
+        showInput: false,
         inputPlaceholder: '请输入操作密码',
         closeOnClickModal: false,
         type: 'warning'
       }).then((res) => {
-        this.extractMethod(res.value)
+        this.extractMethod()
       }).catch(() => {
-        this.form.opePwd=''
       })
     },
-    extractMethod(opePwd) {
-      if(opePwd == null || opePwd === '') {
-        alert('操作密码不能为空');
-        return
-      }
+    extractMethod() {
       this.delLoading = true
       //提交
       for(let i = 0; i< this.dataSelections.length; i++){
         this.dataSelections[i].status=1;
       }
-      extracts({'extracts': this.dataSelections, 'opePwd': md5(opePwd)}).then(() => {
+      extracts({'extracts': this.dataSelections }).then(() => {
         this.$notify({
           title: '操作成功',
           type: 'success',
@@ -253,7 +248,6 @@ export default {
         this.init()
       }).catch(err => {
         this.loading = false
-        this.form.opePwd=''
         console.log(err.response.data.message)
       })
     }

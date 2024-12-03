@@ -11,9 +11,6 @@
         <el-form-item label="确认密码" prop="confirmPass">
           <el-input v-model="form.confirmPass" type="password" auto-complete="on" style="width: 370px;" />
         </el-form-item>
-        <el-form-item label="操作密码" prop="opepwd">
-          <el-input v-model="form.opepwd" auto-complete="on" style="width: 370px;" />
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="text" @click="cancel">取消</el-button>
@@ -40,7 +37,7 @@ export default {
       }
     }
     return {
-      loading: false, dialog: false, title: '修改密码', form: { oldPass: '', newPass: '', confirmPass: '', opepwd: '' },
+      loading: false, dialog: false, title: '修改密码', form: { oldPass: '', newPass: '', confirmPass: '' },
       rules: {
         oldPass: [
           { required: true, message: '请输入旧密码', trigger: 'blur' }
@@ -87,7 +84,7 @@ export default {
     resetForm() {
       this.dialog = false
       this.$refs['form'].resetFields()
-      this.form = { oldPass: '', newPass: '', confirmPass: '', opepwd: '' }
+      this.form = { oldPass: '', newPass: '', confirmPass: '' }
     }
   }
 }

@@ -10,9 +10,6 @@
       <el-form-item label="手机号">
         <el-input v-model="form.phone" :disabled="true" style="width: 370px;" />
       </el-form-item>
-      <el-form-item label="操作密码">
-        <el-input v-model="form.opePwd" style="width: 370px;" />
-      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="text" @click="cancel">取消</el-button>
@@ -37,8 +34,7 @@ export default {
       form: {
         uid: '',
         nickname: '',
-        phone: '',
-        opePwd: ''
+        phone: ''
       },
       rules: {
       }
@@ -49,17 +45,7 @@ export default {
       this.resetForm()
     },
     doSubmit() {
-      let opePwd = this.form.opePwd;
-      if(opePwd == null || opePwd === '') {
-        this.$notify({
-          title: '操作密码不能为空',
-          type: 'error',
-          duration: 2500
-        })
-        return
-      }
       this.loading = true
-      this.form.opePwd = md5(this.form.opePwd)
       if(this.isAdd) {
         this.deleteWechat()
       } else {
@@ -78,7 +64,6 @@ export default {
         this.$parent.init()
       }).catch(err => {
         this.loading = false
-        this.form.opePwd=''
         console.log(err.response.data.message)
       })
     },
@@ -94,7 +79,6 @@ export default {
         this.$parent.init()
       }).catch(err => {
         this.loading = false
-        this.form.opePwd=''
         console.log(err.response.data.message)
       })
     },
@@ -104,8 +88,7 @@ export default {
       this.form = {
         uid: '',
         nickname: '',
-        phone: '',
-        opePwd: ''
+        phone: ''
       }
     }
   }
