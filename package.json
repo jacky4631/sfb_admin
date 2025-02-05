@@ -1,7 +1,7 @@
 {
   "name": "mshop-web",
   "version": "5.1.0",
-  "description": "mshop5.1.0 前端源码",
+  "description": "mshop admin",
   "author": "mailvor",
   "scripts": {
     "dev": "vue-cli-service serve",
