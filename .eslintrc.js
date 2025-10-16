@@ -1,17 +1,20 @@
 module.exports = {
-  root: true,
+  parser: '@babel/eslint-parser', // 替换为新解析器
   parserOptions: {
-    parser: 'babel-eslint',
-    sourceType: 'module'
+    sourceType: 'module',
+    ecmaVersion: 2020,
+    requireConfigFile: false, // 避免查找 Babel 配置文件的警告
+    babelOptions: {
+      presets: ['@vue/app'] // 保持与 Vue CLI 兼容
+    }
   },
+  root: true,
   env: {
     browser: true,
     node: true,
     es6: true,
   },
   extends: ['plugin:vue/recommended', 'eslint:recommended'],
-
-
   rules: {
     "vue/max-attributes-per-line": [2, {
       "singleline": 10,

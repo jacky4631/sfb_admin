@@ -19,14 +19,8 @@ import './assets/styles/element-variables.scss'
 // global css
 import './assets/styles/index.scss'
 
-// 引入vue-quill-editor样式
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-
 // 代码高亮
 import VueHighlightJS from 'vue-highlightjs'
-import 'highlight.js/styles/atom-one-dark.css'
 
 import '@/assets/font_icon/iconfont.css'
 
