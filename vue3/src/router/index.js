@@ -31,9 +31,8 @@ export const loadMenus = (next, to) => {
     })
   }).catch(err => {
     console.log(err)
-    userStore.LogOut().then(() => {
-      location.reload()
-    })
+    userStore.FedLogOut()
+    location.reload()
   })
 }
 
@@ -54,13 +53,13 @@ router.beforeEach((to, from, next) => {
           loadMenus(next, to)
         }).catch((err) => {
           console.log(err)
-          userStore.LogOut().then(() => {
-            location.reload()
-          })
+          userStore.FedLogOut()
+          location.reload()
         })
       } else if (permissionStore.loadMenus) {
-        permissionStore.updateLoadMenus().then(res => {})
-        loadMenus(next, to)
+        // 菜单已加载完毕，关闭标记后直接放行
+        permissionStore.loadMenus = false
+        next()
       } else {
         next()
       }

@@ -62,11 +62,13 @@ import { getCodeImg } from '@/api/login'
 import Cookies from 'js-cookie'
 import { useUserStore } from '@/store/modules/user'
 import { useSettingsStore } from '@/store/modules/settings'
+import { usePermissionStore } from '@/store/modules/permission'
 
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
+const permissionStore = usePermissionStore()
 
 const showFooter = computed(() => settingsStore.showFooter)
 const footerTxt = computed(() => settingsStore.footerTxt)
@@ -154,6 +156,8 @@ const handleLogin = () => {
     }
     loading.value = true
     userStore.Login(user).then(() => {
+      // 登录成功后标记需要加载动态菜单，路由守卫会检测此标志
+      permissionStore.loadMenus = true
       loading.value = false
       console.log('Login success, navigating to:', redirect.value || '/')
       router.push({ path: redirect.value || '/' })

@@ -1,11 +1,15 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { resolve } from 'path'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd())
+  const apiTarget = env.VITE_APP_BASE_API || 'https://sfbadmin.mailvor.cn/admin'
+
+  return {
   plugins: [
     vue(),
     AutoImport({
@@ -22,12 +26,12 @@ export default defineConfig({
     open: false,
     proxy: {
       '/api': {
-        target: process.env.VITE_APP_BASE_API || 'https://sfbadmin.mailvor.cn/admin',
+        target: apiTarget,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, 'api')
       },
       '/auth': {
-        target: process.env.VITE_APP_BASE_API || 'https://sfbadmin.mailvor.cn/admin',
+        target: apiTarget,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/auth/, 'auth')
       }
@@ -59,5 +63,6 @@ export default defineConfig({
         additionalData: `@use "@/assets/styles/contaner.scss" as *;`
       }
     }
+  }
   }
 })
