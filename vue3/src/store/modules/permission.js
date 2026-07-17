@@ -27,7 +27,7 @@ export const usePermissionStore = defineStore('permission', {
     },
     updateLoadMenus() {
       return new Promise(resolve => {
-        this.loadMenus = true
+        this.loadMenus = false
         resolve()
       })
     }

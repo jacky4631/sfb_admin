@@ -27,7 +27,7 @@ import '@/assets/styles/index.scss'
 import App from './App'
 import router from './router'
 import pinia from './store'
-import './router/permission'
+// 路由守卫已在 router/index.js 中注册，无需重复导入 permission.js
 
 const app = createApp(App)
 

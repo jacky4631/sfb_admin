@@ -31,8 +31,11 @@ export const useUserStore = defineStore('user', {
     Login(userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo.username, userInfo.password, userInfo.code, userInfo.uuid).then(res => {
-          setToken(res.token)
+          setToken(res.token, userInfo.rememberMe)
           this.token = res.token
+          // 登录成功后标记需要加载菜单，与 Vue 2 行为一致
+          const permissionStore = usePermissionStore()
+          permissionStore.loadMenus = true
           resolve()
         }).catch(error => {
           reject(error)
