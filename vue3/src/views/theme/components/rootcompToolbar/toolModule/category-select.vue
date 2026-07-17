@@ -6,27 +6,25 @@
     clearable></el-cascader>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue'
 import { checkEmptyChild } from '@/mixins/tool.js'
 import { getClassify } from '@/api/canvasApi.js'
-export default {
-  name: 'category-select',
-  data() {
-    return {
-      categoryList: []
-    }
-  },
-  mounted() {
-    this.getCategory()
-  },
-  methods: {
-    // 获取类别
-    getCategory() {
-      getClassify().then(res => {
-        this.categoryList = res.data
-        checkEmptyChild(this.categoryList)
-      })
-    }
-  }
+
+defineOptions({ name: 'category-select' })
+
+const categoryList = ref([])
+const cascader = ref(null)
+
+onMounted(() => {
+  getCategory()
+})
+
+// 获取类别
+function getCategory() {
+  getClassify().then(res => {
+    categoryList.value = res.data
+    checkEmptyChild(categoryList.value)
+  })
 }
 </script>

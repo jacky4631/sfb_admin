@@ -27,78 +27,46 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { toolMixin } from '@/mixins/tool.js'
 import ToolSelectLink from '@/views/theme/components/rootcompToolbar/toolModule/tool-select-link.vue'
 import ToolSingleImg from '@/views/theme/components/rootcompToolbar/toolModule/tool-single-img.vue'
 import ToolSelect from '@/views/theme/components/rootcompToolbar/toolModule/tool-select.vue'
-export default {
-  name: 'videoTool',
-  mixins: [toolMixin],
-  components: {
-    ToolSelectLink,
-    ToolSelect,
-    ToolSingleImg,
-    QuillEditor
+
+defineOptions({ name: 'imageText' })
+
+// Using toolMixin - in Vue 3, mixins are still supported but composables are preferred
+// The mixin provides activeComponent, onEditorBlur, onEditorFocus, onEditorChange
+const { activeComponent, onEditorBlur, onEditorFocus, onEditorChange } = toolMixin
+
+const ToolSelectLink = ToolSelectLink
+const ToolSelect = ToolSelect
+const ToolSingleImg = ToolSingleImg
+const QuillEditor = QuillEditor
+
+const dialogVisible = ref(false)
+const dialogImageUrl = ref('')
+const positionOpt = ref([
+  {
+    value: 'left',
+    label: '左图右文'
   },
-  data () {
-    return {
-      // imageUrl: '',
-      // title: '', // 标题内容
-      // linkValue: '',
-      // positionValue: '',
-      // content: null,
-      dialogVisible: false,
-      dialogImageUrl: '',
-      linkOptions: [
-        {
-          value: '/index',
-          label: '首页'
-        },
-        {
-          value: '/list',
-          label: '列表页'
-        },
-        {
-          value: '/detail',
-          label: '详情页'
-        },
-        {
-          value: '/about',
-          label: '关于我们'
-        }
-      ],
-      positionOpt: [
-        {
-          value: 'left',
-          label: '左图右文'
-        },
-        {
-          value: 'right',
-          label: '右图左文'
-        }
-        // {
-        //   value: 'top',
-        //   label: '上图下文'
-        // },
-        // {
-        //   value: 'bottom',
-        //   label: '下图上文'
-        // }
-      ],
-      editorOption: {
-        placeholder: '请输入',
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'link'] // toggled buttons
-          ]
-        }
-      }
-    }
+  {
+    value: 'right',
+    label: '右图左文'
   }
-}
+])
+const editorOption = ref({
+  placeholder: '请输入',
+  modules: {
+    toolbar: [
+      ['bold', 'italic', 'link']
+    ]
+  }
+})
 </script>
 
 <style lang="scss" scoped>

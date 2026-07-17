@@ -49,18 +49,20 @@
           <el-input v-model="form.remark" style="width: 380px;" rows="5" type="textarea" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="crud.cancelCU">取消</el-button>
-        <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
-      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="text" @click="crud.cancelCU">取消</el-button>
+          <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
+        </div>
+      </template>
     </el-dialog>
     <el-row :gutter="15">
       <!--角色管理-->
       <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="17" style="margin-bottom: 10px">
         <el-card class="box-card" shadow="never">
-          <div slot="header" class="clearfix">
+          <template #header>
             <span class="role-span">角色列表</span>
-          </div>
+          </template>
           <el-table ref="table" v-loading="crud.loading" highlight-current-row style="width: 100%;" :data="crud.data" @selection-change="crud.selectionChangeHandler" @current-change="handleCurrentChange">
             <el-table-column :selectable="checkboxT" type="selection" width="55" />
             <el-table-column v-if="columns.visible('name')" prop="name" label="名称" />
@@ -69,12 +71,12 @@
             <el-table-column v-if="columns.visible('level')" prop="level" label="角色级别" />
             <el-table-column v-if="columns.visible('remark')" :show-overflow-tooltip="true" prop="remark" label="描述" />
             <el-table-column v-if="columns.visible('createTime')" :show-overflow-tooltip="true" width="135px" prop="createTime" label="创建日期">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <span>{{ parseTime(scope.row.createTime) }}</span>
               </template>
             </el-table-column>
             <el-table-column v-permission="['admin','roles:edit','roles:del']" label="操作" width="130px" align="center" fixed="right">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <udOperation
                   v-if="scope.row.level >= level"
                   :data="scope.row"
@@ -90,7 +92,7 @@
       <!-- 菜单授权 -->
       <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="7">
         <el-card class="box-card" shadow="never">
-          <div slot="header" class="clearfix">
+          <template #header>
             <el-tooltip class="item" effect="dark" content="选择指定角色分配菜单" placement="top">
               <span class="role-span">菜单分配</span>
             </el-tooltip>
@@ -104,7 +106,7 @@
               type="primary"
               @click="saveMenu"
             >保存</el-button>
-          </div>
+          </template>
           <el-tree
             ref="menu"
             :data="menus"
@@ -119,7 +121,8 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue'
 import crudRoles from '@/api/system/role'
 import { getDepts } from '@/api/system/dept'
 import { getMenusTree } from '@/api/system/menu'
@@ -129,168 +132,179 @@ import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 
+defineOptions({ name: 'Role' })
+
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '角色', url: 'api/roles', sort: 'level,asc', crudMethod: { ...crudRoles }})
 const defaultForm = { id: null, name: null, depts: [], remark: null, dataScope: '全部', level: 3, permission: null }
-export default {
-  name: 'Role',
-  components: { pagination, crudOperation, rrOperation, udOperation },
-  mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
-  data() {
-    return {
-      defaultProps: { children: 'children', label: 'label' },
-      dateScopes: ['全部', '本级', '自定义'], level: 3,
-      currentId: 0, menuLoading: false, showButton: false,
-      menus: [], menuIds: [], depts: [],
-      permission: {
-        add: ['admin', 'roles:add'],
-        edit: ['admin', 'roles:edit'],
-        del: ['admin', 'roles:del']
-      },
-      rules: {
-        name: [
-          { required: true, message: '请输入名称', trigger: 'blur' }
-        ],
-        permission: [
-          { required: true, message: '请输入权限', trigger: 'blur' }
-        ]
+
+const defaultProps = ref({ children: 'children', label: 'label' })
+const dateScopes = ref(['全部', '本级', '自定义'])
+const currentId = ref(0)
+const menuLoading = ref(false)
+const showButton = ref(false)
+const menus = ref([])
+const menuIds = ref([])
+const depts = ref([])
+const permission = ref({
+  add: ['admin', 'roles:add'],
+  edit: ['admin', 'roles:edit'],
+  del: ['admin', 'roles:del']
+})
+const rules = {
+  name: [
+    { required: true, message: '请输入名称', trigger: 'blur' }
+  ],
+  permission: [
+    { required: true, message: '请输入权限', trigger: 'blur' }
+  ]
+}
+
+const level = ref(3)
+
+const presenterResult = presenter(defaultCrud)
+Object.assign(crud, presenterResult.crud)
+
+const menu = ref(null)
+
+onMounted(() => {
+  getMenus()
+  crudRoles.getLevel().then(data => {
+    level.value = data.level
+    console.log(level.value)
+  })
+})
+
+function getMenus() {
+  getMenusTree().then(res => {
+    menus.value = res
+  })
+}
+
+// 触发单选
+function handleCurrentChange(val) {
+  if (val) {
+    // 清空菜单的选中
+    menu.value.setCheckedKeys([])
+    // 保存当前的角色id
+    currentId.value = val.id
+    showButton.value = level.value <= val.level
+    // 初始化
+    menuIds.value = []
+    // 菜单数据需要特殊处理
+    val.menus.forEach(function(data, index) {
+       if(data.pid!=0){
+        menuIds.value.push(data.id)
       }
-    }
-  },
-  created() {
-    this.getMenus()
-    crudRoles.getLevel().then(data => {
-      this.level = data.level
-      console.log(this.level)
     })
-    this.$nextTick(() => {
-      this.crud.toQuery()
-    })
-  },
-  methods: {
-    [CRUD.HOOK.afterRefresh]() {
-      this.$refs.menu.setCheckedKeys([])
-    },
-    // 编辑前
-    [CRUD.HOOK.beforeToEdit](crud, form) {
-      if (form.dataScope === '自定义') {
-        this.getDepts()
-      }
-      const depts = []
-      form.depts.forEach(function(dept, index) {
-        depts.push(dept.id)
-      })
-      form.depts = depts
-    },
-    // 提交前做的操作
-    [CRUD.HOOK.afterValidateCU](crud) {
-      if (crud.form.dataScope === '自定义' && crud.form.depts.length === 0) {
-        this.$message({
-          message: '自定义数据权限不能为空',
-          type: 'warning'
-        })
-        return false
-      } else if (crud.form.dataScope === '自定义') {
-        const depts = []
-        crud.form.depts.forEach(function(data, index) {
-          const dept = { id: data }
-          depts.push(dept)
-        })
-        crud.form.depts = depts
-      } else {
-        crud.form.depts = []
-      }
-      return true
-    },
-    [CRUD.HOOK.afterAddError](crud) {
-      this.afterErrorMethod(crud)
-    },
-    [CRUD.HOOK.afterEditError](crud) {
-      this.afterErrorMethod(crud)
-    },
-    afterErrorMethod(crud) {
-      const depts = []
-      crud.form.depts.forEach(function(dept, index) {
-        depts.push(dept.id)
-      })
-      crud.form.depts = depts
-    },
-    // 获取所有菜单
-    getMenus() {
-      getMenusTree().then(res => {
-        this.menus = res
-      })
-    },
-    // 触发单选
-    handleCurrentChange(val) {
-      if (val) {
-        const _this = this
-        // 清空菜单的选中
-        this.$refs.menu.setCheckedKeys([])
-        // 保存当前的角色id
-        this.currentId = val.id
-        this.showButton = this.level <= val.level
-        // 初始化
-        this.menuIds = []
-        // 菜单数据需要特殊处理
-        val.menus.forEach(function(data, index) {
-           if(data.pid!=0){
-            _this.menuIds.push(data.id)
-          }
-        })
-      }
-    },
-    // 保存菜单
-    saveMenu() {
-      this.menuLoading = true
-      const role = { id: this.currentId, menus: [] }
-      // 得到半选的父节点数据，保存起来
-      this.$refs.menu.getHalfCheckedNodes().forEach(function(data, index) {
-        const menu = { id: data.id }
-        role.menus.push(menu)
-      })
-      // 得到已选中的 key 值
-      this.$refs.menu.getCheckedKeys().forEach(function(data, index) {
-        const menu = { id: data }
-        role.menus.push(menu)
-      })
-      crudRoles.editMenu(role).then(res => {
-        this.crud.notify('保存成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
-        this.menuLoading = false
-        this.update()
-      }).catch(err => {
-        this.menuLoading = false
-        console.log(err.response.data.message)
-      })
-    },
-    // 改变数据
-    update() {
-      // 无刷新更新 表格数据
-      crudRoles.get(this.currentId).then(res => {
-        for (let i = 0; i < this.crud.data.length; i++) {
-          if (res.id === this.crud.data[i].id) {
-            this.crud.data[i] = res
-            break
-          }
-        }
-      })
-    },
-    // 获取部门数据
-    getDepts() {
-      getDepts({ enabled: true }).then(res => {
-        this.depts = res.content
-      })
-    },
-    // 如果数据权限为自定义则获取部门数据
-    changeScope() {
-      if (this.form.dataScope === '自定义') {
-        this.getDepts()
-      }
-    },
-    checkboxT(row, rowIndex) {
-      return row.level >= this.level
-    }
   }
+}
+
+// 保存菜单
+function saveMenu() {
+  menuLoading.value = true
+  const role = { id: currentId.value, menus: [] }
+  // 得到半选的父节点数据，保存起来
+  menu.value.getHalfCheckedNodes().forEach(function(data, index) {
+    const menuItem = { id: data.id }
+    role.menus.push(menuItem)
+  })
+  // 得到已选中的 key 值
+  menu.value.getCheckedKeys().forEach(function(data, index) {
+    const menuItem = { id: data }
+    role.menus.push(menuItem)
+  })
+  crudRoles.editMenu(role).then(res => {
+    crud.notify('保存成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
+    menuLoading.value = false
+    update()
+  }).catch(err => {
+    menuLoading.value = false
+    console.log(err.response.data.message)
+  })
+}
+
+// 无刷新更新 表格数据
+function update() {
+  crudRoles.get(currentId.value).then(res => {
+    for (let i = 0; i < crud.data.length; i++) {
+      if (res.id === crud.data[i].id) {
+        crud.data[i] = res
+        break
+      }
+    }
+  })
+}
+
+// 获取部门数据
+function getDeptsData() {
+  getDepts({ enabled: true }).then(res => {
+    depts.value = res.content
+  })
+}
+
+// 如果数据权限为自定义则获取部门数据
+function changeScope() {
+  if (form.dataScope === '自定义') {
+    getDeptsData()
+  }
+}
+
+function checkboxT(row, rowIndex) {
+  return row.level >= level.value
+}
+
+crud.HOOK.afterRefresh = () => {
+  menu.value.setCheckedKeys([])
+}
+
+// 编辑前
+crud.HOOK.beforeToEdit = (form) => {
+  if (form.dataScope === '自定义') {
+    getDeptsData()
+  }
+  const deptsArr = []
+  form.depts.forEach(function(dept, index) {
+    deptsArr.push(dept.id)
+  })
+  form.depts = deptsArr
+}
+
+// 提交前做的操作
+crud.HOOK.afterValidateCU = (crudRef) => {
+  if (crudRef.form.dataScope === '自定义' && crudRef.form.depts.length === 0) {
+    ElMessage({
+      message: '自定义数据权限不能为空',
+      type: 'warning'
+    })
+    return false
+  } else if (crudRef.form.dataScope === '自定义') {
+    const deptsArr = []
+    crudRef.form.depts.forEach(function(data, index) {
+      const dept = { id: data }
+      deptsArr.push(dept)
+    })
+    crudRef.form.depts = deptsArr
+  } else {
+    crudRef.form.depts = []
+  }
+  return true
+}
+
+crud.HOOK.afterAddError = (crudRef) => {
+  afterErrorMethod(crudRef)
+}
+
+crud.HOOK.afterEditError = (crudRef) => {
+  afterErrorMethod(crudRef)
+}
+
+function afterErrorMethod(crudRef) {
+  const deptsArr = []
+  crudRef.form.depts.forEach(function(dept, index) {
+    deptsArr.push(dept.id)
+  })
+  crudRef.form.depts = deptsArr
 }
 </script>
 
