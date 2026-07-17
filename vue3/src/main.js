@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createPinia, store } from 'pinia'
 import Cookies from 'js-cookie'
 
 import 'normalize.css/normalize.css'
@@ -21,7 +21,6 @@ import VueHighlightJS from 'vue-highlightjs'
 import 'highlight.js/styles/atom-one-dark.css'
 
 import '@/assets/font_icon/iconfont.css'
-import '@/assets/icons'
 import '@/assets/styles/index.scss'
 
 import App from './App'
@@ -41,6 +40,10 @@ app.use(ElementPlus, {
   size: Cookies.get('size') || 'small',
   locale: zhCn
 })
+
+// Register SvgIcon globally
+import SvgIcon from './components/SvgIcon/index.vue'
+app.component('svg-icon', SvgIcon)
 
 app.config.productionTip = false
 
