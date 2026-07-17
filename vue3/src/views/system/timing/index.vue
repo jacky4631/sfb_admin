@@ -34,7 +34,7 @@
       <Log ref="log" />
     </div>
     <!--Form表单-->
-    <el-dialog v-model="crud.status.cu > 0" :close-on-click-modal="false" :before-close="crud.cancelCU" :title="crud.status.title" append-to-body width="600px">
+    <el-dialog :model-value="crud.status.cu > 0" :close-on-click-modal="false" :before-close="crud.cancelCU" :title="crud.status.title" append-to-body width="600px">
       <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
         <el-form-item label="任务名称" prop="jobName">
           <el-input v-model="form.jobName" style="width: 460px;" />

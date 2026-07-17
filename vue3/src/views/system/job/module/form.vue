@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    v-model="crud.status.cu > 0"
+    :model-value="crud.status.cu > 0"
     append-to-body
     :close-on-click-modal="false"
     :before-close="crud.cancelCU"

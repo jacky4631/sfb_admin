@@ -347,10 +347,10 @@ const tabClick = (tab) => {
   } else {
     groupId.value = null
   }
-  getPage(page)
+  fetchPage(page)
 }
 
-const getPage = (pageParams) => {
+const fetchPage = (pageParams) => {
   tableLoading.value = true
   getPage(Object.assign({
     page: page.currentPage - 1,
@@ -376,13 +376,13 @@ const sizeChange = (val) => {
   console.log(val)
   page.currentPage = 1
   page.pageSize = val
-  getPage(page)
+  fetchPage(page)
 }
 
 const pageChange = (val) => {
   console.log(val)
   page.currentPage = val
-  getPage(page)
+  fetchPage(page)
 }
 
 const materialRename = async (item) => {
@@ -396,7 +396,7 @@ const materialRename = async (item) => {
       id: item.id,
       name: value
     }).then(() => {
-      getPage(page)
+      fetchPage(page)
     })
   } catch {
     // User cancelled
@@ -423,7 +423,7 @@ const materialDel = async (item) => {
       type: 'warning'
     })
     delObj(item.id).then(() => {
-      getPage(page)
+      fetchPage(page)
     })
   } catch {
     // User cancelled
@@ -436,7 +436,7 @@ const handleCommand = (command) => {
     id: s[0],
     groupId: s[1]
   }).then(() => {
-    getPage(page)
+    fetchPage(page)
   })
 }
 
@@ -454,7 +454,7 @@ const handleSuccess = (response, file, fileList) => {
   }).then(() => {
     resultNumber.value++
     if (fileList.length === resultNumber.value) {
-      getPage(page)
+      fetchPage(page)
       resultNumber.value = 0
     }
   })

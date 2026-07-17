@@ -63,7 +63,7 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
 import crudMwUserFeedback from '@/api/mwUserFeedback'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import CRUD, { presenter, header } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
@@ -106,8 +106,8 @@ const query = reactive({
 const tableRef = ref(null)
 const formRef = ref(null)
 
-// presenter 返回 { crud, columns, query, form, tableRef }
-const { crud, columns, query: presenterQuery, form } = presenter(defaultCrud)
+// presenter 返回 { crud, columns, query, tableRef }
+const { crud, columns, query: presenterQuery } = presenter(defaultCrud)
 
 const dialogVisible = computed({
   get: () => crud.status.cu > 0,

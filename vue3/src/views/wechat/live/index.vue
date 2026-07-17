@@ -13,13 +13,13 @@
               :icon="Icons.Refresh"
               :loading="syncLoading"
               :disabled="crud.selections.length === 0"
-              @click="sync"
+              @click="doSync"
             >同步</el-button>
           </el-tooltip>
         </template>
       </crudOperation>
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="crud.status.cu > 0" :title="crud.status.title" width="800px">
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :model-value="crud.status.cu > 0" :title="crud.status.title" width="800px">
         <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="140px">
           <el-form-item label="直播间标题" prop="name">
             <el-input v-model="form.name" style="width: 370px;" :disabled="isDisabled" />
@@ -217,7 +217,7 @@ import { ref, reactive, computed } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { sync } from '@/api/mwWechatLive'
 import crudMwWechatLive from '@/api/mwWechatLive'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import CRUD, { presenter, header } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
@@ -372,7 +372,7 @@ const getGoods = (p) => {
   form.productId = ids.join(",")
 }
 
-const sync = () => {
+const doSync = () => {
   syncLoading.value = true
   sync().then(() => {
     crud.refresh()

@@ -21,7 +21,7 @@
       <crudOperation :permission="permission" />
     </div>
     <!--表单渲染-->
-    <el-dialog v-model="crud.status.cu > 0" append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :title="crud.status.title" width="580px">
+    <el-dialog :model-value="crud.status.cu > 0" append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :title="crud.status.title" width="580px">
       <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="菜单类型" prop="type">
           <el-radio-group v-model="form.type" size="small" style="width: 178px">

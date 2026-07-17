@@ -405,7 +405,7 @@ watch(() => form1.good.productId, (val, oldVal) => {
 })
 
 onMounted(() => {
-  getInfo()
+  loadCombinationInfo()
 })
 
 const onInput = () => {
@@ -571,7 +571,7 @@ const getInfoChooseGood = (id) => {
   })
 }
 
-const getInfo = () => {
+const loadCombinationInfo = () => {
   let id = route.params.id || 0
   formValidate.id = id
   getCombinationInfo(id).then(async res => {

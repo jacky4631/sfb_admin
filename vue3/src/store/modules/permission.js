@@ -36,8 +36,15 @@ export const filterAsyncRouter = (routers) => {
   })
 }
 
+const viewModules = import.meta.glob('@/views/**/*.vue')
+
 export const loadView = (view) => {
-  return () => import(`@/views/${view}.vue`)
+  const path = `/src/views/${view}.vue`
+  if (!viewModules[path]) {
+    console.error(`Cannot find view: ${path}`)
+    return () => import('@/views/features/404.vue')
+  }
+  return viewModules[path]
 }
 
 export default usePermissionStore

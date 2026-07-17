@@ -404,7 +404,7 @@ watch(() => form1.good.productId, (val, oldVal) => {
 })
 
 onMounted(() => {
-  getInfo()
+  loadSecKillInfo()
   initData('api/mwSystemGroupData', { groupName: 'mshop_seckill_time', status: 1 }).then(res => {
     myTimes.value = res.content
   })
@@ -582,7 +582,7 @@ const getInfoChooseGood = (id) => {
   })
 }
 
-const getInfo = () => {
+const loadSecKillInfo = () => {
   let id = route.params.id || 0
   getSecKillInfo(id).then(async res => {
     let data = res.productInfo

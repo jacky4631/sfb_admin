@@ -42,11 +42,6 @@ defineOptions({ name: 'imageText' })
 // The mixin provides activeComponent, onEditorBlur, onEditorFocus, onEditorChange
 const { activeComponent, onEditorBlur, onEditorFocus, onEditorChange } = toolMixin
 
-const ToolSelectLink = ToolSelectLink
-const ToolSelect = ToolSelect
-const ToolSingleImg = ToolSingleImg
-const QuillEditor = QuillEditor
-
 const dialogVisible = ref(false)
 const dialogImageUrl = ref('')
 const positionOpt = ref([

@@ -134,7 +134,7 @@
               v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
               size="small"
               type="primary"
-              @click="editOrder(scope.row)"
+              @click="handleEditOrder(scope.row)"
             >
               绑定用户</el-button>
             <el-dropdown size="small" split-button type="primary" trigger="click">
@@ -354,7 +354,7 @@ function subDelete(id) {
   })
 }
 
-function editOrder(rowData) {
+function handleEditOrder(rowData) {
   isAdd.value = false
   const _this = form3.value
   if (_this) {

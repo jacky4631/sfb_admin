@@ -104,7 +104,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import crudServer from '@/api/monitor/server'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import CRUD, { presenter, header } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
@@ -129,7 +129,7 @@ const rules = {
 
 const defaultCrud = CRUD({ title: '监控', url: 'api/server', sort: 'sort,asc', crudMethod: { ...crudServer }})
 const defaultForm = { id: null, address: 'localhost', name: null, ip: null, port: 8777, state: null, cpuRate: null, cpuCore: null, memTotal: null, memUsed: null, diskTotal: null, diskUsed: null, swapTotal: null, swapUsed: null, sort: 999 }
-const { crud, columns, query, form } = presenter(defaultCrud)
+const { crud, columns, query } = presenter(defaultCrud)
 
 const dialogVisible = computed({
   get: () => crud.status.cu > 0,

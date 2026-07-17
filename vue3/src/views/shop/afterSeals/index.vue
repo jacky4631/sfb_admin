@@ -138,6 +138,7 @@
           <el-button @click="rebackVisible = false">取 消</el-button>
           <el-button type="primary" @click="rebackItem">确 定</el-button>
         </span>
+    </template>
       </el-dialog>
   </div>
 </template>

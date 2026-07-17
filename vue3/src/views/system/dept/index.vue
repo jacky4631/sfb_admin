@@ -24,7 +24,7 @@
       <crudOperation :permission="permission" />
     </div>
     <!--表单组件-->
-    <el-dialog v-model="crud.status.cu > 0" append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :title="crud.status.title" width="500px">
+    <el-dialog :model-value="crud.status.cu > 0" append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :title="crud.status.title" width="500px">
       <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="名称" prop="name">
           <el-input v-model="form.name" style="width: 370px;" />

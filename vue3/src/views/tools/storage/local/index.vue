@@ -127,7 +127,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { getToken } from '@/utils/auth'
 import crudFile from '@/api/tools/localStorage'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import CRUD, { presenter, header, form } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'

@@ -5,8 +5,8 @@
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission"/>
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="crud.status.cu > 0"
-                 :title="crud.status.title" width="550px">
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :model-value="crud.status.cu > 0"
+                 :title="crud.status.title" width="550px" @close="crud.cancelCU">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
           <el-form-item label="安卓版本号*">
             <el-input v-model="form.androidVersion" style="width: 370px;"/>

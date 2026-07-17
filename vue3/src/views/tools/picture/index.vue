@@ -102,7 +102,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { getToken } from '@/utils/auth'
 import crudPic from '@/api/tools/picture'
-import CRUD, { presenter, header, crud } from '@crud/crud'
+import CRUD, { presenter, header } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'

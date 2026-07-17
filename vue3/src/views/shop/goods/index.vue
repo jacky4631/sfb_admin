@@ -78,7 +78,7 @@
               <el-button size="small" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
-            <template #reference><el-button type="danger" size="small"><el-icon><Delete /></el-icon>删除</el-button>
+            <template #reference><el-button type="danger" size="small"><el-icon><Delete /></el-icon>删除</el-button></template>
           </el-popover>
         </template>
       </el-table-column>

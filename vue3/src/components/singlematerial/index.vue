@@ -38,7 +38,7 @@
             <el-button
               :icon="Plus"
               size="small"
-              @click="materialgroupAdd()"
+              @click="handleMaterialgroupAdd()"
             >
               添加分组
             </el-button>
@@ -143,7 +143,7 @@
 <script setup>
 import { ref, reactive, watch, computed, onBeforeUnmount } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getList as materialgroupPage, addObj as materialgroupAdd, delObj as materialgroupDel, putObj as materialgroupEdit } from '@/api/tools/materialgroup'
+import { getList as materialgroupPage, addObj as apiMaterialgroupAdd, delObj as apiMaterialgroupDel, putObj as apiMaterialgroupEdit } from '@/api/tools/materialgroup'
 import { getPage, addObj, delObj, putObj } from '@/api/tools/material'
 import { getToken } from '@/utils/auth'
 
@@ -250,13 +250,13 @@ const deleteMaterial = async () => {
 const toSeleteMaterial = () => {
   listDialogVisible.value = true
   if (tableData.value.length <= 0) {
-    materialgroupPage()
+    fetchMaterialgroupPage()
   }
 }
 
-const materialgroupPage = () => {
+const fetchMaterialgroupPage = () => {
   materialgroupLoading.value = true
-  materialgroupPage({
+  fetchMaterialgroupPage({
     total: 0, // 总页数
     page: 1, // 当前页数
     size: 100, // 每页显示多少条
@@ -276,14 +276,14 @@ const materialgroupPage = () => {
   })
 }
 
-const materialgroupDelete = async (materialgroupObj) => {
+const handleMaterialgroupDelete = async (materialgroupObj) => {
   try {
     await ElMessageBox.confirm('是否确认删除该分组？', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     })
-    materialgroupDel(materialgroupObj.id).then(() => {
+    handleMaterialgroupDel(materialgroupObj.id).then(() => {
       const index = materialgroupObj.index
       materialgroupList.value.splice(index, 1)
     })
@@ -292,14 +292,14 @@ const materialgroupDelete = async (materialgroupObj) => {
   }
 }
 
-const materialgroupEdit = async (materialgroupObj) => {
+const handleMaterialgroupEdit = async (materialgroupObj) => {
   try {
     const { value } = await ElMessageBox.prompt('请输入分组名', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       inputValue: materialgroupObj.name
     })
-    materialgroupEdit({
+    handleMaterialgroupEdit({
       id: materialgroupObj.id,
       name: value
     }).then(() => {
@@ -312,16 +312,16 @@ const materialgroupEdit = async (materialgroupObj) => {
   }
 }
 
-const materialgroupAdd = async () => {
+const handleMaterialgroupAdd = async () => {
   try {
     const { value } = await ElMessageBox.prompt('请输入分组名', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消'
     })
-    materialgroupAdd({
+    handleMaterialgroupAdd({
       name: value
     }).then(() => {
-      materialgroupPage()
+      fetchMaterialgroupPage()
     })
   } catch {
     // User cancelled
@@ -342,12 +342,12 @@ const tabClick = (tab) => {
   } else {
     groupId.value = null
   }
-  getPage(page)
+  fetchPage(page)
 }
 
-const getPage = (pageParams) => {
+const fetchPage = (pageParams) => {
   tableLoading.value = true
-  getPage(Object.assign({
+  fetchPage(Object.assign({
     page: page.currentPage - 1,
     size: page.pageSize,
     descs: page.descs,
@@ -371,13 +371,13 @@ const sizeChange = (val) => {
   console.log(val)
   page.currentPage = 1
   page.pageSize = val
-  getPage(page)
+  fetchPage(page)
 }
 
 const pageChange = (val) => {
   console.log(val)
   page.currentPage = val
-  getPage(page)
+  fetchPage(page)
 }
 
 const materialRename = async (item) => {
@@ -391,7 +391,7 @@ const materialRename = async (item) => {
       id: item.id,
       name: value
     }).then(() => {
-      getPage(page)
+      fetchPage(page)
     })
   } catch {
     // User cancelled
@@ -418,7 +418,7 @@ const materialDel = async (item) => {
       type: 'warning'
     })
     delObj(item.id).then(() => {
-      getPage(page)
+      fetchPage(page)
     })
   } catch {
     // User cancelled
@@ -431,7 +431,7 @@ const handleCommand = (command) => {
     id: s[0],
     groupId: s[1]
   }).then(() => {
-    getPage(page)
+    fetchPage(page)
   })
 }
 
@@ -449,7 +449,7 @@ const handleSuccess = (response, file, fileList) => {
   }).then(() => {
     resultNumber.value++
     if (fileList.length === resultNumber.value) {
-      getPage(page)
+      fetchPage(page)
       resultNumber.value = 0
     }
   })

@@ -74,7 +74,7 @@
 import { ref, onMounted } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import { delM, delT } from '@/api/monitor/online'
-import CRUD, { presenter, header, crud } from '@crud/crud'
+import CRUD, { presenter, header } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'

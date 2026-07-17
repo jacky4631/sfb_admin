@@ -297,6 +297,7 @@
      <el-button @click="receiverDialogVisible = false">取 消</el-button>
      <el-button type="primary" @click="handleUpdateReceiverInfo">确 定</el-button>
      </span>
+     </template>
    </el-dialog> -->
     <!-- <el-dialog title="修改费用信息"
                v-model="moneyDialogVisible"
@@ -339,6 +340,7 @@
       <el-button @click="moneyDialogVisible = false">取 消</el-button>
       <el-button type="primary" @click="handleUpdateMoneyInfo">确 定</el-button>
       </span>
+      </template>
     </el-dialog>
     <el-dialog title="关闭订单"
                v-model="closeDialogVisible"
@@ -354,6 +356,7 @@
         <el-button @click="closeDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleCloseOrder">确 定</el-button>
       </span>
+      </template>
     </el-dialog>
 
     <el-dialog title="备注订单"
@@ -370,6 +373,7 @@
         <el-button @click="markOrderDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleMarkOrder">确 定</el-button>
       </span>
+      </template>
     </el-dialog> -->
 
       <eForm ref="form" :is-add="isAdd" />

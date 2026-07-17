@@ -59,6 +59,7 @@
                   </el-popover>
                 </el-dropdown-item>
               </el-dropdown-menu>
+            </template>
             </el-dropdown>
 
           </template>

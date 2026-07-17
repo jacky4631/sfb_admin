@@ -29,7 +29,7 @@
       <el-dialog
         :close-on-click-modal="false"
         :before-close="crud.cancelCU"
-        v-model="crud.status.cu > 0"
+        :model-value="crud.status.cu > 0"
         :title="crud.status.title"
         width="750px"
       >

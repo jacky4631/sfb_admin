@@ -27,6 +27,7 @@
 <script setup>
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { Close } from '@element-plus/icons-vue'
 import { resolveUrlPath } from '@/utils'
 import ScrollPane from './ScrollPane'
 import { useTagsViewStore } from '@/store/modules/tagsView'

@@ -10,6 +10,7 @@
       <el-button type="text" @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
+    </template>
   </el-dialog>
 </template>
 
