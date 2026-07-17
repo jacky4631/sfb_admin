@@ -344,7 +344,7 @@ defineExpose({
 </style>
 
 <style scoped>
-:deep(.input-with-select .el-input-group__prepend) ) {
+:deep(.input-with-select .el-input-group__prepend) {
   background-color: #fff;
 }
 </style>

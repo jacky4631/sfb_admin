@@ -90,7 +90,7 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
   .acea-row{
-    :deep(.el-avatar--small) ) {
+    :deep(.el-avatar--small) {
       width: 22px;
       height: 22px;
       line-height: 22px;

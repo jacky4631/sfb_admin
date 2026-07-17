@@ -316,7 +316,7 @@ function afterErrorMethod(crudRef) {
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  :deep(.el-input-number .el-input__inner) ) {
+  :deep(.el-input-number .el-input__inner) {
     text-align: left;
   }
 </style>
