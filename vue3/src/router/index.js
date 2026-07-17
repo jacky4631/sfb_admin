@@ -26,7 +26,7 @@ export const loadMenus = (next, to) => {
     const asyncRouter = filterAsyncRouter(res)
     asyncRouter.push({ path: '/:pathMatch(.*)*', redirect: '/404', hidden: true })
     permissionStore.GenerateRoutes(asyncRouter).then(() => {
-      router.addRoute(asyncRouter)
+      asyncRouter.forEach(route => router.addRoute(route))
       next({ ...to, replace: true })
     })
   }).catch(err => {
