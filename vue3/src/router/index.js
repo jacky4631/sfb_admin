@@ -47,7 +47,6 @@ router.beforeEach((to, from, next) => {
       NProgress.done()
     } else {
       const userStore = useUserStore()
-      const permissionStore = usePermissionStore()
       if (userStore.roles && userStore.roles.length === 0) {
         userStore.GetInfo().then(res => {
           loadMenus(next, to)
@@ -56,10 +55,6 @@ router.beforeEach((to, from, next) => {
           userStore.FedLogOut()
           location.reload()
         })
-      } else if (permissionStore.loadMenus) {
-        // 菜单已加载完毕，关闭标记后直接放行
-        permissionStore.loadMenus = false
-        next()
       } else {
         next()
       }

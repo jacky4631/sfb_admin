@@ -6,27 +6,13 @@ export const usePermissionStore = defineStore('permission', {
   state: () => ({
     routers: constantRouterMap,
     addRouters: [],
-    loadMenus: false
+    loadMenus: true
   }),
-  mutations: {
-    SET_ROUTERS: (state, routers) => {
-      state.addRouters = routers
-      state.routers = [...constantRouterMap, ...routers]
-    },
-    SET_LOAD_MENUS: (state, loadMenus) => {
-      state.loadMenus = loadMenus
-    }
-  },
   actions: {
     GenerateRoutes(asyncRouter) {
       return new Promise(resolve => {
         this.addRouters = asyncRouter
         this.routers = [...constantRouterMap, ...asyncRouter]
-        resolve()
-      })
-    },
-    updateLoadMenus() {
-      return new Promise(resolve => {
         this.loadMenus = false
         resolve()
       })

@@ -11,8 +11,10 @@ export const useTagsViewStore = defineStore('tagsView', {
       this.visitedViews.push({
         name: view.name,
         path: view.path,
+        fullPath: view.fullPath,
+        query: view.query ? { ...view.query } : {},
         title: view.meta.title || 'no-name',
-        meta: view.meta || {}
+        meta: { ...(view.meta || {}) }
       })
       if (!this.cachedViews.includes(view.name) && !(view.meta && view.meta.noCache)) {
         this.cachedViews.push(view.name)
@@ -30,7 +32,16 @@ export const useTagsViewStore = defineStore('tagsView', {
     updateVisitedView(view) {
       const index = this.visitedViews.findIndex(v => v.path === view.path)
       if (index !== -1) {
-        this.visitedViews[index] = { ...this.visitedViews[index], ...view }
+        const existing = this.visitedViews[index]
+        const newFullPath = view.fullPath || ''
+        const newTitle = (view.meta && view.meta.title) || 'no-name'
+        if (existing.fullPath === newFullPath && existing.title === newTitle) return
+        this.visitedViews[index] = {
+          ...existing,
+          fullPath: newFullPath,
+          query: view.query ? { ...view.query } : {},
+          title: newTitle
+        }
       }
     },
     delCachedView(view) {

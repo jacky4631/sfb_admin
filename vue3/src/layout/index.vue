@@ -1,7 +1,7 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar class="sidebar-container" />
+    <div v-if="device==='mobile'&&sidebarState.opened" class="drawer-bg" @click="handleClickOutside" />
+    <Sidebar class="sidebar-container" />
     <div :class="{hasTagsView:needTagsView}" class="main-container">
       <div :class="{'fixed-header':fixedHeader}">
         <navbar />
@@ -27,16 +27,16 @@ const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const route = useRoute()
 
-const sidebar = computed(() => appStore.sidebar)
+const sidebarState = computed(() => appStore.sidebar)
 const device = computed(() => appStore.device)
 const showSettings = computed(() => settingsStore.showSettings)
 const needTagsView = computed(() => settingsStore.tagsView)
 const fixedHeader = computed(() => settingsStore.fixedHeader)
 
 const classObj = computed(() => ({
-  hideSidebar: !sidebar.value.opened,
-  openSidebar: sidebar.value.opened,
-  withoutAnimation: sidebar.value.withoutAnimation,
+  hideSidebar: !sidebarState.value.opened,
+  openSidebar: sidebarState.value.opened,
+  withoutAnimation: sidebarState.value.withoutAnimation,
   mobile: device.value === 'mobile'
 }))
 
