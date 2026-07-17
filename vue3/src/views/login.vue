@@ -126,13 +126,13 @@ const getCode = () => {
 }
 
 const handleLogin = () => {
-  console.log('handleLogin called, loginFormRef:', loginFormRef.value)
-  loginFormRef.value.validate((valid) => {
-    console.log('validate callback, valid:', valid)
-    if (!valid) {
-      return
-    }
-    console.log(' proceeding with login...')
+  console.log('handleLogin called')
+  if (!loginFormRef.value) {
+    console.error('loginFormRef.value is null')
+    return
+  }
+  loginFormRef.value.validate().then(() => {
+    console.log('validation passed')
     const user = {
       username: loginForm.username,
       password: loginForm.password,
@@ -141,9 +141,7 @@ const handleLogin = () => {
       uuid: loginForm.uuid
     }
     if (user.password !== cookiePass.value) {
-      console.log('Encrypting password...')
       user.password = encrypt(user.password)
-      console.log('Encrypted:', user.password)
     }
     if (user.rememberMe) {
       Cookies.set('username', user.username, { expires: Config.passCookieExpires })
@@ -158,14 +156,14 @@ const handleLogin = () => {
     userStore.Login(user).then(() => {
       loading.value = false
       console.log('Login success, navigating to:', redirect.value || '/')
-      router.push({ path: redirect.value || '/' }).catch(err => {
-        console.error('Navigation error:', err)
-      })
+      router.push({ path: redirect.value || '/' })
     }).catch((err) => {
       loading.value = false
       console.error('Login error:', err)
       getCode()
     })
+  }).catch((err) => {
+    console.error('Validation failed:', err)
   })
 }
 
