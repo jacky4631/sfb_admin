@@ -38,7 +38,7 @@
         记住我
       </el-checkbox>
       <el-form-item style="width:100%;">
-        <el-button :loading="loading" size="default" type="button" style="width:100%;" @click="handleLogin">
+        <el-button :loading="loading" size="default" type="primary" style="width:100%;" @click="handleLogin">
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
