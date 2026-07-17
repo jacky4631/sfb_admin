@@ -23,3 +23,6 @@ selenium-debug.log
 package-lock.json
 yarn.lock
 .env.production
+
+vue3/.env.development
+vue3/.env.production

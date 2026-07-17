@@ -34,7 +34,7 @@
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^4.4.3",
     "vuedraggable": "^4.1.0",
-    "wangeditor": "^5.1.1"
+    "wangeditor": "^4.7.15"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.2",

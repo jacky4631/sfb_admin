@@ -8,50 +8,51 @@
       :on-success="handleUploadSuccess"
       :before-upload="beforeAvatarUpload"
     >
-      <img v-if="value" :src="resourcesUrl + value" class="pic">
+      <img v-if="modelValue" :src="resourcesUrl + modelValue" class="pic">
       <i v-else class="el-icon-plus pic-uploader-icon" />
     </el-upload>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed } from 'vue'
+import { ElMessage } from 'element-plus'
 import { getToken } from '@/utils/auth'
-import { mapGetters } from 'vuex'
-export default {
-  props: {
-    value: {
-      default: '',
-      type: String
-    }
-  },
-  data() {
-    return {
-      resourcesUrl: '',
-      headers: {
-        'Authorization': getToken()
-      }
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'qiNiuUploadApi'
-    ])
-  },
-  methods: {
-    // 图片上传
-    handleUploadSuccess(response, file, fileList) {
-      console.log(file)
-      this.$emit('input', file.response.data[0])
-    },
-    // 限制图片上传大小
-    beforeAvatarUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isLt2M
-    }
+
+defineOptions({
+  name: 'PicUpload'
+})
+
+const props = defineProps({
+  modelValue: {
+    default: '',
+    type: String
   }
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const resourcesUrl = ref('')
+const headers = ref({
+  'Authorization': getToken()
+})
+
+const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
+const qiNiuUploadApi = computed(() => baseUrl + '/api/qiNiuContent')
+
+// 图片上传
+const handleUploadSuccess = (response, file, fileList) => {
+  console.log(file)
+  emit('update:modelValue', file.response.data[0])
+}
+
+// 限制图片上传大小
+const beforeAvatarUpload = (file) => {
+  const isLt2M = file.size / 1024 / 1024 < 2
+  if (!isLt2M) {
+    ElMessage.error('上传头像图片大小不能超过 2MB!')
+  }
+  return isLt2M
 }
 </script>
 

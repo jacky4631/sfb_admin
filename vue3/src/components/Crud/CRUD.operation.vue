@@ -71,16 +71,17 @@
         width="150"
         trigger="click"
       >
-        <el-button
-          slot="reference"
-          size="mini"
-          icon="el-icon-s-grid"
-        >
-          <i
-            class="fa fa-caret-down"
-            aria-hidden="true"
-          />
-        </el-button>
+        <template #reference>
+          <el-button
+            size="mini"
+            icon="el-icon-s-grid"
+          >
+            <i
+              class="fa fa-caret-down"
+              aria-hidden="true"
+            />
+          </el-button>
+        </template>
         <el-checkbox
           v-model="allColumnsSelected"
           :indeterminate="allColumnsSelectedIndeterminate"
@@ -100,69 +101,72 @@
     </el-button-group>
   </div>
 </template>
-<script>
+<script setup>
+import { ref } from 'vue'
 import CRUD, { crud } from '@crud/crud'
-export default {
-  mixins: [crud()],
-  props: {
-    permission: {
-      type: Object,
-      default: null
-    }
-  },
-  data() {
-    return {
-      allColumnsSelected: true,
-      allColumnsSelectedIndeterminate: false
-    }
-  },
-  created() {
-    this.crud.updateProp('searchToggle', true)
-  },
-  methods: {
-    toDelete(datas) {
-      this.$confirm(`确认删除选中的${datas.length}条数据?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.crud.delAllLoading = true
-        this.crud.doDelete(datas)
-      }).catch(() => {
-      })
-    },
-    handleCheckAllChange(val) {
-      if (val === false) {
-        this.allColumnsSelected = true
-        return
-      }
-      for (const key in this.crud.props.tableColumns) {
-        this.crud.props.tableColumns[key].visible = val
-      }
-      this.allColumnsSelected = val
-      this.allColumnsSelectedIndeterminate = false
-    },
-    handleCheckedTableColumnsChange(item) {
-      let totalCount = 0
-      let selectedCount = 0
-      for (const key in this.crud.props.tableColumns) {
-        ++totalCount
-        selectedCount += this.crud.props.tableColumns[key].visible ? 1 : 0
-      }
-      if (selectedCount === 0) {
-        this.crud.notify('请至少选择一列', CRUD.NOTIFICATION_TYPE.WARNING)
-        this.$nextTick(function() {
-          item.visible = true
-        })
-        return
-      }
-      this.allColumnsSelected = selectedCount === totalCount
-      this.allColumnsSelectedIndeterminate = selectedCount !== totalCount && selectedCount !== 0
-    },
-    toggleSearch() {
-      this.crud.props.searchToggle = !this.crud.props.searchToggle
-    }
+
+defineOptions({
+  name: 'CRUDOperation'
+})
+
+const props = defineProps({
+  permission: {
+    type: Object,
+    default: null
   }
+})
+
+const { crud: crudInstance } = crud()
+
+const allColumnsSelected = ref(true)
+const allColumnsSelectedIndeterminate = ref(false)
+
+crudInstance.updateProp('searchToggle', true)
+
+const toDelete = (datas) => {
+  ElMessageBox.confirm(`确认删除选中的${datas.length}条数据?`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    crudInstance.delAllLoading = true
+    crudInstance.doDelete(datas)
+  }).catch(() => {
+  })
+}
+
+const handleCheckAllChange = (val) => {
+  if (val === false) {
+    allColumnsSelected.value = true
+    return
+  }
+  for (const key in crudInstance.props.tableColumns) {
+    crudInstance.props.tableColumns[key].visible = val
+  }
+  allColumnsSelected.value = val
+  allColumnsSelectedIndeterminate.value = false
+}
+
+const handleCheckedTableColumnsChange = (item) => {
+  let totalCount = 0
+  let selectedCount = 0
+  for (const key in crudInstance.props.tableColumns) {
+    ++totalCount
+    selectedCount += crudInstance.props.tableColumns[key].visible ? 1 : 0
+  }
+  if (selectedCount === 0) {
+    crudInstance.notify('请至少选择一列', CRUD.NOTIFICATION_TYPE.WARNING)
+    nextTick(function() {
+      item.visible = true
+    })
+    return
+  }
+  allColumnsSelected.value = selectedCount === totalCount
+  allColumnsSelectedIndeterminate.value = selectedCount !== totalCount && selectedCount !== 0
+}
+
+const toggleSearch = () => {
+  crudInstance.props.searchToggle = !crudInstance.props.searchToggle
 }
 </script>
 

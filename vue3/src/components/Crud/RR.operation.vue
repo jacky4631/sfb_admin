@@ -5,18 +5,20 @@
     <el-button class="filter-item" size="mini" type="warning" icon="el-icon-refresh-left" @click="crud.resetQuery()">重置</el-button>
   </span>
 </template>
-<script>
-export default {
-  props: {
-    crud: {
-      type: Object,
-      required: true
-    },
-    itemClass: {
-      type: String,
-      required: false,
-      default: ''
-    }
+<script setup>
+defineOptions({
+  name: 'RROperation'
+})
+
+defineProps({
+  crud: {
+    type: Object,
+    required: true
+  },
+  itemClass: {
+    type: String,
+    required: false,
+    default: ''
   }
-}
+})
 </script>

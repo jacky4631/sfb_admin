@@ -2,73 +2,75 @@
   <div :class="className" :style="{height:height,width:width}" />
 </template>
 
-<script>
+<script setup>
 import echarts from 'echarts'
-
-require('echarts/theme/macarons') // echarts theme
 import { debounce } from '@/utils'
+import { onMounted, onUnmounted, ref } from 'vue'
 
-export default {
-  props: {
-    className: {
-      type: String,
-      default: 'chart'
-    },
-    width: {
-      type: String,
-      default: '100%'
-    },
-    height: {
-      type: String,
-      default: '300px'
-    }
-  },
-  data() {
-    return {
-      chart: null
-    }
-  },
-  mounted() {
-    this.initChart()
-    this.__resizeHandler = debounce(() => {
-      if (this.chart) {
-        this.chart.resize()
-      }
-    }, 100)
-    window.addEventListener('resize', this.__resizeHandler)
-  },
-  beforeDestroy() {
-    if (!this.chart) {
-      return
-    }
-    window.removeEventListener('resize', this.__resizeHandler)
-    this.chart.dispose()
-    this.chart = null
-  },
-  methods: {
-    initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
+defineOptions({
+  name: 'Gauge'
+})
 
-      this.chart.setOption({
-        tooltip: {
-          formatter: '{a} <br/>{b} : {c}%'
-        },
-        toolbox: {
-          feature: {
-            restore: {},
-            saveAsImage: {}
-          }
-        },
-        series: [
-          {
-            name: '业务指标',
-            type: 'gauge',
-            detail: { formatter: '{value}%' },
-            data: [{ value: 50, name: '完成率' }]
-          }
-        ]
-      })
-    }
+const props = defineProps({
+  className: {
+    type: String,
+    default: 'chart'
+  },
+  width: {
+    type: String,
+    default: '100%'
+  },
+  height: {
+    type: String,
+    default: '300px'
   }
+})
+
+const chart = ref(null)
+let __resizeHandler = null
+
+function initChart() {
+  chart.value = echarts.init(chartContainer.value, 'macarons')
+
+  chart.value.setOption({
+    tooltip: {
+      formatter: '{a} <br/>{b} : {c}%'
+    },
+    toolbox: {
+      feature: {
+        restore: {},
+        saveAsImage: {}
+      }
+    },
+    series: [
+      {
+        name: '业务指标',
+        type: 'gauge',
+        detail: { formatter: '{value}%' },
+        data: [{ value: 50, name: '完成率' }]
+      }
+    ]
+  })
 }
+
+const chartContainer = ref(null)
+
+onMounted(() => {
+  initChart()
+  __resizeHandler = debounce(() => {
+    if (chart.value) {
+      chart.value.resize()
+    }
+  }, 100)
+  window.addEventListener('resize', __resizeHandler)
+})
+
+onUnmounted(() => {
+  if (!chart.value) {
+    return
+  }
+  window.removeEventListener('resize', __resizeHandler)
+  chart.value.dispose()
+  chart.value = null
+})
 </script>

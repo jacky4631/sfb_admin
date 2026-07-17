@@ -1,8 +1,10 @@
 <!-- @author zhengjie -->
 <template>
   <div class="icon-body">
-    <el-input v-model="name" style="position: relative;" clearable placeholder="请输入图标名称" @clear="filterIcons" @input.native="filterIcons">
-      <i slot="suffix" class="el-icon-search el-input__icon" />
+    <el-input v-model="name" style="position: relative;" clearable placeholder="请输入图标名称" @clear="filterIcons" @input="filterIcons">
+      <template #suffix>
+        <i class="el-icon-search el-input__icon" />
+      </template>
     </el-input>
     <div class="icon-list">
       <div v-for="(item, index) in iconList" :key="index" @click="selectedIcon(item)">
@@ -13,33 +15,35 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue'
 import icons from './requireIcons'
-export default {
-  name: 'IconSelect',
-  data() {
-    return {
-      name: '',
-      iconList: icons
-    }
-  },
-  methods: {
-    filterIcons() {
-      if (this.name) {
-        this.iconList = this.iconList.filter(item => item.includes(this.name))
-      } else {
-        this.iconList = icons
-      }
-    },
-    selectedIcon(name) {
-      this.$emit('selected', name)
-      document.body.click()
-    },
-    reset() {
-      this.name = ''
-      this.iconList = icons
-    }
+
+defineOptions({
+  name: 'IconSelect'
+})
+
+defineEmits(['selected'])
+
+const name = ref('')
+const iconList = ref([...icons])
+
+const filterIcons = () => {
+  if (name.value) {
+    iconList.value = iconList.value.filter(item => item.includes(name.value))
+  } else {
+    iconList.value = [...icons]
   }
+}
+
+const selectedIcon = (iconName) => {
+  emit('selected', iconName)
+  document.body.click()
+}
+
+const reset = () => {
+  name.value = ''
+  iconList.value = [...icons]
 }
 </script>
 
