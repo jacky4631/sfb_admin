@@ -154,7 +154,6 @@ export default {
             this.$router.push({ path: this.redirect || '/' })
           }).catch(() => {
             this.loading = false
-            this.getCode()
           })
         } else {
           console.log('error submit!!')

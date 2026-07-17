@@ -164,7 +164,6 @@ const handleLogin = () => {
     }).catch((err) => {
       loading.value = false
       console.error('Login error:', err)
-      getCode()
     })
   }).catch((err) => {
     console.error('Validation failed:', err)
