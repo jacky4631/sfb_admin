@@ -57,6 +57,4 @@ app.use(ElementPlus, {
 import SvgIcon from './components/SvgIcon/index.vue'
 app.component('svg-icon', SvgIcon)
 
-app.config.productionTip = false
-
 app.mount('#app')
