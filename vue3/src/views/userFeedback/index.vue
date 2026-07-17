@@ -4,7 +4,7 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <el-select v-model="query.type" clearable placeholder="类型" class="filter-item" style="width: 130px">
           <el-option v-for="item in queryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
         </el-select>
@@ -13,7 +13,7 @@
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="dialogVisible" :title="crud.status.title" width="500px">
         <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="80px">
           <el-form-item label="用户id" prop="uid">
             <el-input v-model="form.uid" style="width: 370px;" />
@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import crudMwUserFeedback from '@/api/mwUserFeedback'
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
@@ -106,9 +106,18 @@ const query = reactive({
 const tableRef = ref(null)
 const formRef = ref(null)
 
-// presenter, header, form, crud are mixins - extract their properties
-const crud = presenter(defaultCrud)
-const columns = header()
+// presenter 返回 { crud, columns, query, form, tableRef }
+const { crud, columns, query: presenterQuery, form } = presenter(defaultCrud)
+
+const dialogVisible = computed({
+  get: () => crud.status.cu > 0,
+  set: (val) => {
+    if (!val) {
+      crud.status.add = CRUD.STATUS.NORMAL
+      crud.status.edit = CRUD.STATUS.NORMAL
+    }
+  }
+})
 
 // Watch for query changes
 watch(() => [query.type, query.value], () => {

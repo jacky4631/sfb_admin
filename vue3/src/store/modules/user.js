@@ -32,7 +32,7 @@ export const useUserStore = defineStore('user', {
       return new Promise((resolve, reject) => {
         login(userInfo.username, userInfo.password, userInfo.code, userInfo.uuid).then(res => {
           setToken(res.token)
-          this.SET_TOKEN(res.token)
+          this.token = res.token
           resolve()
         }).catch(error => {
           reject(error)
@@ -44,10 +44,10 @@ export const useUserStore = defineStore('user', {
         getInfo().then(res => {
           const user = res.user
           const role = res.roles && res.roles.length > 0 ? res.roles : ['admin']
-          this.SET_ROLES(role)
-          this.SET_NAME(user.name)
-          this.SET_AVATAR(user.avatar || 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
-          this.SET_EMAIL(user.email)
+          this.roles = role
+          this.name = user.name
+          this.avatar = user.avatar || 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
+          this.email = user.email
           resolve(res)
         }).catch(error => {
           reject(error)
@@ -57,8 +57,8 @@ export const useUserStore = defineStore('user', {
     LogOut() {
       return new Promise((resolve, reject) => {
         logout().then(() => {
-          this.SET_TOKEN('')
-          this.SET_ROLES([])
+          this.token = ''
+          this.roles = []
           removeToken()
           resolve()
         }).catch(error => {
@@ -68,8 +68,8 @@ export const useUserStore = defineStore('user', {
     },
     FedLogOut() {
       return new Promise(resolve => {
-        this.SET_TOKEN('')
-        this.SET_ROLES([])
+        this.token = ''
+        this.roles = []
         removeToken()
         resolve()
       })

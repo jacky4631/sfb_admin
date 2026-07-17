@@ -38,7 +38,7 @@
         记住我
       </el-checkbox>
       <el-form-item style="width:100%;">
-        <el-button :loading="loading" size="default" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
+        <el-button :loading="loading" size="default" type="button" style="width:100%;" @click="handleLogin">
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
@@ -126,10 +126,13 @@ const getCode = () => {
 }
 
 const handleLogin = () => {
+  console.log('handleLogin called, loginFormRef:', loginFormRef.value)
   loginFormRef.value.validate((valid) => {
+    console.log('validate callback, valid:', valid)
     if (!valid) {
       return
     }
+    console.log(' proceeding with login...')
     const user = {
       username: loginForm.username,
       password: loginForm.password,
@@ -138,7 +141,9 @@ const handleLogin = () => {
       uuid: loginForm.uuid
     }
     if (user.password !== cookiePass.value) {
+      console.log('Encrypting password...')
       user.password = encrypt(user.password)
+      console.log('Encrypted:', user.password)
     }
     if (user.rememberMe) {
       Cookies.set('username', user.username, { expires: Config.passCookieExpires })
@@ -152,9 +157,13 @@ const handleLogin = () => {
     loading.value = true
     userStore.Login(user).then(() => {
       loading.value = false
-      router.push({ path: redirect.value || '/' })
-    }).catch(() => {
+      console.log('Login success, navigating to:', redirect.value || '/')
+      router.push({ path: redirect.value || '/' }).catch(err => {
+        console.error('Navigation error:', err)
+      })
+    }).catch((err) => {
       loading.value = false
+      console.error('Login error:', err)
       getCode()
     })
   })

@@ -17,7 +17,7 @@ import dict from './components/Dict'
 import permission from './components/Permission'
 
 // 代码高亮
-import VueHighlightJS from 'vue-highlightjs'
+import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css'
 
 import '@/assets/font_icon/iconfont.css'
@@ -32,7 +32,19 @@ const app = createApp(App)
 
 app.use(pinia)
 app.use(router)
-app.use(VueHighlightJS)
+// 代码高亮自定义指令
+app.directive('highlight', {
+  mounted(el) {
+    el.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightElement(block)
+    })
+  },
+  updated(el) {
+    el.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightElement(block)
+    })
+  }
+})
 app.use(mavonEditor)
 app.use(permission)
 app.use(dict)

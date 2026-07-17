@@ -20,7 +20,9 @@ export const useSettingsStore = defineStore('settings', {
   },
   actions: {
     changeSetting(data) {
-      this.CHANGE_SETTING(data)
+      if (this.hasOwnProperty(data.key)) {
+        this[data.key] = data.value
+      }
     }
   }
 })

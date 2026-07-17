@@ -102,7 +102,8 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
+import { ElMessageBox } from 'element-plus'
 import CRUD, { crud } from '@crud/crud'
 
 defineOptions({

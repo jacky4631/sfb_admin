@@ -4,13 +4,13 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.cateName" clearable size="small" placeholder="输入分类名称搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.cateName" clearable size="small" placeholder="输入分类名称搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <rrOperation :crud="crud" />
       </div>
       <crudOperation :permission="permission" />
     </div>
     <!--表单组件-->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
+    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="dialogVisible" :title="crud.status.title" width="500px">
       <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="分类名称">
           <el-input v-model="form.cateName" style="width: 370px;" />
@@ -65,7 +65,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import crudDept from '@/api/mwStoreCategory'
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
@@ -97,17 +97,17 @@ const enabledTypeOptions = [
   { key: 'false', display_name: '禁用' }
 ]
 
-// Use mixin
-const { crud, columns, query, form } = (() => {
-  const result = presenter(defaultCrud)
-  return result
-})()
+const { crud, columns, query, form } = presenter(defaultCrud)
 
-// Need to properly integrate the CRUD presenter
-const presenterResult = presenter(defaultCrud)
-const presenterCrud = presenterResult.crud
-
-Object.assign(crud, presenterCrud)
+const dialogVisible = computed({
+  get: () => crud.status.cu > 0,
+  set: (val) => {
+    if (!val) {
+      crud.status.add = CRUD.STATUS.NORMAL
+      crud.status.edit = CRUD.STATUS.NORMAL
+    }
+  }
+})
 
 watch(picArr, (val) => {
   form.pic = val.join(',')
