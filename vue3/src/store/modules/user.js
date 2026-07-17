@@ -8,7 +8,8 @@ export const useUserStore = defineStore('user', {
     name: '',
     avatar: '',
     roles: [],
-    email: ''
+    email: '',
+    user: {},
   }),
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -48,6 +49,7 @@ export const useUserStore = defineStore('user', {
           this.name = user.name
           this.avatar = user.avatar || 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
           this.email = user.email
+          this.user = user
           resolve(res)
         }).catch(error => {
           reject(error)

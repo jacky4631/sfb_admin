@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card :bordered="false">
-      <el-form  ref="formValidateRef" :rules="ruleValidate" :model="formValidate" label-width="130px" >
+      <el-form  ref="formValidate" :rules="ruleValidate" :model="formValidate" label-width="130px" >
         <el-row :gutter="24">
           <!-- 商品信息-->
           <el-col v-bind="grid2">
@@ -74,15 +74,13 @@
               <el-form-item v-if="attrs.length!==0">
                 <div  v-for="(item, index) in attrs" :key="index">
                   <div class="acea-row row-middle"><span class="mr5">{{item.value}}</span>
-                    <el-icon @click="handleRemoveRole(index)"><CircleClose /></el-icon>
+                    <i class="el-icon-circle-close"  @click="handleRemoveRole(index)"></i>
                   </div>
                   <div class="rulesBox">
                     <el-tag type="dot" closable color="primary" v-for="(j, indexn) in item.detail" :key="indexn" :name="j" class="mr20" @close="handleRemove2(item.detail,indexn)">{{j}}</el-tag>
                     <el-input placeholder="请输入属性名称" v-model="item.detail.attrsVal"
                               style="width: 150px">
-                      <template #append>
-                        <el-button type="primary" @click="createAttr(item.detail.attrsVal,index)">添加</el-button>
-                      </template>
+                      <el-button slot="append" type="primary" @click="createAttr(item.detail.attrsVal,index)">添加</el-button>
                     </el-input>
                   </div>
                 </div>
@@ -106,8 +104,10 @@
                 </el-form-item>
               </el-col>
               <el-col :xl="6" :lg="5" :md="10" :sm="24" :xs="24" >
+
                   <el-button type="primary"    @click="createAttrName">确定</el-button>
                   <el-button type="danger" @click="offAttrName" >取消</el-button>
+
               </el-col>
             </el-col>
             <!-- 多规格设置-->
@@ -239,11 +239,9 @@
                 <el-table-column prop="imageArr" label="图片" align="center">
                   <template #default="scope">
                     <el-image :src="scope.row.pic" class="el-avatar">
-                      <template #error>
-                        <div class="image-slot">
-                          <el-icon><Picture /></el-icon>
-                        </div>
-                      </template>
+                      <div slot="error" class="image-slot">
+                        <i class="el-icon-picture-outline"></i>
+                      </div>
                     </el-image>
                   </template>
                 </el-table-column>
@@ -271,11 +269,9 @@
                 <el-table-column prop="imageArr" label="图片" align="center">
                   <template #default="scope">
                     <el-image :src="scope.row.pic" :width="60" :height="60" >
-                      <template #error>
-                        <div class="image-slot">
-                          <el-icon><Picture /></el-icon>
-                        </div>
-                      </template>
+                      <div slot="error" class="image-slot">
+                        <i class="el-icon-picture-outline"></i>
+                      </div>
                     </el-image>
                   </template>
                 </el-table-column>
@@ -350,432 +346,451 @@
   </div>
 </template>
 
-<script setup>
-import { ref, reactive, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+<script>
 import { ElMessage } from 'element-plus'
 import { getCates } from '@/api/mwStoreCategory'
 import { add, edit, getInfo, isFormatAttr } from '@/api/mwStoreProduct'
 import editor from '../../components/Editor'
 import picUpload from '@/components/pic-upload'
 import mulpicUpload from '@/components/mul-pic-upload'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import MaterialList from '@/components/material'
 import singlePic from '@/components/singlematerial'
-
-defineOptions({ name: 'ShopGoodsForm' })
-
-const route = useRoute()
-const router = useRouter()
-const formValidateRef = ref(null)
-
-const spinShow = ref(false)
-const grid2 = {
-  xl: 10,
-  lg: 12,
-  md: 12,
-  sm: 24,
-  xs: 24
-}
-const grid3 = {
-  xl: 18,
-  lg: 18,
-  md: 20,
-  sm: 24,
-  xs: 24
-}
-const oneFormBatch = ref([
-  {
-    pic: '',
-    price: 0,
-    cost: 0,
-    ot_price: 0,
-    stock: 0,
-    bar_code: '',
-    seckill_stock: 0,
-    seckill_price: 0,
-    pink_stock: 0,
-    pink_price: 0,
-    weight: 0,
-    volume: 0,
-    integral: 0
-  }
-])
-const formDynamic = reactive({
-  attrsName: '',
-  attrsVal: ''
-})
-const formDynamicNameData = ref([])
-const isBtn = ref(false)
-const myConfig = {
-  autoHeightEnabled: false,
-  initialFrameHeight: 500,
-  initialFrameWidth: '100%',
-  UEDITOR_HOME_URL: '/UEditor/',
-  serverUrl: ''
-}
-const columns = ref([])
-const formValidate = reactive({
-  imageArr: [],
-  sliderImageArr: [],
-  store_name: '',
-  cate_id: '',
-  keyword: '',
-  unit_name: '',
-  store_info: '',
-  image: '',
-  slider_image: [],
-  description: '',
-  ficti: 0,
-  give_integral: 0,
-  sort: 0,
-  is_show: 1,
-  is_hot: 0,
-  is_benefit: 0,
-  is_best: 0,
-  is_new: 0,
-  is_good: 0,
-  is_postage: 0,
-  is_sub: 0,
-  is_integral: 0,
-  id: 0,
-  spec_type: 0,
-  temp_id: '',
-  attrs: [],
-  items: [
-    {
-      pic: '',
-      price: 0,
-      cost: 0,
-      ot_price: 0,
-      stock: 0,
-      bar_code: '',
-      integral: 0
-    }
-  ],
-  header: [],
-  selectRule: ''
-})
-const ruleList = ref([])
-const templateList = ref([])
-const createBnt = ref(false)
-const showIput = ref(false)
-const manyFormValidate = ref([])
-const oneFormValidate = ref([
-  {
-    imageArr: [],
-    pic: '',
-    price: 2,
-    cost: 0,
-    ot_price: 0,
-    stock: 0,
-    seckill_stock: 0,
-    seckill_price: 0,
-    pink_stock: 0,
-    pink_price: 0,
-    bar_code: '',
-    weight: 0,
-    volume: 0,
-    brokerage: 0,
-    brokerage_two: 0,
-    integral: 0
-  }
-])
-const images = ref([])
-const grid = {
-  xl: 8,
-  lg: 8,
-  md: 12,
-  sm: 24,
-  xs: 24
-}
-const loading = ref(false)
-const treeSelect = ref([])
-const optionsMetaShow = ref([])
-const tableIndex = ref(0)
-const ruleValidate = {
-  store_name: [
-    { required: true, message: '请输入商品名称', trigger: 'blur' }
-  ],
-  cate_id: [
-    { required: true, message: '请选择商品分类', trigger: 'change' }
-  ],
-  keyword: [
-    { required: true, message: '请输入商品关键字', trigger: 'blur' }
-  ],
-  unit_name: [
-    { required: true, message: '请输入单位', trigger: 'blur' }
-  ],
-  store_info: [
-    { required: true, message: '请输入商品简介', trigger: 'blur' }
-  ],
-  spec_type: [
-    { required: true, message: '请选择商品规格', trigger: 'change' }
-  ],
-  selectRule: [
-    { required: true, message: '请选择商品规格属性', trigger: 'change' }
-  ],
-  temp_id: [
-    { required: true, message: '请选择运费模板', trigger: 'change', type: 'number' }
-  ]
-}
-const attrs = ref([])
-
-watch(() => formValidate.image, (val) => {
-  console.log('aaaa:' + val)
-  if (val) {
-    oneFormValidate.value[0].pic = val
-    console.log('bbbbbb:' + oneFormValidate.value.pic)
-  }
-})
-
-watch(() => formValidate.sliderImageArr, (val) => {
-  if (val) {
-    formValidate.slider_image = val.join(',')
-  }
-})
-
-onMounted(() => {
-  getInfo()
-})
-
-const dataFilter = (val) => {
-  value.value = val
-  if (val) {
-    optionsMetaShow.value = treeSelect.value.filter((item => {
-      if (!!~item.label.indexOf(val) || !!~item.label.toUpperCase().indexOf(val.toUpperCase())) {
-        return true
-      }
-    }))
-  } else {
-    optionsMetaShow.value = treeSelect.value
-  }
-}
-
-const confirm = () => {
-  let that = { createBnt, formValidate, attrs, ruleList }
-  that.createBnt = true
-  if (that.formValidate.selectRule.trim().length <= 0) {
-    return ElMessage({
-      message: '请选择属性',
-      type: 'error'
-    })
-  }
-  that.ruleList.forEach(function (item, index) {
-    if (item.ruleName === that.formValidate.selectRule) {
-      that.attrs = item.ruleValue
-    }
-  })
-}
-
-const delAttrTable = (index) => {
-  manyFormValidate.value.splice(index, 1)
-}
-
-const addBtn = () => {
-  clearAttr()
-  createBnt.value = false
-  showIput.value = true
-}
-
-const generate = () => {
-  isFormatAttr(formValidate.id, { attrs: attrs.value }).then(res => {
-    manyFormValidate.value = res.value
-    let headerdel = {
-      title: '操作',
-      slot: 'action',
-      fixed: 'right',
-      width: 220
-    }
-    res.header.push(headerdel)
-    formValidate.header = res.header
-    let header = res.header
-    header.pop()
-    if (!route.params.id && formValidate.spec_type === 1) {
-      manyFormValidate.value.map((item) => {
-        item.pic = formValidate.image
-      })
-      oneFormBatch.value[0].pic = formValidate.image
-    }
-  }).catch(res => {
-  })
-}
-
-const offAttrName = () => {
-  showIput.value = false
-  createBnt.value = true
-}
-
-const clearAttr = () => {
-  formDynamic.attrsName = ''
-  formDynamic.attrsVal = ''
-}
-
-const handleRemoveRole = (index) => {
-  attrs.value.splice(index, 1)
-  manyFormValidate.value.splice(index, 1)
-}
-
-const handleRemove2 = (item, index) => {
-  item.splice(index, 1)
-}
-
-const createAttrName = () => {
-  if (formDynamic.attrsName && formDynamic.attrsVal) {
-    let data = {
-      value: formDynamic.attrsName,
-      detail: [
-        formDynamic.attrsVal
-      ]
-    }
-    attrs.value.push(data)
-    var hash = {}
-    attrs.value = attrs.value.reduce(function (item, next) {
-      hash[next.value] ? '' : hash[next.value] = true && item.push(next)
-      return item
-    }, [])
-    clearAttr()
-    showIput.value = false
-    createBnt.value = true
-  } else {
-    ElMessage.warning('请添加完整的规格！')
-  }
-}
-
-const createAttr = (num, idx) => {
-  if (num) {
-    attrs.value[idx].detail.push(num)
-    var hash = {}
-    attrs.value[idx].detail = attrs.value[idx].detail.reduce(function (item, next) {
-      hash[next] ? '' : hash[next] = true && item.push(next)
-      return item
-    }, [])
-  } else {
-    ElMessage.warning('请添加属性！')
-  }
-}
-
-const changeSpec = () => {
-}
-
-const getInfo = () => {
-  let id = route.params.id || 0
-  getInfo(id).then(async res => {
-    let data = res.productInfo
-    console.log('data:' + data)
-    if (data) {
-      let cate_id = parseInt(data.cate_id) || 0
-      attrs.value = data.items || []
-      Object.assign(formValidate, data)
-      formValidate.cate_id = cate_id
-      oneFormValidate.value = [data.attr]
-      formValidate.header = []
-      generate()
-      manyFormValidate.value = data.attrs
-      if (data.spec_type === 0) {
-        manyFormValidate.value = []
-      } else {
-        createBnt.value = true
-        oneFormValidate.value = [
+import UeditorWrap from 'vue-ueditor-wrap';
+export default {
+  components: { editor, picUpload, mulpicUpload, Treeselect, MaterialList, UeditorWrap, singlePic },
+  data() {
+    return {
+      spinShow: false,
+      grid2: {
+        xl: 10,
+        lg: 12,
+        md: 12,
+        sm: 24,
+        xs: 24
+      },
+      grid3: {
+        xl: 18,
+        lg: 18,
+        md: 20,
+        sm: 24,
+        xs: 24
+      },
+      // 批量设置表格data
+      oneFormBatch: [
+        {
+          pic: '',
+          price: 0,
+          cost: 0,
+          ot_price: 0,
+          stock: 0,
+          bar_code: '',
+          seckill_stock: 0,
+          seckill_price: 0,
+          pink_stock: 0,
+          pink_price: 0,
+          weight: 0,
+          volume: 0,
+          integral:0
+        }
+      ],
+      // 规格数据
+      formDynamic: {
+        attrsName: '',
+        attrsVal: ''
+      },
+      formDynamicNameData: [],
+      isBtn: false,
+      myConfig: {
+        autoHeightEnabled: false, // 编辑器不自动被内容撑高
+        initialFrameHeight: 500, // 初始容器高度
+        initialFrameWidth: '100%', // 初始容器宽度
+        UEDITOR_HOME_URL: '/UEditor/',
+        serverUrl: ''
+      },
+      columns: [],
+      formValidate: {
+        imageArr:[],
+        sliderImageArr: [],
+        store_name: '',
+        cate_id: '',
+        keyword: '',
+        unit_name: '',
+        store_info: '',
+        image: '',
+        slider_image: [],
+        description: '',
+        ficti: 0,
+        give_integral: 0,
+        sort: 0,
+        is_show: 1,
+        is_hot: 0,
+        is_benefit: 0,
+        is_best: 0,
+        is_new: 0,
+        is_good: 0,
+        is_postage: 0,
+        is_sub: 0,
+        is_integral: 0,
+        id: 0,
+        spec_type: 0,
+        temp_id: '',
+        attrs: [],
+        items: [
           {
             pic: '',
             price: 0,
             cost: 0,
             ot_price: 0,
             stock: 0,
-            seckill_stock: 0,
-            seckill_price: 0,
-            pink_stock: 0,
-            pink_price: 0,
             bar_code: '',
-            weight: 0,
-            volume: 0,
-            brokerage: 0,
-            brokerage_two: 0,
-            integral: 0
+            integral:0
           }
+        ],
+        header: [],
+        selectRule: ''
+      },
+      ruleList: [],
+      templateList: [],
+      createBnt: false,
+      showIput: false,
+      manyFormValidate: [],
+      // 单规格表格data
+      oneFormValidate: [
+        {
+          imageArr: [],
+          pic: '',
+          price: 2,
+          cost: 0,
+          ot_price: 0,
+          stock: 0,
+          seckill_stock: 0,
+          seckill_price: 0,
+          pink_stock: 0,
+          pink_price: 0,
+          bar_code: '',
+          weight: 0,
+          volume: 0,
+          brokerage: 0,
+          brokerage_two: 0,
+          integral: 0
+        }
+      ],
+      images: [],
+      grid: {
+        xl: 8,
+        lg: 8,
+        md: 12,
+        sm: 24,
+        xs: 24
+      },
+      loading: false,
+      treeSelect: [],
+      optionsMetaShow: [],
+      tableIndex: 0,
+      ruleValidate: {
+        store_name: [
+          { required: true, message: '请输入商品名称', trigger: 'blur' }
+        ],
+        cate_id: [
+          { required: true, message: '请选择商品分类', trigger: 'change' }
+        ],
+        keyword: [
+          { required: true, message: '请输入商品关键字', trigger: 'blur' }
+        ],
+        unit_name: [
+          { required: true, message: '请输入单位', trigger: 'blur' }
+        ],
+        store_info: [
+          { required: true, message: '请输入商品简介', trigger: 'blur' }
+        ],
+        spec_type: [
+          { required: true, message: '请选择商品规格', trigger: 'change' }
+        ],
+        selectRule: [
+          { required: true, message: '请选择商品规格属性', trigger: 'change' }
+        ],
+        temp_id: [
+          { required: true, message: '请选择运费模板', trigger: 'change', type: 'number' }
         ]
+      },
+      attrs: []
+    }
+  },
+  watch: {
+    'formValidate.image': function(val) {
+      console.log('aaaa:'+val)
+      if (val) {
+        this.oneFormValidate[0].pic = val
+        console.log('bbbbbb:'+this.oneFormValidate.pic)
+      }
+    },
+    'form.sliderImageArr': function(val) {
+      if (val) {
+        this.form.slider_image = val.join(',')
       }
     }
-    treeSelect.value = res.cateList
-    ruleList.value = res.ruleList
-    templateList.value = res.tempList
-    optionsMetaShow.value = treeSelect.value
-  }).catch(res => {
-    console.log('err:' + res)
-    return ElMessage({
-      message: res.msg,
-      type: 'error'
-    })
-  })
-}
+  },
+  mounted () {
+    this.getInfo();
+  },
+  methods: {
+    dataFilter(val){
+      this.value=val
+      if(val){
+        this.optionsMetaShow=this.treeSelect.filter((item=>{
+          if (!!~item.label.indexOf(val) || !!~item.label.toUpperCase().indexOf(val.toUpperCase())) {
+            return true
+          }
+        }))
+      }else{
+        this.optionsMetaShow=this.treeSelect
+      }
+    },
+    confirm () {
+      let that = this;
+      that.createBnt = true;
+      if (that.formValidate.selectRule.trim().length <= 0) {
+        return ElMessage({
+          message:'请选择属性',
+          type: 'error'
+        });
+      }
+      that.ruleList.forEach(function (item, index) {
+        if (item.ruleName === that.formValidate.selectRule) {
+          that.attrs = item.ruleValue;
+        }
+      });
+    },
+    // 删除表格中的属性
+    delAttrTable (index) {
+      this.manyFormValidate.splice(index, 1);
+    },
 
-const handleSubmit = (name) => {
-  formValidateRef.value.validate((valid) => {
-    if (valid) {
-      if (formValidate.spec_type === 0) {
-        formValidate.attrs = oneFormValidate.value
-        formValidate.header = []
-        formValidate.items = []
-      } else {
-        formValidate.items = attrs.value
-        formValidate.attrs = manyFormValidate.value
-      }
-      if (formValidate.spec_type === 1 && manyFormValidate.value.length === 0) {
-        return ElMessage.warning('请点击生成规格！')
-      }
-      add(formValidate).then(async res => {
-        ElMessage({
-          message: '操作成功',
-          type: 'success'
-        })
-        setTimeout(() => {
-          router.push({ path: '/shop/goods' })
-        }, 500)
+    // 添加按钮
+    addBtn () {
+      this.clearAttr();
+      this.createBnt = false;
+      this.showIput = true;
+    },
+    // 立即生成
+    generate () {
+      isFormatAttr(this.formValidate.id, { attrs: this.attrs }).then(res => {
+        this.manyFormValidate = res.value;
+        let headerdel = {
+          title: '操作',
+          slot: 'action',
+          fixed: 'right',
+          width: 220
+        };
+        res.header.push(headerdel);
+        this.formValidate.header = res.header;
+        //this.formValidate.attrs = res.attr;
+        let header = res.header;
+        header.pop();
+        if (!this.$route.params.id && this.formValidate.spec_type === 1) {
+          this.manyFormValidate.map((item) => {
+            item.pic = this.formValidate.image
+          });
+          this.oneFormBatch[0].pic = this.formValidate.image;
+        }
       }).catch(res => {
+        // ElMessage({
+        //   message:res.msg,
+        //   type: 'error'
+        // });
       })
-    } else {
-      if (!formValidate.store_name || !formValidate.cate_id || !formValidate.keyword
-        || !formValidate.unit_name || !formValidate.store_info
-        || !formValidate.image || !formValidate.slider_image) {
-        ElMessage.warning("请填写完整商品信息！")
+    },
+    // 取消
+    offAttrName () {
+      this.showIput = false;
+      this.createBnt = true;
+    },
+    clearAttr () {
+      this.formDynamic.attrsName = '';
+      this.formDynamic.attrsVal = '';
+    },
+    // 删除规格
+    handleRemoveRole (index) {
+      this.attrs.splice(index, 1);
+      this.manyFormValidate.splice(index, 1);
+    },
+    // 删除属性
+    handleRemove2 (item, index) {
+      item.splice(index, 1);
+    },
+    // 添加规则名称
+    createAttrName () {
+      if (this.formDynamic.attrsName && this.formDynamic.attrsVal) {
+        let data = {
+          value: this.formDynamic.attrsName,
+          detail: [
+            this.formDynamic.attrsVal
+          ]
+        };
+        this.attrs.push(data);
+        var hash = {};
+        this.attrs = this.attrs.reduce(function (item, next) {
+          hash[next.value] ? '' : hash[next.value] = true && item.push(next);
+          return item
+        }, [])
+        this.clearAttr();
+        this.showIput = false;
+        this.createBnt = true;
+      } else {
+        ElMessage.warning('请添加完整的规格！');
       }
+    },
+    // 添加属性
+    createAttr (num, idx) {
+      if (num) {
+        this.attrs[idx].detail.push(num);
+        var hash = {};
+        this.attrs[idx].detail = this.attrs[idx].detail.reduce(function (item, next) {
+          hash[next] ? '' : hash[next] = true && item.push(next);
+          return item
+        }, [])
+      } else {
+        ElMessage.warning('请添加属性！');
+      }
+    },
+
+    // 改变规格
+    changeSpec () {
+    },
+    // 详情
+    getInfo () {
+      let that = this;
+      let id = that.$route.params.id || 0;
+      getInfo(id).then(async res => {
+        let data = res.productInfo;
+        console.log('data:'+data)
+        if(data){
+          let cate_id = parseInt(data.cate_id) || 0;
+          this.attrs = data.items || [];
+          that.formValidate = data;
+          that.formValidate.cate_id = cate_id;
+          that.oneFormValidate = [data.attr];
+          that.formValidate.header = [];
+          that.generate();
+          that.manyFormValidate = data.attrs;
+          if(data.spec_type === 0){
+            that.manyFormValidate = [];
+          }else {
+            that.createBnt = true;
+            that.oneFormValidate = [
+              {
+                pic: '',
+                price: 0,
+                cost: 0,
+                ot_price: 0,
+                stock: 0,
+                seckill_stock: 0,
+                seckill_price: 0,
+                pink_stock: 0,
+                pink_price: 0,
+                bar_code: '',
+                weight:0,
+                volume:0,
+                brokerage:0,
+                brokerage_two:0,
+                integral:0
+              }
+            ]
+          }
+        }
+
+        that.treeSelect = res.cateList;
+        that.ruleList = res.ruleList;
+        that.templateList = res.tempList;
+        that.optionsMetaShow  = that.treeSelect
+
+      }).catch(res => {
+        console.log('err:'+res)
+        return ElMessage({
+          message:res.msg,
+          type: 'error'
+        });
+      })
+    },
+
+
+    // 提交
+    handleSubmit (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          if(this.formValidate.spec_type ===0 ){
+            this.formValidate.attrs = this.oneFormValidate;
+            this.formValidate.header = [];
+            this.formValidate.items = [];
+          }else{
+            this.formValidate.items = this.attrs;
+            this.formValidate.attrs = this.manyFormValidate;
+          }
+          if(this.formValidate.spec_type === 1 && this.manyFormValidate.length===0){
+            return ElMessage.warning('请点击生成规格！');
+          }
+          add(this.formValidate).then(async res => {
+            ElMessage({
+              message:'操作成功',
+              type: 'success'
+            });
+            setTimeout(() => {
+              this.$router.push({ path: '/shop/goods' });
+            }, 500);
+          }).catch(res => {
+            // ElMessage({
+            //   message:res.message,
+            //   type: 'error'
+            // });
+          })
+        } else {
+          if(!this.formValidate.store_name || !this.formValidate.cate_id || !this.formValidate.keyword
+            || !this.formValidate.unit_name || !this.formValidate.store_info
+            || !this.formValidate.image || !this.formValidate.slider_image){
+            ElMessage.warning("请填写完整商品信息！");
+          }
+        }
+      })
+    },
+
+    // 表单验证
+    validate (prop, status, error) {
+      if (status === false) {
+        ElMessage.warning(error);
+      }
+    },
+    addCustomDialog () {
+      window.UE.registerUI('mshop', function (editor, uiName) {
+        let dialog = new window.UE.ui.Dialog({
+          iframeUrl: '/mshop/materia/index',
+          editor: editor,
+          name: uiName,
+          title: '上传图片',
+          cssRules: 'width:1200px;height:500px;padding:20px;'
+        });
+        this.dialog = dialog;
+
+        var btn = new window.UE.ui.Button({
+          name: 'dialog-button',
+          title: '上传图片',
+          cssRules: `background-image: url(../../../assets/images/icons.png);background-position: -726px -77px;`,
+          onclick: function () {
+            dialog.render();
+            dialog.open();
+          }
+        });
+
+        return btn;
+      }, 37);
+    },
+
+
+    cancel() {
+      this.resetForm()
     }
-  })
-}
-
-const validate = (prop, status, error) => {
-  if (status === false) {
-    ElMessage.warning(error)
   }
-}
-
-const addCustomDialog = () => {
-  window.UE.registerUI('mshop', function (editor, uiName) {
-    let dialog = new window.UE.ui.Dialog({
-      iframeUrl: '/mshop/materia/index',
-      editor: editor,
-      name: uiName,
-      title: '上传图片',
-      cssRules: 'width:1200px;height:500px;padding:20px;'
-    })
-    this.dialog = dialog
-
-    var btn = new window.UE.ui.Button({
-      name: 'dialog-button',
-      title: '上传图片',
-      cssRules: `background-image: url(../../../assets/images/icons.png);background-position: -726px -77px;`,
-      onclick: function () {
-        dialog.render()
-        dialog.open()
-      }
-    })
-
-    return btn
-  }, 37)
-}
-
-const cancel = () => {
-  resetForm()
 }
 </script>
 
