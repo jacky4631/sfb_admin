@@ -1,6 +1,6 @@
 import router from './index'
-import store from '@/store'
 import { getToken } from '@/utils/auth'
+import { useUserStore } from '@/store/modules/user'
 
 const whiteList = ['/login']
 
@@ -9,11 +9,12 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/' })
     } else {
-      if (store.getters.roles && store.getters.roles.length === 0) {
-        store.dispatch('GetInfo').then(() => {
+      const userStore = useUserStore()
+      if (userStore.roles && userStore.roles.length === 0) {
+        userStore.GetInfo().then(() => {
           next({ ...to, replace: true })
         }).catch(() => {
-          store.dispatch('LogOut').then(() => {
+          userStore.LogOut().then(() => {
             location.reload()
           })
         })

@@ -6,7 +6,8 @@ import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 import { buildMenus } from '@/api/system/menu'
 import { filterAsyncRouter } from '@/store/modules/permission'
-import store from '@/store'
+import { useUserStore } from '@/store/modules/user'
+import { usePermissionStore } from '@/store/modules/permission'
 
 NProgress.configure({ showSpinner: false })
 
@@ -19,16 +20,18 @@ const router = createRouter({
 })
 
 export const loadMenus = (next, to) => {
+  const userStore = useUserStore()
+  const permissionStore = usePermissionStore()
   buildMenus().then(res => {
     const asyncRouter = filterAsyncRouter(res)
     asyncRouter.push({ path: '/:pathMatch(.*)*', redirect: '/404', hidden: true })
-    store.dispatch('GenerateRoutes', asyncRouter).then(() => {
+    permissionStore.GenerateRoutes(asyncRouter).then(() => {
       router.addRoute(asyncRouter)
       next({ ...to, replace: true })
     })
   }).catch(err => {
     console.log(err)
-    store.dispatch('LogOut').then(() => {
+    userStore.LogOut().then(() => {
       location.reload()
     })
   })
@@ -44,17 +47,19 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      if (store.getters.roles && store.getters.roles.length === 0) {
-        store.dispatch('GetInfo').then(res => {
+      const userStore = useUserStore()
+      const permissionStore = usePermissionStore()
+      if (userStore.roles && userStore.roles.length === 0) {
+        userStore.GetInfo().then(res => {
           loadMenus(next, to)
         }).catch((err) => {
           console.log(err)
-          store.dispatch('LogOut').then(() => {
+          userStore.LogOut().then(() => {
             location.reload()
           })
         })
-      } else if (store.getters.loadMenus) {
-        store.dispatch('updateLoadMenus').then(res => {})
+      } else if (permissionStore.loadMenus) {
+        permissionStore.updateLoadMenus().then(res => {})
         loadMenus(next, to)
       } else {
         next()
