@@ -27,16 +27,18 @@ export const useAppStore = defineStore('app', {
   },
   actions: {
     toggleSideBar() {
-      this.TOGGLE_SIDEBAR()
+      this.sidebar.opened = !this.sidebar.opened
+      this.sidebar.withoutAnimation = false
     },
     closeSideBar(withoutAnimation) {
-      this.CLOSE_SIDEBAR(withoutAnimation)
+      this.sidebar.opened = false
+      this.sidebar.withoutAnimation = withoutAnimation
     },
     toggleDevice(device) {
-      this.TOGGLE_DEVICE(device)
+      this.device = device
     },
     setSize(size) {
-      this.SET_SIZE(size)
+      this.size = size
     }
   }
 })

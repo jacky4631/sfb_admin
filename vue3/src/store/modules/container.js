@@ -21,16 +21,16 @@ export const useContainerStore = defineStore('container', {
   },
   actions: {
     setActiveComponent(component) {
-      this.SET_ACTIVE_COMPONENT(component)
+      this.activeComponent = component
     },
     setComponentsData(data) {
-      this.SET_COMPONENTS_DATA(data)
+      this.componentsData = data
     },
     addComponent(component) {
-      this.ADD_COMPONENT(component)
+      this.componentsData.push(component)
     },
     removeComponent(index) {
-      this.REMOVE_COMPONENT(index)
+      this.componentsData.splice(index, 1)
     }
   }
 })

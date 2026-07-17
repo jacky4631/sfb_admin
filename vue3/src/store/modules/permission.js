@@ -20,13 +20,14 @@ export const usePermissionStore = defineStore('permission', {
   actions: {
     GenerateRoutes(asyncRouter) {
       return new Promise(resolve => {
-        this.SET_ROUTERS(asyncRouter)
+        this.addRouters = asyncRouter
+        this.routers = [...constantRouterMap, ...asyncRouter]
         resolve()
       })
     },
     updateLoadMenus() {
       return new Promise(resolve => {
-        this.SET_LOAD_MENUS(true)
+        this.loadMenus = true
         resolve()
       })
     }
