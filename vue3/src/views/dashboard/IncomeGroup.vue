@@ -4,10 +4,12 @@
       <el-row :gutter="24" class="baseInfo">
         <el-col :xs="12" :sm="12" :lg="6" class="ivu-mb">
           <el-card :bordered="false" dis-hover :padding="12">
-            <div slot="header" class="acea-row row-between-wrapper">
-              <span>今日开店收入</span>
-              <el-tag type="success">全平台</el-tag>
-            </div>
+            <template #header>
+              <div class="acea-row row-between-wrapper">
+                <span>今日开店收入</span>
+                <el-tag type="success">全平台</el-tag>
+              </div>
+            </template>
             <div class="content" v-if="income">
               <span class="content-number spBlock mb15">
                 <count-up :start-val="0" :end-val="income.todayShopIn" :decimals="2" :duration="2600" class="card-panel-num" />元</span>
@@ -26,10 +28,12 @@
         </el-col>
         <el-col :xs="12" :sm="12" :lg="6" class="ivu-mb">
           <el-card :bordered="false" dis-hover :padding="12">
-            <div slot="header" class="acea-row row-between-wrapper">
-              <span>今日提现支出</span>
-              <el-tag type="success">全平台</el-tag>
-            </div>
+            <template #header>
+              <div class="acea-row row-between-wrapper">
+                <span>今日提现支出</span>
+                <el-tag type="success">全平台</el-tag>
+              </div>
+            </template>
             <div class="content" v-if="income">
               <span class="content-number spBlock mb15">
                 <count-up :start-val="0" :end-val="income.todayExtractOut" :decimals="2" :duration="3000" class="card-panel-num" /> 元</span>
@@ -48,10 +52,12 @@
         </el-col>
         <el-col :xs="12" :sm="12" :lg="6" class="ivu-mb">
           <el-card :bordered="false" dis-hover :padding="12">
-            <div slot="header" class="acea-row row-between-wrapper">
-              <span>今日其余支出</span>
-              <el-tag type="success">全平台</el-tag>
-            </div>
+            <template #header>
+              <div class="acea-row row-between-wrapper">
+                <span>今日其余支出</span>
+                <el-tag type="success">全平台</el-tag>
+              </div>
+            </template>
             <div class="content" v-if="income">
               <span class="content-number spBlock mb15">
                 <count-up :start-val="0" :end-val="income.todayOtherOut" :decimals="2" :duration="3600" class="card-panel-num" /> 元</span>
@@ -70,10 +76,12 @@
         </el-col>
         <el-col :xs="12" :sm="12" :lg="6" class="ivu-mb">
           <el-card :bordered="false" dis-hover :padding="12">
-            <div slot="header" class="acea-row row-between-wrapper">
-              <span>今日净收入</span>
-              <el-tag type="success">全平台</el-tag>
-            </div>
+            <template #header>
+              <div class="acea-row row-between-wrapper">
+                <span>今日净收入</span>
+                <el-tag type="success">全平台</el-tag>
+              </div>
+            </template>
             <div class="content" v-if="income">
               <span class="content-number spBlock mb15">
                 <count-up :start-val="0" :end-val="income.todayIn" :decimals="2" :duration="3200" class="card-panel-num" /> 元</span>
@@ -95,52 +103,49 @@
     </div>
   </div>
 </template>
-<script>
+<script setup>
 import CountUp from '@/components/CountUp'
-import {getIncomeData, gett} from "@/api/visits";
-export default {
-  components: {
-    CountUp,
-  },
-  data() {
-    return {
-      income: {
-        todayShopIn: 0,
-        monthShopIn: 0,
-        proMonthShopIn: 0,
-        todayExtractOut: 0,
-        monthExtractOut: 0,
-        proMonthExtractOut: 0,
-        todayOtherOut: 0,
-        monthOtherOut: 0,
-        proMonthOtherOut: 0,
-        todayIn: 0,
-        monthIn: 0,
-        proMonthIn: 0
-      },
+import { getIncomeData } from '@/api/visits'
+import { onMounted, reactive } from 'vue'
 
-    };
-  },
-  mounted() {
-    getIncomeData().then((res) => {
-      this.income.todayShopIn = res.todayShopIn;
-      this.income.monthShopIn = res.monthShopIn;
-      this.income.proMonthShopIn = res.proMonthShopIn;
+defineOptions({
+  name: 'IncomeGroup'
+})
 
-      this.income.todayExtractOut = res.todayExtractOut;
-      this.income.monthExtractOut = res.monthExtractOut;
-      this.income.proMonthExtractOut = res.proMonthExtractOut;
+const income = reactive({
+  todayShopIn: 0,
+  monthShopIn: 0,
+  proMonthShopIn: 0,
+  todayExtractOut: 0,
+  monthExtractOut: 0,
+  proMonthExtractOut: 0,
+  todayOtherOut: 0,
+  monthOtherOut: 0,
+  proMonthOtherOut: 0,
+  todayIn: 0,
+  monthIn: 0,
+  proMonthIn: 0
+})
 
-      this.income.todayOtherOut = res.todayOtherOut;
-      this.income.monthOtherOut = res.monthOtherOut;
-      this.income.proMonthOtherOut = res.proMonthOtherOut;
+onMounted(() => {
+  getIncomeData().then((res) => {
+    income.todayShopIn = res.todayShopIn
+    income.monthShopIn = res.monthShopIn
+    income.proMonthShopIn = res.proMonthShopIn
 
-      this.income.todayIn = res.todayIn;
-      this.income.monthIn = res.monthIn;
-      this.income.proMonthIn = res.proMonthIn;
-    });
-  },
-};
+    income.todayExtractOut = res.todayExtractOut
+    income.monthExtractOut = res.monthExtractOut
+    income.proMonthExtractOut = res.proMonthExtractOut
+
+    income.todayOtherOut = res.todayOtherOut
+    income.monthOtherOut = res.monthOtherOut
+    income.proMonthOtherOut = res.proMonthOtherOut
+
+    income.todayIn = res.todayIn
+    income.monthIn = res.monthIn
+    income.proMonthIn = res.proMonthIn
+  })
+})
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

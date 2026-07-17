@@ -14,7 +14,7 @@
       border
       style="width: 100%">
       <el-table-column label="" width="35" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-radio v-model="tableRadio" :label="scope.row"><i></i></el-radio>
         </template>
       </el-table-column>
@@ -39,78 +39,79 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue'
 import { getShops } from '@/api/canvasApi.js'
-export default {
-  name: 'shop-select',
-  props: {
-    categoryList: {
-      type: Array,
-      default: () => [
-        {
-          value: '/index',
-          label: '首页'
-        },
-        {
-          value: '/category',
-          label: '分类页面'
-        },
-        {
-          value: '/shop',
-          label: '店辅主页'
-        },
-        {
-          value: '/detail',
-          label: '商品详情'
-        }
-      ]
-    }
-  },
-  data () {
-    return {
-      tableRadio: '',
-      currentPage: 1,
-      total: 0,
-      pageSize: 10,
-      formData: {
-        keyword: ''
+
+defineOptions({ name: 'shop-select' })
+
+const props = defineProps({
+  categoryList: {
+    type: Array,
+    default: () => [
+      {
+        value: '/index',
+        label: '首页'
       },
-      tableData: []
-    }
-  },
-  mounted () {
-    this.getTableData()
-  },
-  methods: {
-    // 获取店辅信息
-    getTableData () {
-      let params = {
-        page: this.currentPage,
-        pageSize: this.pageSize
+      {
+        value: '/category',
+        label: '分类页面'
+      },
+      {
+        value: '/shop',
+        label: '店辅主页'
+      },
+      {
+        value: '/detail',
+        label: '商品详情'
       }
-      if (this.formData.keyword) {
-        params.search = this.formData.keyword
-      }
-      getShops(params).then(res => {
-        this.tableData = res.data.list
-        this.total = res.data.total
-      })
-    },
-    // 搜索
-    onSubmit () {
-      this.getTableData()
-    },
-    // 每页条数改变
-    handleSizeChange (val) {
-      this.pageSize = val
-      this.getTableData()
-    },
-    // 当前页改变
-    handleCurrentChange (val) {
-      this.currentPage = val
-      this.getTableData()
-    }
+    ]
   }
+})
+
+const tableRadio = ref('')
+const currentPage = ref(1)
+const total = ref(0)
+const pageSize = ref(10)
+const formData = ref({
+  keyword: ''
+})
+const tableData = ref([])
+
+onMounted(() => {
+  getTableData()
+})
+
+// 获取店辅信息
+function getTableData() {
+  const params = {
+    page: currentPage.value,
+    pageSize: pageSize.value
+  }
+  if (formData.value.keyword) {
+    params.search = formData.value.keyword
+  }
+  getShops(params).then(res => {
+    tableData.value = res.data.list
+    total.value = res.data.total
+  })
+}
+
+// 搜索
+function onSubmit() {
+  getTableData()
+}
+
+// 每页条数改变
+function handleSizeChange(val) {
+  pageSize.value = val
+  getTableData()
+}
+
+// 当前页改变
+function handleCurrentChange(val) {
+  currentPage.value = val
+  getTableData()
 }
 </script>
 

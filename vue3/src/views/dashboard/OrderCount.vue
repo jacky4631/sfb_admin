@@ -1,91 +1,90 @@
 <template>
-          <div :class="className" ref="chart" :style="{ height: height, width: width }" />
+  <div :class="className" ref="chartRef" :style="{ height: height, width: width }" />
 </template>
 
-<script>
-import echarts from "echarts";
-require("echarts/theme/macarons"); // echarts theme
-import { getOrderCount } from "@/api/visits";
-import { debounce } from "@/utils";
+<script setup>
+import * as echarts from 'echarts'
+import 'echarts/theme/macarons'
+import { getOrderCount } from '@/api/visits'
+import { debounce } from '@/utils'
+import { onMounted, onBeforeUnmount, ref } from 'vue'
 
-export default {
-  props: {
-    className: {
-      type: String,
-      default: "chart",
-    },
-    width: {
-      type: String,
-      default: "100%",
-    },
-    height: {
-      type: String,
-      default: "300px",
-    },
-  },
-  data() {
-    return {
-      chart: null,
-      column: [],
-      orderCountDatas: [],
-    };
-  },
-  mounted() {
-    getOrderCount()
-      .then((res) => {
-        (this.column = res.column),
-          (this.orderCountDatas = res.orderCountDatas);
-      })
-      .then(() => {
-        this.initChart();
-      });
+defineOptions({
+  name: 'OrderCount'
+})
 
-    this.__resizeHandler = debounce(() => {
-      if (this.chart) {
-        this.chart.resize();
-      }
-    }, 100);
-    window.addEventListener("resize", this.__resizeHandler);
+const props = defineProps({
+  className: {
+    type: String,
+    default: 'chart'
   },
-  beforeDestroy() {
-    if (!this.chart) {
-      return;
-    }
-    window.removeEventListener("resize", this.__resizeHandler);
-    this.chart.dispose();
-    this.chart = null;
+  width: {
+    type: String,
+    default: '100%'
   },
-  methods: {
-    initChart() {
-      this.chart = echarts.init(this.$refs.chart, "macarons");
+  height: {
+    type: String,
+    default: '300px'
+  }
+})
 
-      this.chart.setOption({
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)",
-        },
-        legend: {
-          left: "center",
-          bottom: "10",
-          data: this.column,
-        },
-        calculable: true,
-        series: [
-          {
-            name: "商品分类销售占总销售的比例",
-            type: "pie",
-            roseType: "radius",
-            radius: [15, 95],
-            center: ["50%", "38%"],
-            data: this.orderCountDatas,
-            animationEasing: "cubicInOut",
-            animationDuration: 2600,
-          },
-        ],
-      });
+const chartRef = ref(null)
+const column = ref([])
+const orderCountDatas = ref([])
+
+let resizeHandler
+
+const initChart = () => {
+  const chartInstance = echarts.init(chartRef.value, 'macarons')
+
+  chartInstance.setOption({
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b} : {c} ({d}%)',
     },
-  },
-};
+    legend: {
+      left: 'center',
+      bottom: '10',
+      data: column.value,
+    },
+    calculable: true,
+    series: [
+      {
+        name: '商品分类销售占总销售的比例',
+        type: 'pie',
+        roseType: 'radius',
+        radius: [15, 95],
+        center: ['50%', '38%'],
+        data: orderCountDatas.value,
+        animationEasing: 'cubicInOut',
+        animationDuration: 2600,
+      },
+    ],
+  })
+}
+
+onMounted(() => {
+  getOrderCount()
+    .then((res) => {
+      column.value = res.column
+      orderCountDatas.value = res.orderCountDatas
+    })
+    .then(() => {
+      initChart()
+    })
+
+  resizeHandler = debounce(() => {
+    const chartInstance = echarts.init(chartRef.value, 'macarons')
+    chartInstance.resize()
+  }, 100)
+  window.addEventListener('resize', resizeHandler)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', resizeHandler)
+  const chartInstance = echarts.init(chartRef.value, 'macarons')
+  chartInstance.dispose()
+})
 </script>
 
 
@@ -124,4 +123,3 @@ export default {
     margin-bottom: 10px;
   }
 </style>
-

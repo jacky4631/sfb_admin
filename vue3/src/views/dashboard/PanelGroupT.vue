@@ -68,40 +68,46 @@
       </el-row>
     </div>
 </template>
-<script>
-import CountUp from '@/components/CountUp'
+<script setup>
+import { onMounted, reactive } from 'vue'
 import { gett } from '@/api/visits'
-export default {
-  components: {
-    CountUp
-  },
-  data() {
-    return {
-      count: { todayPrice: 0, todayCount: 0, proPrice: 0, proCount: 0,
-        monthPrice: 0, monthCount: 0, lastWeekCount: 0, lastWeekPrice: 0 },
-        grid: {
-        xl: 3,
-        lg: 3,
-        md: 6,
-        sm: 8,
-        xs: 8,
-      },
-    }
-  },
-  mounted() {
-    gett().then(res => {
-      this.count.todayPrice = res.todayPrice
-      this.count.todayCount = res.todayCount
-      this.count.proCount = res.proCount
-      this.count.proPrice = res.proPrice
 
-      this.count.monthPrice = res.monthPrice
-      this.count.monthCount = res.monthCount
-      this.count.lastWeekCount = res.lastWeekCount
-      this.count.lastWeekPrice = res.lastWeekPrice
-    })
-  }
+defineOptions({
+  name: 'PanelGroupT'
+})
+
+const count = reactive({
+  todayPrice: 0,
+  todayCount: 0,
+  proPrice: 0,
+  proCount: 0,
+  monthPrice: 0,
+  monthCount: 0,
+  lastWeekCount: 0,
+  lastWeekPrice: 0
+})
+
+const grid = {
+  xl: 3,
+  lg: 3,
+  md: 6,
+  sm: 8,
+  xs: 8
 }
+
+onMounted(() => {
+  gett().then(res => {
+    count.todayPrice = res.todayPrice
+    count.todayCount = res.todayCount
+    count.proCount = res.proCount
+    count.proPrice = res.proPrice
+
+    count.monthPrice = res.monthPrice
+    count.monthCount = res.monthCount
+    count.lastWeekCount = res.lastWeekCount
+    count.lastWeekPrice = res.lastWeekPrice
+  })
+})
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

@@ -28,70 +28,75 @@
           :value="item.id">
         </el-option>
       </el-select>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="categoryVisible = false">取 消</el-button>
-        <el-button type="primary" @click="categoryChanged">确 定</el-button>
-      </span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="categoryVisible = false">取 消</el-button>
+          <el-button type="primary" @click="categoryChanged">确 定</el-button>
+        </span>
+      </template>
     </el-dialog>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue'
 import { getClassify } from '@/api/canvasApi.js'
-export default {
-  name: 'tool-select-category',
-  data () {
-    return {
-      selectName: '',
-      categoryValue: [],
-      selectedCategoryList: [],
-      categoryList: [],
-      categoryVisible: false
-    }
+
+const props = defineProps({
+  title: {
+    type: String,
+    default: '链接'
   },
-  props: {
-    title: {
-      type: String,
-      default: '链接'
-    },
-    category: {
-      type: Array,
-      default: () => []
-    }
-  },
-  mounted () {
-    this.getCategory()
-    this.selectedCategoryList = this.category
-  },
-  methods: {
-    // 获取类别
-    getCategory () {
-      getClassify().then(res => {
-        this.categoryList = res.data
-      })
-    },
-    // 打开添加弹窗
-    openDialog () {
-      this.categoryVisible = true
-    },
-    // 类别选择
-    categoryChanged () {
-      this.categoryVisible = false
-      this.selectedCategoryList = this.categoryList.filter((item) => {
-        for (let i = 0; i < this.categoryValue.length; i++) {
-          if (this.categoryValue[i] === item.id) {
-            return true
-          }
-        }
-      })
-      this.$emit('update:category', this.selectedCategoryList)
-    },
-    // 删除选择
-    deleteCategory () {
-      this.categoryValue = []
-      this.$emit('update:category', [])
-    }
+  category: {
+    type: Array,
+    default: () => []
   }
+})
+
+defineOptions({ name: 'tool-select-category' })
+
+const emit = defineEmits(['update:category'])
+
+const selectName = ref('')
+const categoryValue = ref([])
+const selectedCategoryList = ref([])
+const categoryList = ref([])
+const categoryVisible = ref(false)
+
+onMounted(() => {
+  getCategory()
+  selectedCategoryList.value = props.category
+})
+
+// 获取类别
+function getCategory() {
+  getClassify().then(res => {
+    categoryList.value = res.data
+  })
+}
+
+// 打开添加弹窗
+function openDialog() {
+  categoryVisible.value = true
+}
+
+// 类别选择
+function categoryChanged() {
+  categoryVisible.value = false
+  selectedCategoryList.value = categoryList.value.filter((item) => {
+    for (let i = 0; i < categoryValue.value.length; i++) {
+      if (categoryValue.value[i] === item.id) {
+        return true
+      }
+    }
+  })
+  emit('update:category', selectedCategoryList.value)
+}
+
+// 删除选择
+function deleteCategory() {
+  categoryValue.value = []
+  emit('update:category', [])
 }
 </script>
 

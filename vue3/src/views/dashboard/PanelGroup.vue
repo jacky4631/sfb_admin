@@ -4,10 +4,12 @@
       <el-row :gutter="24" class="baseInfo">
         <el-col :xs="12" :sm="12" :lg="6" class="ivu-mb">
           <el-card :bordered="false" dis-hover :padding="12">
-            <div slot="header" class="acea-row row-between-wrapper">
-              <span>会员总数</span>
-              <el-tag type="success">全平台</el-tag>
-            </div>
+            <template #header>
+              <div class="acea-row row-between-wrapper">
+                <span>会员总数</span>
+                <el-tag type="success">全平台</el-tag>
+              </div>
+            </template>
             <div class="content" v-if="count">
               <span class="content-number spBlock mb15"><count-up :start-val="0" :end-val="count.userCount" :duration="2600" class="card-panel-num" /></span>
               <el-divider></el-divider>
@@ -30,10 +32,12 @@
         </el-col>
         <el-col :xs="12" :sm="12" :lg="6" class="ivu-mb">
           <el-card :bordered="false" dis-hover :padding="12">
-            <div slot="header" class="acea-row row-between-wrapper">
-              <span>今日订单数</span>
-              <el-tag type="success">全平台</el-tag>
-            </div>
+            <template #header>
+              <div class="acea-row row-between-wrapper">
+                <span>今日订单数</span>
+                <el-tag type="success">全平台</el-tag>
+              </div>
+            </template>
             <div class="content" v-if="count">
               <span class="content-number spBlock mb15"><count-up :start-val="0" :end-val="count.todayCount" :duration="3000" class="card-panel-num" /> 单</span>
               <el-divider></el-divider>
@@ -56,10 +60,12 @@
         </el-col>
         <el-col :xs="12" :sm="12" :lg="6" class="ivu-mb">
           <el-card :bordered="false" dis-hover :padding="12">
-            <div slot="header" class="acea-row row-between-wrapper">
-              <span>今日成交额</span>
-              <el-tag type="success">全平台</el-tag>
-            </div>
+            <template #header>
+              <div class="acea-row row-between-wrapper">
+                <span>今日成交额</span>
+                <el-tag type="success">全平台</el-tag>
+              </div>
+            </template>
             <div class="content" v-if="count">
               <span class="content-number spBlock mb15"><count-up :start-val="0" :end-val="count.todayPrice" :decimals="2" :duration="3200" class="card-panel-num" /> 元</span>
               <el-divider></el-divider>
@@ -82,10 +88,12 @@
         </el-col>
         <el-col :xs="12" :sm="12" :lg="6" class="ivu-mb">
           <el-card :bordered="false" dis-hover :padding="12">
-            <div slot="header" class="acea-row row-between-wrapper">
-              <span>今日预估佣金</span>
-              <el-tag type="success">全平台</el-tag>
-            </div>
+            <template #header>
+              <div class="acea-row row-between-wrapper">
+                <span>今日预估佣金</span>
+                <el-tag type="success">全平台</el-tag>
+              </div>
+            </template>
             <div class="content" v-if="count">
               <span class="content-number spBlock mb15"><count-up :start-val="0" :end-val="count.todayFee" :decimals="2" :duration="3600" class="card-panel-num" /> 元</span>
               <el-divider></el-divider>
@@ -110,57 +118,53 @@
     </div>
   </div>
 </template>
-<script>
-import CountUp from "@/components/CountUp";
-import { gett } from "@/api/visits";
-export default {
-  components: {
-    CountUp,
-  },
-  data() {
-    return {
-      count: {
-        todayPrice: 0,
-        todayFee: 0,
-        todayCount: 0,
-        monthPrice: 0,
-        monthFee: 0,
-        monthCount: 0,
-        proMonthPrice: 0,
-        proMonthFee: 0,
-        proMonthCount: 0,
-        userCount: 0,
-        userTodayCount: 0,
-        userProCount: 0,
-        userMonthCount: 0
-      },
+<script setup>
+import CountUp from '@/components/CountUp'
+import { gett } from '@/api/visits'
+import { onMounted, reactive } from 'vue'
 
-    };
-  },
-  mounted() {
-    gett().then((res) => {
-      this.count.todayPrice = res.todayPrice;
-      this.count.todayFee = res.todayFee;
-      this.count.todayCount = res.todayCount;
-      this.count.proCount = res.proCount;
-      this.count.proPrice = res.proPrice;
-      this.count.proFee = res.proFee;
+defineOptions({
+  name: 'PanelGroup'
+})
 
-      this.count.monthPrice = res.monthPrice;
-      this.count.monthFee = res.monthFee;
-      this.count.monthCount = res.monthCount;
-      this.count.proMonthPrice = res.proMonthPrice;
-      this.count.proMonthFee = res.proMonthFee;
-      this.count.proMonthCount = res.proMonthCount;
+const count = reactive({
+  todayPrice: 0,
+  todayFee: 0,
+  todayCount: 0,
+  monthPrice: 0,
+  monthFee: 0,
+  monthCount: 0,
+  proMonthPrice: 0,
+  proMonthFee: 0,
+  proMonthCount: 0,
+  userCount: 0,
+  userTodayCount: 0,
+  userProCount: 0,
+  userMonthCount: 0
+})
 
-      this.count.userCount = res.userCount;
-      this.count.userTodayCount = res.userTodayCount;
-      this.count.userProCount = res.userProCount;
-      this.count.userMonthCount = res.userMonthCount;
+onMounted(() => {
+  gett().then((res) => {
+    count.todayPrice = res.todayPrice
+    count.todayFee = res.todayFee
+    count.todayCount = res.todayCount
+    count.proCount = res.proCount
+    count.proPrice = res.proPrice
+    count.proFee = res.proFee
 
-    });
-  },
-};
+    count.monthPrice = res.monthPrice
+    count.monthFee = res.monthFee
+    count.monthCount = res.monthCount
+    count.proMonthPrice = res.proMonthPrice
+    count.proMonthFee = res.proMonthFee
+    count.proMonthCount = res.proMonthCount
+
+    count.userCount = res.userCount
+    count.userTodayCount = res.userTodayCount
+    count.userProCount = res.userProCount
+    count.userMonthCount = res.userMonthCount
+  })
+})
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
