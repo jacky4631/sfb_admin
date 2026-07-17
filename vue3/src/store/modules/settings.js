@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 export const useSettingsStore = defineStore('settings', {
   state: () => ({
     title: '苏分宝',
+    theme: '#1890ff',
     showSettings: true,
     tagsView: true,
     fixedHeader: true,

@@ -420,8 +420,10 @@ function callVmHook(crud, hook) {
     nargs.push(arguments[i])
   }
   // 1. 优先检查直接回调函数（Vue 3 视图常用模式：crud.HOOK.afterToCU = fn）
-  if (typeof crud.HOOK[hook] === 'function') {
-    ret = crud.HOOK[hook].apply(null, nargs) !== false && ret
+  // 使用 CRUD.HOOK 静态属性兜底，避免 reactive proxy 上属性丢失
+  const hookRef = crud.HOOK || CRUD.HOOK
+  if (typeof hookRef[hook] === 'function') {
+    ret = hookRef[hook].apply(null, nargs) !== false && ret
   }
   // 2. 再检查注册的组件实例方法
   const vmSet = new Set()
