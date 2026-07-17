@@ -28,9 +28,10 @@
 <script setup>
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 import path from 'path'
 import ScrollPane from './ScrollPane'
+import { useTagsViewStore } from '@/store/modules/tagsView'
+import { usePermissionStore } from '@/store/modules/permission'
 
 defineOptions({
   components: { ScrollPane }
@@ -38,10 +39,11 @@ defineOptions({
 
 const route = useRoute()
 const router = useRouter()
-const store = useStore()
+const tagsViewStore = useTagsViewStore()
+const permissionStore = usePermissionStore()
 
-const visitedViews = computed(() => store.state.tagsView.visitedViews)
-const routes = computed(() => store.state.permission.routers)
+const visitedViews = computed(() => tagsViewStore.visitedViews)
+const routes = computed(() => permissionStore.routers)
 
 const visible = ref(false)
 const top = ref(0)
@@ -80,7 +82,7 @@ const initTags = () => {
   const affix = affixTags.value = filterAffixTags(routes.value)
   for (const tag_ of affix) {
     if (tag_.name) {
-      store.dispatch('tagsView/addVisitedView', tag_)
+      tagsViewStore.ADD_VISITED_VIEW(tag_)
     }
   }
 }
@@ -88,7 +90,7 @@ const initTags = () => {
 const addTags = () => {
   const { name } = route
   if (name) {
-    store.dispatch('tagsView/addView', route)
+    tagsViewStore.addView(route)
   }
   return false
 }
@@ -100,7 +102,7 @@ const moveToCurrentTag = () => {
       if (tag_.to.path === route.path) {
         scrollPane.value.moveToTarget(tag_)
         if (tag_.to.fullPath !== route.fullPath) {
-          store.dispatch('tagsView/updateVisitedView', route)
+          tagsViewStore.UPDATE_VISITED_VIEW(route)
         }
         break
       }
@@ -109,7 +111,7 @@ const moveToCurrentTag = () => {
 }
 
 const refreshSelectedTag = (view) => {
-  store.dispatch('tagsView/delCachedView', view).then(() => {
+  tagsViewStore.delCachedView(view).then(() => {
     const { fullPath } = view
     nextTick(() => {
       router.replace({
@@ -120,7 +122,7 @@ const refreshSelectedTag = (view) => {
 }
 
 const closeSelectedTag = (view) => {
-  store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
+  tagsViewStore.delView(view).then(({ visitedViews }) => {
     if (isActive(view)) {
       toLastView(visitedViews, view)
     }
@@ -129,13 +131,13 @@ const closeSelectedTag = (view) => {
 
 const closeOthersTags = () => {
   router.push(selectedTag.value)
-  store.dispatch('tagsView/delOthersViews', selectedTag.value).then(() => {
+  tagsViewStore.delOthersViews(selectedTag.value).then(() => {
     moveToCurrentTag()
   })
 }
 
 const closeAllTags = (view) => {
-  store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
+  tagsViewStore.delAllViews().then(({ visitedViews }) => {
     if (affixTags.value.some(tag_ => tag_.path === view.path)) {
       return
     }

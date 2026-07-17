@@ -17,19 +17,21 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import ResizeMixin from './mixin/ResizeHandler'
 import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
+import { useAppStore } from '@/store/modules/app'
+import { useSettingsStore } from '@/store/modules/settings'
 
-const store = useStore()
+const appStore = useAppStore()
+const settingsStore = useSettingsStore()
 const route = useRoute()
 
-const sidebar = computed(() => store.state.app.sidebar)
-const device = computed(() => store.state.app.device)
-const showSettings = computed(() => store.state.settings.showSettings)
-const needTagsView = computed(() => store.state.settings.tagsView)
-const fixedHeader = computed(() => store.state.settings.fixedHeader)
+const sidebar = computed(() => appStore.sidebar)
+const device = computed(() => appStore.device)
+const showSettings = computed(() => settingsStore.showSettings)
+const needTagsView = computed(() => settingsStore.tagsView)
+const fixedHeader = computed(() => settingsStore.fixedHeader)
 
 const classObj = computed(() => ({
   hideSidebar: !sidebar.value.opened,
@@ -39,7 +41,7 @@ const classObj = computed(() => ({
 }))
 
 const handleClickOutside = () => {
-  store.dispatch('app/closeSideBar', { withoutAnimation: false })
+  appStore.closeSideBar({ withoutAnimation: false })
 }
 </script>
 

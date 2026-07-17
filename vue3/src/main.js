@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 import 'normalize.css/normalize.css'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
@@ -22,21 +22,17 @@ import 'highlight.js/styles/atom-one-dark.css'
 
 import '@/assets/font_icon/iconfont.css'
 import '@/assets/icons'
-import 'element-plus/theme-chalk/src/index.scss'
-import '@/assets/styles/element-variables.scss'
 import '@/assets/styles/index.scss'
 
 import App from './App'
 import router from './router'
-import store from './store'
+import pinia from './store'
 import './router/permission'
 
 const app = createApp(App)
-const pinia = createPinia()
 
 app.use(pinia)
 app.use(router)
-app.use(store)
 app.use(VueHighlightJS)
 app.use(mavonEditor)
 app.use(permission)

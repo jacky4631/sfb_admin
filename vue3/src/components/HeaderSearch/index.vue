@@ -19,16 +19,16 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, nextTick } from 'vue'
-import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import Fuse from 'fuse.js'
 import path from 'path'
+import { usePermissionStore } from '@/store/modules/permission'
 
 defineOptions({
   name: 'HeaderSearch'
 })
 
-const store = useStore()
+const permissionStore = usePermissionStore()
 const router = useRouter()
 
 const search = ref('')
@@ -38,7 +38,7 @@ const show = ref(false)
 const headerSearchSelect = ref(null)
 let fuse = undefined
 
-const routes = computed(() => store.state.permission.routers)
+const routes = computed(() => permissionStore.routers)
 
 watch(routes, (newRoutes) => {
   searchPool.value = generateRoutes(newRoutes)

@@ -1,6 +1,6 @@
 <script setup>
-import { useStore } from 'vuex'
 import { computed } from 'vue'
+import { useUserStore } from '@/store/modules/user'
 
 const props = defineProps({
   value: {
@@ -9,8 +9,8 @@ const props = defineProps({
   }
 })
 
-const store = useStore()
-const roles = computed(() => store.getters.roles)
+const userStore = useUserStore()
+const roles = computed(() => userStore.roles)
 
 const hasPermission = computed(() => {
   if (!props.value || props.value.length === 0) {

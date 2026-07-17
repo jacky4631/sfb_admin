@@ -11,8 +11,8 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
-import { useStore } from 'vuex'
 import { addClass, removeClass } from '@/utils'
+import { useSettingsStore } from '@/store/modules/settings'
 
 defineOptions({
   name: 'RightPanel'
@@ -29,22 +29,22 @@ const props = defineProps({
   }
 })
 
-const store = useStore()
+const settingsStore = useSettingsStore()
 const rightPanelRef = ref(null)
 
 const show = computed({
   get() {
-    return store.state.settings.showSettings
+    return settingsStore.showSettings
   },
   set(val) {
-    store.dispatch('settings/changeSetting', {
+    settingsStore.changeSetting({
       key: 'showSettings',
       value: val
     })
   }
 })
 
-const theme = computed(() => store.state.settings.theme)
+const theme = computed(() => settingsStore.theme)
 
 const addEventClick = () => {
   window.addEventListener('click', closeSidebar)

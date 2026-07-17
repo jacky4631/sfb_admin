@@ -34,21 +34,21 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import ThemePicker from '@/components/ThemePicker'
+import { useSettingsStore } from '@/store/modules/settings'
 
 defineOptions({
   components: { ThemePicker }
 })
 
-const store = useStore()
+const settingsStore = useSettingsStore()
 
 const fixedHeader = computed({
   get() {
-    return store.state.settings.fixedHeader
+    return settingsStore.fixedHeader
   },
   set(val) {
-    store.dispatch('settings/changeSetting', {
+    settingsStore.changeSetting({
       key: 'fixedHeader',
       value: val
     })
@@ -57,10 +57,10 @@ const fixedHeader = computed({
 
 const tagsView = computed({
   get() {
-    return store.state.settings.tagsView
+    return settingsStore.tagsView
   },
   set(val) {
-    store.dispatch('settings/changeSetting', {
+    settingsStore.changeSetting({
       key: 'tagsView',
       value: val
     })
@@ -69,10 +69,10 @@ const tagsView = computed({
 
 const sidebarLogo = computed({
   get() {
-    return store.state.settings.sidebarLogo
+    return settingsStore.sidebarLogo
   },
   set(val) {
-    store.dispatch('settings/changeSetting', {
+    settingsStore.changeSetting({
       key: 'sidebarLogo',
       value: val
     })
@@ -81,10 +81,10 @@ const sidebarLogo = computed({
 
 const uniqueOpened = computed({
   get() {
-    return store.state.settings.uniqueOpened
+    return settingsStore.uniqueOpened
   },
   set(val) {
-    store.dispatch('settings/changeSetting', {
+    settingsStore.changeSetting({
       key: 'uniqueOpened',
       value: val
     })
@@ -92,7 +92,7 @@ const uniqueOpened = computed({
 })
 
 const themeChange = (val) => {
-  store.dispatch('settings/changeSetting', {
+  settingsStore.changeSetting({
     key: 'theme',
     value: val
   })

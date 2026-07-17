@@ -45,26 +45,28 @@
       </el-form-item>
     </el-form>
     </div>
-    <div v-if="$store.state.settings.showFooter" id="el-login-footer">
-      <span v-html="$store.state.settings.footerTxt" />
+    <div v-if="showFooter" id="el-login-footer">
+      <span v-html="footerTxt" />
       <span> ⋅ </span>
-      <a href="http://beian.miit.gov.cn" target="_blank">{{ $store.state.settings.caseNumber }}</a>
+      <a href="http://beian.miit.gov.cn" target="_blank">{{ caseNumber }}</a>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onUnmounted } from 'vue'
+import { ref, reactive, computed, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useStore } from 'vuex'
 import { encrypt } from '@/utils/rsaEncrypt'
 import Config from '@/settings'
 import { getCodeImg } from '@/api/login'
 import Cookies from 'js-cookie'
+import { useUserStore } from '@/store/modules/user'
+import { useSettingsStore } from '@/store/modules/settings'
 
 const router = useRouter()
 const route = useRoute()
-const store = useStore()
+const userStore = useUserStore()
+const settingsStore = useSettingsStore()
 
 const loginForm = reactive({
   username: 'admin',
@@ -143,7 +145,7 @@ const handleLogin = () => {
       Cookies.remove('rememberMe')
     }
     loading.value = true
-    store.dispatch('user/Login', user).then(() => {
+    userStore.Login(user).then(() => {
       loading.value = false
       router.push({ path: redirect.value || '/' })
     }).catch(() => {

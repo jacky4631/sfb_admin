@@ -21,21 +21,25 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/assets/styles/variables.scss'
+import { usePermissionStore } from '@/store/modules/permission'
+import { useAppStore } from '@/store/modules/app'
+import { useSettingsStore } from '@/store/modules/settings'
 
 defineOptions({
   components: { SidebarItem, Logo }
 })
 
 const route = useRoute()
-const store = useStore()
+const permissionStore = usePermissionStore()
+const appStore = useAppStore()
+const settingsStore = useSettingsStore()
 
-const permission_routers = computed(() => store.getters.permission_routers)
-const sidebar = computed(() => store.getters.sidebar)
-const uniqueOpened = computed(() => store.state.settings.uniqueOpened)
+const permission_routers = computed(() => permissionStore.routers)
+const sidebar = computed(() => appStore.sidebar)
+const uniqueOpened = computed(() => settingsStore.uniqueOpened)
 
 const activeMenu = computed(() => {
   const { meta, path } = route
@@ -45,7 +49,7 @@ const activeMenu = computed(() => {
   return path
 })
 
-const showLogo = computed(() => store.state.settings.sidebarLogo)
+const showLogo = computed(() => settingsStore.sidebarLogo)
 
 const isCollapse = computed(() => !sidebar.value.opened)
 </script>

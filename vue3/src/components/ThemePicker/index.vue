@@ -9,8 +9,8 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
+import { useSettingsStore } from '@/store/modules/settings'
 
 const ORIGINAL_THEME = '#409EFF' // default color
 
@@ -18,12 +18,12 @@ defineOptions({
   name: 'ThemePicker'
 })
 
-const store = useStore()
+const settingsStore = useSettingsStore()
 
 const chalk = ref('') // content of theme-chalk css
 const theme = ref('')
 
-const defaultTheme = computed(() => store.state.settings.theme)
+const defaultTheme = computed(() => settingsStore.theme)
 
 watch(defaultTheme, (val) => {
   theme.value = val

@@ -16,15 +16,17 @@
 
 <script setup>
 import { computed, nextTick } from 'vue'
-import { useStore } from 'vuex'
 import { ElMessage } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
+import { useAppStore } from '@/store/modules/app'
+import { useTagsViewStore } from '@/store/modules/tagsView'
 
 defineOptions({
   name: 'SizeSelect'
 })
 
-const store = useStore()
+const appStore = useAppStore()
+const tagsViewStore = useTagsViewStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -35,11 +37,11 @@ const sizeOptions = [
   { label: 'Mini', value: 'mini' }
 ]
 
-const size = computed(() => store.getters.size)
+const size = computed(() => appStore.size)
 
 const handleSetSize = (size) => {
   window.ELEMENT.size = size
-  store.dispatch('app/setSize', size)
+  appStore.setSize(size)
   refreshView()
   ElMessage({
     message: '布局设置成功',
@@ -48,7 +50,7 @@ const handleSetSize = (size) => {
 }
 
 const refreshView = () => {
-  store.dispatch('tagsView/delAllCachedViews', route)
+  tagsViewStore.DEL_ALL_CACHED_VIEWS()
 
   const { fullPath } = route
 

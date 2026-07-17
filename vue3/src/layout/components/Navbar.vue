@@ -31,26 +31,28 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import Search from '@/components/HeaderSearch'
 import Avatar from '@/assets/images/avatar.png'
+import { useAppStore } from '@/store/modules/app'
+import { useUserStore } from '@/store/modules/user'
 
-const store = useStore()
+const appStore = useAppStore()
+const userStore = useUserStore()
 const router = useRouter()
 
-const sidebar = computed(() => store.state.app.sidebar)
-const device = computed(() => store.state.app.device)
-const user = computed(() => store.state.user)
+const sidebar = computed(() => appStore.sidebar)
+const device = computed(() => appStore.device)
+const user = computed(() => userStore)
 
 const toggleSideBar = () => {
-  store.dispatch('app/toggleSideBar')
+  appStore.toggleSideBar()
 }
 
 const open = () => {
-  store.dispatch('user/LogOut').then(() => {
+  userStore.LogOut().then(() => {
     location.reload()
   })
 }

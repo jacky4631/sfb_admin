@@ -1,17 +1,15 @@
-import { mapGetters, mapMutations } from 'vuex'
+import { computed } from 'vue'
 import { useContainerStore } from '@/store/modules/container'
 
 export const toolMixin = {
   computed: {
-    ...mapGetters([
-      'activeComponent',
-      'componentsData'
-    ])
+    activeComponent: () => useContainerStore().activeComponent,
+    componentsData: () => useContainerStore().componentsData
   },
   methods: {
-    ...mapMutations({
-      setComponentsData: 'SET_COMPONENTS_DATA'
-    })
+    setComponentsData(data) {
+      useContainerStore().setComponentsData(data)
+    }
   }
 }
 
