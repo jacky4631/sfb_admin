@@ -1,4 +1,4 @@
-import { reactive, onMounted, onBeforeUnmount, provide, inject, ref } from 'vue'
+import { reactive, onMounted, onBeforeUnmount, provide, inject, ref, getCurrentInstance } from 'vue'
 import { initData, download } from '@/api/data'
 import { parseTime, downloadFile } from '@/utils/index'
 import { ElNotification } from 'element-plus'
@@ -403,6 +403,8 @@ function CRUD(options) {
   }
   // 记录初始默认的查询参数
   crud.defaultQuery = JSON.parse(JSON.stringify(data.query))
+  // 将 HOOK 常量附加到实例上，供 callVmHook 访问
+  crud.HOOK = CRUD.HOOK
   // 移除 Object.freeze，Vue 3 reactive 需要可变对象
   return crud
 }
@@ -445,11 +447,62 @@ function mergeOptions(src, opts) {
 }
 
 /**
- * crud主页 - Vue 3 Composition API composable
+ * crud主页 - 支持 composable 和 mixin 双模式
  */
-function presenter(crud) {
-  // 提供 crud 实例给子组件 inject
-  provide('crud', crud)
+function presenter(crudInstance) {
+  // mixin 模式：在模块作用域调用时（Options API mixins），返回 mixin 对象
+  if (!getCurrentInstance()) {
+    function obColumns(columns) {
+      return {
+        visible(col) {
+          return !columns || !columns[col] ? true : columns[col].visible
+        }
+      }
+    }
+    return {
+      provide() {
+        return {
+          crud: crudInstance,
+          'crud.query': crudInstance.query,
+          'crud.page': crudInstance.page,
+          'crud.form': crudInstance.form
+        }
+      },
+      data() {
+        return {
+          searchToggle: true,
+          columns: obColumns()
+        }
+      },
+      methods: {
+        parseTime
+      },
+      created() {
+        crudInstance.registerVM('presenter', this, 0)
+        if (crudInstance.queryOnPresenterCreated) {
+          crudInstance.toQuery()
+        }
+      },
+      beforeUnmount() {
+        crudInstance.unregisterVM(this)
+      },
+      mounted() {
+        const columns = {}
+        if (this.$refs.table && this.$refs.table.columns) {
+          this.$refs.table.columns.forEach(e => {
+            if (!e.property || e.type !== 'default') return
+            columns[e.property] = { label: e.label, visible: true }
+          })
+        }
+        this.columns = obColumns(columns)
+        crudInstance.updateProp('tableColumns', columns)
+        crudInstance.registerRef('table', this.$refs.table)
+      }
+    }
+  }
+
+  // composable 模式：在 <script setup> 中调用
+  provide('crud', crudInstance)
 
   const columns = ref({
     visible(col) { return true }
@@ -457,18 +510,12 @@ function presenter(crud) {
   const tableRef = ref(null)
 
   onMounted(() => {
-    // 收集表格列信息
     const cols = {}
     const table = tableRef.value
     if (table && table.columns) {
       table.columns.forEach(e => {
-        if (!e.property || e.type !== 'default') {
-          return
-        }
-        cols[e.property] = {
-          label: e.label,
-          visible: true
-        }
+        if (!e.property || e.type !== 'default') return
+        cols[e.property] = { label: e.label, visible: true }
       })
     }
     columns.value = {
@@ -476,85 +523,154 @@ function presenter(crud) {
         return !cols[col] ? true : cols[col].visible
       }
     }
-    crud.updateProp('tableColumns', cols)
-    // 注册 table ref
-    crud.registerRef('table', table)
-    if (crud.queryOnPresenterCreated) {
-      crud.toQuery()
+    crudInstance.updateProp('tableColumns', cols)
+    crudInstance.registerRef('table', tableRef.value)
+    if (crudInstance.queryOnPresenterCreated) {
+      crudInstance.toQuery()
     }
   })
 
   onBeforeUnmount(() => {
-    crud.vms.forEach((vm, i) => {
-      if (vm && vm.type === 'presenter') crud.vms[i] = undefined
+    crudInstance.vms.forEach((vm, i) => {
+      if (vm && vm.type === 'presenter') crudInstance.vms[i] = undefined
     })
   })
 
   return {
-    crud,
+    crud: crudInstance,
     columns,
-    query: crud.query,
-    form: crud.form,
+    query: crudInstance.query,
+    form: crudInstance.form,
     tableRef
   }
 }
 
 /**
- * 头部 - Vue 3 composable
+ * 头部 - 支持 composable 和 mixin 双模式
  */
 function header() {
-  const crud = inject('crud')
+  // mixin 模式
+  if (!getCurrentInstance()) {
+    return {
+      inject: {
+        crud: { from: 'crud' },
+        query: { from: 'crud.query' }
+      },
+      created() {
+        this.crud.registerVM('header', this, 1)
+      },
+      beforeUnmount() {
+        this.crud.unregisterVM(this)
+      }
+    }
+  }
+
+  // composable 模式
+  const crudInst = inject('crud')
   onBeforeUnmount(() => {
-    crud.vms.forEach((vm, i) => {
-      if (vm && vm.type === 'header') crud.vms[i] = undefined
+    crudInst.vms.forEach((vm, i) => {
+      if (vm && vm.type === 'header') crudInst.vms[i] = undefined
     })
   })
-  return { crud, query: crud.query }
+  return { crud: crudInst, query: crudInst.query }
 }
 
 /**
- * 分页 - Vue 3 composable
+ * 分页 - 支持 composable 和 mixin 双模式
  */
 function pagination() {
-  const crud = inject('crud')
+  // mixin 模式
+  if (!getCurrentInstance()) {
+    return {
+      inject: {
+        crud: { from: 'crud' },
+        page: { from: 'crud.page' }
+      },
+      created() {
+        this.crud.registerVM('pagination', this, 2)
+      },
+      beforeUnmount() {
+        this.crud.unregisterVM(this)
+      }
+    }
+  }
+
+  // composable 模式
+  const crudInst = inject('crud')
   onBeforeUnmount(() => {
-    crud.vms.forEach((vm, i) => {
-      if (vm && vm.type === 'pagination') crud.vms[i] = undefined
+    crudInst.vms.forEach((vm, i) => {
+      if (vm && vm.type === 'pagination') crudInst.vms[i] = undefined
     })
   })
-  return { crud }
+  return { crud: crudInst }
 }
 
 /**
- * 表单 - Vue 3 composable
+ * 表单 - 支持 composable 和 mixin 双模式
  */
 function form(defaultForm) {
-  const crud = inject('crud')
-  crud.defaultForm = defaultForm
-  crud.resetForm()
+  // mixin 模式
+  if (!getCurrentInstance()) {
+    return {
+      inject: {
+        crud: { from: 'crud' },
+        form: { from: 'crud.form' }
+      },
+      created() {
+        this.crud.registerVM('form', this, 3)
+        this.crud.defaultForm = defaultForm
+        this.crud.resetForm()
+      },
+      beforeUnmount() {
+        this.crud.unregisterVM(this)
+      }
+    }
+  }
+
+  // composable 模式
+  const crudInst = inject('crud')
+  crudInst.defaultForm = defaultForm
+  crudInst.resetForm()
   onBeforeUnmount(() => {
-    crud.vms.forEach((vm, i) => {
-      if (vm && vm.type === 'form') crud.vms[i] = undefined
+    crudInst.vms.forEach((vm, i) => {
+      if (vm && vm.type === 'form') crudInst.vms[i] = undefined
     })
   })
-  return { crud, form: crud.form }
+  return { crud: crudInst, form: crudInst.form }
 }
 
 /**
- * crud - Vue 3 composable（子组件注入）
+ * crud - 支持 composable 和 mixin 双模式
  */
 function crud(options = {}) {
   const defaultOptions = {
     type: undefined
   }
   options = mergeOptions(defaultOptions, options)
-  const crudInstance = inject('crud')
+
+  // mixin 模式
+  if (!getCurrentInstance()) {
+    return {
+      inject: {
+        crud: { from: 'crud' }
+      },
+      created() {
+        this.crud.registerVM(options.type, this)
+      },
+      beforeUnmount() {
+        this.crud.unregisterVM(this)
+      }
+    }
+  }
+
+  // composable 模式
+  const crudInst = inject('crud')
   onBeforeUnmount(() => {
-    crudInstance.vms.forEach((vm, i) => {
-      if (vm && vm.vm === crudInstance) crudInstance.vms[i] = undefined
+    crudInst.vms.forEach((vm, i) => {
+      if (vm && vm.vm === crudInst) crudInst.vms[i] = undefined
     })
   })
-  return { crud: crudInstance }
+  return { crud: crudInst }
 }
 
 /**

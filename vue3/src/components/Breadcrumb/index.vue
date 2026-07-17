@@ -61,9 +61,9 @@ const handleLink = (item) => {
 
 watch(
   () => route.path,
-  (route) => {
+  (path) => {
     // if you go to the redirect page, do not update the breadcrumbs
-    if (route.path.startsWith('/redirect/')) {
+    if (path.startsWith('/redirect/')) {
       return
     }
     getBreadcrumb()
