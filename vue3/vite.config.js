@@ -17,7 +17,9 @@ export default defineConfig(({ mode }) => {
       resolvers: [ElementPlusResolver()]
     }),
     Components({
-      resolvers: [ElementPlusResolver()]
+      resolvers: [ElementPlusResolver()],
+      dirs: ['src/components'],
+      exclude: ['Pagination']
     })
   ],
   base: '/',
@@ -60,6 +62,7 @@ export default defineConfig(({ mode }) => {
   css: {
     preprocessorOptions: {
       scss: {
+        api: 'modern',
         additionalData: `@use "@/assets/styles/contaner.scss" as *;`
       }
     }

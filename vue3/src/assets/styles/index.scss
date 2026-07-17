@@ -1,11 +1,11 @@
-@import 'variables';
-@import 'mixin';
-@import 'transition';
+@use 'variables' as *;
+@use 'mixin' as *;
+@use 'transition' as *;
+@use 'sidebar' as *;
+@use 'btn' as *;
+@use 'eladmin' as *;
+@use 'mshop' as *;
 @import 'element-plus/dist/index.css';
-@import 'sidebar';
-@import 'btn';
-@import 'eladmin';
-@import "mshop";
 
 body {
   height: 100%;
