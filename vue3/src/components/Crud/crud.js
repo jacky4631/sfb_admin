@@ -654,7 +654,8 @@ function crud(options = {}) {
   if (!getCurrentInstance()) {
     return {
       inject: {
-        crud: { from: 'crud' }
+        crud: { from: 'crud' },
+        query: { from: 'crud.query' }
       },
       created() {
         this.crud.registerVM(options.type, this)

@@ -7,7 +7,7 @@ export default class Dict {
   }
 
   async init(names, completeCallback) {
-    if (names === undefined || name === null) {
+    if (names === undefined || names === null) {
       throw new Error('need Dict names')
     }
     const ps = []
@@ -15,6 +15,8 @@ export default class Dict {
       this.dict[n] = []
       this.dict.dict = this.dict.dict || {}
       this.dict.label = this.dict.label || {}
+      this.dict.dict[n] = this.dict.dict[n] || {}
+      this.dict.label[n] = this.dict.label[n] || {}
       ps.push(getDictDetail(n).then(data => {
         this.dict[n].splice(0, 0, ...data.content)
         data.content.forEach(d => {

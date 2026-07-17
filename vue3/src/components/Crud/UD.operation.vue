@@ -58,7 +58,8 @@ const toDelete = () => {
 }
 
 // 注册 afterDelete 钩子：删除完成后自动关闭弹窗
-crud.HOOK[CRUD.HOOK.afterDelete] = (crudInst, data) => {
+const hookRef = crud.HOOK || CRUD.HOOK
+hookRef[CRUD.HOOK.afterDelete] = (crudInst, data) => {
   if (data === props.data) {
     pop.value = false
   }
