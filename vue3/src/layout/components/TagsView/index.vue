@@ -27,7 +27,7 @@
 <script setup>
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import path from 'path'
+import { resolveUrlPath } from '@/utils'
 import ScrollPane from './ScrollPane'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { usePermissionStore } from '@/store/modules/permission'
@@ -59,7 +59,7 @@ const filterAffixTags = (routes, basePath = '/') => {
   let tags = []
   routes.forEach(route_ => {
     if (route_.meta && route_.meta.affix) {
-      const tagPath = path.resolve(basePath, route_.path)
+      const tagPath = resolveUrlPath(basePath, route_.path)
       tags.push({
         fullPath: tagPath,
         path: tagPath,
@@ -81,7 +81,7 @@ const initTags = () => {
   const affix = affixTags.value = filterAffixTags(routes.value)
   for (const tag_ of affix) {
     if (tag_.name) {
-      tagsViewStore.ADD_VISITED_VIEW(tag_)
+      tagsViewStore.addAffixView(tag_)
     }
   }
 }
@@ -101,7 +101,7 @@ const moveToCurrentTag = () => {
       if (tag_.to.path === route.path) {
         scrollPane.value.moveToTarget(tag_)
         if (tag_.to.fullPath !== route.fullPath) {
-          tagsViewStore.UPDATE_VISITED_VIEW(route)
+          tagsViewStore.updateVisitedView(route)
         }
         break
       }

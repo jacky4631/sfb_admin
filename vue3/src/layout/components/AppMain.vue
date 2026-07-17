@@ -2,7 +2,9 @@
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViews">
-        <router-view :key="key" />
+        <router-view v-slot="{ Component }">
+          <component :is="Component" :key="key" />
+        </router-view>
       </keep-alive>
     </transition>
     <div v-if="showFooter" id="el-main-footer">

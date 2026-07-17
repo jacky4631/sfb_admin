@@ -25,17 +25,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import path from 'path'
+import { ref, computed, onMounted } from 'vue'
+import { resolveUrlPath } from '@/utils'
 import { isExternal } from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
-import FixiOSBug from './FixiOSBug'
+import { useAppStore } from '@/store/modules/app'
 
 defineOptions({
-  name: 'SidebarItem',
-  components: { Item, AppLink },
-  mixins: [FixiOSBug]
+  name: 'SidebarItem'
 })
 
 const props = defineProps({
@@ -55,6 +53,23 @@ const props = defineProps({
 
 const subMenu = ref(null)
 const onlyOneChild = ref(null)
+
+// FixiOSBug mixin logic
+const appStore = useAppStore()
+const device = computed(() => appStore.device)
+
+onMounted(() => {
+  const $subMenu = subMenu.value
+  if ($subMenu) {
+    const handleMouseleave = $subMenu.handleMouseleave
+    $subMenu.handleMouseleave = (e) => {
+      if (device.value === 'mobile') {
+        return
+      }
+      handleMouseleave(e)
+    }
+  }
+})
 
 const hasOneShowingChild = (children = [], parent) => {
   const showingChildren = children.filter(item => {
@@ -85,6 +100,6 @@ const resolvePath = (routePath) => {
   if (isExternal(props.basePath)) {
     return props.basePath
   }
-  return path.resolve(props.basePath, routePath)
+  return resolveUrlPath(props.basePath, routePath)
 }
 </script>

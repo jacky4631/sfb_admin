@@ -21,7 +21,7 @@
 import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import Fuse from 'fuse.js'
-import path from 'path'
+import { resolveUrlPath } from '@/utils'
 import { usePermissionStore } from '@/store/modules/permission'
 
 defineOptions({
@@ -114,7 +114,7 @@ function generateRoutes(routes, basePath = '/', prefixTitle = []) {
     if (router.hidden) { continue }
 
     const data = {
-      path: path.resolve(basePath, router.path),
+      path: resolveUrlPath(basePath, router.path),
       title: [...prefixTitle]
     }
 

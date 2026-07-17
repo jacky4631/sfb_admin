@@ -427,3 +427,16 @@ export function RandomNumber() {
   }
   return randomStr
 }
+
+/**
+ * Resolve URL path (browser-compatible replacement for Node.js path.resolve)
+ * @param {string} basePath
+ * @param {string} routePath
+ * @returns {string}
+ */
+export function resolveUrlPath(basePath, routePath) {
+  if (!routePath) return basePath
+  if (routePath.charAt(0) === '/') return routePath
+  const base = basePath.endsWith('/') ? basePath : basePath + '/'
+  return base + routePath
+}
