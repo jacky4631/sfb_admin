@@ -14,7 +14,7 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
@@ -23,7 +23,7 @@
       <crudOperation :permission="permission">
         <template #left>
           <!-- 上传 -->
-          <el-button class="filter-item" size="small" type="primary" icon="el-icon-upload" @click="dialog = true">上传</el-button>
+          <el-button class="filter-item" size="small" type="primary" :icon="Upload" @click="dialog = true">上传</el-button>
           <!-- 同步 -->
           <el-button :icon="icon" class="filter-item" size="small" type="warning" @click="synchronize">同步</el-button>
           <!-- 配置 -->
@@ -31,7 +31,7 @@
             class="filter-item"
             size="small"
             type="success"
-            icon="el-icon-s-tools"
+            :icon="Tools"
             @click="doConfig"
           >配置</el-button>
         </template>
@@ -93,6 +93,7 @@ import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
 import { ElMessage } from 'element-plus'
+import { Refresh, Loading } from '@element-plus/icons-vue'
 
 const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
 const permission = ref({
@@ -100,7 +101,7 @@ const permission = ref({
 })
 const title = ref('文件')
 const dialog = ref(false)
-const icon = ref('el-icon-refresh')
+const icon = ref(Refresh)
 const url = ref('')
 const headers = ref({ 'Authorization': getToken() })
 const dialogImageUrl = ref('')
@@ -180,13 +181,13 @@ const download = (id) => {
 }
 
 const synchronize = () => {
-  icon.value = 'el-icon-loading'
+  icon.value = Loading
   crudQiNiu.sync().then(res => {
-    icon.value = 'el-icon-refresh'
+    icon.value = Refresh
     ElMessage.success('数据同步成功')
     crud.toQuery()
   }).catch(err => {
-    icon.value = 'el-icon-refresh'
+    icon.value = Refresh
     console.log(err.response.data.message)
   })
 }

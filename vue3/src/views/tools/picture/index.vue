@@ -12,7 +12,7 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
@@ -26,7 +26,7 @@
             class="filter-item"
             size="small"
             type="primary"
-            icon="el-icon-upload"
+            :icon="Upload"
             @click="dialog = true"
           >上传</el-button>
         </template>
@@ -37,7 +37,7 @@
               class="filter-item"
               size="small"
               type="success"
-              icon="el-icon-refresh"
+              :icon="Refresh"
               :loading="syncLoading"
               @click="sync"
             >同步</el-button>
@@ -57,7 +57,7 @@
         :action="imagesUploadApi"
         list-type="picture-card"
       >
-        <i class="el-icon-plus" />
+        <el-icon><Plus /></el-icon>
       </el-upload>
       <el-dialog append-to-body v-model="dialogVisible">
         <img :src="dialogImageUrl" width="100%" alt="">

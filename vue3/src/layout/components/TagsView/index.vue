@@ -12,7 +12,7 @@
         @contextmenu.prevent="openMenu(tag,$event)"
       >
         <span>{{ tag.title }}</span>
-        <span v-if="!(tag.meta && tag.meta.affix)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
+        <span v-if="!(tag.meta && tag.meta.affix)" class="tags-view-item-close" @click.prevent.stop="closeSelectedTag(tag)"><el-icon><Close /></el-icon></span>
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
@@ -277,7 +277,7 @@ defineExpose({
 //reset element css of el-icon-close
 .tags-view-wrapper {
   .tags-view-item {
-    .el-icon-close {
+    .tags-view-item-close {
       width: 16px;
       height: 16px;
       vertical-align: 2px;
@@ -285,11 +285,9 @@ defineExpose({
       text-align: center;
       transition: all .3s cubic-bezier(.645, .045, .355, 1);
       transform-origin: 100% 50%;
-      &:before {
-        transform: scale(.6);
-        display: inline-block;
-        vertical-align: -3px;
-      }
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       &:hover {
         background-color: #b4bccc;
         color: #fff;

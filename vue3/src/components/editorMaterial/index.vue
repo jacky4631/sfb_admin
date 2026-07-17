@@ -6,23 +6,23 @@
     <!--<img :src="item" alt="" class="el-upload-list__item-thumbnail">-->
     <!--<span class="el-upload-list__item-actions">-->
     <!--<span v-if="index != 0" class="el-upload-list__item-preview" @click="moveMaterial(index,'up')">-->
-    <!--<i class="el-icon-back" />-->
+    <!--<el-icon><Back /></el-icon>-->
     <!--</span>-->
     <!--<span class="el-upload-list__item-preview" @click="zoomMaterial(index)">-->
-    <!--<i class="el-icon-view" />-->
+    <!--<el-icon><View /></el-icon>-->
     <!--</span>-->
     <!--<span class="el-upload-list__item-delete" @click="deleteMaterial(index)">-->
-    <!--<i class="el-icon-delete" />-->
+    <!--<el-icon><Delete /></el-icon>-->
     <!--</span>-->
     <!--<span v-if="index != value.length-1" class="el-upload-list__item-preview" @click="moveMaterial(index,'down')">-->
-    <!--<i class="el-icon-right" />-->
+    <!--<el-icon><Right /></el-icon>-->
     <!--</span>-->
     <!--</span>-->
     <!--</div>-->
     <!--</li>-->
     <!--</ul>-->
     <!--<div v-if="num > value.length" tabindex="0" class="el-upload el-upload&#45;&#45;picture-card" :style="'width: '+width+'px;height: '+height+'px;'+'line-height:'+height+'px;'" @click="toSeleteMaterial">-->
-    <!--<i class="el-icon-plus" />-->
+    <!--<el-icon><Plus /></el-icon>-->
     <!--</div>-->
 
     <!--<el-dialog-->
@@ -43,7 +43,7 @@
         <el-aside width="unset">
           <div style="margin-bottom: 10px">
             <el-button
-              class="el-icon-plus"
+              :icon="Plus"
               size="small"
               @click="materialgroupAdd()"
             >
@@ -67,8 +67,8 @@
                 <el-col :span="12">
                   <span>{{ materialgroupObj.name }}</span>
                   <span v-if="materialgroupObj.id != '-1'">
-                    <el-button size="small" link class="el-icon-edit" style="margin-left: 10px;" @click="materialgroupEdit(materialgroupObj)">重命名</el-button>
-                    <el-button size="small" link class="el-icon-delete" style="margin-left: 10px;color: red" @click="materialgroupDelete(materialgroupObj)">删除</el-button>
+                    <el-button size="small" link :icon="Edit" style="margin-left: 10px;" @click="materialgroupEdit(materialgroupObj)">重命名</el-button>
+                    <el-button size="small" link :icon="Delete" style="margin-left: 10px;color: red" @click="materialgroupDelete(materialgroupObj)">删除</el-button>
                   </span>
                 </el-col>
                 <el-col :span="12" style="text-align: right;">
@@ -497,7 +497,7 @@ const sureUrls = () => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.el-icon-circle-close) {
+:deep(.el-upload-list__item .el-icon) {
   color: red;
 }
 .material-name{

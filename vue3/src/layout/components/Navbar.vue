@@ -12,7 +12,7 @@
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img :src="user.avatar || Avatar" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+          <el-icon><CaretBottom /></el-icon>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -124,7 +124,7 @@ const open = () => {
           border-radius: 10px;
         }
 
-        .el-icon-caret-bottom {
+        .el-icon {
           cursor: pointer;
           position: absolute;
           right: -20px;

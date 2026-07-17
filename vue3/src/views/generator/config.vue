@@ -7,7 +7,7 @@
             <span class="role-span">字段配置：{{ tableName }}</span>
             <el-button
               :loading="genLoading"
-              icon="el-icon-s-promotion"
+              :icon="Promotion"
               size="small"
               style="float: right; padding: 6px 9px;"
               type="success"
@@ -15,7 +15,7 @@
             >保存&生成</el-button>
             <el-button
               :loading="columnLoading"
-              icon="el-icon-check"
+              :icon="Check"
               size="small"
               style="float: right; padding: 6px 9px;margin-right: 9px"
               type="primary"
@@ -24,7 +24,7 @@
             <el-tooltip class="item" effect="dark" content="数据库中表字段变动时使用该功能" placement="top-start">
               <el-button
                 :loading="syncLoading"
-                icon="el-icon-refresh"
+                :icon="Refresh"
                 size="small"
                 style="float: right; padding: 6px 9px;"
                 type="info"
@@ -124,7 +124,7 @@
             <span class="role-span">生成配置</span>
             <el-button
               :loading="configLoading"
-              icon="el-icon-check"
+              :icon="Check"
               size="small"
               style="float: right; padding: 6px 9px"
               type="primary"

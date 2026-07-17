@@ -13,7 +13,7 @@
               class="filter-item"
               size="small"
               type="success"
-              icon="el-icon-refresh"
+              :icon="Refresh"
               :loading="syncLoading"
               :disabled="crud.selections.length === 0"
               @click="sync"

@@ -7,7 +7,7 @@
             <img :src="myValue" alt="" class="el-upload-list__item-thumbnail">
             <span class="el-upload-list__item-actions">
               <span class="el-upload-list__item-delete" @click="deleteMaterial">
-                <i class="el-icon-delete" />
+                <el-icon><Delete /></el-icon>
               </span>
             </span>
           </div>
@@ -15,7 +15,7 @@
       </ul>
     </div>
     <div v-else tabindex="0" class="el-upload el-upload--picture-card" :style="'width: '+width+'px;height: '+height+'px;'+'line-height:'+height+'px;'" @click="toSeleteMaterial">
-      <i class="el-icon-plus" />
+      <el-icon><Plus /></el-icon>
     </div>
 
     <el-dialog
@@ -36,7 +36,7 @@
         <el-aside width="unset">
           <div style="margin-bottom: 10px">
             <el-button
-              class="el-icon-plus"
+              :icon="Plus"
               size="small"
               @click="materialgroupAdd()"
             >
@@ -60,8 +60,8 @@
                 <el-col :span="12">
                   <span>{{ materialgroupObj.name }}</span>
                   <span v-if="materialgroupObj.id != '-1'">
-                    <el-button size="small" link class="el-icon-edit" style="margin-left: 10px;" @click="materialgroupEdit(materialgroupObj)">重命名</el-button>
-                    <el-button size="small" link class="el-icon-delete" style="margin-left: 10px;color: red" @click="materialgroupDelete(materialgroupObj)">删除</el-button>
+                    <el-button size="small" link :icon="Edit" style="margin-left: 10px;" @click="materialgroupEdit(materialgroupObj)">重命名</el-button>
+                    <el-button size="small" link :icon="Delete" style="margin-left: 10px;color: red" @click="materialgroupDelete(materialgroupObj)">删除</el-button>
                   </span>
                 </el-col>
                 <el-col :span="12" style="text-align: right;">
@@ -483,7 +483,7 @@ const sureUrls = () => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.el-icon-circle-close) {
+:deep(.el-upload-list__item .el-icon) {
   color: red;
 }
 .material-name{

@@ -13,15 +13,13 @@
           :src="imageUrl"
           class="single-img__img"
         >
-        <i
-          v-else
-          class="el-icon-upload"
-        >
+        <div v-else class="el-upload-dragger">
+          <el-icon><Upload /></el-icon>
           <div class="el-upload__text"><em>选择图片</em></div>
           <div
             class="el-upload__tip"
           >{{tip.label}}</div>
-        </i>
+        </div>
       </el-upload>
       <div
         class="overlay"

@@ -9,7 +9,7 @@
         class="filter-item"
         size="small"
         type="primary"
-        icon="el-icon-plus"
+        :icon="Plus"
         @click="crud.toAdd"
       >
         新增
@@ -20,7 +20,7 @@
         class="filter-item"
         size="small"
         type="success"
-        icon="el-icon-edit"
+        :icon="Edit"
         :disabled="crud.selections.length !== 1"
         @click="crud.toEdit(crud.selections[0])"
       >
@@ -31,7 +31,7 @@
         v-permission="permission.del"
         class="filter-item"
         type="danger"
-        icon="el-icon-delete"
+        :icon="Delete"
         size="small"
         :loading="crud.delAllLoading"
         :disabled="crud.selections.length === 0"
@@ -46,7 +46,7 @@
         class="filter-item"
         size="small"
         type="warning"
-        icon="el-icon-download"
+        :icon="Download"
         @click="crud.doExport"
       >导出</el-button>
       <!--右侧-->
@@ -57,12 +57,12 @@
         size="small"
         plain
         type="info"
-        icon="el-icon-search"
+        :icon="Search"
         @click="toggleSearch()"
       />
       <el-button
         size="small"
-        icon="el-icon-refresh"
+        :icon="Refresh"
         @click="crud.refresh()"
       />
       <el-popover
@@ -73,7 +73,7 @@
         <template #reference>
           <el-button
             size="small"
-            icon="el-icon-s-grid"
+            :icon="Grid"
           >
             <i
               class="fa fa-caret-down"

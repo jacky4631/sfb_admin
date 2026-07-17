@@ -12,7 +12,7 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
@@ -100,7 +100,7 @@
               v-permission="['admin','roles:edit']"
               :disabled="!showButton"
               :loading="menuLoading"
-              icon="el-icon-check"
+              :icon="Check"
               size="small"
               style="float: right; padding: 6px 9px"
               type="primary"

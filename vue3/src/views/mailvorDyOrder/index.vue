@@ -4,7 +4,7 @@
 
       <el-tabs v-model="status" type="card" @tab-click="handleOrder">
         <el-tab-pane name="">
-          <template #label><i class="el-icon-s-order"></i> 全部订单</template>
+          <template #label><el-icon><Tickets /></el-icon> 全部订单</template>
         </el-tab-pane>
       </el-tabs>
       <!--工具栏-->
@@ -26,17 +26,17 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
-        <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+        <el-button class="filter-item" size="small" type="success" :icon="Search" @click="toQuery">搜索</el-button>
         <!-- 新增 -->
         <el-button
           type="danger"
           class="filter-item"
           size="small"
-          icon="el-icon-refresh"
+          :icon="Refresh"
           @click="toQuery"
         >刷新</el-button>
       </div>
@@ -133,7 +133,7 @@
                         <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.orderId])">确定</el-button>
                       </div>
                       <template #reference>
-                        <el-button type="danger" icon="el-icon-delete" size="small">删除</el-button>
+                        <el-button type="danger" :icon="Delete" size="small">删除</el-button>
                       </template>
                     </el-popover>
                   </el-dropdown-item>

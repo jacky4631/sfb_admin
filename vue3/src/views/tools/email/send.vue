@@ -10,8 +10,8 @@
           :label="'收件邮箱' + (index === 0 ? '': index)"
       >
         <el-input v-model="domain.value" style="width: 550px"/>
-        <el-button icon="el-icon-plus" @click="addDomain"/>
-        <el-button style="margin-left:0;" icon="el-icon-minus" @click.prevent="removeDomain(domain)"/>
+        <el-button :icon="Plus" @click="addDomain"/>
+        <el-button style="margin-left:0;" :icon="Minus" @click.prevent="removeDomain(domain)"/>
       </el-form-item>
       <el-form-item label="邮件内容">
         <ueditor-wrap v-model="form.content" :config="myConfig" @beforeInit="addCustomDialog"

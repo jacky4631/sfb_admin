@@ -4,25 +4,25 @@
 
       <el-tabs v-model="status" type="card" @tab-click="handleOrder">
         <el-tab-pane name="">
-          <template #label><i class="el-icon-s-order"></i> 全部订单</template>
+          <template #label><el-icon><Tickets /></el-icon> 全部订单</template>
         </el-tab-pane>
         <el-tab-pane name="4">
-          <template #label><i class="el-icon-bank-card"></i> 审核失败</template>
+          <template #label><el-icon><CreditCard /></el-icon> 审核失败</template>
         </el-tab-pane>
         <el-tab-pane name="3">
-          <template #label><i class="el-icon-refrigerator"></i> 审核成功</template>
+          <template #label><el-icon><Refrigerator /></el-icon> 审核成功</template>
         </el-tab-pane>
         <el-tab-pane name="5">
-          <template #label><i class="el-icon-truck"></i> 已经结算</template>
+          <template #label><el-icon><Van /></el-icon> 已经结算</template>
         </el-tab-pane>
         <el-tab-pane name="2">
-          <template #label><i class="el-icon-document"></i> 确认收货</template>
+          <template #label><el-icon><Document /></el-icon> 确认收货</template>
         </el-tab-pane>
         <el-tab-pane name="-1">
-          <template #label><i class="el-icon-refrigerator"></i> 未支付</template>
+          <template #label><el-icon><Refrigerator /></el-icon> 未支付</template>
         </el-tab-pane>
         <el-tab-pane name="1">
-          <template #label><i class="el-icon-document"></i> 已成团</template>
+          <template #label><el-icon><Document /></el-icon> 已成团</template>
         </el-tab-pane>
       </el-tabs>
       <!--工具栏-->
@@ -44,17 +44,17 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
-        <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+        <el-button class="filter-item" size="small" type="success" :icon="Search" @click="toQuery">搜索</el-button>
         <!-- 新增 -->
         <el-button
           type="danger"
           class="filter-item"
           size="small"
-          icon="el-icon-refresh"
+          :icon="Refresh"
           @click="toQuery"
         >刷新</el-button>
       </div>
@@ -216,7 +216,7 @@
                         <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.orderSn])">确定</el-button>
                       </div>
                       <template #reference>
-                        <el-button type="danger" icon="el-icon-delete" size="small">删除</el-button>
+                        <el-button type="danger" :icon="Delete" size="small">删除</el-button>
                       </template>
                     </el-popover>
                   </el-dropdown-item>

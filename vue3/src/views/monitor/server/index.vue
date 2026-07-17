@@ -41,8 +41,8 @@
             :type="scope.row.state === '1' ? 'success' : 'info'"
             disable-transitions
           >
-            <i v-if="scope.row.state === '1'" class="el-icon-success" />
-            <i v-if="scope.row.state === '0'" class="el-icon-error" />
+            <el-icon v-if="scope.row.state === '1'"><CircleCheck /></el-icon>
+            <el-icon v-if="scope.row.state === '0'"><CircleCloseFilled /></el-icon>
           </el-tag>
         </template>
       </el-table-column>

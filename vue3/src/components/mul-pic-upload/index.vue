@@ -10,7 +10,7 @@
       :file-list="imageList"
       :before-upload="beforeAvatarUpload"
     >
-      <i class="el-icon-plus" />
+      <el-icon><Plus /></el-icon>
     </el-upload>
     <el-dialog v-model="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">

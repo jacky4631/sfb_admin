@@ -243,15 +243,13 @@ onMounted(() => {
 .ivu-mb {
   margin-bottom: 10px;
 }
-.up,
-.el-icon-caret-top {
+.up {
   color: #f5222d;
   font-size: 12px;
   opacity: 1 !important;
 }
 
-.down,
-.el-icon-caret-bottom {
+.down {
   color: #39c15b;
   font-size: 12px;
   /*opacity: 100% !important;*/

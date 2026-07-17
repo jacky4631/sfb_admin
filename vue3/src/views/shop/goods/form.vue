@@ -74,7 +74,7 @@
               <el-form-item v-if="attrs.length!==0">
                 <div  v-for="(item, index) in attrs" :key="index">
                   <div class="acea-row row-middle"><span class="mr5">{{item.value}}</span>
-                    <i class="el-icon-circle-close"  @click="handleRemoveRole(index)"></i>
+                    <el-icon @click="handleRemoveRole(index)"><CircleClose /></el-icon>
                   </div>
                   <div class="rulesBox">
                     <el-tag type="dot" closable color="primary" v-for="(j, indexn) in item.detail" :key="indexn" :name="j" class="mr20" @close="handleRemove2(item.detail,indexn)">{{j}}</el-tag>
@@ -241,7 +241,7 @@
                     <el-image :src="scope.row.pic" class="el-avatar">
                       <template #error>
                         <div class="image-slot">
-                          <i class="el-icon-picture-outline"></i>
+                          <el-icon><Picture /></el-icon>
                         </div>
                       </template>
                     </el-image>
@@ -273,7 +273,7 @@
                     <el-image :src="scope.row.pic" :width="60" :height="60" >
                       <template #error>
                         <div class="image-slot">
-                          <i class="el-icon-picture-outline"></i>
+                          <el-icon><Picture /></el-icon>
                         </div>
                       </template>
                     </el-image>

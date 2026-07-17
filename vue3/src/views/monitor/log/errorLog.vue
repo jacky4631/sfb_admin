@@ -7,7 +7,7 @@
           <el-button
             class="filter-item"
             type="danger"
-            icon="el-icon-delete"
+            :icon="Delete"
             size="small"
             :loading="crud.delAllLoading"
             @click="confirmDelAll()"

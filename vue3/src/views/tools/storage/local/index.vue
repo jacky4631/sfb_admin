@@ -12,7 +12,7 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
@@ -26,7 +26,7 @@
             class="filter-item"
             size="small"
             type="primary"
-            icon="el-icon-upload"
+            :icon="Upload"
             @click="crud.toAdd"
           >上传
           </el-button>
@@ -51,7 +51,7 @@
             :on-error="handleError"
             :action="fileUploadApi + '?name=' + form.name"
           >
-            <div class="eladmin-upload"><i class="el-icon-upload" /> 添加文件</div>
+            <div class="eladmin-upload"><el-icon><Upload /></el-icon> 添加文件</div>
             <template #tip>
               <div class="el-upload__tip">可上传任意格式文件，且不超过100M</div>
             </template>
@@ -102,7 +102,7 @@
           >
             <template #error>
               <div>
-                <i class="el-icon-document" />
+                <el-icon><Document /></el-icon>
               </div>
             </template>
           </el-image>

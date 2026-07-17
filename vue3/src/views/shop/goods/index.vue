@@ -13,14 +13,14 @@
                    :key="item.id"
                    :label="item.label"></el-option>
       </el-select>
-      <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+      <el-button class="filter-item" size="small" type="success" :icon="Search" @click="toQuery">搜索</el-button>
       <!-- 新增 -->
       <div style="display: inline-block;margin: 0px 2px;">
         <el-button
           class="filter-item"
           size="small"
           type="primary"
-          icon="el-icon-plus"
+          :icon="Plus"
           @click="toAddURL"
         >
             新增
@@ -29,7 +29,7 @@
           type="danger"
           class="filter-item"
           size="small"
-          icon="el-icon-refresh"
+          :icon="Refresh"
           @click="toQuery"
         >刷新</el-button>
       </div>
@@ -67,7 +67,7 @@
           <el-button
             size="small"
             type="primary"
-            icon="el-icon-edit"
+            :icon="Edit"
             @click="toUpdateURL(scope.row.id)"
           >
             编辑
@@ -83,7 +83,7 @@
               <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
-              <el-button type="danger" icon="el-icon-delete" size="small">删除</el-button>
+              <el-button type="danger" :icon="Delete" size="small">删除</el-button>
             </template>
           </el-popover>
         </template>

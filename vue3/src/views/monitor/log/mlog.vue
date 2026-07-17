@@ -5,7 +5,7 @@
         type="danger"
         class="filter-item"
         size="small"
-        icon="el-icon-refresh"
+        :icon="Refresh"
         @click="toQuery"
       >刷新</el-button>
     </div>

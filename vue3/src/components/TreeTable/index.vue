@@ -4,8 +4,8 @@
       <template #default="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space" />
         <span v-if="iconShow(0,scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
-          <i v-if="!scope.row._expanded" class="el-icon-plus" />
-          <i v-else class="el-icon-minus" />
+          <el-icon v-if="!scope.row._expanded"><Plus /></el-icon>
+          <el-icon v-else><Minus /></el-icon>
         </span>
         {{ scope.$index }}
       </template>
@@ -16,8 +16,8 @@
         <!-- eslint-disable-next-line vue/no-confusing-v-for-v-if -->
         <span v-for="space in scope.row._level" v-if="index === 0" :key="space" class="ms-tree-space" />
         <span v-if="iconShow(index,scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
-          <i v-if="!scope.row._expanded" class="el-icon-plus" />
-          <i v-else class="el-icon-minus" />
+          <el-icon v-if="!scope.row._expanded"><Plus /></el-icon>
+          <el-icon v-else><Minus /></el-icon>
         </span>
         {{ scope.row[column.value] }}
       </template>

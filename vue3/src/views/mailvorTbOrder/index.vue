@@ -4,19 +4,19 @@
 
       <el-tabs v-model="status" type="card" @tab-click="handleOrder">
         <el-tab-pane name="">
-          <template #label><i class="el-icon-s-order"></i> 全部订单</template>
+          <template #label><el-icon><Tickets /></el-icon> 全部订单</template>
         </el-tab-pane>
         <el-tab-pane name="12">
-          <template #label><i class="el-icon-bank-card"></i> 订单付款</template>
+          <template #label><el-icon><CreditCard /></el-icon> 订单付款</template>
         </el-tab-pane>
         <el-tab-pane name="3">
-          <template #label><i class="el-icon-refrigerator"></i> 订单结算</template>
+          <template #label><el-icon><Refrigerator /></el-icon> 订单结算</template>
         </el-tab-pane>
         <el-tab-pane name="13">
-          <template #label><i class="el-icon-truck"></i> 订单失效</template>
+          <template #label><el-icon><Van /></el-icon> 订单失效</template>
         </el-tab-pane>
         <el-tab-pane name="14">
-          <template #label><i class="el-icon-document"></i> 订单成功</template>
+          <template #label><el-icon><Document /></el-icon> 订单成功</template>
         </el-tab-pane>
       </el-tabs>
       <!--工具栏-->
@@ -41,17 +41,17 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
-        <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+        <el-button class="filter-item" size="small" type="success" :icon="Search" @click="toQuery">搜索</el-button>
         <!-- 新增 -->
         <el-button
           type="danger"
           class="filter-item"
           size="small"
-          icon="el-icon-refresh"
+          :icon="Refresh"
           @click="toQuery"
         >刷新</el-button>
       </div>
@@ -154,7 +154,7 @@
                         <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.tradeParentId])">确定</el-button>
                       </div>
                       <template #reference>
-                        <el-button type="danger" icon="el-icon-delete" size="small">删除</el-button>
+                        <el-button type="danger" :icon="Delete" size="small">删除</el-button>
                       </template>
                     </el-popover>
                   </el-dropdown-item>
