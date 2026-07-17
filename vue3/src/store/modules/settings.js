@@ -19,8 +19,8 @@ export const useSettingsStore = defineStore('settings', {
     }
   },
   actions: {
-    changeSetting({ commit }, data) {
-      commit('CHANGE_SETTING', data)
+    changeSetting(data) {
+      this.CHANGE_SETTING(data)
     }
   }
 })

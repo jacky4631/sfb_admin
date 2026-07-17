@@ -28,37 +28,37 @@ export const useUserStore = defineStore('user', {
     }
   },
   actions: {
-    Login({ commit }, userInfo) {
+    Login(userInfo) {
       return new Promise((resolve, reject) => {
-        login(userInfo).then(res => {
+        login(userInfo.username, userInfo.password, userInfo.code, userInfo.uuid).then(res => {
           setToken(res.token)
-          commit('SET_TOKEN', res.token)
+          this.SET_TOKEN(res.token)
           resolve()
         }).catch(error => {
           reject(error)
         })
       })
     },
-    GetInfo({ commit, state }) {
+    GetInfo() {
       return new Promise((resolve, reject) => {
         getInfo().then(res => {
           const user = res.user
           const role = res.roles && res.roles.length > 0 ? res.roles : ['admin']
-          commit('SET_ROLES', role)
-          commit('SET_NAME', user.name)
-          commit('SET_AVATAR', user.avatar || 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
-          commit('SET_EMAIL', user.email)
+          this.SET_ROLES(role)
+          this.SET_NAME(user.name)
+          this.SET_AVATAR(user.avatar || 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
+          this.SET_EMAIL(user.email)
           resolve(res)
         }).catch(error => {
           reject(error)
         })
       })
     },
-    LogOut({ commit, state }) {
+    LogOut() {
       return new Promise((resolve, reject) => {
         logout().then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
+          this.SET_TOKEN('')
+          this.SET_ROLES([])
           removeToken()
           resolve()
         }).catch(error => {
@@ -66,10 +66,10 @@ export const useUserStore = defineStore('user', {
         })
       })
     },
-    FedLogOut({ commit }) {
+    FedLogOut() {
       return new Promise(resolve => {
-        commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
+        this.SET_TOKEN('')
+        this.SET_ROLES([])
         removeToken()
         resolve()
       })

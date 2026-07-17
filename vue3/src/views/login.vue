@@ -126,8 +126,8 @@ const getCode = () => {
 }
 
 const handleLogin = () => {
-  loginFormRef.value.validateField(['username', 'password', 'code'], (valid) => {
-    if (valid) {
+  loginFormRef.value.validate((valid) => {
+    if (!valid) {
       return
     }
     const user = {

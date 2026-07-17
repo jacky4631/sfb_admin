@@ -64,7 +64,7 @@ export const useTagsViewStore = defineStore('tagsView', {
       return new Promise(resolve => {
         this.DEL_VISITED_VIEW(view)
         this.DEL_CACHED_VIEW(view)
-        resolve({ visitedViews: [...state.visitedViews], cachedViews: [...state.cachedViews] })
+        resolve({ visitedViews: [...this.visitedViews], cachedViews: [...this.cachedViews] })
       })
     },
     delOthersViews(view) {

@@ -29,7 +29,7 @@ export const useAppStore = defineStore('app', {
     toggleSideBar() {
       this.TOGGLE_SIDEBAR()
     },
-    closeSideBar({ withoutAnimation }) {
+    closeSideBar(withoutAnimation) {
       this.CLOSE_SIDEBAR(withoutAnimation)
     },
     toggleDevice(device) {

@@ -18,15 +18,15 @@ export const usePermissionStore = defineStore('permission', {
     }
   },
   actions: {
-    GenerateRoutes({ commit }, asyncRouter) {
+    GenerateRoutes(asyncRouter) {
       return new Promise(resolve => {
-        commit('SET_ROUTERS', asyncRouter)
+        this.SET_ROUTERS(asyncRouter)
         resolve()
       })
     },
-    updateLoadMenus({ commit }) {
+    updateLoadMenus() {
       return new Promise(resolve => {
-        commit('SET_LOAD_MENUS', true)
+        this.SET_LOAD_MENUS(true)
         resolve()
       })
     }
