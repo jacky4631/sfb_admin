@@ -15,7 +15,7 @@
       range-separator=":"
       size="small"
       class="date-item"
-      value-format="yyyy-MM-dd HH:mm:ss"
+      value-format="YYYY-MM-DD HH:mm:ss"
       start-placeholder="开始日期"
       end-placeholder="结束日期"
     />
