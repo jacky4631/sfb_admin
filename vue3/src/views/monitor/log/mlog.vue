@@ -1,0 +1,75 @@
+<template>
+  <div class="app-container">
+    <div class="head-container">
+      <el-button
+        type="danger"
+        class="filter-item"
+        size="mini"
+        icon="el-icon-refresh"
+        @click="toQuery"
+      >刷新</el-button>
+    </div>
+    <!--表格渲染-->
+    <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
+      <el-table-column prop="nickname" label="用户名" />
+      <el-table-column prop="requestIp" label="IP" />
+      <el-table-column prop="address" label="地址来源" />
+      <el-table-column prop="description" label="描述" />
+      <el-table-column prop="createTime" label="创建日期" width="180px">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!--分页组件-->
+    <el-pagination
+      :total="total"
+      :current-page="page + 1"
+      style="margin-top: 8px;"
+      layout="total, prev, pager, next, sizes"
+      @size-change="sizeChange"
+      @current-change="pageChange"
+    />
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import initData from '@/mixins/crud'
+import { parseTime } from '@/utils/index'
+
+const data = ref([])
+const total = ref(0)
+const page = ref(0)
+const size = ref(0)
+const loading = ref(false)
+const query = ref({})
+const url = ref('')
+
+const toQuery = () => {
+  init()
+}
+
+const sizeChange = (val) => {
+  size.value = val
+  init()
+}
+
+const pageChange = (val) => {
+  page.value = val - 1
+  init()
+}
+
+const init = () => {
+  const value = query.value.value
+  const params = { page: page.value, size: size.value }
+  if (value) { params['blurry'] = value }
+}
+
+onMounted(() => {
+  toQuery()
+})
+</script>
+
+<style scoped>
+</style>

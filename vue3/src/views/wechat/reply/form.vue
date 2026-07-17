@@ -1,0 +1,119 @@
+<template>
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '编辑'" width="500px">
+    <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="80px">
+      <el-form-item label="关键字" prop="key">
+        <el-input v-model="form.key" style="width: 370px;" />
+      </el-form-item>
+      <el-form-item label="回复类型">
+        <el-input v-model="form.type" style="width: 370px;" />
+      </el-form-item>
+      <el-form-item label="回复数据">
+        <el-input v-model="form.data" style="width: 370px;" />
+      </el-form-item>
+      <el-form-item label="0=不可用  1 =可用">
+        <el-input v-model="form.status" style="width: 370px;" />
+      </el-form-item>
+      <el-form-item label="是否隐藏">
+        <el-input v-model="form.hide" style="width: 370px;" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="text" @click="cancel">取消</el-button>
+        <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
+      </div>
+    </template>
+  </el-dialog>
+</template>
+
+<script setup>
+import { ref, reactive } from 'vue'
+import { ElNotification } from 'element-plus'
+import { add, edit } from '@/api/mwWechatReply'
+
+const props = defineProps({
+  isAdd: {
+    type: Boolean,
+    required: true
+  }
+})
+
+const emit = defineEmits(['refresh'])
+
+const loading = ref(false)
+const dialog = ref(false)
+const formRef = ref(null)
+const form = reactive({
+  id: '',
+  key: '',
+  type: '',
+  data: '',
+  status: '',
+  hide: ''
+})
+const rules = {
+  key: [
+    { required: true, message: 'please enter', trigger: 'blur' }
+  ]
+}
+
+const cancel = () => {
+  resetForm()
+}
+
+const doSubmit = () => {
+  loading.value = true
+  if (props.isAdd) {
+    doAdd()
+  } else doEdit()
+}
+
+const doAdd = () => {
+  add(form).then(res => {
+    resetForm()
+    ElNotification({
+      title: '添加成功',
+      type: 'success',
+      duration: 2500
+    })
+    loading.value = false
+    emit('refresh')
+  }).catch(err => {
+    loading.value = false
+    console.log(err.response?.data?.message || err.message)
+  })
+}
+
+const doEdit = () => {
+  edit(form).then(res => {
+    resetForm()
+    ElNotification({
+      title: '修改成功',
+      type: 'success',
+      duration: 2500
+    })
+    loading.value = false
+    emit('refresh')
+  }).catch(err => {
+    loading.value = false
+    console.log(err.response?.data?.message || err.message)
+  })
+}
+
+const resetForm = () => {
+  dialog.value = false
+  formRef.value?.resetFields()
+  Object.assign(form, {
+    id: '',
+    key: '',
+    type: '',
+    data: '',
+    status: '',
+    hide: ''
+  })
+}
+</script>
+
+<style scoped>
+
+</style>
