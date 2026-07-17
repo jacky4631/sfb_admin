@@ -3,7 +3,7 @@
     <!--工具栏-->
     <div class="head-container">
       <!-- 搜索 -->
-      <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" />
+      <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
       <el-select v-model="query.type" clearable placeholder="搜索类型" class="filter-item" style="width: 130px">
         <el-option v-for="item in queryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
       </el-select>
@@ -13,12 +13,12 @@
                    :key="item.id"
                    :label="item.label"></el-option>
       </el-select>
-      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+      <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
       <!-- 新增 -->
       <div style="display: inline-block;margin: 0px 2px;">
         <el-button
           class="filter-item"
-          size="mini"
+          size="small"
           type="primary"
           icon="el-icon-plus"
           @click="toAddURL"
@@ -28,7 +28,7 @@
         <el-button
           type="danger"
           class="filter-item"
-          size="mini"
+          size="small"
           icon="el-icon-refresh"
           @click="toQuery"
         >刷新</el-button>
@@ -65,7 +65,7 @@
       <el-table-column label="操作" width="265px" align="center">
         <template #scope="scope">
           <el-button
-            size="mini"
+            size="small"
             type="primary"
             icon="el-icon-edit"
             @click="toUpdateURL(scope.row.id)"
@@ -79,11 +79,11 @@
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="cancelPopover(scope.row.id)">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+              <el-button size="small" type="text" @click="cancelPopover(scope.row.id)">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
-              <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+              <el-button slot="reference" type="danger" icon="el-icon-delete" size="small">删除</el-button>
             </template>
           </el-popover>
         </template>

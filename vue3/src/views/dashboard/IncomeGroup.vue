@@ -235,7 +235,7 @@ onMounted(() => {
   }
 }
 .baseInfo {
-  ::v-deep .el-card__header {
+  :deep(.el-card__header) ) {
     padding: 15px 20px !important;
   }
 }

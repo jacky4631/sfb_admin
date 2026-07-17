@@ -8,7 +8,7 @@
             <el-button
               :loading="genLoading"
               icon="el-icon-s-promotion"
-              size="mini"
+              size="small"
               style="float: right; padding: 6px 9px;"
               type="success"
               @click="toGen"
@@ -16,7 +16,7 @@
             <el-button
               :loading="columnLoading"
               icon="el-icon-check"
-              size="mini"
+              size="small"
               style="float: right; padding: 6px 9px;margin-right: 9px"
               type="primary"
               @click="saveColumnConfig"
@@ -25,7 +25,7 @@
               <el-button
                 :loading="syncLoading"
                 icon="el-icon-refresh"
-                size="mini"
+                size="small"
                 style="float: right; padding: 6px 9px;"
                 type="info"
                 @click="sync"
@@ -38,7 +38,7 @@
               <el-table-column prop="columnType" label="字段类型" />
               <el-table-column prop="remark" label="字段描述">
                 <template #default="scope">
-                  <el-input v-model="data[scope.$index].remark" size="mini" class="edit-input" />
+                  <el-input v-model="data[scope.$index].remark" size="small" class="edit-input" />
                 </template>
               </el-table-column>
               <el-table-column align="center" label="必填" width="70px">
@@ -58,7 +58,7 @@
               </el-table-column>
               <el-table-column label="表单类型">
                 <template #default="scope">
-                  <el-select v-model="data[scope.$index].formType" filterable class="edit-input" clearable size="mini" placeholder="请选择">
+                  <el-select v-model="data[scope.$index].formType" filterable class="edit-input" clearable size="small" placeholder="请选择">
                     <el-option
                       label="文本框"
                       value="Input"
@@ -88,7 +88,7 @@
               </el-table-column>
               <el-table-column label="查询方式">
                 <template #default="scope">
-                  <el-select v-model="data[scope.$index].queryType" filterable class="edit-input" clearable size="mini" placeholder="请选择">
+                  <el-select v-model="data[scope.$index].queryType" filterable class="edit-input" clearable size="small" placeholder="请选择">
                     <el-option label="=" value="=" />
                     <el-option label="!=" value="!=" />
                     <el-option label=">=" value=">=" />
@@ -101,7 +101,7 @@
               </el-table-column>
               <el-table-column label="日期注解">
                 <template #default="scope">
-                  <el-select v-model="data[scope.$index].dateAnnotation" filterable class="edit-input" clearable size="mini" placeholder="请选择">
+                  <el-select v-model="data[scope.$index].dateAnnotation" filterable class="edit-input" clearable size="small" placeholder="请选择">
                     <el-option label="自动创建时间" value="CreationTimestamp" />
                     <el-option label="自动更新时间" value="UpdateTimestamp" />
                   </el-select>
@@ -109,7 +109,7 @@
               </el-table-column>
               <el-table-column label="关联字典">
                 <template #default="scope">
-                  <el-select v-model="data[scope.$index].dictName" filterable class="edit-input" clearable size="mini" placeholder="请选择">
+                  <el-select v-model="data[scope.$index].dictName" filterable class="edit-input" clearable size="small" placeholder="请选择">
                     <el-option v-for="item in dicts" :key="item.id" :label="item.remark === '' ? item.name : item.remark" :value="item.name" />
                   </el-select>
                 </template>
@@ -125,7 +125,7 @@
             <el-button
               :loading="configLoading"
               icon="el-icon-check"
-              size="mini"
+              size="small"
               style="float: right; padding: 6px 9px"
               type="primary"
               @click="doSubmit"
@@ -157,7 +157,7 @@
               <span style="color: #C0C0C0;margin-left: 10px;">默认不去除表前缀，可自定义</span>
             </el-form-item>
             <el-form-item label="是否覆盖" prop="cover">
-              <el-radio-group v-model="form.cover" size="mini" style="width: 40%">
+              <el-radio-group v-model="form.cover" size="small" style="width: 40%">
                 <el-radio-button label="true">是</el-radio-button>
                 <el-radio-button label="false">否</el-radio-button>
               </el-radio-group>
@@ -344,7 +344,7 @@ defineExpose({
 </style>
 
 <style scoped>
-::v-deep .input-with-select .el-input-group__prepend {
+:deep(.input-with-select .el-input-group__prepend) ) {
   background-color: #fff;
 }
 </style>

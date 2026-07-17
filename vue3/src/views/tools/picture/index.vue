@@ -4,7 +4,7 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!--搜索-->
-        <el-input v-model="query.filename" clearable size="small" placeholder="输入文件名" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.filename" clearable size="small" placeholder="输入文件名" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <el-date-picker
           v-model="query.createTime"
           :default-time="['00:00:00','23:59:59']"
@@ -19,27 +19,30 @@
         <rrOperation :crud="crud" />
       </div>
       <crudOperation :permission="permission">
-        <!-- 上传 -->
-        <el-button
-          slot="left"
-          v-permission="['admin','pictures:add']"
-          class="filter-item"
-          size="mini"
-          type="primary"
-          icon="el-icon-upload"
-          @click="dialog = true"
-        >上传</el-button>
-        <el-tooltip slot="right" class="item" effect="dark" content="使用同步功能需要在 https://sm.ms/login 中注册账号，并且在 application.yml 文件中修改 Secret Token" placement="top-start">
+        <template #left>
+          <!-- 上传 -->
           <el-button
             v-permission="['admin','pictures:add']"
             class="filter-item"
-            size="mini"
-            type="success"
-            icon="el-icon-refresh"
-            :loading="syncLoading"
-            @click="sync"
-          >同步</el-button>
-        </el-tooltip>
+            size="small"
+            type="primary"
+            icon="el-icon-upload"
+            @click="dialog = true"
+          >上传</el-button>
+        </template>
+        <template #right>
+          <el-tooltip class="item" effect="dark" content="使用同步功能需要在 https://sm.ms/login 中注册账号，并且在 application.yml 文件中修改 Secret Token" placement="top-start">
+            <el-button
+              v-permission="['admin','pictures:add']"
+              class="filter-item"
+              size="small"
+              type="success"
+              icon="el-icon-refresh"
+              :loading="syncLoading"
+              @click="sync"
+            >同步</el-button>
+          </el-tooltip>
+        </template>
       </crudOperation>
     </div>
     <!--上传图片-->
@@ -59,9 +62,11 @@
       <el-dialog append-to-body v-model="dialogVisible">
         <img :src="dialogImageUrl" width="100%" alt="">
       </el-dialog>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="doSubmit">确认</el-button>
-      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="doSubmit">确认</el-button>
+        </div>
+      </template>
     </el-dialog>
     <!--表格渲染-->
     <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">

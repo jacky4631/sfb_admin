@@ -15,7 +15,7 @@ const whiteList = ['/login']
 
 const router = createRouter({
   history: createWebHistory(),
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({ top: 0 }),
   routes: constantRouterMap
 })
 

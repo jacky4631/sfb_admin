@@ -3,17 +3,18 @@
     <div class="head-container">
       <Search />
       <crudOperation>
-        <el-button
-          slot="left"
-          class="filter-item"
-          type="danger"
-          icon="el-icon-delete"
-          size="mini"
-          :loading="crud.delAllLoading"
-          @click="confirmDelAll()"
-        >
-          清空
-        </el-button> v-if="columns.visible('username')"
+        <template #left>
+          <el-button
+            class="filter-item"
+            type="danger"
+            icon="el-icon-delete"
+            size="small"
+            :loading="crud.delAllLoading"
+            @click="confirmDelAll()"
+          >
+            清空
+          </el-button>
+        </template>
       </crudOperation>
     </div>
     <!--表格渲染-->
@@ -42,7 +43,7 @@
       </el-table-column>
       <el-table-column label="异常详情" width="100px">
         <template #default="scope">
-          <el-button size="mini" type="text" @click="info(scope.row.id)">查看详情</el-button>
+          <el-button size="small" type="text" @click="info(scope.row.id)">查看详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -122,7 +123,7 @@ const confirmDelAll = () => {
 .demo-table-expand .el-form-item__content {
   font-size: 12px;
 }
-::v-deep .el-dialog__body {
+:deep(.el-dialog__body) {
   padding: 0 20px 10px 20px !important;
 }
 .java.hljs {

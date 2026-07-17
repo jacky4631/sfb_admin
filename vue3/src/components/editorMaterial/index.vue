@@ -56,7 +56,7 @@
               :key="item.id"
               :name="item.id"
             >
-              <span slot="label"> {{ item.name }}</span>
+              <template #label><span> {{ item.name }}</span></template>
             </el-tab-pane>
           </el-tabs>
         </el-aside>
@@ -123,7 +123,7 @@
                 </el-checkbox-group>
               </el-row>
               <el-pagination
-                :current-page.sync="page.currentPage"
+                v-model:current-page="page.currentPage"
                 :page-sizes="[12, 24]"
                 :page-size="page.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
@@ -136,9 +136,11 @@
           </el-card>
         </el-main>
       </el-container>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="sureUrls">确 定</el-button>
-      </span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="sureUrls">确 定</el-button>
+        </span>
+      </template>
     </div>
   </div>
 
@@ -495,7 +497,7 @@ const sureUrls = () => {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-icon-circle-close{
+:deep(.el-icon-circle-close) {
   color: red;
 }
 .material-name{

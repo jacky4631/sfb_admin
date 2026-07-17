@@ -90,14 +90,14 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
   .acea-row{
-    ::v-deep.el-avatar--small {
+    :deep(.el-avatar--small) ) {
       width: 22px;
       height: 22px;
       line-height: 22px;
     }
   }
   .checkTime{
-    ::v-deep.el-radio__input{
+    :deep(.el-radio__input) {
       display: none;
     }
   }
@@ -109,7 +109,7 @@ onBeforeUnmount(() => {
     // padding: 0 20px !important;
   }
   .dashboard-console-visit {
-    ::v-deep.el-card__header{
+    :deep(.el-card__header) {
       padding: 14px 20px !important;
     }
     ul {

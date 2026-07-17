@@ -30,12 +30,12 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
-        <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+        <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
         <!-- 新增 -->
         <el-button
           type="danger"
           class="filter-item"
-          size="mini"
+          size="small"
           icon="el-icon-refresh"
           @click="toQuery"
         >刷新</el-button>
@@ -49,18 +49,18 @@
         <el-table-column prop="orderId" label="订单号" fixed :show-overflow-tooltip="true" width="155"/>
 
         <el-table-column prop="paySuccessTime" label="下单时间"   :show-overflow-tooltip="true" width="155">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.paySuccessTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="flowPoint" label="订单状态"   :show-overflow-tooltip="true" width="95">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-tag v-if="scope.row.flowPoint !== 'REFUND'" :type="'success'">{{ scope.row.flowPoint }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ scope.row.flowPoint }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="bind" label="拆红包" width="120">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-tag v-if="scope.row.bind === 1" style="cursor: pointer" :type="'success'">{{ isBinding(scope.row.bind) }}</el-tag>
             <el-tag v-else-if="scope.row.bind === 0" style="cursor: pointer" :type=" '' ">{{ isBinding(scope.row.bind) }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ isBinding(scope.row.bind) }}</el-tag>
@@ -77,12 +77,12 @@
         <el-table-column prop="commissionRate" label="佣金比例" />
         <el-table-column prop="productImg" label="商品主图"   :show-overflow-tooltip="true"/>
         <el-table-column prop="refundTime" label="退款时间"  :show-overflow-tooltip="true" width="155">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.refundTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="settleTime" label="结算时间"  :show-overflow-tooltip="true" width="155">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.settleTime) }}</span>
           </template>
         </el-table-column>
@@ -97,26 +97,26 @@
         <el-table-column prop="estimatedTotalCommission0" label="estimatedTotalCommission0" width="200"/>
         <el-table-column prop="app" label="app" />
         <el-table-column prop="createTime" label="创建时间" width="200">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="updateTime" label="修改时间" width="200">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.updateTime) }}</span>
           </template>
         </el-table-column>
 
         <el-table-column v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="200" align="center" fixed="right">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-button
               v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
-              size="mini"
+              size="small"
               type="primary"
               @click="editOrder(scope.row)"
             >
               绑定用户</el-button>
-            <el-dropdown size="mini" split-button type="primary" trigger="click">
+            <el-dropdown size="small" split-button type="primary" trigger="click">
               操作
               <template #dropdown>
                 <el-dropdown-menu>
@@ -129,11 +129,11 @@
                     >
                       <p>确定删除本条数据吗？</p>
                       <div style="text-align: right; margin: 0">
-                        <el-button size="mini" type="text" @click="popoverRefs[scope.row.orderId]?.doClose()">取消</el-button>
-                        <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete([scope.row.orderId])">确定</el-button>
+                        <el-button size="small" type="text" @click="popoverRefs[scope.row.orderId]?.doClose()">取消</el-button>
+                        <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.orderId])">确定</el-button>
                       </div>
                       <template #reference>
-                        <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+                        <el-button type="danger" icon="el-icon-delete" size="small">删除</el-button>
                       </template>
                     </el-popover>
                   </el-dropdown-item>

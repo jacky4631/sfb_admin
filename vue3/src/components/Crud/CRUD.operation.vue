@@ -7,7 +7,7 @@
         v-if="crud.optShow.add"
         v-permission="permission.add"
         class="filter-item"
-        size="mini"
+        size="small"
         type="primary"
         icon="el-icon-plus"
         @click="crud.toAdd"
@@ -18,7 +18,7 @@
         v-if="crud.optShow.edit"
         v-permission="permission.edit"
         class="filter-item"
-        size="mini"
+        size="small"
         type="success"
         icon="el-icon-edit"
         :disabled="crud.selections.length !== 1"
@@ -28,12 +28,11 @@
       </el-button>
       <el-button
         v-if="crud.optShow.del"
-        slot="reference"
         v-permission="permission.del"
         class="filter-item"
         type="danger"
         icon="el-icon-delete"
-        size="mini"
+        size="small"
         :loading="crud.delAllLoading"
         :disabled="crud.selections.length === 0"
         @click="toDelete(crud.selections)"
@@ -45,7 +44,7 @@
         :loading="crud.downloadLoading"
         :disabled="!crud.data.length"
         class="filter-item"
-        size="mini"
+        size="small"
         type="warning"
         icon="el-icon-download"
         @click="crud.doExport"
@@ -55,14 +54,14 @@
     </span>
     <el-button-group class="crud-opts-right">
       <el-button
-        size="mini"
+        size="small"
         plain
         type="info"
         icon="el-icon-search"
         @click="toggleSearch()"
       />
       <el-button
-        size="mini"
+        size="small"
         icon="el-icon-refresh"
         @click="crud.refresh()"
       />
@@ -73,7 +72,7 @@
       >
         <template #reference>
           <el-button
-            size="mini"
+            size="small"
             icon="el-icon-s-grid"
           >
             <i

@@ -16,7 +16,6 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()]
     })
   ],
-  publicPath: '/',
   base: '/',
   server: {
     port: 8013,

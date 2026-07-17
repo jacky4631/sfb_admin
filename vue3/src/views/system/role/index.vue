@@ -4,7 +4,7 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.blurry" size="small" clearable placeholder="输入名称或者描述搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.blurry" size="small" clearable placeholder="输入名称或者描述搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <el-date-picker
           v-model="query.createTime"
           :default-time="['00:00:00','23:59:59']"
@@ -101,7 +101,7 @@
               :disabled="!showButton"
               :loading="menuLoading"
               icon="el-icon-check"
-              size="mini"
+              size="small"
               style="float: right; padding: 6px 9px"
               type="primary"
               @click="saveMenu"
@@ -316,7 +316,7 @@ function afterErrorMethod(crudRef) {
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  ::v-deep .el-input-number .el-input__inner {
+  :deep(.el-input-number .el-input__inner) ) {
     text-align: left;
   }
 </style>

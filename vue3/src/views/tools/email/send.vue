@@ -115,7 +115,7 @@ const doSubmit = () => {
   width: 730px;
 }
 
-::v-deep .w-e-text-container {
+:deep(.w-e-text-container) ) {
   height: 360px !important;
 }
 </style>

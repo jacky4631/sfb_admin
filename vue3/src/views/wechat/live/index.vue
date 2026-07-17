@@ -8,7 +8,7 @@
           <el-tooltip class="item" effect="dark" content="同步小程序控制台直播间数据" placement="top-start">
             <el-button
               class="filter-item"
-              size="mini"
+              size="small"
               type="success"
               :icon="Icons.Refresh"
               :loading="syncLoading"
@@ -197,7 +197,7 @@
             >
             </udOperation>
             <el-button
-              size="mini"
+              size="small"
               type="success"
               @click="showCloseOrderDialog(scope.row)"
             >

@@ -52,12 +52,12 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
-        <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+        <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
         <!-- 新增 -->
         <el-button
           type="danger"
           class="filter-item"
-          size="mini"
+          size="small"
           icon="el-icon-refresh"
           @click="toQuery"
         >刷新</el-button>
@@ -71,13 +71,13 @@
         <el-table-column prop="uniqueItemIdStr" fixed label="子订单编号" width="155"/>
 
         <el-table-column prop="orderPayTime" label="支付时间" width="135">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderPayTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderIdStr" label="订单编号" width="175"/>
         <el-table-column prop="itemStatus" label="订单状态" >
-          <template v-slot="scope">
+          <template #default="scope">
             <el-tag v-if="scope.row.itemStatus === 0" style="cursor: pointer" :type="'success'">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemStatus === 1" style="cursor: pointer" :type=" '' ">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemStatus === 2" style="cursor: pointer" :type="'warning'">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
@@ -86,7 +86,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="itemBizStatus" label="聚合状态" >
-          <template v-slot="scope">
+          <template #default="scope">
             <el-tag v-if="scope.row.itemBizStatus === 1" style="cursor: pointer" :type="'success'">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemBizStatus === 3" style="cursor: pointer" :type=" '' ">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemBizStatus === 3" style="cursor: pointer" :type="'warning'">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
@@ -96,7 +96,7 @@
         </el-table-column>
 
         <el-table-column prop="bind" label="拆红包" width="120">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-tag v-if="scope.row.bind === 1" style="cursor: pointer" :type="'success'">{{ isBinding(scope.row.bind) }}</el-tag>
             <el-tag v-else-if="scope.row.bind === 0" style="cursor: pointer" :type=" '' ">{{ isBinding(scope.row.bind) }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ isBinding(scope.row.bind) }}</el-tag>
@@ -124,34 +124,34 @@
         <el-table-column prop="orderPlatform" label="点评 美团" />
         <el-table-column prop="utmMedium" label="子媒体信息" width="300"/>
         <el-table-column prop="modifyTime" label="最新更改时间" width="135">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.modifyTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="settleTime" label="结算时间" width="135">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.settleTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="billingDate" label="账期时间" width="135">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.billingDate) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="usedDate" label="订单核验时间" width="135">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.usedDate) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="refundDate" label="订单退款时间" width="135">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.refundDate) }}</span>
           </template>
         </el-table-column>
 
         <el-table-column prop="comment" label="异常信息" />
         <el-table-column prop="eventType" label="异常事件类型" >
-          <template v-slot="scope">
+          <template #default="scope">
             <el-tag v-if="scope.row.eventType === 1" style="cursor: pointer" :type="'success'">退款</el-tag>
             <el-tag v-else-if="scope.row.eventType === 2" style="cursor: pointer" :type=" '' ">风控</el-tag>
             <el-tag v-else-if="scope.row.eventType === 4" style="cursor: pointer" :type="'warning'">负项调整</el-tag>
@@ -160,26 +160,26 @@
 
         <el-table-column prop="innerType" label="热度=2" width="135"/>
         <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true" width="200">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="updateTime" label="修改时间" :show-overflow-tooltip="true" width="200">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.updateTime) }}</span>
           </template>
         </el-table-column>
 
         <el-table-column v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="200" align="center" fixed="right">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-button
               v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
-              size="mini"
+              size="small"
               type="primary"
               @click="editOrder(scope.row)"
             >
               绑定用户</el-button>
-            <el-dropdown size="mini" split-button type="primary" trigger="click">
+            <el-dropdown size="small" split-button type="primary" trigger="click">
               操作
               <template #dropdown>
                 <el-dropdown-menu>
@@ -192,11 +192,11 @@
                     >
                       <p>确定删除本条数据吗？</p>
                       <div style="text-align: right; margin: 0">
-                        <el-button size="mini" type="text" @click="popoverRefs[scope.row.uniqueItemIdStr]?.doClose()">取消</el-button>
-                        <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete([scope.row.uniqueItemIdStr])">确定</el-button>
+                        <el-button size="small" type="text" @click="popoverRefs[scope.row.uniqueItemIdStr]?.doClose()">取消</el-button>
+                        <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.uniqueItemIdStr])">确定</el-button>
                       </div>
                       <template #reference>
-                        <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+                        <el-button type="danger" icon="el-icon-delete" size="small">删除</el-button>
                       </template>
                     </el-popover>
                   </el-dropdown-item>
