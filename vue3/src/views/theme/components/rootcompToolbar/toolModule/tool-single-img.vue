@@ -65,7 +65,7 @@ const dialogImageUrl = ref('')
 const fileUploadURL = ref('')
 
 onMounted(() => {
-  fileUploadURL.value = process.env.VUE_APP_BASE_API + '/api/canvas/upload?name=demo&type=console'
+  fileUploadURL.value = import.meta.env.VITE_APP_BASE_API + '/api/canvas/upload?name=demo&type=console'
 })
 
 function handleAvatarSuccess(res, file) {

@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'
 import Config from '@/settings'
 
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API || '/api',
+  baseURL: import.meta.env.VITE_APP_BASE_API || '/api',
   timeout: Config.timeout,
   withCredentials: true
 })

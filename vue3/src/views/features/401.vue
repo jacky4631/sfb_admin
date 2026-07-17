@@ -2,7 +2,7 @@
   <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
-        <img class="pic-404__parent" src="@/assets/images/401.png" alt="401">
+        <img class="pic-404__parent" src="@/assets/images/404_cloud.png" alt="401">
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">401!</div>

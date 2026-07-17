@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { createPinia, store } from 'pinia'
+import { createPinia } from 'pinia'
 import Cookies from 'js-cookie'
 
 import 'normalize.css/normalize.css'
