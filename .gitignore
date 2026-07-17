@@ -26,3 +26,4 @@ yarn.lock
 
 vue3/.env.development
 vue3/.env.production
+vue3/pnpm-lock.yaml
