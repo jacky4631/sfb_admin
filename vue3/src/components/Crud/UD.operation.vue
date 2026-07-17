@@ -15,7 +15,7 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import CRUD, { crud } from '@crud/crud'
+import CRUD, { crud as crudComposable } from '@crud/crud'
 
 defineOptions({
   name: 'UDOperation'
@@ -44,24 +44,25 @@ const props = defineProps({
   }
 })
 
-const { crud: crudInstance } = crud()
+const { crud } = crudComposable()
 
 const pop = ref(false)
 
 const doCancel = () => {
   pop.value = false
-  crudInstance.cancelDelete(props.data)
+  crud.cancelDelete(props.data)
 }
 
 const toDelete = () => {
   pop.value = true
 }
 
-CRUD.HOOK.afterDelete(crudInstance, props.data, () => {
-  if (props.data === props.data) {
+// 注册 afterDelete 钩子：删除完成后自动关闭弹窗
+crud.HOOK[CRUD.HOOK.afterDelete] = (crudInst, data) => {
+  if (data === props.data) {
     pop.value = false
   }
-})
+}
 
 const onPopoverShow = () => {
   setTimeout(() => {
