@@ -67,7 +67,7 @@ const editorOption = ref({
       margin-bottom: 15px;
     }
   }
-  >>> .ql-container {
+  :deep(.ql-container) {
     height: 200px;
   }
 }

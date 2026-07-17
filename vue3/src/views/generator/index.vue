@@ -41,18 +41,18 @@
       </el-table-column>
       <el-table-column label="操作" width="160px" align="center" fixed="right">
         <template #default="scope">
-          <el-button size="small" style="margin-right: 2px" type="text">
+          <el-button size="small" style="margin-right: 2px" link>
             <router-link :to="'/sys-tools/generator/preview/' + scope.row.tableName">
               预览
             </router-link>
           </el-button>
-          <el-button size="small" style="margin-left: -1px;margin-right: 2px" type="text" @click="toDownload(scope.row.tableName)">下载</el-button>
-          <el-button size="small" style="margin-left: -1px;margin-right: 2px" type="text">
+          <el-button size="small" style="margin-left: -1px;margin-right: 2px" link @click="toDownload(scope.row.tableName)">下载</el-button>
+          <el-button size="small" style="margin-left: -1px;margin-right: 2px" link>
             <router-link :to="'/sys-tools/generator/config/' + scope.row.tableName">
               配置
             </router-link>
           </el-button>
-          <el-button type="text" style="margin-left: -1px" size="small" @click="toGen(scope.row.tableName)">生成</el-button>
+          <el-button link style="margin-left: -1px" size="small" @click="toGen(scope.row.tableName)">生成</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -145,7 +145,7 @@
                     >
                       <p>确定删除本条数据吗？</p>
                       <div style="text-align: right; margin: 0">
-                        <el-button size="small" type="text" @click="popoverRefs[scope.row.orderSn]?.doClose()">取消</el-button>
+                        <el-button size="small" link @click="popoverRefs[scope.row.orderSn]?.doClose()">取消</el-button>
                         <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.orderSn])">确定</el-button>
                       </div>
                       <template #reference>

@@ -55,8 +55,9 @@
         </el-upload>
         <template #footer>
           <div class="dialog-footer">
-          <el-button type="primary" @click="doSubmit">确认</el-button>
-        </div>
+            <el-button type="primary" @click="doSubmit">确认</el-button>
+          </div>
+        </template>
       </el-dialog>
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">

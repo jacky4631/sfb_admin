@@ -34,7 +34,7 @@
       </crudOperation>
     </div>
     <!--表单组件-->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="crud.status.cu > 0" :title="crud.status.add ? '文件上传' : '编辑文件'" width="500px">
+    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="dialogVisible" :title="crud.status.add ? '文件上传' : '编辑文件'" width="500px">
       <el-form ref="formRef" :model="form" size="small" label-width="80px">
         <el-form-item label="文件名">
           <el-input v-model="form.name" style="width: 370px;" />
@@ -60,7 +60,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="text" @click="crud.cancelCU">取消</el-button>
+          <el-button link @click="crud.cancelCU">取消</el-button>
           <el-button v-if="crud.status.add" :loading="loading" type="primary" @click="upload">确认</el-button>
           <el-button v-else :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
@@ -135,6 +135,10 @@ import { ElMessage } from 'element-plus'
 
 const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
 const loading = ref(false)
+const dialogVisible = computed({
+  get() { return crud.status.cu > 0 },
+  set() { crud.status.cu = 0 }
+})
 const headers = ref({ 'Authorization': getToken() })
 const permission = ref({
   edit: ['admin', 'storage:edit'],

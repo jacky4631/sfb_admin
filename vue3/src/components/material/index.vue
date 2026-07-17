@@ -67,8 +67,8 @@
                 <el-col :span="12">
                   <span>{{ materialgroupObj.name }}</span>
                   <span v-if="materialgroupObj.id != '-1'">
-                    <el-button size="small" type="text" class="el-icon-edit" style="margin-left: 10px;" @click="materialgroupEdit(materialgroupObj)">重命名</el-button>
-                    <el-button size="small" type="text" class="el-icon-delete" style="margin-left: 10px;color: red" @click="materialgroupDelete(materialgroupObj)">删除</el-button>
+                    <el-button size="small" link class="el-icon-edit" style="margin-left: 10px;" @click="materialgroupEdit(materialgroupObj)">重命名</el-button>
+                    <el-button size="small" link class="el-icon-delete" style="margin-left: 10px;color: red" @click="materialgroupDelete(materialgroupObj)">删除</el-button>
                   </span>
                 </el-col>
                 <el-col :span="12" style="text-align: right;">
@@ -113,7 +113,7 @@
                         </el-checkbox>
                         <el-row>
                           <el-col :span="24" class="col-do">
-                            <el-button type="text" size="medium" @click="materialDel(item)">删除</el-button>
+                            <el-button link size="default" @click="materialDel(item)">删除</el-button>
                           </el-col>
                         </el-row>
 

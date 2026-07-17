@@ -20,7 +20,7 @@
 
       <!-- <div ref="editor" class="editor"/> -->
       <el-form-item label="">
-      <el-button :loading="loading"  size="medium" type="primary" @click="doSubmit">发送邮件
+      <el-button :loading="loading"  size="default" type="primary" @click="doSubmit">发送邮件
       </el-button>
       </el-form-item>
     </el-form>
@@ -115,7 +115,7 @@ const doSubmit = () => {
   width: 730px;
 }
 
-:deep(.w-e-text-container) ) {
+:deep(.w-e-text-container) {
   height: 360px !important;
 }
 </style>

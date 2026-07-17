@@ -22,7 +22,7 @@
         <span class="iconfont" @click="delSelect">&#xe651;</span>
       </div>
     </div>
-    <el-dialog width="600px" title="选择类别" :visible.sync="categoryVisible">
+    <el-dialog width="600px" title="选择类别" v-model="categoryVisible">
       <category-select ref="categorySelect"></category-select>
       <template #footer>
         <span class="dialog-footer">
@@ -31,7 +31,7 @@
         </span>
       </template>
     </el-dialog>
-    <el-dialog title="选择商品" :visible.sync="productVisible">
+    <el-dialog title="选择商品" v-model="productVisible">
       <product-select ref="productSelect"></product-select>
       <template #footer>
         <span class="dialog-footer">
@@ -40,7 +40,7 @@
         </span>
       </template>
     </el-dialog>
-    <el-dialog title="选择店辅" :visible.sync="shopVisible">
+    <el-dialog title="选择店辅" v-model="shopVisible">
       <shop-select ref="shopSelect"></shop-select>
       <template #footer>
         <span class="dialog-footer">

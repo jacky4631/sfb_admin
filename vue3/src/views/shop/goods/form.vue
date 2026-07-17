@@ -117,7 +117,7 @@
                 <el-form-item label="商品属性：" class="labeltop">
                   <el-table :data="manyFormValidate" size="small" style="width: 90%;">
                     <el-table-column type="myindex" v-for="(item,index) in formValidate.header" :key="index" :label="item.title" :property="item.slot" align="center">
-                      <template #scope="scope">
+                      <template #default="scope">
                         <div v-if="scope.column.property == 'pic'" align="center">
                           <single-pic v-model="scope.row[scope.column.property]" type="image" :num="1" :width="60" :height="60" />
                         </div>
@@ -143,47 +143,47 @@
             <el-form-item >
               <el-table :data="oneFormValidate"  size="small" style="width: 90%;">
                 <el-table-column prop="pic" label="图片" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <single-pic v-model="scope.row.pic" type="image" :num="1" :width="60" :height="60" />
                   </template>
                 </el-table-column>
                 <el-table-column prop="price" label="售价" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.price"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="cost" label="成本价" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.cost"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="ot_price" label="原价" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.ot_price"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="stock" label="库存" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.stock" maxlength="7"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="bar_code" label="商品编号" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.bar_code"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="weight" label="重量（KG）" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.weight"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="volume" label="体积(m³)" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.volume"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="volume" label="所需兑换积分" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.integral"/>
                   </template>
                 </el-table-column>
@@ -237,11 +237,13 @@
             <el-form-item label="商品属性：" v-if="formValidate.spec_type === 0">
               <el-table :data="oneFormValidate"  size="small" style="width: 90%;">
                 <el-table-column prop="imageArr" label="图片" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-image :src="scope.row.pic" class="el-avatar">
-                      <div slot="error" class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                      </div>
+                      <template #error>
+                        <div class="image-slot">
+                          <i class="el-icon-picture-outline"></i>
+                        </div>
+                      </template>
                     </el-image>
                   </template>
                 </el-table-column>
@@ -253,12 +255,12 @@
                 <el-table-column prop="weight" label="重量（KG）" align="center" />
                 <el-table-column prop="volume" label="体积(m³" align="center" />
                 <el-table-column prop="volume" label="一级返佣" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.brokerage"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="volume" label="二级返佣" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.brokerage_two"/>
                   </template>
                 </el-table-column>
@@ -267,11 +269,13 @@
             <el-form-item label="商品属性：" v-if="formValidate.spec_type === 1 && manyFormValidate.length">
               <el-table :data="manyFormValidate" size="small" style="width: 90%;">
                 <el-table-column prop="imageArr" label="图片" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-image :src="scope.row.pic" :width="60" :height="60" >
-                      <div slot="error" class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                      </div>
+                      <template #error>
+                        <div class="image-slot">
+                          <i class="el-icon-picture-outline"></i>
+                        </div>
+                      </template>
                     </el-image>
                   </template>
                 </el-table-column>
@@ -285,12 +289,12 @@
                 <el-table-column prop="volume" label="体积(m³)" align="center" />
                 <el-table-column prop="integral" label="所需兑换积分" align="center" />
                 <el-table-column prop="volume" label="一级返佣" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.brokerage"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="volume" label="二级返佣" align="center">
-                  <template #scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.brokerage_two"/>
                   </template>
                 </el-table-column>

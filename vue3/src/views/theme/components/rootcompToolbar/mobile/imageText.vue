@@ -2,9 +2,9 @@
   <div class="imageTextTool">
     <h3 class="toolTit">图文</h3>
     <div class="toolBox">
-      <tool-single-img :imageUrl.sync='activeComponent.componentContent.imageUrl'></tool-single-img>
-      <tool-select-link :linkObj.sync='activeComponent.componentContent.linkObj' title="图片链接"></tool-select-link>
-      <tool-select :linkValue.sync='activeComponent.componentContent.positionValue' title="PC图片位置" :options="positionOpt"></tool-select>
+      <tool-single-img v-model:imageUrl='activeComponent.componentContent.imageUrl'></tool-single-img>
+      <tool-select-link v-model:linkObj='activeComponent.componentContent.linkObj' title="图片链接"></tool-select-link>
+      <tool-select v-model:linkValue='activeComponent.componentContent.positionValue' title="PC图片位置" :options="positionOpt"></tool-select>
       <div class="textTit">文本设置</div>
       <div class="itemBox">
         <label>标题</label>
@@ -21,7 +21,7 @@
         </QuillEditor>
       </div>
     </div>
-    <el-dialog :visible.sync="dialogVisible">
+    <el-dialog v-model="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
   </div>
@@ -98,7 +98,7 @@ const editorOption = ref({
         line-height: 40px;
       }
       margin-bottom: 15px;
-      >>> .el-select {
+      :deep(.el-select) {
         display: block;
       }
     }
@@ -128,17 +128,17 @@ const editorOption = ref({
 
     }
   }
-  >>> .ql-container {
+  :deep(.ql-container) {
     height: 150px;
   }
-  >>> .avatar-uploader .el-upload {
+  :deep(.avatar-uploader .el-upload) {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
   }
-  >>> .avatar-uploader-icon {
+  :deep(.avatar-uploader-icon) {
     font-size: 28px;
     color: #8c939d;
     width: 178px;
@@ -146,15 +146,15 @@ const editorOption = ref({
     line-height: 178px;
     text-align: center;
   }
-  >>> .el-upload__tip {
+  :deep(.el-upload__tip) {
     height: auto;
     margin-top: 0;
     line-height: normal;
   }
-  >>> .el-upload {
+  :deep(.el-upload) {
     width: 100%;
   }
-  >>> .el-upload-dragger {
+  :deep(.el-upload-dragger) {
     width: 100%;
     position: relative;
     .avatar{
@@ -169,23 +169,23 @@ const editorOption = ref({
       left: 0;
     }
   }
-  >>> .ql-snow .ql-tooltip{
+  :deep(.ql-snow .ql-tooltip){
     z-index: 8;
     left: 5px!important;
   }
-  >>> .ql-snow .ql-tooltip::before{
+  :deep(.ql-snow .ql-tooltip::before){
     content: '链接';
   }
-  >>> .ql-snow .ql-tooltip a.ql-action::after{
+  :deep(.ql-snow .ql-tooltip a.ql-action::after){
     content: '编辑';
   }
-  >>> .ql-snow .ql-tooltip a.ql-remove::before{
+  :deep(.ql-snow .ql-tooltip a.ql-remove::before){
     content: '移除';
   }
-  >>> .ql-snow .ql-tooltip[data-mode=link]::before{
+  :deep(.ql-snow .ql-tooltip[data-mode=link]::before){
     content: '链接';
   }
-  >>> .ql-snow .ql-tooltip.ql-editing a.ql-action::after{
+  :deep(.ql-snow .ql-tooltip.ql-editing a.ql-action::after){
     content: '确定';
   }
 }

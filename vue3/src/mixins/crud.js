@@ -1,6 +1,7 @@
 import { initData, download } from '@/api/data'
 import { parseTime, downloadFile } from '@/utils/index'
 import { useUserStore } from '@/store/modules/user'
+import { ElNotification, ElMessageBox } from 'element-plus'
 
 export default {
   data() {
@@ -101,35 +102,35 @@ export default {
       this.init()
     },
     submitSuccessNotify() {
-      this.$notify({
+      ElNotification({
         title: '提交成功',
         type: 'success',
         duration: 2500
       })
     },
     addSuccessNotify() {
-      this.$notify({
+      ElNotification({
         title: '新增成功',
         type: 'success',
         duration: 2500
       })
     },
     editSuccessNotify() {
-      this.$notify({
+      ElNotification({
         title: '编辑成功',
         type: 'success',
         duration: 2500
       })
     },
     delSuccessNotify() {
-      this.$notify({
+      ElNotification({
         title: '删除成功',
         type: 'success',
         duration: 2500
       })
     },
     notify(title, type) {
-      this.$notify({
+      ElNotification({
         title: title,
         type: type,
         duration: 2500
@@ -145,25 +146,25 @@ export default {
       this.delLoading = true
       this.crudMethod.del(id).then(() => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        if (this.$refs[id]) this.$refs[id].doClose()
         this.dleChangePage()
         this.delSuccessNotify()
         this.afterDelMethod()
         this.init()
       }).catch(() => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        if (this.$refs[id]) this.$refs[id].doClose()
       })
     },
     afterDelMethod() {},
     beforeDelAllMethod() {
-      this.$confirm('你确定删除选中的数据吗？', '提示', {
+      ElMessageBox.confirm('你确定删除选中的数据吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         this.delAllMethod()
-      })
+      }).catch(() => {})
     },
     delAllMethod() {
       this.delAllLoading = true
@@ -177,7 +178,7 @@ export default {
         this.delAllLoading = false
         this.dleChangePage(ids.length)
         this.init()
-        this.$notify({
+        ElNotification({
           title: '删除成功',
           type: 'success',
           duration: 2500

@@ -31,7 +31,7 @@
     </div>
     <el-dialog
       title="图片展示"
-      :visible.sync="dialogVisible"
+      v-model="dialogVisible"
     >
       <img
         width="100%"
@@ -94,10 +94,10 @@ function delImage() {
 .single-img {
   &__box {
     position: relative;
-    >>> .el-upload {
+    :deep(.el-upload) {
       width: 100%;
     }
-    >>> .el-upload-dragger {
+    :deep(.el-upload-dragger) {
       width: 100%;
       .el-upload__text {
         line-height: 40px;

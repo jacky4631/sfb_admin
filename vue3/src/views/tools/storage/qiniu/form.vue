@@ -28,10 +28,12 @@
         <el-radio v-model="form.type" label="私有">私有</el-radio>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="dialog = false">取消</el-button>
-      <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
-    </div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button link @click="dialog = false">取消</el-button>
+        <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
+      </div>
+    </template>
   </el-dialog>
 </template>
 

@@ -18,12 +18,12 @@
         <ueditor-wrap v-model="form.content" :config="myConfig"  @beforeInit="addCustomDialog"  style="width: 90%;"></ueditor-wrap>
       </el-form-item>
       <el-form-item>
-        <!--<el-button type="text" @click="cancel">取消</el-button>-->
+        <!--<el-button link @click="cancel">取消</el-button>-->
         <el-button :loading="loading" type="primary" @click="doSubmit">保存</el-button>
       </el-form-item>
     </el-form>
     <!--<div slot="footer" class="dialog-footer">-->
-      <!--<el-button type="text" @click="cancel">取消</el-button>-->
+      <!--<el-button link @click="cancel">取消</el-button>-->
       <!--<el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>-->
     <!--</div>-->
   </div>

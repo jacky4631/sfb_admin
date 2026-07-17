@@ -17,7 +17,7 @@
       <i class="iconfont">&#xe685;</i><span>添加优惠券</span>
     </div>
   </div>
-  <el-dialog title="选择优惠券" :visible.sync="couponDialogVisible" width="1000">
+  <el-dialog title="选择优惠券" v-model="couponDialogVisible" width="1000">
     <coupon-select ref="couponSelect"></coupon-select>
     <template #footer>
       <span class="dialog-footer">
@@ -73,10 +73,10 @@ function modeChange(val) {
       cursor: pointer;
     }
   }
-  >>> .el-radio {
+  :deep(.el-radio) {
     margin-right: 0;
   }
-  >>> .el-radio__label {
+  :deep(.el-radio__label) {
     padding-left: 5px;
   }
   .mode2 {

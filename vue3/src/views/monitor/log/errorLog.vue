@@ -43,7 +43,7 @@
       </el-table-column>
       <el-table-column label="异常详情" width="100px">
         <template #default="scope">
-          <el-button size="small" type="text" @click="info(scope.row.id)">查看详情</el-button>
+          <el-button size="small" link @click="info(scope.row.id)">查看详情</el-button>
         </template>
       </el-table-column>
     </el-table>

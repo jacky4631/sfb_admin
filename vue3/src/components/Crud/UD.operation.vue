@@ -4,7 +4,7 @@
     <el-popover v-model="pop" v-permission="permission.del" placement="top" width="180" trigger="manual" @show="onPopoverShow" @hide="onPopoverHide">
       <p>{{ msg }}</p>
       <div style="text-align: right; margin: 0">
-        <el-button size="small" type="text" @click="doCancel">取消</el-button>
+        <el-button size="small" link @click="doCancel">取消</el-button>
         <el-button :loading="crud.dataStatus[data.id].delete === 2" type="primary" size="small" @click="crud.doDelete(data)">确定</el-button>
       </div>
       <template #reference>

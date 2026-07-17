@@ -39,7 +39,7 @@
     <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="id" label="商品id" />
       <el-table-column ref="table" prop="image" label="商品图片">
-        <template #scope="scope">
+        <template #default="scope">
           <a :href="scope.row.image" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.image" alt="点击打开" class="el-avatar"></a>
         </template>
       </el-table-column>
@@ -49,13 +49,13 @@
       <el-table-column prop="sales" label="销量" />
       <el-table-column prop="stock" label="库存" />
       <el-table-column label="商品类型" align="center">
-        <template #scope="scope">
+        <template #default="scope">
           <el-tag v-if="scope.row.isIntegral === 1" style="cursor: pointer" :type="'warning'">积分商品</el-tag>
           <el-tag v-else style="cursor: pointer" :type=" 'info' ">普通商品</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center">
-        <template #scope="scope">
+        <template #default="scope">
           <div @click="onSale(scope.row.id,scope.row.isShow)">
             <el-tag v-if="scope.row.isShow === 1" style="cursor: pointer" :type="''">已上架</el-tag>
             <el-tag v-else style="cursor: pointer" :type=" 'info' ">已下架</el-tag>
@@ -63,7 +63,7 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" width="265px" align="center">
-        <template #scope="scope">
+        <template #default="scope">
           <el-button
             size="small"
             type="primary"
@@ -79,11 +79,11 @@
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="small" type="text" @click="cancelPopover(scope.row.id)">取消</el-button>
+              <el-button size="small" link @click="cancelPopover(scope.row.id)">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
-              <el-button slot="reference" type="danger" icon="el-icon-delete" size="small">删除</el-button>
+              <el-button type="danger" icon="el-icon-delete" size="small">删除</el-button>
             </template>
           </el-popover>
         </template>

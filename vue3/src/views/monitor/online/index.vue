@@ -44,11 +44,11 @@
           >
             <p>确定强制退出该用户吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="small" type="text" @click="hidePopover(scope.$index)">取消</el-button>
+              <el-button size="small" link @click="hidePopover(scope.$index)">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="small" @click="delMethod(scope.row.key, scope.$index)">确定</el-button>
             </div>
             <template #reference>
-              <el-button size="small" type="text">强退</el-button>
+              <el-button size="small" link>强退</el-button>
             </template>
           </el-popover>
         </template>

@@ -51,7 +51,7 @@
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="small" type="text" @click="$refs['popover-' + scope.row.id].doClose()">取消</el-button>
+              <el-button size="small" link @click="$refs['popover-' + scope.row.id].doClose()">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
@@ -66,7 +66,7 @@
           >
             <p>确定发布本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="small" type="text" @click="$refs['item' + scope.row.id].doClose()">取消</el-button>
+              <el-button size="small" link @click="$refs['item' + scope.row.id].doClose()">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="small" @click="subPublish(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
