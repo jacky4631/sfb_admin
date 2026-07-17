@@ -48,7 +48,7 @@
                       resize="none"
                       v-model="activeComponent.componentContent.roll[index].wxapp_url" />
                     <!-- <tool-select-link
-                      :linkObj.sync="item.linkObj"
+                      v-model:linkObj="item.linkObj"
                       title="小程序链接"
                     ></tool-select-link> -->
                   </div>

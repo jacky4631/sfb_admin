@@ -64,7 +64,7 @@
 
 <script>
 import draggable from 'vuedraggable'
-import { mapGetters } from 'vuex'
+import { useContainerStore } from '@/store/modules/container'
 // 默认配置文件
 import panelList from './panelList.js'
 export default {
@@ -92,9 +92,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'terminal'
-    ]),
+    terminal() {
+      return useContainerStore().terminal
+    },
     categoryList () {
       if (this.terminal === 3) {
         return panelList[0]

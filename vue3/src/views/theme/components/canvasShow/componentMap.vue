@@ -16,7 +16,7 @@
 
 <script>
 import componentMap from './componentMap'
-import { mapMutations } from 'vuex'
+import { useContainerStore } from '@/store/modules/container'
 import { getCanvasData, getProducts } from '@/api/canvasApi.js'
 export default {
   name: 'canvasPage',
@@ -32,9 +32,9 @@ export default {
     this.canvasGet()
   },
   methods: {
-    ...mapMutations({
-      setComponentsData: 'SET_COMPONENTSDATA'
-    }),
+    setComponentsData(data) {
+      useContainerStore().setComponentsData(data)
+    },
     // 读取画布
     async canvasGet () {
       const res = await getCanvasData({'terminal': this.terminal})

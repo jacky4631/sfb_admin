@@ -287,7 +287,7 @@ export default {
       }
     },
     setAttrPic(index, pic) {
-      this.$set(this.attrs[index], 'pic', pic)
+      this.attrs[index].pic = pic
     },
     attrHiddenBool(item) {
       if (item.value == '') {

@@ -32,7 +32,7 @@
                 <div class="addBox" v-show="imgCurrent === index">
                   <div class="addContent">
                     <tool-single-img
-                      :imageUrl.sync="item.pic"
+                      v-model:imageUrl="item.pic"
                     ></tool-single-img>
                     <div class="modelTit titleBox">跳转地址</div>
                     <el-input

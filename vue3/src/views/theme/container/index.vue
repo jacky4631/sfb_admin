@@ -34,7 +34,7 @@
 
 <script>
 import { ElMessage } from 'element-plus'
-import { mapGetters, mapMutations } from 'vuex'
+import { useContainerStore } from '@/store/modules/container'
 import LeftBar from '../components/leftBar/panel.vue'
 import ToolPanel from '@/views/theme/components/rootcompToolbar/toolPanel.vue'
 import CereshopLayout from '../components/canvasEditPage'
@@ -77,16 +77,23 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['terminal', 'componentsData'])
+    terminal() {
+      return useContainerStore().terminal
+    },
+    componentsData() {
+      return useContainerStore().componentsData
+    }
   },
   mounted () {
     this.canvasGet()
   },
   methods: {
-    ...mapMutations({
-      setTerminal: 'SET_TERMINAL',
-      setComponentsData: 'SET_COMPONENTSDATA'
-    }),
+    setTerminal(id) {
+      useContainerStore().setTerminal(id)
+    },
+    setComponentsData(data) {
+      useContainerStore().setComponentsData(data)
+    },
     toggleDevice (id) {
       this.setTerminal(id)
       this.canvasGet()

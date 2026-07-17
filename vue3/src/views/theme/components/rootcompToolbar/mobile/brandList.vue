@@ -35,8 +35,8 @@
               </div>
               <div class="addBox" v-show="activeComponent.componentContent.imgCurrent === index">
                 <div class="addContent">
-                  <tool-single-img :imageUrl.sync='item.imgData'></tool-single-img>
-                  <tool-select-link :linkObj.sync='item.linkObj'></tool-select-link>
+                  <tool-single-img v-model:imageUrl='item.imgData'></tool-single-img>
+                  <tool-select-link v-model:linkObj='item.linkObj'></tool-select-link>
                   <div class="itemImgTit itemBox">
                     <label>标题</label>
                     <el-input v-model="item.title" placeholder="请输入内容"></el-input>

@@ -135,7 +135,7 @@
               </div>
               <div class="addLink">
                 <tool-select-link
-                  :linkObj.sync='activeComponent.componentContent.imgData[activeComponent.componentContent.imgBoxActive].linkObj'
+                  v-model:linkObj='activeComponent.componentContent.imgData[activeComponent.componentContent.imgBoxActive].linkObj'
                   title="链接"></tool-select-link>
               </div>
             </div>

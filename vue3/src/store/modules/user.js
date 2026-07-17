@@ -11,23 +11,6 @@ export const useUserStore = defineStore('user', {
     email: '',
     user: {},
   }),
-  mutations: {
-    SET_TOKEN: (state, token) => {
-      state.token = token
-    },
-    SET_NAME: (state, name) => {
-      state.name = name
-    },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
-    },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
-    },
-    SET_EMAIL: (state, email) => {
-      state.email = email
-    }
-  },
   actions: {
     Login(userInfo) {
       return new Promise((resolve, reject) => {

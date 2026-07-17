@@ -43,7 +43,7 @@
                       inactive-color="#E8EAEC">
                     </el-switch>
                   </div>
-                  <tool-single-img :imageUrl.sync='item.imgData'></tool-single-img>
+                  <tool-single-img v-model:imageUrl='item.imgData'></tool-single-img>
                   <div class="itemImgTit itemBox">
                     <label>标题</label>
                     <el-input v-model="item.title" placeholder="请输入内容"></el-input>
@@ -58,7 +58,7 @@
                       v-model="item.describe">
                     </el-input>
                   </div>
-                  <tool-select-link :linkObj.sync='item.linkObj'></tool-select-link>
+                  <tool-select-link v-model:linkObj='item.linkObj'></tool-select-link>
                 </div>
                 <div @click="deleteItem(item, index)" class="deleteItem"><span class="iconfont">&#xe633;</span>删除内容</div>
               </div>

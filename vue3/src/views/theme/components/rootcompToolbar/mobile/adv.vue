@@ -26,7 +26,7 @@
                 <div class="addBox" v-show="imgCurrent === index">
                   <div class="addContent">
                     <tool-single-img
-                      :imageUrl.sync="item.image"
+                      v-model:imageUrl="item.image"
                       :tip="alignList[index]"></tool-single-img>
                     <div class="modelTit titleBox">跳转地址</div>
                     <el-input

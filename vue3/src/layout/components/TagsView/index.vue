@@ -32,9 +32,7 @@ import ScrollPane from './ScrollPane'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { usePermissionStore } from '@/store/modules/permission'
 
-defineOptions({
-  components: { ScrollPane }
-})
+defineOptions({ name: 'TagsView' })
 
 const route = useRoute()
 const router = useRouter()

@@ -88,14 +88,14 @@ import { ElMessage } from 'element-plus'
       allCheckbox: function () {
         let that = this, checked = this.iSselect;
         that.cityList.forEach(function (item, key) {
-          that.$set(that.cityList[key], 'checked', checked);
+          that.cityList[key].checked = checked;
           if (checked) {
-            that.$set(that.cityList[key], 'count', that.cityList[key].children.length);
+            that.cityList[key].count = that.cityList[key].children.length;
           } else {
-            that.$set(that.cityList[key], 'count', 0);
+            that.cityList[key].count = 0;
           }
           that.cityList[key].children.forEach(function (val, k) {
-            that.$set(that.cityList[key].children[k], 'checked', checked);
+            that.cityList[key].children[k].checked = checked;
           })
         });
       },
@@ -103,11 +103,11 @@ import { ElMessage } from 'element-plus'
       empty () {
         let that = this;
         that.cityList.forEach(function (item, key) {
-          that.$set(that.cityList[key], 'checked', false);
+          that.cityList[key].checked = false;
           that.cityList[key].children.forEach(function (val, k) {
-            that.$set(that.cityList[key].children[k], 'checked', false);
+            that.cityList[key].children[k].checked = false;
           });
-          that.$set(that.cityList[key], 'count', 0);
+          that.cityList[key].count = 0;
         });
         this.iSselect = false;
       },
@@ -118,15 +118,15 @@ import { ElMessage } from 'element-plus'
       checkedClick: function (index) {
         let that = this;
         if (that.cityList[index].checked) {
-          that.$set(that.cityList[index], 'count', that.cityList[index].children.length);
+          that.cityList[index].count = that.cityList[index].children.length;
           that.cityList[index].children.forEach(function (item, key) {
-            that.$set(that.cityList[index].children[key], 'checked', true);
+            that.cityList[index].children[key].checked = true;
           });
         } else {
-          that.$set(that.cityList[index], 'count', 0);
-          that.$set(that.cityList[index], 'checked', false);
+          that.cityList[index].count = 0;
+          that.cityList[index].checked = false;
           that.cityList[index].children.forEach(function (item, key) {
-            that.$set(that.cityList[index].children[key], 'checked', false);
+            that.cityList[index].children[key].checked = false;
           });
           that.iSselect = false;
         }
@@ -145,8 +145,8 @@ import { ElMessage } from 'element-plus'
             count++;
           }
         });
-        this.$set(this.cityList[index], 'count', count);
-        this.$set(this.cityList[index], 'checked', checked);
+        this.cityList[index].count = count;
+        this.cityList[index].checked = checked;
       },
       // 确定;
       confirm () {

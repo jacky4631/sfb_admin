@@ -1,7 +1,7 @@
 import { useUserStore } from '@/store/modules/user'
 
 export default {
-  inserted(el, binding, vnode) {
+  mounted(el, binding, vnode) {
     const { value } = binding
     const roles = useUserStore().roles
     if (value && value instanceof Array && value.length > 0) {

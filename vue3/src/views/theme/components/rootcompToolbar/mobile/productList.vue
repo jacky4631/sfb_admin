@@ -6,7 +6,7 @@
         <label>标题</label>
         <el-input v-model="activeComponent.componentContent.title" placeholder="请输入内容"></el-input>
       </div>
-      <tool-select :linkValue.sync='activeComponent.componentContent.textAlign' title="文字对齐方式" :options="alignList"></tool-select>
+      <tool-select v-model:linkValue='activeComponent.componentContent.textAlign' title="文字对齐方式" :options="alignList"></tool-select>
       <div class="single-img"></div>
       <div class="textTit">商品来源</div>
       <div class="porListBox">
@@ -49,8 +49,8 @@
       </el-switch>
     </div>
     <div v-show="activeComponent.componentContent.bannerShow">
-      <tool-single-img :imageUrl.sync='activeComponent.componentContent.bannerUrl'></tool-single-img>
-      <tool-select-link :linkObj.sync='activeComponent.componentContent.bannerLinkObj' title="图片链接"></tool-select-link>
+      <tool-single-img v-model:imageUrl='activeComponent.componentContent.bannerUrl'></tool-single-img>
+      <tool-select-link v-model:linkObj='activeComponent.componentContent.bannerLinkObj' title="图片链接"></tool-select-link>
     </div>
 
     <div class="labelLisTit titleBox">标签配置
@@ -82,7 +82,7 @@
                     <label>名称</label>
                     <el-input v-model="item.name" placeholder="请输入内容"></el-input>
                   </div>
-                  <tool-select-link :linkObj.sync='item.linkObj'></tool-select-link>
+                  <tool-select-link v-model:linkObj='item.linkObj'></tool-select-link>
                 </div>
               </div>
             </div>

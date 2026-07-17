@@ -9,22 +9,6 @@ export const useAppStore = defineStore('app', {
     device: 'desktop',
     size: 'small'
   }),
-  mutations: {
-    TOGGLE_SIDEBAR: (state) => {
-      state.sidebar.opened = !state.sidebar.opened
-      state.sidebar.withoutAnimation = false
-    },
-    CLOSE_SIDEBAR: (state, withoutAnimation) => {
-      state.sidebar.opened = false
-      state.sidebar.withoutAnimation = withoutAnimation
-    },
-    TOGGLE_DEVICE: (state, device) => {
-      state.device = device
-    },
-    SET_SIZE: (state, size) => {
-      state.size = size
-    }
-  },
   actions: {
     toggleSideBar() {
       this.sidebar.opened = !this.sidebar.opened

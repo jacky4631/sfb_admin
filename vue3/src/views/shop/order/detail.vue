@@ -58,7 +58,7 @@
           <el-col :span="4" class="table-cell">暂无</el-col>
           <el-col :span="4" class="table-cell">{{userDTO.nickname}}</el-col>
           <el-col :span="4" class="table-cell">{{order.payTypeName }}</el-col>
-          <el-col :span="4" class="table-cell">{{order.isChannel | formatSourceType}}</el-col>
+          <el-col :span="4" class="table-cell">{{formatSourceType(order.isChannel)}}</el-col>
           <el-col :span="4" class="table-cell">{{order.pinkName }}</el-col>
         </el-row>
         <el-row>
@@ -70,8 +70,8 @@
           <el-col :span="4" class="table-cell-title">活动信息</el-col>
         </el-row>
         <el-row>
-          <el-col :span="4" class="table-cell">{{order.shippingType | formatShippingType}}</el-col>
-          <el-col :span="4" class="table-cell">{{order.deliverySn | formatNull}}</el-col>
+          <el-col :span="4" class="table-cell">{{formatShippingType(order.shippingType)}}</el-col>
+          <el-col :span="4" class="table-cell">{{formatNull(order.deliverySn)}}</el-col>
           <el-col :span="4" class="table-cell">7天</el-col>
           <el-col :span="4" class="table-cell">{{order.gainIntegral}}</el-col>
           <el-col :span="4" class="table-cell">{{order.payIntegral}}</el-col>
@@ -82,7 +82,7 @@
               width="200"
               trigger="hover"
               :content="order.promotionInfo">
-              <template #reference><span>{{order.promotionInfo | formatLongText}}</span></template>
+              <template #reference><span>{{formatLongText(order.promotionInfo)}}</span></template>
             </el-popover>
           </el-col>
         </el-row>
@@ -111,7 +111,7 @@
               width="300"
               trigger="hover"
               :content="order.userAddress">
-              <template #reference><span>{{order.userAddress | formatLongText}}</span></template>
+              <template #reference><span>{{formatLongText(order.userAddress)}}</span></template>
             </el-popover>
           </el-col>
           <el-col :span="4" class="table-cell">
@@ -121,7 +121,7 @@
               width="300"
               trigger="hover"
               :content="order.mark">
-              <template #reference><span>{{order.mark | formatLongText}}</span></template>
+              <template #reference><span>{{formatLongText(order.mark)}}</span></template>
             </el-popover>
           </el-col>
           <el-col :span="4" class="table-cell">
@@ -131,7 +131,7 @@
               width="200"
               trigger="hover"
               :content="order.remark">
-              <template #reference><span>{{order.remark | formatLongText}}</span></template>
+              <template #reference><span>{{formatLongText(order.remark)}}</span></template>
             </el-popover>
           </el-col>
         </el-row>
@@ -430,97 +430,38 @@ import eRemark from './remark'
         }
       }
     },
-    filters: {
-      formatNull(value) {
-        if(value===undefined||value===null||value===''){
-          return '暂无';
-        }else{
-          return value;
-        }
-      },
-      formatLongText(value) {
-        if(value===undefined||value===null||value===''){
-          return '暂无';
-        }else if(value.length>8){
-          return value.substr(0, 8) + '...';
-        }else{
-          return value;
-        }
-      },
-      formatSourceType(value) {
-        if (value === 1) {
-          return '小程序';
-        } else {
-          return '公众号/H5';
-        }
-      },
-      formatShippingType(value){
-        if (value === 1) {
-          return '快递';
-        } else {
-          return '门店自提';
-        }
-      },
-      formatAddress(order) {
-        let str = order.receiverProvince;
-        if (order.receiverCity != null) {
-          str += "  " + order.receiverCity;
-        }
-        str += "  " + order.receiverRegion;
-        str += "  " + order.receiverDetailAddress;
-        return str;
-      },
-      formatStatus(value) {
-        if (value === 1) {
-          return '待发货';
-        } else if (value === 2) {
-          return '已发货';
-        } else if (value === 3) {
-          return '已完成';
-        } else if (value === 4) {
-          return '已关闭';
-        } else if (value === 5) {
-          return '无效订单';
-        } else {
-          return '待付款';
-        }
-      },
-      formatPayStatus(value) {
-        if (value === 0) {
-          return '未支付';
-        } else if(value===4){
-          return '已退款';
-        }else{
-          return '已支付';
-        }
-      },
-      formatDeliverStatus(value) {
-        if (value === 0||value === 1) {
-          return '未发货';
-        } else {
-          return '已发货';
-        }
-      },
-      formatProductAttr(value){
-        if(value==null){
-          return '';
-        }else{
-          let attr = JSON.parse(value);
-          let result='';
-          for(let i=0;i<attr.length;i++){
-            result+=attr[i].key;
-            result+=":";
-            result+=attr[i].value;
-            result+=";";
-          }
-          return result;
-        }
-      }
-    },
     mounted () {
       this.init();
     },
     methods: {
+      formatNull(value) {
+        if(value===undefined||value===null||value==='') return '暂无'
+        return value
+      },
+      formatLongText(value) {
+        if(value===undefined||value===null||value==='') return '暂无'
+        if(value.length>8) return value.substr(0, 8) + '...'
+        return value
+      },
+      formatSourceType(value) { return value === 1 ? '小程序' : '公众号/H5' },
+      formatShippingType(value) { return value === 1 ? '快递' : '门店自提' },
+      formatStatus(value) {
+        const map = {1:'待发货',2:'已发货',3:'已完成',4:'已关闭',5:'无效订单'}
+        return map[value] || '待付款'
+      },
+      formatPayStatus(value) {
+        if (value === 0) return '未支付'
+        if (value === 4) return '已退款'
+        return '已支付'
+      },
+      formatDeliverStatus(value) { return (value === 0||value === 1) ? '未发货' : '已发货' },
+      formatProductAttr(value) {
+        if(value==null) return ''
+        let attr = JSON.parse(value)
+        let result = ''
+        for(let i=0;i<attr.length;i++) result += attr[i].key + ':' + attr[i].value + ';'
+        return result
+      },
        refund(data) {
         this.isAdd = false
         const _this = this.$refs.form2
@@ -613,7 +554,6 @@ import eRemark from './remark'
           refundReason: data.refundReason,
           refundPrice: data.refundPrice,
           deliveryName: data.deliveryName,
-          deliverySn: data.deliverySn,
           deliveryType: data.deliveryType,
           deliveryId: data.deliveryId,
           gainIntegral: data.gainIntegral,

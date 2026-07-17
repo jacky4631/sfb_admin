@@ -28,7 +28,7 @@
                 </div>
                 <div class="addBox" v-show="imgCurrent === index">
                   <div class="addContent">
-                    <tool-single-img :imageUrl.sync="item.pic"></tool-single-img>
+                    <tool-single-img v-model:imageUrl="item.pic"></tool-single-img>
                     <div class="modelTit titleBox">菜单名称</div>
                     <el-input
                       placeholder="请输入新闻链接"

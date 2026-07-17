@@ -15,7 +15,7 @@
             <div class="addContent">
                 <ToolSingleImg
                 v-if="item.pic !== undefined && item.pic !== null"
-                :imageUrl.sync="item.pic" />
+                v-model:imageUrl="item.pic" />
                 <div class="titleBox">{{ item.title }}</div>
                 <el-input
                     placeholder="描述"

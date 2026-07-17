@@ -29,7 +29,7 @@
 import { ElMessageBox } from 'element-plus'
   import draggable from 'vuedraggable'
   import componentMap from '@/views/theme/components/canvasShow/componentMap.js'
-  import { mapGetters, mapMutations } from 'vuex'
+  import { useContainerStore } from '@/store/modules/container'
   export default {
     name: 'canvasEditPage',
     components: {
@@ -48,15 +48,17 @@ import { ElMessageBox } from 'element-plus'
       }
     },
     computed: {
-      ...mapGetters([
-        'componentsData'
-      ])
+      componentsData() {
+        return useContainerStore().componentsData
+      }
     },
     methods: {
-      ...mapMutations({
-        setActiveComponent: 'SET_ACTIVECOMPONENT',
-        setComponentsData: 'SET_COMPONENTSDATA'
-      }),
+      setActiveComponent(component) {
+        useContainerStore().setActiveComponent(component)
+      },
+      setComponentsData(data) {
+        useContainerStore().setComponentsData(data)
+      },
       pageChange (e) {
         if (e.added) {
           this.activeComponent = e.added.newIndex

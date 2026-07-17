@@ -130,7 +130,7 @@ import ProductComb from '@/views/theme/components/rootcompToolbar/pc/ProductComb
 import ProductDiscount from '@/views/theme/components/rootcompToolbar/pc/ProductDiscount'
 import ProductBargin from '@/views/theme/components/rootcompToolbar/pc/ProductBargin'
 
-import { mapGetters } from 'vuex'
+import { useContainerStore } from '@/store/modules/container'
 export default {
   components: {
     shopTop,
@@ -160,7 +160,9 @@ export default {
     ProductBargin
   },
   computed: {
-    ...mapGetters(['activeComponent'])
+    activeComponent() {
+      return useContainerStore().activeComponent
+    }
   }
 }
 </script>
