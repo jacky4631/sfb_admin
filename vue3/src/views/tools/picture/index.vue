@@ -95,7 +95,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
 import { getToken } from '@/utils/auth'
 import crudPic from '@/api/tools/picture'
 import CRUD, { presenter, header, crud } from '@crud/crud'
@@ -103,7 +102,7 @@ import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
 
-const store = useStore()
+const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
 const dialog = ref(false)
 const syncLoading = ref(false)
 const headers = ref({
@@ -117,7 +116,7 @@ const dialogVisible = ref(false)
 const fileList = ref([])
 const pictures = ref([])
 
-const imagesUploadApi = computed(() => store.getters.imagesUploadApi)
+const imagesUploadApi = computed(() => baseUrl + '/api/pictures')
 
 const defaultCrud = CRUD({ title: '图片', url: 'api/pictures', crudMethod: { ...crudPic }})
 const { crud, columns } = presenter(defaultCrud)

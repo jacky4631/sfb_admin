@@ -3,9 +3,8 @@
 </template>
 <script setup>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import elFrame from '@/components/Iframe/index'
 
-const store = useStore()
-const sqlApi = computed(() => store.getters.sqlApi)
+const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
+const sqlApi = computed(() => baseUrl + '/druid/index.html')
 </script>

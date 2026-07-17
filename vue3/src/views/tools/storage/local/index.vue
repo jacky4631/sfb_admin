@@ -118,7 +118,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
 import { getToken } from '@/utils/auth'
 import crudFile from '@/api/tools/localStorage'
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
@@ -127,7 +126,7 @@ import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
 import { ElMessage } from 'element-plus'
 
-const store = useStore()
+const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
 const loading = ref(false)
 const headers = ref({ 'Authorization': getToken() })
 const permission = ref({
@@ -137,8 +136,8 @@ const permission = ref({
 const uploadRef = ref(null)
 const formRef = ref(null)
 
-const baseApi = computed(() => store.getters.baseApi)
-const fileUploadApi = computed(() => store.getters.fileUploadApi)
+const baseApi = computed(() => baseUrl)
+const fileUploadApi = computed(() => baseUrl + '/api/localStorage')
 
 const defaultCrud = CRUD({ title: '文件', url: 'api/localStorage', crudMethod: { ...crudFile }})
 const defaultForm = { id: null, name: '' }

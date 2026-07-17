@@ -19,9 +19,9 @@
 
 <script setup>
 import { reactive, onMounted } from 'vue'
-import { useStore } from 'vuex'
+import { useUserStore } from '@/store/modules/user'
 
-const store = useStore()
+const userStore = useUserStore()
 
 const form = reactive({
   name: '',
@@ -30,9 +30,9 @@ const form = reactive({
 })
 
 onMounted(() => {
-  form.name = store.state.user.name || ''
-  form.email = store.state.user.email || ''
-  form.avatar = store.state.user.avatar || ''
+  form.name = userStore.name || ''
+  form.email = userStore.email || ''
+  form.avatar = userStore.avatar || ''
 })
 
 const onSubmit = () => {

@@ -68,6 +68,10 @@ const route = useRoute()
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
 
+const showFooter = computed(() => settingsStore.showFooter)
+const footerTxt = computed(() => settingsStore.footerTxt)
+const caseNumber = computed(() => settingsStore.caseNumber)
+
 const loginForm = reactive({
   username: 'admin',
   password: '123456',

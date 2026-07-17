@@ -81,7 +81,6 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { useStore } from 'vuex'
 import { getToken } from '@/utils/auth'
 import crudQiNiu from '@/api/tools/qiniu'
 import eForm from './form.vue'
@@ -91,7 +90,7 @@ import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
 import { ElMessage } from 'element-plus'
 
-const store = useStore()
+const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
 const permission = ref({
   del: ['admin', 'storage:del']
 })
@@ -106,7 +105,7 @@ const fileList = ref([])
 const files = ref([])
 const newWin = ref(null)
 
-const qiNiuUploadApi = computed(() => store.getters.qiNiuUploadApi)
+const qiNiuUploadApi = computed(() => baseUrl + '/api/qiNiuContent')
 
 const defaultCrud = CRUD({ title: '七牛云文件', url: 'api/qiNiuContent', crudMethod: { ...crudQiNiu }})
 const { crud, columns } = presenter(defaultCrud)
