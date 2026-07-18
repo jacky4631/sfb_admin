@@ -43,10 +43,12 @@
           <el-form-item label="扫码获取">
             <div class="qrcode_img">
               <el-image :src="gzhsrc" class="qrcode">
-                <div slot="placeholder" class="image-slot">
-                  加载中
-                  <span class="dot">...</span>
-                </div>
+                <template #placeholder>
+                  <div class="image-slot">
+                    加载中
+                    <span class="dot">...</span>
+                  </div>
+                </template>
               </el-image>
               <div class="attention">
                 <span class="demonstration">注:未关注公众号请先关注</span>
@@ -54,10 +56,12 @@
             </div>
             <div class="qrcode_img">
               <el-image :src="src" class="qrcode">
-                <div slot="placeholder" class="image-slot">
-                  加载中
-                  <span class="dot">...</span>
-                </div>
+                <template #placeholder>
+                  <div class="image-slot">
+                    加载中
+                    <span class="dot">...</span>
+                  </div>
+                </template>
               </el-image>
             </div>
           </el-form-item>
@@ -173,7 +177,7 @@ export default {
     [CRUD.HOOK.beforeToAdd]() {
       this.randomStr = RandomNumber();
       this.src =
-        process.env.VUE_APP_BASE_API + "/api/wxmp/qrcode?key=" + this.randomStr;
+        import.meta.env.VITE_APP_BASE_API + "/api/wxmp/qrcode?key=" + this.randomStr;
       this.setIntervaltimer();
       crudYzCustomer.getwechatCode()
         //getOpenId("FK14YV17TURrFdyWG4")
@@ -195,7 +199,7 @@ export default {
     [CRUD.HOOK.beforeToCU]() {
       this.randomStr = RandomNumber();
       this.src =
-        process.env.VUE_APP_BASE_API + "/api/wxmp/qrcode?key=" + this.randomStr;
+        import.meta.env.VITE_APP_BASE_API + "/api/wxmp/qrcode?key=" + this.randomStr;
       this.setIntervaltimer();
       return true;
     },

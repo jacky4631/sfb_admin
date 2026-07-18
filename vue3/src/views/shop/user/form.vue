@@ -28,7 +28,7 @@
         <el-date-picker
           v-model="form.expired"
           type="datetime"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           placeholder="选择日期时间"
         />
       </el-form-item>
@@ -39,7 +39,7 @@
         <el-date-picker
           v-model="form.expiredJd"
           type="datetime"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           placeholder="选择日期时间"
         />
       </el-form-item>
@@ -50,7 +50,7 @@
         <el-date-picker
           v-model="form.expiredPdd"
           type="datetime"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           placeholder="选择日期时间"
         />
       </el-form-item>
@@ -62,7 +62,7 @@
         <el-date-picker
           v-model="form.expiredDy"
           type="datetime"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           placeholder="选择日期时间"
         />
       </el-form-item>
@@ -73,7 +73,7 @@
         <el-date-picker
           v-model="form.expiredVip"
           type="datetime"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           placeholder="选择日期时间"
         />
       </el-form-item>

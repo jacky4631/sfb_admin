@@ -46,9 +46,11 @@
             <el-image
             :src="item.productInfo.image"
             style="width: 100px; height: 100px">
-              <div slot="placeholder" class="image-slot">
-                加载中<b class="dot">...</b>
-              </div>
+              <template #placeholder>
+                <div class="image-slot">
+                  加载中<b class="dot">...</b>
+                </div>
+              </template>
             </el-image>
           </el-form-item>
           <el-form-item label="规格：">

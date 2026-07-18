@@ -1,9 +1,9 @@
 <template>
   <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" title="查看分销下级" width="1400px">
     <el-card>
-      <div slot="header">
+      <template #header>
         <span>{{ form.nickname }}的下级</span>
-      </div>
+      </template>
       <el-tabs type="border-card" @tab-click="handleClick" v-model="activeName">
         <el-tab-pane label="一级" name="first">
           <el-table

@@ -4,28 +4,28 @@
 
       <el-tabs v-model="status" type="card" @tab-click="handleOrder">
         <el-tab-pane name="-9">
-          <span slot="label"><i class="el-icon-s-order"></i> 全部订单</span>
+          <template #label><el-icon><List /></el-icon> 全部订单</template>
         </el-tab-pane>
         <el-tab-pane name="0">
-          <span slot="label"><i class="el-icon-bank-card"></i> 未支付</span>
+          <template #label><el-icon><Wallet /></el-icon> 未支付</template>
         </el-tab-pane>
         <el-tab-pane name="1">
-          <span slot="label"><i class="el-icon-refrigerator"></i> 未发货</span>
+          <template #label><el-icon><Refrigerator /></el-icon> 未发货</template>
         </el-tab-pane>
         <el-tab-pane name="2">
-          <span slot="label"><i class="el-icon-truck"></i> 待收货</span>
+          <template #label><el-icon><Van /></el-icon> 待收货</template>
         </el-tab-pane>
         <el-tab-pane name="3">
-          <span slot="label"><i class="el-icon-document"></i> 待评价</span>
+          <template #label><el-icon><Document /></el-icon> 待评价</template>
         </el-tab-pane>
         <el-tab-pane name="4">
-          <span slot="label"><i class="el-icon-circle-check"></i> 交易完成</span>
+          <template #label><el-icon><CircleCheck /></el-icon> 交易完成</template>
         </el-tab-pane>
         <el-tab-pane name="-1">
-          <span slot="label"><i class="el-icon-back"></i> 退款中</span>
+          <template #label><el-icon><Back /></el-icon> 退款中</template>
         </el-tab-pane>
         <el-tab-pane name="-2">
-          <span slot="label"><i class="el-icon-finished"></i> 已退款</span>
+          <template #label><el-icon><Finished /></el-icon> 已退款</template>
         </el-tab-pane>
       </el-tabs>
       <!--工具栏-->
@@ -51,7 +51,7 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />

@@ -129,7 +129,7 @@
                     :src="activeComponent.componentContent.imgData[activeComponent.componentContent.imgBoxActive].src" >
                   <div class="tips"
                     v-if="activeComponent.componentContent.imgData[activeComponent.componentContent.imgBoxActive].src" >更换图片</div>
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
                   <span>添加图片</span>
                 </el-upload>
               </div>

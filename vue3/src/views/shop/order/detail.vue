@@ -17,7 +17,7 @@
     </div>
     <el-card shadow="never" style="margin-top: 15px">
       <div class="operate-container">
-        <i class="el-icon-warning color-danger" style="margin-left: 20px"></i>
+        <el-icon class="color-danger" style="margin-left: 20px"><Warning /></el-icon>
         <span class="color-danger">当前订单状态：<span v-html="order.statusName"></span></span>
         <div class="operate-button-container" v-show="order._status===1">
           <el-button size="small" @click="editOrder(order)">修改订单</el-button>
@@ -312,7 +312,7 @@
         <el-row>
           <el-col :span="6" class="table-cell">￥{{order.totalPrice}}</el-col>
           <el-col :span="6" class="table-cell">
-            <el-input type="number" v-model="order.payPostage" size="small"><template slot="prepend">￥</template></el-input>
+            <el-input type="number" v-model="order.payPostage" size="small"><template #prepend>￥</template></el-input>
           </el-col>
           <el-col :span="6" class="table-cell">-￥{{order.couponPrice}}</el-col>
           <el-col :span="6" class="table-cell">-￥{{order.useIntegral}}</el-col>
@@ -326,7 +326,7 @@
         <el-row>
           <el-col :span="6" class="table-cell">-￥{{order.promotionAmount}}</el-col>
           <el-col :span="6" class="table-cell">
-            <el-input type="number" v-model="order.deductionPrice" size="small"><template slot="prepend">-￥</template></el-input>
+            <el-input type="number" v-model="order.deductionPrice" size="small"><template #prepend>-￥</template></el-input>
           </el-col>
           <el-col :span="6" class="table-cell">
             <span class="color-danger">￥{{order.totalPrice}}</span>

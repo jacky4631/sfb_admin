@@ -56,8 +56,8 @@
       @click="sidebarShow = !sidebarShow"
       :class="{ on: sidebarShow }"
     >
-      <i class="el-icon-arrow-right iconfont icon-arrow-right"></i>
-      <i class="el-icon-arrow-left iconfont icon-arrow-left"></i>
+      <el-icon class="iconfont icon-arrow-right"><ArrowRight /></el-icon>
+      <el-icon class="iconfont icon-arrow-left"><ArrowLeft /></el-icon>
     </div>
   </div>
 </template>

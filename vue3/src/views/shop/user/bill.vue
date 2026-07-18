@@ -35,7 +35,7 @@
         v-model="startTime"
         type="date"
         placeholder="开始日期"
-        value-format="yyyy-MM-dd"
+        value-format="YYYY-MM-DD"
         style="width: 180px">
       </el-date-picker>
       <el-date-picker
@@ -43,7 +43,7 @@
         v-model="endTime"
         type="date"
         placeholder="结束日期"
-        value-format="yyyy-MM-dd"
+        value-format="YYYY-MM-DD"
         style="width: 180px">
       </el-date-picker>
       <el-button class="filter-item" size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>

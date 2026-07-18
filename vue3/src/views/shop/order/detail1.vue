@@ -1,9 +1,9 @@
 <template>
   <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '订单详情'" width="700px">
     <el-card>
-      <div slot="header">
+      <template #header>
         <span>进度信息</span>
-      </div>
+      </template>
       <el-steps
         v-if="form.refundStatus===0"
         :active="orderStatus.size"
@@ -23,18 +23,18 @@
       </el-steps>
     </el-card>
     <el-card>
-      <div slot="header">
+      <template #header>
         <span>收货信息</span>
-      </div>
+      </template>
       <div class="text item">用户昵称:{{ form.nickname }}</div>
       <div class="text item">收货人: {{ form.realName }}</div>
       <div class="text item">联系电话: {{ form.userPhone }}</div>
       <div class="text item">收货地址: {{ form.userAddress }}</div>
     </el-card>
     <el-card>
-      <div slot="header">
+      <template #header>
         <span>订单信息</span>
-      </div>
+      </template>
       <el-row :gutter="24">
         <el-col :span="12">
           <div class="text item">订单编号: {{ form.orderId }}</div>
@@ -53,9 +53,9 @@
       </el-row>
     </el-card>
     <el-card v-if="form.storeId == 0">
-      <div slot="header">
+      <template #header>
         <span>物流信息</span>
-      </div>
+      </template>
       <div class="text item">快递公司:{{ form.deliveryName }}</div>
       <div class="text item">快递单号:{{ form.deliveryId }}</div>
 
@@ -78,9 +78,9 @@
       </div>
     </el-card>
     <el-card>
-      <div slot="header">
+      <template #header>
         <span>备注信息</span>
-      </div>
+      </template>
       <div class="text item">{{ form.remark }}</div>
     </el-card>
   </el-dialog>

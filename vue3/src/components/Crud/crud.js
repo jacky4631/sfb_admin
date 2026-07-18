@@ -448,6 +448,49 @@ function mergeOptions(src, opts) {
   return optsRet
 }
 
+// 模块级 crud 实例栈，作为 provide/inject 失败时的兜底
+const _crudStack = []
+
+/**
+ * 解析 crud 实例 - 兼容 Vue 3.5 defineOptions + mixin 场景
+ * 在 <script setup> 中通过 defineOptions({ mixins: [...] }) 使用时，
+ * mixin 的 inject 绑定不会正确暴露到 this 上，需要多重兜底
+ */
+function resolveCrud(vm) {
+  if (vm.crud) return vm.crud
+  // 1. 尝试 inject() API（lifecycle hook 中可调用）
+  try {
+    const inst = getCurrentInstance()
+    if (inst) {
+      let crudInst = inject('crud', null)
+      if (crudInst) {
+        vm.crud = crudInst
+        return crudInst
+      }
+      // 2. 手动遍历组件树的 provides 对象
+      let current = inst.parent
+      while (current) {
+        if (current.provides && current.provides['crud']) {
+          crudInst = current.provides['crud']
+          vm.crud = crudInst
+          return crudInst
+        }
+        current = current.parent
+      }
+    }
+  } catch (e) {
+    // inject 可能在某些场景下不可用，静默降级
+  }
+  // 3. 最终兜底：使用模块级栈顶实例
+  if (_crudStack.length > 0) {
+    const crudInst = _crudStack[_crudStack.length - 1]
+    vm.crud = crudInst
+    return crudInst
+  }
+  console.warn('[CRUD] 无法解析 crud 实例')
+  return undefined
+}
+
 /**
  * crud主页 - 支持 composable 和 mixin 双模式
  */
@@ -480,12 +523,15 @@ function presenter(crudInstance) {
         parseTime
       },
       created() {
+        _crudStack.push(crudInstance)
         crudInstance.registerVM('presenter', this, 0)
         if (crudInstance.queryOnPresenterCreated) {
           crudInstance.toQuery()
         }
       },
       beforeUnmount() {
+        const idx = _crudStack.lastIndexOf(crudInstance)
+        if (idx !== -1) _crudStack.splice(idx, 1)
         crudInstance.unregisterVM(this)
       },
       mounted() {
@@ -505,6 +551,7 @@ function presenter(crudInstance) {
 
   // composable 模式：在 <script setup> 中调用
   provide('crud', crudInstance)
+  _crudStack.push(crudInstance)
 
   const columns = ref({
     visible(col) { return true }
@@ -533,6 +580,8 @@ function presenter(crudInstance) {
   })
 
   onBeforeUnmount(() => {
+    const idx = _crudStack.lastIndexOf(crudInstance)
+    if (idx !== -1) _crudStack.splice(idx, 1)
     crudInstance.vms.forEach((vm, i) => {
       if (vm && vm.type === 'presenter') crudInstance.vms[i] = undefined
     })
@@ -559,10 +608,12 @@ function header() {
         query: { from: 'crud.query' }
       },
       created() {
-        this.crud.registerVM('header', this, 1)
+        const c = resolveCrud(this)
+        if (c) c.registerVM('header', this, 1)
       },
       beforeUnmount() {
-        this.crud.unregisterVM(this)
+        const c = this.crud || resolveCrud(this)
+        if (c) c.unregisterVM(this)
       }
     }
   }
@@ -589,10 +640,12 @@ function pagination() {
         page: { from: 'crud.page' }
       },
       created() {
-        this.crud.registerVM('pagination', this, 2)
+        const c = resolveCrud(this)
+        if (c) c.registerVM('pagination', this, 2)
       },
       beforeUnmount() {
-        this.crud.unregisterVM(this)
+        const c = this.crud || resolveCrud(this)
+        if (c) c.unregisterVM(this)
       }
     }
   }
@@ -619,12 +672,16 @@ function form(defaultForm) {
         form: { from: 'crud.form' }
       },
       created() {
-        this.crud.registerVM('form', this, 3)
-        this.crud.defaultForm = defaultForm
-        this.crud.resetForm()
+        const c = resolveCrud(this)
+        if (c) {
+          c.registerVM('form', this, 3)
+          c.defaultForm = defaultForm
+          c.resetForm()
+        }
       },
       beforeUnmount() {
-        this.crud.unregisterVM(this)
+        const c = this.crud || resolveCrud(this)
+        if (c) c.unregisterVM(this)
       }
     }
   }
@@ -658,10 +715,12 @@ function crud(options = {}) {
         query: { from: 'crud.query' }
       },
       created() {
-        this.crud.registerVM(options.type, this)
+        const c = resolveCrud(this)
+        if (c) c.registerVM(options.type, this)
       },
       beforeUnmount() {
-        this.crud.unregisterVM(this)
+        const c = this.crud || resolveCrud(this)
+        if (c) c.unregisterVM(this)
       }
     }
   }

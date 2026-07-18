@@ -14,7 +14,7 @@
         <el-col :span="23" class="noForm" v-for="(item, index) in formData.ruleValue" :key="index">
           <el-form-item label=" ">
             <div class="acea-row row-middle"><span class="mr5">{{item.value}}</span>
-              <i class="el-icon-circle-close"  @click="handleRemove(index)"></i>
+              <el-icon style="cursor:pointer" @click="handleRemove(index)"><CircleClose /></el-icon>
             </div>
             <div class="rulesBox">
               <el-tag   class="mb5" style="margin: 2px 4px 2px 0;" closable
@@ -23,7 +23,9 @@
               </el-tag>
               <el-input placeholder="请输入属性名称" v-model="item.detail.attrsVal"
                         style="width: 170px">
-                <el-button slot="append" type="primary" @click="createAttr(item.detail.attrsVal,index)">添加</el-button>
+                <template #append>
+                  <el-button type="primary" @click="createAttr(item.detail.attrsVal,index)">添加</el-button>
+                </template>
               </el-input>
             </div>
           </el-form-item>
