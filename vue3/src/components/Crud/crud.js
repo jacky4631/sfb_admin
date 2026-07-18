@@ -604,8 +604,12 @@ function header() {
   if (!getCurrentInstance()) {
     return {
       inject: {
-        crud: { from: 'crud' },
-        query: { from: 'crud.query' }
+        crud: { from: 'crud' }
+      },
+      computed: {
+        query() {
+          return (this.crud || resolveCrud(this) || {}).query || {}
+        }
       },
       created() {
         const c = resolveCrud(this)
@@ -636,8 +640,12 @@ function pagination() {
   if (!getCurrentInstance()) {
     return {
       inject: {
-        crud: { from: 'crud' },
-        page: { from: 'crud.page' }
+        crud: { from: 'crud' }
+      },
+      computed: {
+        page() {
+          return (this.crud || resolveCrud(this) || {}).page || {}
+        }
       },
       created() {
         const c = resolveCrud(this)
@@ -668,8 +676,12 @@ function form(defaultForm) {
   if (!getCurrentInstance()) {
     return {
       inject: {
-        crud: { from: 'crud' },
-        form: { from: 'crud.form' }
+        crud: { from: 'crud' }
+      },
+      computed: {
+        form() {
+          return (this.crud || resolveCrud(this) || {}).form || {}
+        }
       },
       created() {
         const c = resolveCrud(this)
@@ -711,8 +723,14 @@ function crud(options = {}) {
   if (!getCurrentInstance()) {
     return {
       inject: {
-        crud: { from: 'crud' },
-        query: { from: 'crud.query' }
+        crud: { from: 'crud' }
+      },
+      computed: {
+        query() {
+          // header mixin 已定义 query computed 时不会走到这里
+          // 仅当 crud mixin 单独使用时提供兜底
+          return (this.crud || resolveCrud(this) || {}).query || {}
+        }
       },
       created() {
         const c = resolveCrud(this)
