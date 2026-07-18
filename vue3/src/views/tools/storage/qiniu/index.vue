@@ -116,6 +116,8 @@ const qiNiuUploadApi = computed(() => baseUrl + '/api/qiNiuContent')
 const defaultCrud = CRUD({ title: '七牛云文件', url: 'api/qiNiuContent', crudMethod: { ...crudQiNiu }})
 const { crud, columns, query } = presenter(defaultCrud)
 
+defineExpose({ crud })
+
 onMounted(() => {
   crud.optShow.add = false
   crud.optShow.edit = false

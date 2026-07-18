@@ -155,6 +155,8 @@ const defaultCrud = CRUD({ title: '文件', url: 'api/localStorage', crudMethod:
 const defaultForm = { id: null, name: '' }
 const { crud, columns, query } = presenter(defaultCrud)
 
+defineExpose({ crud })
+
 onMounted(() => {
   crud.optShow.add = false
 })

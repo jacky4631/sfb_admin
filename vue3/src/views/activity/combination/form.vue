@@ -197,8 +197,8 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="商品详情：">
-              <ueditor-wrap v-model="formValidate.description" :config="myConfig" @beforeInit="addCustomDialog"
-                            style="width: 90%;"></ueditor-wrap>
+              <VueUeditorWrap v-model="formValidate.description" :config="myConfig" @beforeInit="addCustomDialog"
+                            style="width: 90%;"></VueUeditorWrap>
             </el-form-item>
           </el-col>
         </el-row>
@@ -222,6 +222,7 @@ import picUpload from '@/components/pic-upload'
 import mulpicUpload from '@/components/mul-pic-upload'
 import MaterialList from '@/components/material'
 import singlePic from '@/components/singlematerial'
+import { VueUeditorWrap } from 'vue-ueditor-wrap'
 
 defineOptions({ name: 'CombinationForm' })
 

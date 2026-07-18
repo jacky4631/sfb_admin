@@ -14,8 +14,8 @@
         <el-button style="margin-left:0;" :icon="Minus" @click.prevent="removeDomain(domain)"/>
       </el-form-item>
       <el-form-item label="邮件内容">
-        <ueditor-wrap v-model="form.content" :config="myConfig" @beforeInit="addCustomDialog"
-                      style="width: 90%;"></ueditor-wrap>
+        <VueUeditorWrap v-model="form.content" :config="myConfig" @beforeInit="addCustomDialog"
+                      style="width: 90%;"></VueUeditorWrap>
       </el-form-item>
 
       <!-- <div ref="editor" class="editor"/> -->
@@ -33,7 +33,7 @@ import { ElMessage } from 'element-plus'
 import { send } from '@/api/tools/email'
 import { upload } from '@/utils/upload'
 import { validEmail } from '@/utils/validate'
-import UeditorWrap from 'vue-ueditor-wrap'
+import { VueUeditorWrap } from 'vue-ueditor-wrap'
 
 const loading = ref(false)
 const formRef = ref(null)
@@ -73,6 +73,8 @@ const addDomain = () => {
     key: Date.now()
   })
 }
+
+const addCustomDialog = () => {}
 
 const doSubmit = () => {
   formRef.value.validate((valid) => {

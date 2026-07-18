@@ -1,5 +1,6 @@
 // 导入api接口模块
 import imageSrc from '@/assets/canvasImg/index.js'
+import bannerImg from '@/assets/canvasImg/cereshop/banner.png'
 export const panelList = [
   // 小程序
   [
@@ -30,7 +31,7 @@ export const panelList = [
           componentContent: {
             bannerData: [
               {
-                pic: require('@/assets/canvasImg/cereshop/banner.png'),
+                pic: bannerImg,
                 name: '0',
                 sort: 0,
                 url: '/',
