@@ -399,7 +399,8 @@ function CRUD(options) {
     this.vms.splice(index, 1, vmObj)
   }
   crud.unregisterVM = function(vm) {
-    this.vms.splice(this.vms.findIndex(e => e && e.vm === vm), 1)
+    const idx = this.vms.findIndex(e => e && e.vm === vm)
+    if (idx !== -1) this.vms.splice(idx, 1)
   }
   // 记录初始默认的查询参数
   crud.defaultQuery = JSON.parse(JSON.stringify(data.query))
@@ -427,9 +428,11 @@ function callVmHook(crud, hook) {
   }
   // 2. 再检查注册的组件实例方法
   const vmSet = new Set()
-  crud.vms.forEach(vm => vm && vmSet.add(vm.vm))
+  crud.vms.forEach(entry => {
+    if (entry && entry.vm) vmSet.add(entry.vm)
+  })
   vmSet.forEach(vm => {
-    if (typeof vm[hook] === 'function') {
+    if (vm && typeof vm[hook] === 'function') {
       ret = vm[hook].apply(vm, nargs) !== false && ret
     }
   })
