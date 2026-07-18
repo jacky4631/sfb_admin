@@ -30,12 +30,12 @@ export default defineConfig(({ mode }) => {
       '/api': {
         target: apiTarget,
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, 'api')
+        rewrite: (path) => path.replace(/^\/api/, '/api')
       },
       '/auth': {
         target: apiTarget,
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/auth/, 'auth')
+        rewrite: (path) => path.replace(/^\/auth/, '/auth')
       }
     }
   },

@@ -1,4 +1,4 @@
-import { reactive, onMounted, onBeforeUnmount, provide, inject, ref, getCurrentInstance } from 'vue'
+import { reactive, onMounted, onBeforeUnmount, provide, inject, ref, getCurrentInstance, hasInjectionContext } from 'vue'
 import { initData, download } from '@/api/data'
 import { parseTime, downloadFile } from '@/utils/index'
 import { ElNotification } from 'element-plus'
@@ -600,30 +600,17 @@ function presenter(crudInstance) {
  * 头部 - 支持 composable 和 mixin 双模式
  */
 function header() {
-  // mixin 模式
-  if (!getCurrentInstance()) {
-    return {
-      inject: {
-        crud: { from: 'crud' }
-      },
-      computed: {
-        query() {
-          return (this.crud || resolveCrud(this) || {}).query || {}
-        }
-      },
-      created() {
-        const c = resolveCrud(this)
-        if (c) c.registerVM('header', this, 1)
-      },
-      beforeUnmount() {
-        const c = this.crud || resolveCrud(this)
-        if (c) c.unregisterVM(this)
-      }
-    }
+  // mixin 模式：不在 injection context 中，或 inject 未找到 crud 实例
+  if (!hasInjectionContext()) {
+    return _headerMixin()
+  }
+  const crudInst = inject('crud', null)
+  if (!crudInst) {
+    // inject 未找到 provider（如同组件 mixin 场景），回退到 mixin 模式
+    return _headerMixin()
   }
 
   // composable 模式
-  const crudInst = inject('crud')
   onBeforeUnmount(() => {
     crudInst.vms.forEach((vm, i) => {
       if (vm && vm.type === 'header') crudInst.vms[i] = undefined
@@ -632,34 +619,41 @@ function header() {
   return { crud: crudInst, query: crudInst.query }
 }
 
+function _headerMixin() {
+  return {
+    inject: {
+      crud: { from: 'crud' }
+    },
+    computed: {
+      query() {
+        return (this.crud || resolveCrud(this) || {}).query || {}
+      }
+    },
+    methods: {
+      toQuery() {
+        const c = this.crud || resolveCrud(this)
+        if (c) c.toQuery()
+      }
+    },
+    created() {
+      const c = resolveCrud(this)
+      if (c) c.registerVM('header', this, 1)
+    },
+    beforeUnmount() {
+      const c = this.crud || resolveCrud(this)
+      if (c) c.unregisterVM(this)
+    }
+  }
+}
+
 /**
  * 分页 - 支持 composable 和 mixin 双模式
  */
 function pagination() {
-  // mixin 模式
-  if (!getCurrentInstance()) {
-    return {
-      inject: {
-        crud: { from: 'crud' }
-      },
-      computed: {
-        page() {
-          return (this.crud || resolveCrud(this) || {}).page || {}
-        }
-      },
-      created() {
-        const c = resolveCrud(this)
-        if (c) c.registerVM('pagination', this, 2)
-      },
-      beforeUnmount() {
-        const c = this.crud || resolveCrud(this)
-        if (c) c.unregisterVM(this)
-      }
-    }
-  }
+  if (!hasInjectionContext()) return _paginationMixin()
+  const crudInst = inject('crud', null)
+  if (!crudInst) return _paginationMixin()
 
-  // composable 模式
-  const crudInst = inject('crud')
   onBeforeUnmount(() => {
     crudInst.vms.forEach((vm, i) => {
       if (vm && vm.type === 'pagination') crudInst.vms[i] = undefined
@@ -668,38 +662,35 @@ function pagination() {
   return { crud: crudInst }
 }
 
+function _paginationMixin() {
+  return {
+    inject: {
+      crud: { from: 'crud' }
+    },
+    computed: {
+      page() {
+        return (this.crud || resolveCrud(this) || {}).page || {}
+      }
+    },
+    created() {
+      const c = resolveCrud(this)
+      if (c) c.registerVM('pagination', this, 2)
+    },
+    beforeUnmount() {
+      const c = this.crud || resolveCrud(this)
+      if (c) c.unregisterVM(this)
+    }
+  }
+}
+
 /**
  * 表单 - 支持 composable 和 mixin 双模式
  */
 function form(defaultForm) {
-  // mixin 模式
-  if (!getCurrentInstance()) {
-    return {
-      inject: {
-        crud: { from: 'crud' }
-      },
-      computed: {
-        form() {
-          return (this.crud || resolveCrud(this) || {}).form || {}
-        }
-      },
-      created() {
-        const c = resolveCrud(this)
-        if (c) {
-          c.registerVM('form', this, 3)
-          c.defaultForm = defaultForm
-          c.resetForm()
-        }
-      },
-      beforeUnmount() {
-        const c = this.crud || resolveCrud(this)
-        if (c) c.unregisterVM(this)
-      }
-    }
-  }
+  if (!hasInjectionContext()) return _formMixin(defaultForm)
+  const crudInst = inject('crud', null)
+  if (!crudInst) return _formMixin(defaultForm)
 
-  // composable 模式
-  const crudInst = inject('crud')
   crudInst.defaultForm = defaultForm
   crudInst.resetForm()
   onBeforeUnmount(() => {
@@ -708,6 +699,31 @@ function form(defaultForm) {
     })
   })
   return { crud: crudInst, form: crudInst.form }
+}
+
+function _formMixin(defaultForm) {
+  return {
+    inject: {
+      crud: { from: 'crud' }
+    },
+    computed: {
+      form() {
+        return (this.crud || resolveCrud(this) || {}).form || {}
+      }
+    },
+    created() {
+      const c = resolveCrud(this)
+      if (c) {
+        c.registerVM('form', this, 3)
+        c.defaultForm = defaultForm
+        c.resetForm()
+      }
+    },
+    beforeUnmount() {
+      const c = this.crud || resolveCrud(this)
+      if (c) c.unregisterVM(this)
+    }
+  }
 }
 
 /**
@@ -719,38 +735,37 @@ function crud(options = {}) {
   }
   options = mergeOptions(defaultOptions, options)
 
-  // mixin 模式
-  if (!getCurrentInstance()) {
-    return {
-      inject: {
-        crud: { from: 'crud' }
-      },
-      computed: {
-        query() {
-          // header mixin 已定义 query computed 时不会走到这里
-          // 仅当 crud mixin 单独使用时提供兜底
-          return (this.crud || resolveCrud(this) || {}).query || {}
-        }
-      },
-      created() {
-        const c = resolveCrud(this)
-        if (c) c.registerVM(options.type, this)
-      },
-      beforeUnmount() {
-        const c = this.crud || resolveCrud(this)
-        if (c) c.unregisterVM(this)
-      }
-    }
-  }
+  if (!hasInjectionContext()) return _crudMixin(options)
+  const crudInst = inject('crud', null)
+  if (!crudInst) return _crudMixin(options)
 
-  // composable 模式
-  const crudInst = inject('crud')
   onBeforeUnmount(() => {
     crudInst.vms.forEach((vm, i) => {
       if (vm && vm.vm === crudInst) crudInst.vms[i] = undefined
     })
   })
   return { crud: crudInst }
+}
+
+function _crudMixin(options) {
+  return {
+    inject: {
+      crud: { from: 'crud' }
+    },
+    computed: {
+      query() {
+        return (this.crud || resolveCrud(this) || {}).query || {}
+      }
+    },
+    created() {
+      const c = resolveCrud(this)
+      if (c) c.registerVM(options.type, this)
+    },
+    beforeUnmount() {
+      const c = this.crud || resolveCrud(this)
+      if (c) c.unregisterVM(this)
+    }
+  }
 }
 
 /**
