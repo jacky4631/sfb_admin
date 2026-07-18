@@ -103,6 +103,7 @@
 <script setup>
 import { ref, nextTick } from 'vue'
 import { ElMessageBox } from 'element-plus'
+import { Plus, Edit, Delete, Download, Search, Refresh, Grid } from '@element-plus/icons-vue'
 import CRUD, { crud as crudComposable } from '@crud/crud'
 
 defineOptions({

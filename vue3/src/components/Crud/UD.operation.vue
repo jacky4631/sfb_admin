@@ -15,6 +15,7 @@
 </template>
 <script setup>
 import { ref } from 'vue'
+import { Edit, Delete } from '@element-plus/icons-vue'
 import CRUD, { crud as crudComposable } from '@crud/crud'
 
 defineOptions({
