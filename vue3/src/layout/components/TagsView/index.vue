@@ -6,7 +6,7 @@
         ref="tag"
         :key="tag.path"
         :class="isActive(tag)?'active':''"
-        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+        :to="{ path: tag.path, query: tag.query }"
         class="tags-view-item"
         @click.middle="closeSelectedTag(tag)"
         @contextmenu.prevent="openMenu(tag,$event)"
@@ -94,14 +94,11 @@ const addTags = () => {
 }
 
 const moveToCurrentTag = () => {
-  const tags = tag.value
   nextTick(() => {
+    const tags = tag.value
     for (const tag_ of tags) {
       if (tag_.to.path === route.path) {
         scrollPane.value.moveToTarget(tag_)
-        if (tag_.to.fullPath !== route.fullPath) {
-          tagsViewStore.updateVisitedView(route)
-        }
         break
       }
     }

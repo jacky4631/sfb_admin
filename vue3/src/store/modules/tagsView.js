@@ -7,7 +7,16 @@ export const useTagsViewStore = defineStore('tagsView', {
   }),
   actions: {
     addView(view) {
-      if (this.visitedViews.some(v => v.path === view.path)) return
+      const existing = this.visitedViews.find(v => v.path === view.path)
+      if (existing) {
+        // Update fullPath in place when view already exists (e.g., query changed)
+        const newFullPath = view.fullPath || ''
+        if (existing.fullPath !== newFullPath) {
+          existing.fullPath = newFullPath
+          existing.query = view.query ? { ...view.query } : {}
+        }
+        return
+      }
       this.visitedViews.push({
         name: view.name,
         path: view.path,
@@ -36,12 +45,10 @@ export const useTagsViewStore = defineStore('tagsView', {
         const newFullPath = view.fullPath || ''
         const newTitle = (view.meta && view.meta.title) || 'no-name'
         if (existing.fullPath === newFullPath && existing.title === newTitle) return
-        this.visitedViews[index] = {
-          ...existing,
-          fullPath: newFullPath,
-          query: view.query ? { ...view.query } : {},
-          title: newTitle
-        }
+        // Mutate in place to avoid replacing the object reference (prevents recursive re-renders)
+        existing.fullPath = newFullPath
+        existing.query = view.query ? { ...view.query } : {}
+        existing.title = newTitle
       }
     },
     delCachedView(view) {
