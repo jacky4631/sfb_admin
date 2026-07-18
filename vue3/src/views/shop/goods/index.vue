@@ -100,10 +100,8 @@ import { ElNotification, ElMessage, ElMessageBox } from 'element-plus'
 import checkPermission from '@/utils/permission'
 import initData from '@/mixins/crud'
 import { del, onsale } from '@/api/mwStoreProduct'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import Treeselect from '@riophae/vue-treeselect'
 export default {
-  components: {  Treeselect },
+  components: { },
   mixins: [initData],
   data() {
     return {

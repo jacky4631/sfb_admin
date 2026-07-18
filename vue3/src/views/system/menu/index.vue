@@ -88,7 +88,7 @@
           <el-input v-model="form.component" style="width: 178px;" placeholder="组件路径" />
         </el-form-item>
         <el-form-item label="上级类目" prop="pid">
-          <treeselect v-model="form.pid" :options="menus" style="width: 450px;" placeholder="选择上级类目" />
+          <el-tree-select v-model="form.pid" :data="menus" :props="{ children: 'children', label: 'label' }" node-key="id" check-strictly render-after-expand=false style="width: 450px;" placeholder="选择上级类目" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -155,8 +155,7 @@
 import { Search } from '@element-plus/icons-vue'
 import crudMenu from '@/api/system/menu'
 import IconSelect from '@/components/IconSelect'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
@@ -167,7 +166,7 @@ const defaultCrud = CRUD({ title: '菜单', url: 'api/menus', crudMethod: { ...c
 const defaultForm = { id: null, name: null, sort: 999, path: null, component: null, componentName: null, iframe: false, roles: [], pid: 0, icon: null, cache: false, hidden: false, type: 0, permission: null }
 export default {
   name: 'Menu',
-  components: { Treeselect, IconSelect, crudOperation, rrOperation, udOperation, Search },
+  components: { IconSelect, crudOperation, rrOperation, udOperation, Search },
   mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
   data() {
     return {

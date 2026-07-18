@@ -54,9 +54,13 @@
         prop="dept.id"
         :rules="rules.dept"
       >
-        <treeselect
+        <el-tree-select
           v-model="form.dept.id"
-          :options="depts"
+          :data="depts"
+          :props="{ children: 'children', label: 'label' }"
+          node-key="id"
+          check-strictly
+          render-after-expand=false
           style="width: 370px"
           placeholder="选择部门"
         />
@@ -87,8 +91,6 @@
 <script>
 import CRUD, { form } from '@crud/crud'
 import { getDepts } from '@/api/system/dept'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { ElNotification } from 'element-plus'
 
 const defaultForm = {
@@ -101,7 +103,7 @@ const defaultForm = {
   }
 }
 export default {
-  components: { Treeselect },
+  components: { },
   mixins: [form(defaultForm)],
   props: {
     jobStatus: {

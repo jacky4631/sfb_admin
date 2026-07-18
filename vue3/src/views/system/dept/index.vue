@@ -33,7 +33,7 @@
           <el-radio v-for="item in dict.dept_status" :key="item.id" v-model="form.enabled" :label="item.value">{{ item.label }}</el-radio>
         </el-form-item>
         <el-form-item v-if="form.pid !== 0" style="margin-bottom: 0;" label="上级部门" prop="pid">
-          <treeselect v-model="form.pid" :options="depts" style="width: 370px;" placeholder="选择上级类目" />
+          <el-tree-select v-model="form.pid" :data="depts" :props="{ children: 'children', label: 'name' }" node-key="id" check-strictly render-after-expand=false style="width: 370px;" placeholder="选择上级类目" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -80,8 +80,6 @@
 <script>
 import { ElMessageBox, ElMessage } from 'element-plus'
 import crudDept from '@/api/system/dept'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
@@ -92,7 +90,7 @@ const defaultCrud = CRUD({ title: '部门', url: 'api/dept', crudMethod: { ...cr
 const defaultForm = { id: null, name: null, pid: 1, enabled: 'true' }
 export default {
   name: 'Dept',
-  components: { Treeselect, crudOperation, rrOperation, udOperation },
+  components: { crudOperation, rrOperation, udOperation },
   mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
   // 设置数据字典
   dicts: ['dept_status'],
@@ -166,22 +164,7 @@ export default {
         })
       })
     },
-    // 获取弹窗内部门数据
-    loadDepts({ action, parentNode, callback }) {
-      if (action === LOAD_CHILDREN_OPTIONS) {
-        crudDept.getDepts({ enabled: true, pid: parentNode.id }).then(res => {
-          parentNode.children = res.content.map(function(obj) {
-            if (obj.hasChildren) {
-              obj.children = null
-            }
-            return obj
-          })
-          setTimeout(() => {
-            callback()
-          }, 100)
-        })
-      }
-    },
+
     // 提交前的验证
     [CRUD.HOOK.afterValidateCU]() {
       if (this.form.pid !== null && this.form.pid === this.form.id) {
@@ -221,10 +204,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-:deep(.vue-treeselect__control),:deep(.vue-treeselect__placeholder),:deep(.vue-treeselect__single-value) {
-  height: 30px;
-  line-height: 30px;
-}
 </style>
 <style lang="scss" scoped>
 :deep(.el-input-number .el-input__inner) {

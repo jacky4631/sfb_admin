@@ -22,7 +22,7 @@ import checkPermission from '@/utils/permission'
 import initData from '@/mixins/crud'
 import { del, add, get } from '@/api/mwSystemConfig'
 
-import { Message } from 'element-ui'
+import { ElMessage } from 'element-plus'
 
 export default {
   mixins: [initData],
@@ -54,7 +54,7 @@ export default {
     checkPermission,
     doSubmit() {
       add(this.form).then(res => {
-        Message({ message: '设置成功', type: 'success' })
+        ElMessage.success('设置成功')
       }).catch(err => {
         // this.loading = false
         console.log(err.response.data.message)

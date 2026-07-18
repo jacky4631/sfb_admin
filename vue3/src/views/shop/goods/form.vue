@@ -357,13 +357,11 @@ import { add, edit, getInfo, isFormatAttr } from '@/api/mwStoreProduct'
 import editor from '../../components/Editor'
 import picUpload from '@/components/pic-upload'
 import mulpicUpload from '@/components/mul-pic-upload'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import MaterialList from '@/components/material'
 import singlePic from '@/components/singlematerial'
 import UeditorWrap from 'vue-ueditor-wrap';
 export default {
-  components: { editor, picUpload, mulpicUpload, Treeselect, MaterialList, UeditorWrap, singlePic },
+  components: { editor, picUpload, mulpicUpload, MaterialList, UeditorWrap, singlePic },
   data() {
     return {
       spinShow: false,

@@ -87,12 +87,16 @@
               <el-input v-model="form.email" />
             </el-form-item>
             <el-form-item label="部门" prop="dept.id">
-              <treeselect
+              <el-tree-select
                 v-model="form.dept.id"
-                :options="depts"
+                :data="depts"
+                :props="{ children: 'children', label: 'name' }"
+                node-key="id"
+                check-strictly
+                render-after-expand=false
                 style="width: 178px"
                 placeholder="选择部门"
-                @select="selectFun"
+                @node-click="selectFun"
               />
             </el-form-item>
             <el-form-item label="岗位" prop="job.id">
@@ -211,9 +215,7 @@ import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
-import Treeselect from '@riophae/vue-treeselect'
 import { useUserStore } from '@/store/modules/user'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 let userRoles = []
 // crud交由presenter持有
@@ -221,7 +223,7 @@ const defaultCrud = CRUD({ title: '用户', url: 'api/users', crudMethod: { ...c
 const defaultForm = { username: null, nickName: null, sex: '男', email: null, enabled: 'false', roles: [], job: { id: null }, dept: { id: null }, phone: null}
 export default {
   name: 'User',
-  components: { Treeselect, crudOperation, rrOperation, udOperation, pagination, Search },
+  components: { crudOperation, rrOperation, udOperation, pagination, Search },
   mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
   // 数据字典
   dicts: ['user_status'],
@@ -417,8 +419,8 @@ export default {
       }).catch(() => { })
     },
     // 点击部门搜索对应的岗位
-    selectFun(node, instanceId) {
-      this.getJobs(node.id)
+    selectFun(data) {
+      this.getJobs(data.id)
       this.form.job.id = null
     },
     // 获取权限级别

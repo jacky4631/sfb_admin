@@ -109,11 +109,9 @@ import { add, edit, isFormatAttr, setAttr, clearAttr, getAttr } from '@/api/mwSt
 import editor from '../../components/Editor'
 import picUploadTwo from '@/components/pic-upload-two'
 import mulpicUpload from '@/components/mul-pic-upload'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { Message } from 'element-ui'
+import { ElMessage } from 'element-plus'
 export default {
-  components: { editor, picUploadTwo, mulpicUpload, Treeselect },
+  components: { editor, picUploadTwo, mulpicUpload },
   props: {
     isAttr: {
       type: Boolean,
@@ -291,7 +289,7 @@ export default {
     },
     attrHiddenBool(item) {
       if (item.value == '') {
-        Message({ message: '请填写规则名称', type: 'error' })
+        ElMessage.error('请填写规则名称')
       } else {
         item.attrHidden = true
       }
@@ -313,10 +311,10 @@ export default {
       this.items.map(function(item) {
         if (!bool) return
         if (!item.value) {
-          Message({ message: '请填写规则名称', type: 'error' })
+          ElMessage.error('请填写规则名称')
           bool = false
         } else if (!item.detail.length) {
-          Message({ message: '请设置规则属性', type: 'error' })
+          ElMessage.error('请设置规则属性')
           bool = false
         }
       })
@@ -328,12 +326,12 @@ export default {
       item.detailValue = ''
     },
     handleRemove(index) {
-      if (this.items.length > 1) { this.items.splice(index, 1) } else { Message({ message: '请设置至少一个规则', type: 'error' }) }
+      if (this.items.length > 1) { this.items.splice(index, 1) } else { ElMessage.error('请设置至少一个规则') }
     },
     attrRemove(item, k) {
       console.log('item:')
       if (item.detail.length == 1) {
-        Message({ message: '请设置至少一个属性', type: 'error' })
+        ElMessage.error('请设置至少一个属性')
         return false
       }
       item.detail.splice(k, 1)
@@ -346,13 +344,13 @@ export default {
       this.attrs.map(function(attr) {
         if (!bool) return
         if (!Object.keys(attr.detail).length) {
-          Message({ message: '请选择至少一个属性', type: 'error' })
+          ElMessage.error('请选择至少一个属性')
           bool = false
         } else if (attr.price != parseFloat(attr.price) || attr.price < 0) {
-          Message({ message: '请输入正确的商品价格', type: 'error' })
+          ElMessage.error('请输入正确的商品价格')
           bool = false
         } else if (attr.sales != parseInt(attr.sales) || attr.sales < 0) {
-          Message({ message: '请输入正确的商品库存', type: 'error' })
+          ElMessage.error('请输入正确的商品库存')
           bool = false
         }
       })
@@ -382,7 +380,7 @@ export default {
       this.loading = false
       setAttr(this.form.id, { items: this.items, attrs: this.attrs }).then(res => {
         this.attrs = res
-        Message({ message: '操作成功', type: 'success' })
+        ElMessage.success('操作成功')
         this.$parent.init()
       }).catch(err => {
         this.loading = false
@@ -398,7 +396,7 @@ export default {
       })
         .then(() => {
           clearAttr(this.form.id).then(({ data }) => {
-            Message({ message: '操作成功', type: 'success' })
+            ElMessage.success('操作成功')
             // this.dialog = false
             this.getAttrs(this.form.id)
           })

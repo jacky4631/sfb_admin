@@ -28,7 +28,7 @@
           <el-input v-model="form.sort" style="width: 370px;" />
         </el-form-item>
         <el-form-item style="margin-bottom: 0;" label="上级分类" prop="pid">
-          <treeselect v-model="form.pid" :options="depts" style="width: 370px;" placeholder="选择上级分类" />
+          <el-tree-select v-model="form.pid" :data="depts" :props="{ children: 'children', label: 'label' }" node-key="id" check-strictly render-after-expand=false style="width: 370px;" placeholder="选择上级分类" />
         </el-form-item>
       </el-form>
       <template #footer><div class="dialog-footer">
@@ -65,8 +65,6 @@
 
 <script>
 import crudDept from '@/api/mwStoreCategory'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
@@ -79,7 +77,7 @@ const defaultCrud = CRUD({ title: '分类', url: 'api/mwStoreCategory', sort: 's
 const defaultForm = { id: null, cateName: null, pid: 0, isShow: 1 , sort:  1}
 export default {
   name: 'Dept',
-  components: { Treeselect, crudOperation, rrOperation, udOperation, picUpload, MaterialList },
+  components: { crudOperation, rrOperation, udOperation, picUpload, MaterialList },
   mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
   data() {
     return {
