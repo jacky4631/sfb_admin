@@ -62,11 +62,11 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { generator, sync } from '@/api/generator/generator'
 import { downloadFile } from '@/utils/index'
-import CRUD, { presenter, header } from '@crud/crud'
+import CRUD, { presenter } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
@@ -85,14 +85,8 @@ const defaultCrud = CRUD({ url: 'api/generator/tables' })
 const syncLoading = ref(false)
 const table = ref(null)
 
-// Use reactive for object with nested properties
-const query = reactive({
-  name: ''
-})
-
 // presenter and header are mixins - we need to extract their properties
-const crud = presenter(defaultCrud)
-const columns = header()
+const { crud, columns, query } = presenter(defaultCrud)
 
 onMounted(() => {
   crud.optShow = { add: false, edit: false, del: false, download: false }

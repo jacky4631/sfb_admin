@@ -60,6 +60,7 @@ import { ElMessageBox } from 'element-plus'
 import Search from './search.vue'
 import { delAllInfo } from '@/api/monitor/log'
 import CRUD, { presenter } from '@crud/crud'
+import { parseTime } from '@/utils/index'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
 

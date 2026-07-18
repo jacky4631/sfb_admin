@@ -103,6 +103,7 @@ import { ref, computed, onMounted } from 'vue'
 import { getToken } from '@/utils/auth'
 import crudPic from '@/api/tools/picture'
 import CRUD, { presenter, header } from '@crud/crud'
+import { parseTime } from '@/utils/index'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
@@ -124,7 +125,7 @@ const pictures = ref([])
 const imagesUploadApi = computed(() => baseUrl + '/api/pictures')
 
 const defaultCrud = CRUD({ title: '图片', url: 'api/pictures', crudMethod: { ...crudPic }})
-const { crud, columns } = presenter(defaultCrud)
+const { crud, columns, query } = presenter(defaultCrud)
 
 onMounted(() => {
   crud.optShow.add = false

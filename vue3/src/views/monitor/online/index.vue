@@ -64,6 +64,7 @@ import { ref, onMounted } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import { del } from '@/api/monitor/online'
 import CRUD, { presenter, header } from '@crud/crud'
+import { parseTime } from '@/utils/index'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
@@ -73,7 +74,7 @@ const permission = ref({})
 const popoverRefs = {}
 
 const defaultCrud = CRUD({ url: 'auth/online', title: '在线用户' })
-const { crud, columns, tableRef } = presenter(defaultCrud)
+const { crud, columns, tableRef, query } = presenter(defaultCrud)
 
 const setPopoverRef = (index, el) => {
   if (el) {

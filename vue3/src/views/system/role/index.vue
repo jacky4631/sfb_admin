@@ -126,7 +126,8 @@ import { ref, onMounted } from 'vue'
 import crudRoles from '@/api/system/role'
 import { getDepts } from '@/api/system/dept'
 import { getMenusTree } from '@/api/system/menu'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import CRUD, { presenter } from '@crud/crud'
+import { parseTime } from '@/utils/index'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
@@ -162,8 +163,7 @@ const rules = {
 
 const level = ref(3)
 
-const presenterResult = presenter(defaultCrud)
-Object.assign(crud, presenterResult.crud)
+const { crud, columns, query, form } = presenter(defaultCrud)
 
 const menu = ref(null)
 

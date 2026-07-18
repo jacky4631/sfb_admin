@@ -5,7 +5,7 @@
       <slot name="left" />
       <el-button
         v-if="crud.optShow.add"
-        v-permission="permission.add"
+        v-permission="permission.add || []"
         class="filter-item"
         size="small"
         type="primary"
@@ -16,7 +16,7 @@
       </el-button>
       <el-button
         v-if="crud.optShow.edit"
-        v-permission="permission.edit"
+        v-permission="permission.edit || []"
         class="filter-item"
         size="small"
         type="success"
@@ -28,7 +28,7 @@
       </el-button>
       <el-button
         v-if="crud.optShow.del"
-        v-permission="permission.del"
+        v-permission="permission.del || []"
         class="filter-item"
         type="danger"
         :icon="Delete"
@@ -112,7 +112,7 @@ defineOptions({
 const props = defineProps({
   permission: {
     type: Object,
-    default: null
+    default: () => ({})
   }
 })
 

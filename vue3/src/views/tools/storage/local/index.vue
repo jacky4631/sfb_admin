@@ -128,6 +128,7 @@ import { ref, computed, onMounted } from 'vue'
 import { getToken } from '@/utils/auth'
 import crudFile from '@/api/tools/localStorage'
 import CRUD, { presenter, header, form } from '@crud/crud'
+import { parseTime } from '@/utils/index'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
@@ -152,7 +153,7 @@ const fileUploadApi = computed(() => baseUrl + '/api/localStorage')
 
 const defaultCrud = CRUD({ title: '文件', url: 'api/localStorage', crudMethod: { ...crudFile }})
 const defaultForm = { id: null, name: '' }
-const { crud, columns } = presenter(defaultCrud)
+const { crud, columns, query } = presenter(defaultCrud)
 
 onMounted(() => {
   crud.optShow.add = false

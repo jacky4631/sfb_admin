@@ -238,7 +238,7 @@ const columns = ref({
   visible: (key) => true
 })
 
-const crud = presenter(defaultCrud)
+const { crud } = presenter(defaultCrud)
 
 // Watch for form.good changes
 watch(() => form.good, (val, oldVal) => {

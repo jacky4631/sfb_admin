@@ -4,17 +4,17 @@ function checkPermission(el, binding) {
   const { value } = binding
   const roles = useUserStore().roles
 
-  if (value && value instanceof Array && value.length > 0) {
-    const permissionRoles = value
-    const hasPermission = roles.some(role => {
-      return permissionRoles.includes(role)
-    })
+  if (!value || !(value instanceof Array) || value.length === 0) {
+    // 没有传入权限要求时，不做权限检查，直接显示
+    return
+  }
+  const permissionRoles = value
+  const hasPermission = roles.some(role => {
+    return permissionRoles.includes(role)
+  })
 
-    if (!hasPermission) {
-      el.parentNode && el.parentNode.removeChild(el)
-    }
-  } else {
-    throw new Error('need roles! Like v-permission="[\'admin\',\'editor\']"')
+  if (!hasPermission) {
+    el.parentNode && el.parentNode.removeChild(el)
   }
 }
 

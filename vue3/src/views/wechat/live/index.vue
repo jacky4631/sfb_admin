@@ -330,7 +330,7 @@ const columns = ref({
   visible: (key) => true
 })
 
-const crud = presenter(defaultCrud)
+const { crud } = presenter(defaultCrud)
 
 // CRUD hooks and methods would be provided by the presenter
 

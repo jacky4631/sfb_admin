@@ -89,6 +89,7 @@ import { getToken } from '@/utils/auth'
 import crudQiNiu from '@/api/tools/qiniu'
 import eForm from './form.vue'
 import CRUD, { presenter, header } from '@crud/crud'
+import { parseTime } from '@/utils/index'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
@@ -113,7 +114,7 @@ const newWin = ref(null)
 const qiNiuUploadApi = computed(() => baseUrl + '/api/qiNiuContent')
 
 const defaultCrud = CRUD({ title: '七牛云文件', url: 'api/qiNiuContent', crudMethod: { ...crudQiNiu }})
-const { crud, columns } = presenter(defaultCrud)
+const { crud, columns, query } = presenter(defaultCrud)
 
 onMounted(() => {
   crud.optShow.add = false
