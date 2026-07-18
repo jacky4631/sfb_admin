@@ -1,6 +1,6 @@
 <template>
   <div v-if="!item.hidden" class="menu-wrapper">
-    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
+    <template v-if="hasOneShowingChild && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <AppLink v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
           <Item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
@@ -52,7 +52,6 @@ const props = defineProps({
 })
 
 const subMenu = ref(null)
-const onlyOneChild = ref(null)
 
 // FixiOSBug mixin logic
 const appStore = useAppStore()
@@ -71,27 +70,22 @@ onMounted(() => {
   }
 })
 
-const hasOneShowingChild = (children = [], parent) => {
-  const showingChildren = children.filter(item => {
-    if (item.hidden) {
-      return false
-    } else {
-      onlyOneChild.value = item
-      return true
-    }
-  })
+// Convert render-time mutation to computed properties
+// to avoid recursive updates (ref mutation during render triggers re-render)
+const showingChildren = computed(() => {
+  return (props.item.children || []).filter(item => !item.hidden)
+})
 
-  if (showingChildren.length === 1) {
-    return true
+const hasOneShowingChild = computed(() => {
+  return showingChildren.value.length <= 1
+})
+
+const onlyOneChild = computed(() => {
+  if (showingChildren.value.length === 1) {
+    return showingChildren.value[0]
   }
-
-  if (showingChildren.length === 0) {
-    onlyOneChild.value = { ...parent, path: '', noShowingChildren: true }
-    return true
-  }
-
-  return false
-}
+  return { ...props.item, path: '', noShowingChildren: true }
+})
 
 const resolvePath = (routePath) => {
   if (isExternal(routePath)) {

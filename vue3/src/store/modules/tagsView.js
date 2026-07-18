@@ -7,16 +7,7 @@ export const useTagsViewStore = defineStore('tagsView', {
   }),
   actions: {
     addView(view) {
-      const existing = this.visitedViews.find(v => v.path === view.path)
-      if (existing) {
-        // Update fullPath in place when view already exists (e.g., query changed)
-        const newFullPath = view.fullPath || ''
-        if (existing.fullPath !== newFullPath) {
-          existing.fullPath = newFullPath
-          existing.query = view.query ? { ...view.query } : {}
-        }
-        return
-      }
+      if (this.visitedViews.some(v => v.path === view.path)) return
       this.visitedViews.push({
         name: view.name,
         path: view.path,

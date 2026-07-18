@@ -39,6 +39,8 @@ import Avatar from '@/assets/images/avatar.png'
 import { useAppStore } from '@/store/modules/app'
 import { useUserStore } from '@/store/modules/user'
 
+defineOptions({ name: 'Navbar' })
+
 const appStore = useAppStore()
 const userStore = useUserStore()
 const router = useRouter()

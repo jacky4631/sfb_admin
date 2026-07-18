@@ -4,7 +4,7 @@ export const useSettingsStore = defineStore('settings', {
   state: () => ({
     title: '苏分宝',
     theme: '#1890ff',
-    showSettings: true,
+    showSettings: false,
     tagsView: true,
     fixedHeader: true,
     sidebarLogo: true,

@@ -29,6 +29,7 @@ import { useAppStore } from '@/store/modules/app'
 import { useSettingsStore } from '@/store/modules/settings'
 
 defineOptions({
+  name: 'Sidebar',
   components: { SidebarItem, Logo }
 })
 

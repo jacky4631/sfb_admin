@@ -38,6 +38,7 @@ import ThemePicker from '@/components/ThemePicker'
 import { useSettingsStore } from '@/store/modules/settings'
 
 defineOptions({
+  name: 'Settings',
   components: { ThemePicker }
 })
 

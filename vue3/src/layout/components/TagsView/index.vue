@@ -1,19 +1,18 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
-      <router-link
-        v-for="tag in visitedViews"
-        ref="tag"
+    <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+      <span
+        v-for="tag in tagsViewStore.visitedViews"
         :key="tag.path"
         :class="isActive(tag)?'active':''"
-        :to="{ path: tag.path, query: tag.query }"
         class="tags-view-item"
+        @click="navigateTo(tag)"
         @click.middle="closeSelectedTag(tag)"
         @contextmenu.prevent="openMenu(tag,$event)"
       >
         <span>{{ tag.title }}</span>
         <span v-if="!(tag.meta && tag.meta.affix)" class="tags-view-item-close" @click.prevent.stop="closeSelectedTag(tag)"><el-icon><Close /></el-icon></span>
-      </router-link>
+      </span>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">刷新</li>
@@ -25,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Close } from '@element-plus/icons-vue'
 import { resolveUrlPath } from '@/utils'
@@ -40,19 +39,19 @@ const router = useRouter()
 const tagsViewStore = useTagsViewStore()
 const permissionStore = usePermissionStore()
 
-const visitedViews = computed(() => tagsViewStore.visitedViews)
-const routes = computed(() => permissionStore.routers)
-
 const visible = ref(false)
 const top = ref(0)
 const left = ref(0)
 const selectedTag = ref({})
-const affixTags = ref([])
-
 const scrollPane = ref(null)
-const tag = ref([])
 
 const isActive = (tag_) => tag_.path === route.path
+
+const navigateTo = (tag) => {
+  if (tag.path !== route.path) {
+    router.push(tag.fullPath || tag.path)
+  }
+}
 
 const filterAffixTags = (routes, basePath = '/') => {
   let tags = []
@@ -77,7 +76,7 @@ const filterAffixTags = (routes, basePath = '/') => {
 }
 
 const initTags = () => {
-  const affix = affixTags.value = filterAffixTags(routes.value)
+  const affix = filterAffixTags(permissionStore.routers)
   for (const tag_ of affix) {
     if (tag_.name) {
       tagsViewStore.addAffixView(tag_)
@@ -86,64 +85,51 @@ const initTags = () => {
 }
 
 const addTags = () => {
-  const { name } = route
+  const { name, path, fullPath, query, meta } = route
   if (name) {
-    tagsViewStore.addView(route)
+    // Pass a plain object to avoid any reactive proxy leaking into the store
+    tagsViewStore.addView({
+      name,
+      path,
+      fullPath,
+      query: query ? { ...query } : {},
+      meta: meta ? { ...meta } : {}
+    })
   }
-  return false
-}
-
-const moveToCurrentTag = () => {
-  nextTick(() => {
-    const tags = tag.value
-    for (const tag_ of tags) {
-      if (tag_.to.path === route.path) {
-        scrollPane.value.moveToTarget(tag_)
-        break
-      }
-    }
-  })
 }
 
 const refreshSelectedTag = (view) => {
-  tagsViewStore.delCachedView(view).then(() => {
-    const { fullPath } = view
-    nextTick(() => {
-      router.replace({
-        path: '/redirect' + fullPath
-      })
-    })
-  })
+  tagsViewStore.delCachedView(view)
+  const { fullPath } = view
+  router.replace({ path: '/redirect' + fullPath })
 }
 
 const closeSelectedTag = (view) => {
-  tagsViewStore.delView(view).then(({ visitedViews }) => {
+  tagsViewStore.delView(view).then(({ visitedViews: views }) => {
     if (isActive(view)) {
-      toLastView(visitedViews, view)
+      toLastView(views, view)
     }
   })
 }
 
 const closeOthersTags = () => {
-  router.push(selectedTag.value)
-  tagsViewStore.delOthersViews(selectedTag.value).then(() => {
-    moveToCurrentTag()
-  })
+  if (selectedTag.value.fullPath && selectedTag.value.fullPath !== route.fullPath) {
+    router.push(selectedTag.value)
+  }
+  tagsViewStore.delOthersViews(selectedTag.value)
 }
 
 const closeAllTags = (view) => {
-  tagsViewStore.delAllViews().then(({ visitedViews }) => {
-    if (affixTags.value.some(tag_ => tag_.path === view.path)) {
-      return
-    }
-    toLastView(visitedViews, view)
-  })
+  tagsViewStore.delAllViews()
+  const isAffix = tagsViewStore.visitedViews.some(tag_ => tag_.meta && tag_.meta.affix && tag_.path === view.path)
+  if (isAffix) return
+  toLastView(tagsViewStore.visitedViews, view)
 }
 
 const toLastView = (visitedViews, view) => {
   const latestView = visitedViews.slice(-1)[0]
   if (latestView) {
-    router.push(latestView)
+    router.push(latestView.fullPath || latestView.path)
   } else {
     if (view.name === 'Dashboard') {
       router.replace({ path: '/redirect' + view.fullPath })
@@ -171,16 +157,13 @@ const openMenu = (tag_, e) => {
 }
 
 const closeMenu = () => {
-  visible.value = false
-}
-
-const handleScroll = () => {
-  closeMenu()
+  if (visible.value) {
+    visible.value = false
+  }
 }
 
 watch(() => route.path, () => {
   addTags()
-  moveToCurrentTag()
 })
 
 watch(() => visible.value, (val) => {
@@ -194,10 +177,6 @@ watch(() => visible.value, (val) => {
 onMounted(() => {
   initTags()
   addTags()
-})
-
-defineExpose({
-  tag
 })
 </script>
 
@@ -259,6 +238,7 @@ defineExpose({
     box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
     li {
       margin: 0;
+      background: #fff;
       padding: 7px 16px;
       cursor: pointer;
       &:hover {
@@ -270,7 +250,7 @@ defineExpose({
 </style>
 
 <style lang="scss">
-//reset element css of el-icon-close
+//reset el-icon-close css
 .tags-view-wrapper {
   .tags-view-item {
     .tags-view-item-close {
