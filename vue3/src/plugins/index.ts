@@ -1,0 +1,1 @@
+export { setupElementPlus } from './elementPlus'

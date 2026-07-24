@@ -1,13 +1,49 @@
-<template>
-  <router-view />
-</template>
-
-<script setup>
-import { useRouter } from 'vue-router'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useAppStore } from '@/store/modules/app'
+import { useDesign } from '@/hooks/web/useDesign'
 
 defineOptions({
-  name: 'App'
+  name: 'APP'
 })
 
-const router = useRouter()
+const appStore = useAppStore()
+const { getPrefixCls } = useDesign()
+const prefixCls = getPrefixCls('app')
+const currentSize = computed(() => appStore.size)
+const greyMode = computed(() => appStore.grey)
 </script>
+
+<template>
+  <ConfigGlobal :size="currentSize">
+    <div :class="greyMode ? `${prefixCls}-grey-mode` : ''">
+      <RouterView />
+    </div>
+  </ConfigGlobal>
+</template>
+
+<style lang="scss">
+$prefix-cls: v-app;
+
+.size {
+  width: 100%;
+  height: 100%;
+}
+
+html,
+body {
+  @extend .size;
+
+  padding: 0 !important;
+  margin: 0;
+  overflow: hidden;
+
+  #app {
+    @extend .size;
+  }
+}
+
+.#{$prefix-cls}-grey-mode {
+  filter: grayscale(100%);
+}
+</style>

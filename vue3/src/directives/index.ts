@@ -1,0 +1,1 @@
+export { setupAuth } from './auth'
