@@ -7,7 +7,7 @@
         <el-button
           v-permission="['admin','MWARTICLE_ALL','MWARTICLE_CREATE']"
           class="filter-item"
-          size="mini"
+          size="small"
           type="primary"
           :icon="Icons.Plus"
                  >
@@ -36,7 +36,7 @@
       </el-table-column>
       <el-table-column v-if="checkPermission(['admin','MWARTICLE_ALL','MWARTICLE_EDIT','MWARTICLE_DELETE'])" label="操作" width="220px" align="center">
         <template #default="scope">
-          <el-button v-permission="['admin','MWARTICLE_ALL','MWARTICLE_EDIT']" size="mini"
+          <el-button v-permission="['admin','MWARTICLE_ALL','MWARTICLE_EDIT']" size="small"
                      type="primary" :icon="Icons.Edit"
                      >
             <router-link :to="'/wechat/artadd/'+scope.row.id">
@@ -51,11 +51,11 @@
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="$refs['popover-' + scope.row.id].doClose()">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+              <el-button size="small" link @click="$refs['popover-' + scope.row.id].doClose()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
-              <el-button type="danger" :icon="Icons.Delete" size="mini" />
+              <el-button type="danger" :icon="Icons.Delete" size="small" />
             </template>
           </el-popover>
           <el-popover
@@ -66,11 +66,11 @@
           >
             <p>确定发布本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="$refs['item' + scope.row.id].doClose()">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subPublish(scope.row.id)">确定</el-button>
+              <el-button size="small" link @click="$refs['item' + scope.row.id].doClose()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="subPublish(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
-              <el-button type="primary" size="mini">发布</el-button>
+              <el-button type="primary" size="small">发布</el-button>
             </template>
           </el-popover>
         </template>

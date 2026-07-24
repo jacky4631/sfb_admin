@@ -5,6 +5,7 @@ import Cookies from 'js-cookie'
 import 'normalize.css/normalize.css'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 import mavonEditor from 'mavon-editor'
@@ -17,7 +18,7 @@ import dict from './components/Dict'
 import permission from './components/Permission'
 
 // 代码高亮
-import VueHighlightJS from 'vue-highlightjs'
+import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css'
 
 import '@/assets/font_icon/iconfont.css'
@@ -26,16 +27,33 @@ import '@/assets/styles/index.scss'
 import App from './App'
 import router from './router'
 import pinia from './store'
-import './router/permission'
+// 路由守卫已在 router/index.js 中注册，无需重复导入 permission.js
 
 const app = createApp(App)
 
 app.use(pinia)
 app.use(router)
-app.use(VueHighlightJS)
+// 代码高亮自定义指令
+app.directive('highlight', {
+  mounted(el) {
+    el.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightElement(block)
+    })
+  },
+  updated(el) {
+    el.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightElement(block)
+    })
+  }
+})
 app.use(mavonEditor)
 app.use(permission)
 app.use(dict)
+// 全局注册 Element Plus 图标组件
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
+
 app.use(ElementPlus, {
   size: Cookies.get('size') || 'small',
   locale: zhCn
@@ -44,7 +62,5 @@ app.use(ElementPlus, {
 // Register SvgIcon globally
 import SvgIcon from './components/SvgIcon/index.vue'
 app.component('svg-icon', SvgIcon)
-
-app.config.productionTip = false
 
 app.mount('#app')

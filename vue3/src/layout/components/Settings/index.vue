@@ -5,7 +5,7 @@
 
       <div class="drawer-item">
         <span>主题颜色</span>
-        <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
+        <ThemePicker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
       </div>
 
       <div class="drawer-item">
@@ -38,6 +38,7 @@ import ThemePicker from '@/components/ThemePicker'
 import { useSettingsStore } from '@/store/modules/settings'
 
 defineOptions({
+  name: 'Settings',
   components: { ThemePicker }
 })
 

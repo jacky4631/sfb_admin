@@ -4,17 +4,17 @@ export const constantRouterMap = [
   {
     path: '/login',
     meta: { title: '登录', noCache: true },
-    component: () => import('@/views/login.vue'),
+    component: () => import('@/views/login'),
     hidden: true
   },
   {
     path: '/404',
-    component: () => import('@/views/features/404.vue'),
+    component: () => import('@/views/features/404'),
     hidden: true
   },
   {
     path: '/401',
-    component: () => import('@/views/features/401.vue'),
+    component: () => import('@/views/features/401'),
     hidden: true
   },
   {
@@ -24,7 +24,7 @@ export const constantRouterMap = [
     children: [
       {
         path: '/redirect/:path*',
-        component: () => import('@/views/features/redirect.vue')
+        component: () => import('@/views/features/redirect')
       }
     ]
   },
@@ -35,7 +35,7 @@ export const constantRouterMap = [
     children: [
       {
         path: 'dashboard',
-        component: () => import('@/views/home.vue'),
+        component: () => import('@/views/home'),
         name: 'Dashboard',
         meta: { title: '首页', icon: 'index', affix: true, noCache: true }
       }
@@ -49,7 +49,7 @@ export const constantRouterMap = [
     children: [
       {
         path: 'center',
-        component: () => import('@/views/system/user/center.vue'),
+        component: () => import('@/views/system/user/center'),
         name: '个人中心',
         meta: { title: '个人中心' }
       }
@@ -62,7 +62,7 @@ export const constantRouterMap = [
       title: '上传图片',
       noCache: true
     },
-    component: () => import('@/components/editorMaterial/index.vue'),
+    component: () => import('@/components/editorMaterial/index'),
     hidden: true
   }
 ]

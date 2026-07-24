@@ -38,7 +38,7 @@
         记住我
       </el-checkbox>
       <el-form-item style="width:100%;">
-        <el-button :loading="loading" size="default" type="button" style="width:100%;" @click="handleLogin">
+        <el-button :loading="loading" size="default" type="primary" style="width:100%;" @click="handleLogin">
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
@@ -62,11 +62,13 @@ import { getCodeImg } from '@/api/login'
 import Cookies from 'js-cookie'
 import { useUserStore } from '@/store/modules/user'
 import { useSettingsStore } from '@/store/modules/settings'
+import { usePermissionStore } from '@/store/modules/permission'
 
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
+const permissionStore = usePermissionStore()
 
 const showFooter = computed(() => settingsStore.showFooter)
 const footerTxt = computed(() => settingsStore.footerTxt)
@@ -154,13 +156,14 @@ const handleLogin = () => {
     }
     loading.value = true
     userStore.Login(user).then(() => {
+      // 登录成功后标记需要加载动态菜单，路由守卫会检测此标志
+      permissionStore.loadMenus = true
       loading.value = false
       console.log('Login success, navigating to:', redirect.value || '/')
       router.push({ path: redirect.value || '/' })
     }).catch((err) => {
       loading.value = false
       console.error('Login error:', err)
-      getCode()
     })
   }).catch((err) => {
     console.error('Validation failed:', err)

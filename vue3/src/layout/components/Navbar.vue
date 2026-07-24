@@ -1,18 +1,18 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <Hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <Breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
+        <Search id="header-search" class="right-menu-item" />
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img :src="user.avatar || Avatar" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+          <el-icon><CaretBottom /></el-icon>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -38,6 +38,8 @@ import Search from '@/components/HeaderSearch'
 import Avatar from '@/assets/images/avatar.png'
 import { useAppStore } from '@/store/modules/app'
 import { useUserStore } from '@/store/modules/user'
+
+defineOptions({ name: 'Navbar' })
 
 const appStore = useAppStore()
 const userStore = useUserStore()
@@ -124,7 +126,7 @@ const open = () => {
           border-radius: 10px;
         }
 
-        .el-icon-caret-bottom {
+        .el-icon {
           cursor: pointer;
           position: absolute;
           right: -20px;

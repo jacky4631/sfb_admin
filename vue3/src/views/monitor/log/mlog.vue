@@ -4,8 +4,8 @@
       <el-button
         type="danger"
         class="filter-item"
-        size="mini"
-        icon="el-icon-refresh"
+        size="small"
+        :icon="Refresh"
         @click="toQuery"
       >刷新</el-button>
     </div>

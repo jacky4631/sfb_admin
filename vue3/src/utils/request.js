@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'
 import Config from '@/settings'
 
 const service = axios.create({
-  baseURL: import.meta.env.VITE_APP_BASE_API || '/api',
+  baseURL: import.meta.env.DEV ? '/' : (import.meta.env.VITE_APP_BASE_API || '/admin'),
   timeout: Config.timeout,
   withCredentials: true
 })
@@ -14,7 +14,7 @@ service.interceptors.request.use(
   config => {
     const token = getToken()
     if (token) {
-      config.headers['Authorization'] = 'Bearer ' + token
+      config.headers['Authorization'] = token // 让每个请求携带自定义token
     }
     return config
   },

@@ -3,7 +3,7 @@
     <!--工具栏-->
     <div class="head-container">
       <!-- 搜索 -->
-      <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" />
+      <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
       <el-select v-model="query.type" clearable placeholder="搜索类型" class="filter-item" style="width: 130px">
         <el-option v-for="item in queryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
       </el-select>
@@ -13,25 +13,23 @@
                    :key="item.id"
                    :label="item.label"></el-option>
       </el-select>
-      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+      <el-button class="filter-item" size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>
       <!-- 新增 -->
       <div style="display: inline-block;margin: 0px 2px;">
         <el-button
           class="filter-item"
-          size="mini"
+          size="small"
           type="primary"
-          icon="el-icon-plus"
+         
           @click="toAddURL"
-        >
-            新增
-        </el-button>
+        ><el-icon><Plus /></el-icon>新增</el-button>
         <el-button
           type="danger"
           class="filter-item"
-          size="mini"
-          icon="el-icon-refresh"
+          size="small"
+         
           @click="toQuery"
-        >刷新</el-button>
+        ><el-icon><Refresh /></el-icon>刷新</el-button>
       </div>
     </div>
     <!--表单组件-->
@@ -39,7 +37,7 @@
     <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="id" label="商品id" />
       <el-table-column ref="table" prop="image" label="商品图片">
-        <template #scope="scope">
+        <template #default="scope">
           <a :href="scope.row.image" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.image" alt="点击打开" class="el-avatar"></a>
         </template>
       </el-table-column>
@@ -49,13 +47,13 @@
       <el-table-column prop="sales" label="销量" />
       <el-table-column prop="stock" label="库存" />
       <el-table-column label="商品类型" align="center">
-        <template #scope="scope">
+        <template #default="scope">
           <el-tag v-if="scope.row.isIntegral === 1" style="cursor: pointer" :type="'warning'">积分商品</el-tag>
           <el-tag v-else style="cursor: pointer" :type=" 'info' ">普通商品</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center">
-        <template #scope="scope">
+        <template #default="scope">
           <div @click="onSale(scope.row.id,scope.row.isShow)">
             <el-tag v-if="scope.row.isShow === 1" style="cursor: pointer" :type="''">已上架</el-tag>
             <el-tag v-else style="cursor: pointer" :type=" 'info' ">已下架</el-tag>
@@ -63,15 +61,13 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" width="265px" align="center">
-        <template #scope="scope">
+        <template #default="scope">
           <el-button
-            size="mini"
+            size="small"
             type="primary"
-            icon="el-icon-edit"
+           
             @click="toUpdateURL(scope.row.id)"
-          >
-            编辑
-          </el-button>
+          ><el-icon><Edit /></el-icon>编辑</el-button>
           <el-popover
             :ref="scope.row.id"
             placement="top"
@@ -79,12 +75,10 @@
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="cancelPopover(scope.row.id)">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+              <el-button size="small" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
-            <template #reference>
-              <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini">删除</el-button>
-            </template>
+            <template #reference><el-button type="danger" size="small"><el-icon><Delete /></el-icon>删除</el-button></template>
           </el-popover>
         </template>
       </el-table-column>
@@ -101,215 +95,199 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
+<script>
+import { ElNotification, ElMessage, ElMessageBox } from 'element-plus'
 import checkPermission from '@/utils/permission'
 import initData from '@/mixins/crud'
 import { del, onsale } from '@/api/mwStoreProduct'
-
-defineOptions({ name: 'ShopGoodsIndex' })
-
-const router = useRouter()
-const { data, loading, total, page, size } = initData({
-  url: 'api/mwStoreProduct',
-  params: { sort: 'id,desc', isShow: 1, isDel: 0 }
-})
-
-const dropDownValue = ref('')
-const optionsMetaShow = ref([])
-const delLoading = ref(false)
-const visible = ref(false)
-const queryTypeOptions = [
-  { key: 'storeName', display_name: '商品名称' }
-]
-const isAttr = ref(false)
-const cateId = ref(null)
-
-onMounted(() => {
-  nextTick(() => {
-    init().then(() => {
-      optionsMetaShow.value = cateList.value
-    })
-  })
-})
-
-const toAddURL = () => {
-  router.push({ path: '/shop/goodsAdd' })
-}
-
-const toUpdateURL = (id) => {
-  router.push({ path: '/shop/goodsEdit/' + id })
-}
-
-const dataFilter = (val) => {
-  value.value = val
-  if (val) {
-    optionsMetaShow.value = cateList.value.filter((item => {
-      if (!!~item.label.indexOf(val) || !!~item.label.toUpperCase().indexOf(val.toUpperCase())) {
-        return true
-      }
-    }))
-  } else {
-    optionsMetaShow.value = cateList.value
-  }
-}
-
-const beforeInit = () => {
-  const sort = 'id,desc'
-  params.value = { page: page.value, size: size.value, sort: sort, isShow: 1, isDel: 0, cateId: cateId.value }
-  const query = query.value
-  const type = query.type
-  const value = query.value
-  if (type && value) { params.value[type] = value }
-  return true
-}
-
-const subDelete = (id) => {
-  delLoading.value = true
-  del(id).then(res => {
-    delLoading.value = false
-    cancelPopover(id)
-    dleChangePage()
-    init()
-    ElMessage({
-      title: '删除成功',
-      type: 'success',
-      duration: 2500
-    })
-  }).catch(err => {
-    delLoading.value = false
-    cancelPopover(id)
-    console.log(err.response.data.message)
-  })
-}
-
-const onSale = (id, status) => {
-  ElMessageBox.confirm(`确定进行[${status ? '下架' : '上架'}]操作?`, '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  })
-    .then(() => {
-      onsale(id, { status: status }).then(({ data }) => {
-        ElMessage({
-          message: '操作成功',
-          type: 'success',
-          duration: 1000,
-          onClose: () => {
-            init()
-          }
-        })
+export default {
+  components: { },
+  mixins: [initData],
+  data() {
+    return {
+      dropDownValue: '',
+      optionsMetaShow: [],
+      delLoading: false,
+      visible: false,
+      queryTypeOptions: [
+        { key: 'storeName', display_name: '商品名称' }
+      ],
+      isAttr: false,
+      cateId: null,
+    }
+  },
+  created() {
+    this.$nextTick(() => {
+      this.init().then(() =>{
+        this.optionsMetaShow = this.cateList
       })
     })
-    .catch(() => { })
-}
-
-const add = () => {
-  isAdd.value = true
-  formRef.value.dialog = true
-  formRef.value.getCates()
-}
-
-const edit = (data) => {
-  isAdd.value = false
-  const _this = formRef.value
-  _this.getCates()
-  _this.form = {
-    id: data.id,
-    merId: data.merId,
-    image: data.image,
-    sliderImage: data.sliderImage,
-    imageArr: data.image.split(','),
-    sliderImageArr: data.sliderImage.split(','),
-    storeName: data.storeName,
-    storeInfo: data.storeInfo,
-    keyword: data.keyword,
-    barCode: data.barCode,
-    storeCategory: data.storeCategory || { id: null },
-    price: data.price,
-    vipPrice: data.vipPrice,
-    otPrice: data.otPrice,
-    postage: data.postage,
-    unitName: data.unitName,
-    sort: data.sort,
-    sales: data.sales,
-    stock: data.stock,
-    isShow: data.isShow,
-    isHot: data.isHot,
-    isBenefit: data.isBenefit,
-    isBest: data.isBest,
-    isNew: data.isNew,
-    description: data.description,
-    addTime: data.addTime,
-    isPostage: data.isPostage,
-    isDel: data.isDel,
-    merUse: data.merUse,
-    giveIntegral: data.giveIntegral,
-    cost: data.cost,
-    isSeckill: data.isSeckill,
-    isBargain: data.isBargain,
-    isGood: data.isGood,
-    ficti: data.ficti,
-    browse: data.browse,
-    codePath: data.codePath,
-    soureLink: data.soureLink
+  },
+  methods: {
+    toAddURL(){
+      this.$router.push({ path: '/shop/goodsAdd' })
+    },
+    toUpdateURL(id){
+      this.$router.push({ path: '/shop/goodsEdit/'+id })
+    },
+    dataFilter(val){
+      this.value=val
+      if(val){
+        this.optionsMetaShow=this.cateList.filter((item=>{
+          if (!!~item.label.indexOf(val) || !!~item.label.toUpperCase().indexOf(val.toUpperCase())) {
+            return true
+          }
+        }))
+      }else{
+        this.optionsMetaShow=this.cateList
+      }
+    },
+    checkPermission,
+    beforeInit() {
+      this.url = 'api/mwStoreProduct'
+      const sort = 'id,desc'
+      this.params = { page: this.page, size: this.size, sort: sort, isShow: 1, isDel: 0,cateId: this.cateId }
+      const query = this.query
+      const type = query.type
+      const value = query.value
+      if (type && value) { this.params[type] = value }
+      return true
+    },
+    subDelete(id) {
+      this.delLoading = true
+      del(id).then(res => {
+        this.delLoading = false
+        this.$refs[id].doClose()
+        this.dleChangePage()
+        this.init()
+        ElNotification({
+          title: '删除成功',
+          type: 'success',
+          duration: 2500
+        })
+      }).catch(err => {
+        this.delLoading = false
+        this.$refs[id].doClose()
+        console.log(err.response.data.message)
+      })
+    },
+    onSale(id, status) {
+      ElMessageBox.confirm(`确定进行[${status ? '下架' : '上架'}]操作?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          onsale(id, { status: status }).then(({ data }) => {
+            ElMessage({
+              message: '操作成功',
+              type: 'success',
+              duration: 1000,
+              onClose: () => {
+                this.init()
+              }
+            })
+          })
+        })
+        .catch(() => { })
+    },
+    add() {
+      this.isAdd = true
+      this.$refs.form.dialog = true
+      this.$refs.form.getCates()
+    },
+    edit(data) {
+      this.isAdd = false
+      const _this = this.$refs.form
+      _this.getCates()
+      _this.form = {
+        id: data.id,
+        merId: data.merId,
+        image: data.image,
+        sliderImage: data.sliderImage,
+        imageArr: data.image.split(','),
+        sliderImageArr: data.sliderImage.split(','),
+        storeName: data.storeName,
+        storeInfo: data.storeInfo,
+        keyword: data.keyword,
+        barCode: data.barCode,
+        storeCategory: data.storeCategory || {id:null},
+        price: data.price,
+        vipPrice: data.vipPrice,
+        otPrice: data.otPrice,
+        postage: data.postage,
+        unitName: data.unitName,
+        sort: data.sort,
+        sales: data.sales,
+        stock: data.stock,
+        isShow: data.isShow,
+        isHot: data.isHot,
+        isBenefit: data.isBenefit,
+        isBest: data.isBest,
+        isNew: data.isNew,
+        description: data.description,
+        addTime: data.addTime,
+        isPostage: data.isPostage,
+        isDel: data.isDel,
+        merUse: data.merUse,
+        giveIntegral: data.giveIntegral,
+        cost: data.cost,
+        isSeckill: data.isSeckill,
+        isBargain: data.isBargain,
+        isGood: data.isGood,
+        ficti: data.ficti,
+        browse: data.browse,
+        codePath: data.codePath,
+        soureLink: data.soureLink
+      }
+      _this.dialog = true
+    },
+    attr(data) {
+      console.log(3333)
+      this.isAttr = false
+      const _this = this.$refs.form2
+      _this.form = {
+        id: data.id,
+        merId: data.merId,
+        image: data.image,
+        sliderImage: data.sliderImage,
+        storeName: data.storeName,
+        storeInfo: data.storeInfo,
+        keyword: data.keyword,
+        barCode: data.barCode,
+        storeCategory: data.storeCategory,
+        price: data.price,
+        vipPrice: data.vipPrice,
+        otPrice: data.otPrice,
+        postage: data.postage,
+        unitName: data.unitName,
+        sort: data.sort,
+        sales: data.sales,
+        stock: data.stock,
+        isShow: data.isShow,
+        isHot: data.isHot,
+        isBenefit: data.isBenefit,
+        isBest: data.isBest,
+        isNew: data.isNew,
+        description: data.description,
+        addTime: data.addTime,
+        isPostage: data.isPostage,
+        isDel: data.isDel,
+        merUse: data.merUse,
+        giveIntegral: data.giveIntegral,
+        cost: data.cost,
+        isSeckill: data.isSeckill,
+        isBargain: data.isBargain,
+        isGood: data.isGood,
+        ficti: data.ficti,
+        browse: data.browse,
+        codePath: data.codePath,
+        soureLink: data.soureLink
+      }
+      _this.dialog = true
+      this.$refs.form2.getAttrs(data.id)
+    }
   }
-  _this.dialog = true
-}
-
-const attr = (data) => {
-  console.log(3333)
-  isAttr.value = false
-  const _this = formRef2.value
-  _this.form = {
-    id: data.id,
-    merId: data.merId,
-    image: data.image,
-    sliderImage: data.sliderImage,
-    storeName: data.storeName,
-    storeInfo: data.storeInfo,
-    keyword: data.keyword,
-    barCode: data.barCode,
-    storeCategory: data.storeCategory,
-    price: data.price,
-    vipPrice: data.vipPrice,
-    otPrice: data.otPrice,
-    postage: data.postage,
-    unitName: data.unitName,
-    sort: data.sort,
-    sales: data.sales,
-    stock: data.stock,
-    isShow: data.isShow,
-    isHot: data.isHot,
-    isBenefit: data.isBenefit,
-    isBest: data.isBest,
-    isNew: data.isNew,
-    description: data.description,
-    addTime: data.addTime,
-    isPostage: data.isPostage,
-    isDel: data.isDel,
-    merUse: data.merUse,
-    giveIntegral: data.giveIntegral,
-    cost: data.cost,
-    isSeckill: data.isSeckill,
-    isBargain: data.isBargain,
-    isGood: data.isGood,
-    ficti: data.ficti,
-    browse: data.browse,
-    codePath: data.codePath,
-    soureLink: data.soureLink
-  }
-  _this.dialog = true
-  formRef2.value.getAttrs(data.id)
-}
-
-// Helper to close popover
-const cancelPopover = (id) => {
-  // In Vue 3, we need to access the popover via ref
-  const popoverRef = ref(null)
-  // This is a simplified version - actual implementation may need proper ref handling
 }
 </script>
 

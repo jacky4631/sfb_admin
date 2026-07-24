@@ -10,17 +10,17 @@
           :label="'收件邮箱' + (index === 0 ? '': index)"
       >
         <el-input v-model="domain.value" style="width: 550px"/>
-        <el-button icon="el-icon-plus" @click="addDomain"/>
-        <el-button style="margin-left:0;" icon="el-icon-minus" @click.prevent="removeDomain(domain)"/>
+        <el-button :icon="Plus" @click="addDomain"/>
+        <el-button style="margin-left:0;" :icon="Minus" @click.prevent="removeDomain(domain)"/>
       </el-form-item>
       <el-form-item label="邮件内容">
-        <ueditor-wrap v-model="form.content" :config="myConfig" @beforeInit="addCustomDialog"
-                      style="width: 90%;"></ueditor-wrap>
+        <VueUeditorWrap v-model="form.content" :config="myConfig" @beforeInit="addCustomDialog"
+                      style="width: 90%;"></VueUeditorWrap>
       </el-form-item>
 
       <!-- <div ref="editor" class="editor"/> -->
       <el-form-item label="">
-      <el-button :loading="loading"  size="medium" type="primary" @click="doSubmit">发送邮件
+      <el-button :loading="loading"  size="default" type="primary" @click="doSubmit">发送邮件
       </el-button>
       </el-form-item>
     </el-form>
@@ -33,7 +33,7 @@ import { ElMessage } from 'element-plus'
 import { send } from '@/api/tools/email'
 import { upload } from '@/utils/upload'
 import { validEmail } from '@/utils/validate'
-import UeditorWrap from 'vue-ueditor-wrap'
+import { VueUeditorWrap } from 'vue-ueditor-wrap'
 
 const loading = ref(false)
 const formRef = ref(null)
@@ -73,6 +73,8 @@ const addDomain = () => {
     key: Date.now()
   })
 }
+
+const addCustomDialog = () => {}
 
 const doSubmit = () => {
   formRef.value.validate((valid) => {
@@ -115,7 +117,7 @@ const doSubmit = () => {
   width: 730px;
 }
 
-::v-deep .w-e-text-container {
+:deep(.w-e-text-container) {
   height: 360px !important;
 }
 </style>

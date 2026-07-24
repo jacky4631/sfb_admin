@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <el-dialog width="500" title="选择类别" :visible.sync="categoryVisible">
+    <el-dialog width="500" title="选择类别" v-model="categoryVisible">
       <el-select
         v-model="categoryValue"
         multiple

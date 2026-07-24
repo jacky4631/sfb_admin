@@ -7,7 +7,7 @@
         <el-button
           v-permission="['admin','MWWECHATUSER_ALL','MWWECHATUSER_CREATE']"
           class="filter-item"
-          size="mini"
+          size="small"
           type="primary"
           :icon="Icons.Plus"
           @click="add"
@@ -44,7 +44,7 @@
       <el-table-column prop="userType" label="用户类型" />
       <el-table-column v-if="checkPermission(['admin','MWWECHATUSER_ALL','MWWECHATUSER_EDIT','MWWECHATUSER_DELETE'])" label="操作" width="150px" align="center">
         <template #default="scope">
-          <el-button v-permission="['admin','MWWECHATUSER_ALL','MWWECHATUSER_EDIT']" size="mini" type="primary" :icon="Icons.Edit" @click="edit(scope.row)" />
+          <el-button v-permission="['admin','MWWECHATUSER_ALL','MWWECHATUSER_EDIT']" size="small" type="primary" :icon="Icons.Edit" @click="edit(scope.row)" />
           <el-popover
             :ref="scope.row.uid"
             v-permission="['admin','MWWECHATUSER_ALL','MWWECHATUSER_DELETE']"
@@ -53,11 +53,11 @@
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="$refs[scope.row.uid].doClose()">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.uid)">确定</el-button>
+              <el-button size="small" link @click="$refs[scope.row.uid].doClose()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.uid)">确定</el-button>
             </div>
             <template #reference>
-              <el-button type="danger" :icon="Icons.Delete" size="mini" />
+              <el-button type="danger" :icon="Icons.Delete" size="small" />
             </template>
           </el-popover>
         </template>

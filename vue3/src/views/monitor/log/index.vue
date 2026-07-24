@@ -3,17 +3,18 @@
     <div class="head-container">
       <Search />
       <crudOperation>
-        <el-button
-          slot="left"
-          class="filter-item"
-          type="danger"
-          icon="el-icon-delete"
-          size="mini"
-          :loading="crud.delAllLoading"
-          @click="confirmDelAll()"
-        >
-          清空
-        </el-button>
+        <template #left>
+          <el-button
+            class="filter-item"
+            type="danger"
+            :icon="Delete"
+            size="small"
+            :loading="crud.delAllLoading"
+            @click="confirmDelAll()"
+          >
+            清空
+          </el-button>
+        </template>
       </crudOperation>
     </div>
     <!--表格渲染-->
@@ -59,6 +60,7 @@ import { ElMessageBox } from 'element-plus'
 import Search from './search.vue'
 import { delAllInfo } from '@/api/monitor/log'
 import CRUD, { presenter } from '@crud/crud'
+import { parseTime } from '@/utils/index'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
 

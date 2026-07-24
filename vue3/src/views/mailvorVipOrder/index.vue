@@ -4,25 +4,25 @@
 
       <el-tabs v-model="status" type="card" @tab-click="handleOrder">
         <el-tab-pane name="">
-          <template #label><i class="el-icon-s-order"></i> 全部订单</template>
+          <template #label><el-icon><Tickets /></el-icon> 全部订单</template>
         </el-tab-pane>
         <el-tab-pane name="已下单">
-          <template #label><i class="el-icon-truck"></i> 已下单</template>
+          <template #label><el-icon><Van /></el-icon> 已下单</template>
         </el-tab-pane>
         <el-tab-pane name="已付款">
-          <template #label><i class="el-icon-bank-card"></i> 已付款</template>
+          <template #label><el-icon><CreditCard /></el-icon> 已付款</template>
         </el-tab-pane>
         <el-tab-pane name="已签收">
-          <template #label><i class="el-icon-refrigerator"></i> 已签收</template>
+          <template #label><el-icon><Refrigerator /></el-icon> 已签收</template>
         </el-tab-pane>
         <el-tab-pane name="待结算">
-          <template #label><i class="el-icon-truck"></i> 待结算</template>
+          <template #label><el-icon><Van /></el-icon> 待结算</template>
         </el-tab-pane>
         <el-tab-pane name="已结算">
-          <template #label><i class="el-icon-document"></i> 已结算</template>
+          <template #label><el-icon><Document /></el-icon> 已结算</template>
         </el-tab-pane>
         <el-tab-pane name="已失效">
-          <template #label><i class="el-icon-document"></i> 已失效</template>
+          <template #label><el-icon><Document /></el-icon> 已失效</template>
         </el-tab-pane>
       </el-tabs>
       <!--工具栏-->
@@ -44,17 +44,17 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
-        <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+        <el-button class="filter-item" size="small" type="success" :icon="Search" @click="toQuery">搜索</el-button>
         <!-- 新增 -->
         <el-button
           type="danger"
           class="filter-item"
-          size="mini"
-          icon="el-icon-refresh"
+          size="small"
+          :icon="Refresh"
           @click="toQuery"
         >刷新</el-button>
       </div>
@@ -66,18 +66,18 @@
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
         <el-table-column prop="orderSn" fixed label="订单号"   :show-overflow-tooltip="true" width="155"/>
         <el-table-column prop="orderTime" label="下单时间"   :show-overflow-tooltip="true" width="155">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderSubStatusName" label="订单状态" >
-          <template v-slot="scope">
+          <template #default="scope">
             <el-tag v-if="scope.row.orderSubStatusName !== '已失效'" :type="'success'">{{ scope.row.orderSubStatusName }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ scope.row.orderSubStatusName }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="bind" label="拆红包" width="120">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-tag v-if="scope.row.bind === 1" style="cursor: pointer" :type="'success'">{{ isBinding(scope.row.bind) }}</el-tag>
             <el-tag v-else-if="scope.row.bind === 0" style="cursor: pointer" :type=" '' ">{{ isBinding(scope.row.bind) }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ isBinding(scope.row.bind) }}</el-tag>
@@ -94,14 +94,14 @@
         <el-table-column prop="detailList[0].goodsId" label="商品id" :show-overflow-tooltip="true" width="155"/>
         <el-table-column prop="channelTag" label="渠道标识"   :show-overflow-tooltip="true" width="155"/>
         <el-table-column prop="commissionEnterTime" label="入账时间"   :show-overflow-tooltip="true" width="155">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.commissionEnterTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="isPrepay" label="预付=1" />
         <el-table-column prop="isSplit" label="拆单=1" />
         <el-table-column prop="lastUpdateTime" label="订单更新"   :show-overflow-tooltip="true" width="155">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.lastUpdateTime) }}</span>
           </template>
         </el-table-column>
@@ -113,26 +113,26 @@
         <el-table-column prop="settled" label="结算状态 1=已结算" />
         <el-table-column prop="status" label="订单状态:2-已完结" />
         <el-table-column prop="createTime" label="创建时间" width="200">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="updateTime" label="修改时间" width="200">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.updateTime) }}</span>
           </template>
         </el-table-column>
 
         <el-table-column v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="200" align="center" fixed="right">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-button
               v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
-              size="mini"
+              size="small"
               type="primary"
-              @click="editOrder(scope.row)"
+              @click="handleEditOrder(scope.row)"
             >
               绑定用户</el-button>
-            <el-dropdown size="mini" split-button type="primary" trigger="click">
+            <el-dropdown size="small" split-button type="primary" trigger="click">
               操作
               <template #dropdown>
                 <el-dropdown-menu>
@@ -145,11 +145,11 @@
                     >
                       <p>确定删除本条数据吗？</p>
                       <div style="text-align: right; margin: 0">
-                        <el-button size="mini" type="text" @click="popoverRefs[scope.row.orderSn]?.doClose()">取消</el-button>
-                        <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete([scope.row.orderSn])">确定</el-button>
+                        <el-button size="small" link @click="popoverRefs[scope.row.orderSn]?.doClose()">取消</el-button>
+                        <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.orderSn])">确定</el-button>
                       </div>
                       <template #reference>
-                        <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+                        <el-button type="danger" :icon="Delete" size="small">删除</el-button>
                       </template>
                     </el-popover>
                   </el-dropdown-item>
@@ -343,7 +343,7 @@ function subDelete(id) {
   })
 }
 
-function editOrder(rowData) {
+function handleEditOrder(rowData) {
   isAdd.value = false
   const _this = form3.value
   if (_this) {

@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import 'echarts/theme/macarons'
 import { debounce } from '@/utils'
 import { ref, onMounted, onBeforeUnmount } from 'vue'

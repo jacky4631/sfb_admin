@@ -6,23 +6,23 @@
           <img :src="item" alt="" class="el-upload-list__item-thumbnail">
           <span class="el-upload-list__item-actions">
             <span v-if="index != 0" class="el-upload-list__item-preview" @click="moveMaterial(index,'up')">
-              <i class="el-icon-back" />
+              <el-icon><Back /></el-icon>
             </span>
             <span class="el-upload-list__item-preview" @click="zoomMaterial(index)">
-              <i class="el-icon-view" />
+              <el-icon><View /></el-icon>
             </span>
             <span class="el-upload-list__item-delete" @click="deleteMaterial(index)">
-              <i class="el-icon-delete" />
+              <el-icon><Delete /></el-icon>
             </span>
             <span v-if="index != modelValue.length-1" class="el-upload-list__item-preview" @click="moveMaterial(index,'down')">
-              <i class="el-icon-right" />
+              <el-icon><Right /></el-icon>
             </span>
           </span>
         </div>
       </li>
     </ul>
     <div v-if="num > modelValue.length" tabindex="0" class="el-upload el-upload--picture-card" :style="'width: '+width+'px;height: '+height+'px;'+'line-height:'+height+'px;'" @click="toSeleteMaterial">
-      <i class="el-icon-plus" />
+      <el-icon><Plus /></el-icon>
     </div>
 
     <el-dialog
@@ -43,7 +43,7 @@
         <el-aside width="unset">
           <div style="margin-bottom: 10px">
             <el-button
-              class="el-icon-plus"
+              :icon="Plus"
               size="small"
               @click="materialgroupAdd()"
             >
@@ -56,7 +56,7 @@
               :key="item.id"
               :name="item.id"
             >
-              <span slot="label"> {{ item.name }}</span>
+              <template #label><span> {{ item.name }}</span></template>
             </el-tab-pane>
           </el-tabs>
         </el-aside>
@@ -67,8 +67,8 @@
                 <el-col :span="12">
                   <span>{{ materialgroupObj.name }}</span>
                   <span v-if="materialgroupObj.id != '-1'">
-                    <el-button size="small" type="text" class="el-icon-edit" style="margin-left: 10px;" @click="materialgroupEdit(materialgroupObj)">重命名</el-button>
-                    <el-button size="small" type="text" class="el-icon-delete" style="margin-left: 10px;color: red" @click="materialgroupDelete(materialgroupObj)">删除</el-button>
+                    <el-button size="small" link :icon="Edit" style="margin-left: 10px;" @click="materialgroupEdit(materialgroupObj)">重命名</el-button>
+                    <el-button size="small" link :icon="Delete" style="margin-left: 10px;color: red" @click="materialgroupDelete(materialgroupObj)">删除</el-button>
                   </span>
                 </el-col>
                 <el-col :span="12" style="text-align: right;">
@@ -113,7 +113,7 @@
                         </el-checkbox>
                         <el-row>
                           <el-col :span="24" class="col-do">
-                            <el-button type="text" size="medium" @click="materialDel(item)">删除</el-button>
+                            <el-button link size="default" @click="materialDel(item)">删除</el-button>
                           </el-col>
                         </el-row>
 
@@ -123,7 +123,7 @@
                 </el-checkbox-group>
               </el-row>
               <el-pagination
-                :current-page.sync="page.currentPage"
+                v-model:current-page="page.currentPage"
                 :page-sizes="[12, 24]"
                 :page-size="page.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
@@ -136,10 +136,12 @@
           </el-card>
         </el-main>
       </el-container>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="listDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="sureUrls">确 定</el-button>
-      </span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="listDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="sureUrls">确 定</el-button>
+        </span>
+      </template>
     </el-dialog>
   </div>
 
@@ -345,10 +347,10 @@ const tabClick = (tab) => {
   } else {
     groupId.value = null
   }
-  getPage(page)
+  fetchPage(page)
 }
 
-const getPage = (pageParams) => {
+const fetchPage = (pageParams) => {
   tableLoading.value = true
   getPage(Object.assign({
     page: page.currentPage - 1,
@@ -374,13 +376,13 @@ const sizeChange = (val) => {
   console.log(val)
   page.currentPage = 1
   page.pageSize = val
-  getPage(page)
+  fetchPage(page)
 }
 
 const pageChange = (val) => {
   console.log(val)
   page.currentPage = val
-  getPage(page)
+  fetchPage(page)
 }
 
 const materialRename = async (item) => {
@@ -394,7 +396,7 @@ const materialRename = async (item) => {
       id: item.id,
       name: value
     }).then(() => {
-      getPage(page)
+      fetchPage(page)
     })
   } catch {
     // User cancelled
@@ -421,7 +423,7 @@ const materialDel = async (item) => {
       type: 'warning'
     })
     delObj(item.id).then(() => {
-      getPage(page)
+      fetchPage(page)
     })
   } catch {
     // User cancelled
@@ -434,7 +436,7 @@ const handleCommand = (command) => {
     id: s[0],
     groupId: s[1]
   }).then(() => {
-    getPage(page)
+    fetchPage(page)
   })
 }
 
@@ -452,7 +454,7 @@ const handleSuccess = (response, file, fileList) => {
   }).then(() => {
     resultNumber.value++
     if (fileList.length === resultNumber.value) {
-      getPage(page)
+      fetchPage(page)
       resultNumber.value = 0
     }
   })
@@ -488,7 +490,7 @@ const sureUrls = () => {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-icon-circle-close{
+:deep(.el-upload-list__item .el-icon) {
   color: red;
 }
 .material-name{

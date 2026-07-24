@@ -6,7 +6,7 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.key" clearable size="small" placeholder="输入文件名称搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" />
+        <el-input v-model="query.key" clearable size="small" placeholder="输入文件名称搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <el-date-picker
           v-model="query.c"
           :default-time="['00:00:00','23:59:59']"
@@ -14,7 +14,7 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
@@ -23,15 +23,15 @@
       <crudOperation :permission="permission">
         <template #left>
           <!-- 上传 -->
-          <el-button class="filter-item" size="mini" type="primary" icon="el-icon-upload" @click="dialog = true">上传</el-button>
+          <el-button class="filter-item" size="small" type="primary" :icon="Upload" @click="dialog = true">上传</el-button>
           <!-- 同步 -->
-          <el-button :icon="icon" class="filter-item" size="mini" type="warning" @click="synchronize">同步</el-button>
+          <el-button :icon="icon" class="filter-item" size="small" type="warning" @click="synchronize">同步</el-button>
           <!-- 配置 -->
           <el-button
             class="filter-item"
-            size="mini"
+            size="small"
             type="success"
-            icon="el-icon-s-tools"
+            :icon="Tools"
             @click="doConfig"
           >配置</el-button>
         </template>
@@ -49,11 +49,15 @@
           multiple
         >
           <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" style="display: block;" class="el-upload__tip">请勿上传违法文件，且文件不超过15M</div>
+          <template #tip>
+            <div style="display: block;" class="el-upload__tip">请勿上传违法文件，且文件不超过15M</div>
+          </template>
         </el-upload>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="doSubmit">确认</el-button>
-        </div>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button type="primary" @click="doSubmit">确认</el-button>
+          </div>
+        </template>
       </el-dialog>
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
@@ -84,11 +88,13 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { getToken } from '@/utils/auth'
 import crudQiNiu from '@/api/tools/qiniu'
 import eForm from './form.vue'
-import CRUD, { presenter, header, crud } from '@crud/crud'
+import CRUD, { presenter, header } from '@crud/crud'
+import { parseTime } from '@/utils/index'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
 import { ElMessage } from 'element-plus'
+import { Refresh, Loading } from '@element-plus/icons-vue'
 
 const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
 const permission = ref({
@@ -96,7 +102,7 @@ const permission = ref({
 })
 const title = ref('文件')
 const dialog = ref(false)
-const icon = ref('el-icon-refresh')
+const icon = ref(Refresh)
 const url = ref('')
 const headers = ref({ 'Authorization': getToken() })
 const dialogImageUrl = ref('')
@@ -108,7 +114,9 @@ const newWin = ref(null)
 const qiNiuUploadApi = computed(() => baseUrl + '/api/qiNiuContent')
 
 const defaultCrud = CRUD({ title: '七牛云文件', url: 'api/qiNiuContent', crudMethod: { ...crudQiNiu }})
-const { crud, columns } = presenter(defaultCrud)
+const { crud, columns, query } = presenter(defaultCrud)
+
+defineExpose({ crud })
 
 onMounted(() => {
   crud.optShow.add = false
@@ -176,13 +184,13 @@ const download = (id) => {
 }
 
 const synchronize = () => {
-  icon.value = 'el-icon-loading'
+  icon.value = Loading
   crudQiNiu.sync().then(res => {
-    icon.value = 'el-icon-refresh'
+    icon.value = Refresh
     ElMessage.success('数据同步成功')
     crud.toQuery()
   }).catch(err => {
-    icon.value = 'el-icon-refresh'
+    icon.value = Refresh
     console.log(err.response.data.message)
   })
 }

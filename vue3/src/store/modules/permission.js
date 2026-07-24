@@ -6,28 +6,14 @@ export const usePermissionStore = defineStore('permission', {
   state: () => ({
     routers: constantRouterMap,
     addRouters: [],
-    loadMenus: false
+    loadMenus: true
   }),
-  mutations: {
-    SET_ROUTERS: (state, routers) => {
-      state.addRouters = routers
-      state.routers = [...constantRouterMap, ...routers]
-    },
-    SET_LOAD_MENUS: (state, loadMenus) => {
-      state.loadMenus = loadMenus
-    }
-  },
   actions: {
     GenerateRoutes(asyncRouter) {
       return new Promise(resolve => {
         this.addRouters = asyncRouter
         this.routers = [...constantRouterMap, ...asyncRouter]
-        resolve()
-      })
-    },
-    updateLoadMenus() {
-      return new Promise(resolve => {
-        this.loadMenus = true
+        this.loadMenus = false
         resolve()
       })
     }
@@ -50,8 +36,15 @@ export const filterAsyncRouter = (routers) => {
   })
 }
 
+const viewModules = import.meta.glob('@/views/**/*.vue')
+
 export const loadView = (view) => {
-  return () => import(`@/views/${view}.vue`)
+  const path = `/src/views/${view}.vue`
+  if (!viewModules[path]) {
+    console.error(`Cannot find view: ${path}`)
+    return () => import('@/views/features/404.vue')
+  }
+  return viewModules[path]
 }
 
 export default usePermissionStore

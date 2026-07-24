@@ -4,7 +4,7 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.blurry" size="small" clearable placeholder="输入名称或者描述搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.blurry" size="small" clearable placeholder="输入名称或者描述搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <el-date-picker
           v-model="query.createTime"
           :default-time="['00:00:00','23:59:59']"
@@ -12,7 +12,7 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
@@ -21,7 +21,7 @@
       <crudOperation :permission="permission" />
     </div>
     <!-- 表单渲染 -->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="520px">
+    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :model-value="crud.status.cu > 0" :title="crud.status.title" width="520px">
       <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="form.name" style="width: 145px;" />
@@ -51,7 +51,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="text" @click="crud.cancelCU">取消</el-button>
+          <el-button link @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
       </template>
@@ -100,8 +100,8 @@
               v-permission="['admin','roles:edit']"
               :disabled="!showButton"
               :loading="menuLoading"
-              icon="el-icon-check"
-              size="mini"
+              :icon="Check"
+              size="small"
               style="float: right; padding: 6px 9px"
               type="primary"
               @click="saveMenu"
@@ -126,7 +126,8 @@ import { ref, onMounted } from 'vue'
 import crudRoles from '@/api/system/role'
 import { getDepts } from '@/api/system/dept'
 import { getMenusTree } from '@/api/system/menu'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import CRUD, { presenter } from '@crud/crud'
+import { parseTime } from '@/utils/index'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
@@ -162,8 +163,7 @@ const rules = {
 
 const level = ref(3)
 
-const presenterResult = presenter(defaultCrud)
-Object.assign(crud, presenterResult.crud)
+const { crud, columns, query, form } = presenter(defaultCrud)
 
 const menu = ref(null)
 
@@ -316,7 +316,7 @@ function afterErrorMethod(crudRef) {
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  ::v-deep .el-input-number .el-input__inner {
+  :deep(.el-input-number .el-input__inner) {
     text-align: left;
   }
 </style>

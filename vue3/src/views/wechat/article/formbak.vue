@@ -15,12 +15,12 @@
       </el-form-item>
       <el-form-item label="正文">
         <!--<editor v-model="form.content" />-->
-        <ueditor-wrap v-model="form.content" :config="myConfig"  @beforeInit="addCustomDialog"  style="width: 90%;"></ueditor-wrap>
+        <VueUeditorWrap v-model="form.content" :config="myConfig"  @beforeInit="addCustomDialog"  style="width: 90%;"></VueUeditorWrap>
       </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="text" @click="cancel">取消</el-button>
+        <el-button link @click="cancel">取消</el-button>
         <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
       </div>
     </template>
@@ -35,7 +35,7 @@ import picUpload from '@/components/pic-upload'
 import editor from '../../components/Editor'
 import yamedit from '@/components/YamlEdit'
 import MaterialList from '@/components/material'
-import UeditorWrap from 'vue-ueditor-wrap'
+import { VueUeditorWrap } from 'vue-ueditor-wrap'
 
 const props = defineProps({
   isAdd: {

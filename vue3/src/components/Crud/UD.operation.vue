@@ -1,21 +1,22 @@
 <template>
   <div>
-    <el-button v-permission="permission.edit" :disabled="disabledEdit" size="mini" type="primary" icon="el-icon-edit" @click="crud.toEdit(data)" />
-    <el-popover v-model="pop" v-permission="permission.del" placement="top" width="180" trigger="manual" @show="onPopoverShow" @hide="onPopoverHide">
+    <el-button v-permission="permission.edit" :disabled="disabledEdit" size="small" type="primary" :icon="Edit" @click="crud.toEdit(data)" />
+    <el-popover ref="popoverRef" v-permission="permission.del" :visible="pop" placement="top" width="180" trigger="click">
       <p>{{ msg }}</p>
       <div style="text-align: right; margin: 0">
-        <el-button size="mini" type="text" @click="doCancel">取消</el-button>
-        <el-button :loading="crud.dataStatus[data.id].delete === 2" type="primary" size="mini" @click="crud.doDelete(data)">确定</el-button>
+        <el-button size="small" link @click="doCancel">取消</el-button>
+        <el-button :loading="crud.dataStatus[data.id]?.delete === 2" type="primary" size="small" @click="crud.doDelete(data)">确定</el-button>
       </div>
       <template #reference>
-        <el-button slot="reference" :disabled="disabledDle" type="danger" icon="el-icon-delete" size="mini" @click="toDelete" />
+        <el-button :disabled="disabledDle" type="danger" :icon="Delete" size="small" @click.stop="toDelete" />
       </template>
     </el-popover>
   </div>
 </template>
 <script setup>
 import { ref } from 'vue'
-import CRUD, { crud } from '@crud/crud'
+import { Edit, Delete } from '@element-plus/icons-vue'
+import CRUD, { crud as crudComposable } from '@crud/crud'
 
 defineOptions({
   name: 'UDOperation'
@@ -44,36 +45,25 @@ const props = defineProps({
   }
 })
 
-const { crud: crudInstance } = crud()
+const { crud } = crudComposable()
 
 const pop = ref(false)
+const popoverRef = ref(null)
 
 const doCancel = () => {
   pop.value = false
-  crudInstance.cancelDelete(props.data)
+  crud.cancelDelete(props.data)
 }
 
 const toDelete = () => {
   pop.value = true
 }
 
-CRUD.HOOK.afterDelete(crudInstance, props.data, () => {
-  if (props.data === props.data) {
+// 注册 afterDelete 钩子：删除完成后自动关闭弹窗
+const hookRef = crud.HOOK || CRUD.HOOK
+hookRef[CRUD.HOOK.afterDelete] = (crudInst, data) => {
+  if (data === props.data) {
     pop.value = false
   }
-})
-
-const onPopoverShow = () => {
-  setTimeout(() => {
-    document.addEventListener('click', handleDocumentClick)
-  }, 0)
-}
-
-const onPopoverHide = () => {
-  document.removeEventListener('click', handleDocumentClick)
-}
-
-const handleDocumentClick = () => {
-  pop.value = false
 }
 </script>

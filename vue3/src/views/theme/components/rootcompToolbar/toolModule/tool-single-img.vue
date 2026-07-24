@@ -13,15 +13,13 @@
           :src="imageUrl"
           class="single-img__img"
         >
-        <i
-          v-else
-          class="el-icon-upload"
-        >
+        <div v-else class="el-upload-dragger">
+          <el-icon><Upload /></el-icon>
           <div class="el-upload__text"><em>选择图片</em></div>
           <div
             class="el-upload__tip"
           >{{tip.label}}</div>
-        </i>
+        </div>
       </el-upload>
       <div
         class="overlay"
@@ -31,7 +29,7 @@
     </div>
     <el-dialog
       title="图片展示"
-      :visible.sync="dialogVisible"
+      v-model="dialogVisible"
     >
       <img
         width="100%"
@@ -94,10 +92,10 @@ function delImage() {
 .single-img {
   &__box {
     position: relative;
-    >>> .el-upload {
+    :deep(.el-upload) {
       width: 100%;
     }
-    >>> .el-upload-dragger {
+    :deep(.el-upload-dragger) {
       width: 100%;
       .el-upload__text {
         line-height: 40px;

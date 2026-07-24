@@ -4,13 +4,13 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.blurry" clearable size="small" placeholder="输入名称或者服务地址" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.blurry" clearable size="small" placeholder="输入名称或者服务地址" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <rrOperation :crud="crud" />
       </div>
       <crudOperation :permission="permission" />
     </div>
     <!--表单组件-->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="crud.status.cu > 0" :title="crud.status.title" width="500px">
+    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="dialogVisible" :title="crud.status.title" width="500px">
       <el-form ref="formRef" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="名称" prop="name">
           <el-input v-model="form.name" style="width: 370px;" />
@@ -25,10 +25,12 @@
           <el-input-number v-model.number="form.sort" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="crud.cancelCU">取消</el-button>
-        <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
-      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button link @click="crud.cancelCU">取消</el-button>
+          <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
+        </div>
+      </template>
     </el-dialog>
     <!--表格渲染-->
     <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
@@ -39,8 +41,8 @@
             :type="scope.row.state === '1' ? 'success' : 'info'"
             disable-transitions
           >
-            <i v-if="scope.row.state === '1'" class="el-icon-success" />
-            <i v-if="scope.row.state === '0'" class="el-icon-error" />
+            <el-icon v-if="scope.row.state === '1'"><CircleCheck /></el-icon>
+            <el-icon v-if="scope.row.state === '0'"><CircleCloseFilled /></el-icon>
           </el-tag>
         </template>
       </el-table-column>
@@ -91,7 +93,7 @@
             :data="scope.row"
             :permission="permission"
           />
-        </template> v-if="columns.visible('name')"
+        </template>
       </el-table-column>
     </el-table>
     <!--分页组件-->
@@ -100,9 +102,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import crudServer from '@/api/monitor/server'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import CRUD, { presenter, header } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
@@ -127,7 +129,17 @@ const rules = {
 
 const defaultCrud = CRUD({ title: '监控', url: 'api/server', sort: 'sort,asc', crudMethod: { ...crudServer }})
 const defaultForm = { id: null, address: 'localhost', name: null, ip: null, port: 8777, state: null, cpuRate: null, cpuCore: null, memTotal: null, memUsed: null, diskTotal: null, diskUsed: null, swapTotal: null, swapUsed: null, sort: 999 }
-const { crud, columns } = presenter(defaultCrud)
+const { crud, columns, query } = presenter(defaultCrud)
+
+const dialogVisible = computed({
+  get: () => crud.status.cu > 0,
+  set: (val) => {
+    if (!val) {
+      crud.status.add = CRUD.STATUS.NORMAL
+      crud.status.edit = CRUD.STATUS.NORMAL
+    }
+  }
+})
 
 onMounted(() => {
   crud.optShow.download = false

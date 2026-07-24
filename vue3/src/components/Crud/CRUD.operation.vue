@@ -5,22 +5,22 @@
       <slot name="left" />
       <el-button
         v-if="crud.optShow.add"
-        v-permission="permission.add"
+        v-permission="permission.add || []"
         class="filter-item"
-        size="mini"
+        size="small"
         type="primary"
-        icon="el-icon-plus"
+        :icon="Plus"
         @click="crud.toAdd"
       >
         新增
       </el-button>
       <el-button
         v-if="crud.optShow.edit"
-        v-permission="permission.edit"
+        v-permission="permission.edit || []"
         class="filter-item"
-        size="mini"
+        size="small"
         type="success"
-        icon="el-icon-edit"
+        :icon="Edit"
         :disabled="crud.selections.length !== 1"
         @click="crud.toEdit(crud.selections[0])"
       >
@@ -28,12 +28,11 @@
       </el-button>
       <el-button
         v-if="crud.optShow.del"
-        slot="reference"
-        v-permission="permission.del"
+        v-permission="permission.del || []"
         class="filter-item"
         type="danger"
-        icon="el-icon-delete"
-        size="mini"
+        :icon="Delete"
+        size="small"
         :loading="crud.delAllLoading"
         :disabled="crud.selections.length === 0"
         @click="toDelete(crud.selections)"
@@ -45,9 +44,9 @@
         :loading="crud.downloadLoading"
         :disabled="!crud.data.length"
         class="filter-item"
-        size="mini"
+        size="small"
         type="warning"
-        icon="el-icon-download"
+        :icon="Download"
         @click="crud.doExport"
       >导出</el-button>
       <!--右侧-->
@@ -55,15 +54,15 @@
     </span>
     <el-button-group class="crud-opts-right">
       <el-button
-        size="mini"
+        size="small"
         plain
         type="info"
-        icon="el-icon-search"
+        :icon="Search"
         @click="toggleSearch()"
       />
       <el-button
-        size="mini"
-        icon="el-icon-refresh"
+        size="small"
+        :icon="Refresh"
         @click="crud.refresh()"
       />
       <el-popover
@@ -73,8 +72,8 @@
       >
         <template #reference>
           <el-button
-            size="mini"
-            icon="el-icon-s-grid"
+            size="small"
+            :icon="Grid"
           >
             <i
               class="fa fa-caret-down"
@@ -102,8 +101,10 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
-import CRUD, { crud } from '@crud/crud'
+import { ref, nextTick } from 'vue'
+import { ElMessageBox } from 'element-plus'
+import { Plus, Edit, Delete, Download, Search, Refresh, Grid } from '@element-plus/icons-vue'
+import CRUD, { crud as crudComposable } from '@crud/crud'
 
 defineOptions({
   name: 'CRUDOperation'
@@ -112,16 +113,16 @@ defineOptions({
 const props = defineProps({
   permission: {
     type: Object,
-    default: null
+    default: () => ({})
   }
 })
 
-const { crud: crudInstance } = crud()
+const { crud } = crudComposable()
 
 const allColumnsSelected = ref(true)
 const allColumnsSelectedIndeterminate = ref(false)
 
-crudInstance.updateProp('searchToggle', true)
+crud.updateProp('searchToggle', true)
 
 const toDelete = (datas) => {
   ElMessageBox.confirm(`确认删除选中的${datas.length}条数据?`, '提示', {
@@ -129,8 +130,8 @@ const toDelete = (datas) => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    crudInstance.delAllLoading = true
-    crudInstance.doDelete(datas)
+    crud.delAllLoading = true
+    crud.doDelete(datas)
   }).catch(() => {
   })
 }
@@ -140,8 +141,8 @@ const handleCheckAllChange = (val) => {
     allColumnsSelected.value = true
     return
   }
-  for (const key in crudInstance.props.tableColumns) {
-    crudInstance.props.tableColumns[key].visible = val
+  for (const key in crud.props.tableColumns) {
+    crud.props.tableColumns[key].visible = val
   }
   allColumnsSelected.value = val
   allColumnsSelectedIndeterminate.value = false
@@ -150,12 +151,12 @@ const handleCheckAllChange = (val) => {
 const handleCheckedTableColumnsChange = (item) => {
   let totalCount = 0
   let selectedCount = 0
-  for (const key in crudInstance.props.tableColumns) {
+  for (const key in crud.props.tableColumns) {
     ++totalCount
-    selectedCount += crudInstance.props.tableColumns[key].visible ? 1 : 0
+    selectedCount += crud.props.tableColumns[key].visible ? 1 : 0
   }
   if (selectedCount === 0) {
-    crudInstance.notify('请至少选择一列', CRUD.NOTIFICATION_TYPE.WARNING)
+    crud.notify('请至少选择一列', CRUD.NOTIFICATION_TYPE.WARNING)
     nextTick(function() {
       item.visible = true
     })
@@ -166,7 +167,7 @@ const handleCheckedTableColumnsChange = (item) => {
 }
 
 const toggleSearch = () => {
-  crudInstance.props.searchToggle = !crudInstance.props.searchToggle
+  crud.props.searchToggle = !crud.props.searchToggle
 }
 </script>
 

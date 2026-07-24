@@ -1,16 +1,18 @@
 <template>
-  <div ref="rightPanelRef" :class="{show:show}" class="rightPanel-container">
-    <div class="rightPanel-background" />
-    <div class="rightPanel">
-      <div class="rightPanel-items">
-        <slot />
+  <Teleport to="body">
+    <div ref="rightPanelRef" :class="{show:show}" class="rightPanel-container">
+      <div class="rightPanel-background" />
+      <div class="rightPanel">
+        <div class="rightPanel-items">
+          <slot />
+        </div>
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { addClass, removeClass } from '@/utils'
 import { useSettingsStore } from '@/store/modules/settings'
 
@@ -58,12 +60,6 @@ const closeSidebar = (evt) => {
   }
 }
 
-const insertToBody = () => {
-  const elx = rightPanelRef.value
-  const body = document.querySelector('body')
-  body.insertBefore(elx, body.firstChild)
-}
-
 watch(show, (value) => {
   if (value && !props.clickNotClose) {
     addEventClick()
@@ -76,13 +72,9 @@ watch(show, (value) => {
 })
 
 onMounted(() => {
-  insertToBody()
-  addEventClick()
-})
-
-onBeforeUnmount(() => {
-  const elx = rightPanelRef.value
-  elx.remove()
+  if (show.value && !props.clickNotClose) {
+    addEventClick()
+  }
 })
 </script>
 

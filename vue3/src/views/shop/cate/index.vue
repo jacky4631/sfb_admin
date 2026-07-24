@@ -4,13 +4,13 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.cateName" clearable size="small" placeholder="输入分类名称搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.cateName" clearable size="small" placeholder="输入分类名称搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <rrOperation :crud="crud" />
       </div>
       <crudOperation :permission="permission" />
     </div>
     <!--表单组件-->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
+    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :model-value="crud.status.cu > 0" :title="crud.status.title" width="500px">
       <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="分类名称">
           <el-input v-model="form.cateName" style="width: 370px;" />
@@ -28,16 +28,15 @@
           <el-input v-model="form.sort" style="width: 370px;" />
         </el-form-item>
         <el-form-item style="margin-bottom: 0;" label="上级分类" prop="pid">
-          <el-tree-select v-model="form.pid" :data="depts" style="width: 370px;" placeholder="选择上级分类" />
+          <el-tree-select v-model="form.pid" :data="depts" :props="{ children: 'children', label: 'label' }" node-key="id" check-strictly render-after-expand=false style="width: 370px;" placeholder="选择上级分类" />
         </el-form-item>
       </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button type="text" @click="crud.cancelCU">取消</el-button>
-          <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
-        </div>
-      </template>
-    </el-dialog>
+      <template #footer><div class="dialog-footer">
+        <el-button type="text" @click="crud.cancelCU">取消</el-button>
+        <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
+      </div>
+    </template>
+</el-dialog>
     <!--表格渲染-->
     <el-table ref="table" v-loading="crud.loading" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" :data="crud.data" row-key="id" @select="crud.selectChange" @select-all="crud.selectAllChange" @selection-change="crud.selectionChangeHandler">
       <el-table-column :selectable="checkboxT" type="selection" width="55" />
@@ -64,8 +63,7 @@
   </div>
 </template>
 
-<script setup>
-import { ref, watch } from 'vue'
+<script>
 import crudDept from '@/api/mwStoreCategory'
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
@@ -74,68 +72,63 @@ import udOperation from '@crud/UD.operation'
 import picUpload from '@/components/pic-upload'
 import MaterialList from '@/components/material'
 
-defineOptions({ name: 'Dept' })
-
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '分类', url: 'api/mwStoreCategory', sort: 'sort,desc', crudMethod: { ...crudDept }})
 const defaultForm = { id: null, cateName: null, pid: 0, isShow: 1 , sort:  1}
+export default {
+  name: 'Dept',
+  components: { crudOperation, rrOperation, udOperation, picUpload, MaterialList },
+  mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
+  data() {
+    return {
+      picArr: [],
+      depts: [],
+      rules: {
+        cateName: [
+          { required: true, message: '请输入名称', trigger: 'blur' }
+        ]
+      },
+      permission: {
+        add: ['admin', 'MWSTORECATEGORY_CREATE'],
+        edit: ['admin', 'MWSTORECATEGORY_EDIT'],
+        del: ['admin', 'MWSTORECATEGORY_DELETE']
+      },
+      enabledTypeOptions: [
+        { key: 'true', display_name: '正常' },
+        { key: 'false', display_name: '禁用' }
+      ]
+    }
+  },
+  watch: {
+    picArr: function(val) {
+      console.log();
+      this.form.pic = val.join(',')
+    }
+  },
+  methods: {
+    // 新增与编辑前做的操作
+    [CRUD.HOOK.afterToCU](crud, form) {
+      this.picArr = []
+      if (form.pic && form.id) {
+        this.picArr = form.pic.split(',')
+      }
 
-const picArr = ref([])
-const depts = ref([])
-const rules = {
-  cateName: [
-    { required: true, message: '请输入名称', trigger: 'blur' }
-  ]
-}
-const permission = {
-  add: ['admin', 'MWSTORECATEGORY_CREATE'],
-  edit: ['admin', 'MWSTORECATEGORY_EDIT'],
-  del: ['admin', 'MWSTORECATEGORY_DELETE']
-}
-const enabledTypeOptions = [
-  { key: 'true', display_name: '正常' },
-  { key: 'false', display_name: '禁用' }
-]
-
-// Use mixin
-const { crud, columns, query, form } = (() => {
-  const result = presenter(defaultCrud)
-  return result
-})()
-
-// Need to properly integrate the CRUD presenter
-const presenterResult = presenter(defaultCrud)
-const presenterCrud = presenterResult.crud
-
-Object.assign(crud, presenterCrud)
-
-watch(picArr, (val) => {
-  form.pic = val.join(',')
-})
-
-// 新增与编辑前做的操作
-crud.HOOK.afterToCU = (form) => {
-  picArr.value = []
-  if (form.pic && form.id) {
-    picArr.value = form.pic.split(',')
+      // 获取所有部门
+      crudDept.getCates({ isShow: true }).then(res => {
+        this.depts = []
+        const dept = { id: 0, label: '顶级类目', children: [] }
+        dept.children = res.content
+        this.depts.push(dept)
+      })
+    },
+    // 提交前的验证
+    [CRUD.HOOK.afterValidateCU]() {
+      return true
+    },
+    checkboxT(row, rowIndex) {
+      return row.id !== 1
+    }
   }
-
-  // 获取所有部门
-  crudDept.getCates({ isShow: true }).then(res => {
-    depts.value = []
-    const dept = { id: 0, label: '顶级类目', children: [] }
-    dept.children = res.content
-    depts.value.push(dept)
-  })
-}
-
-// 提交前的验证
-crud.HOOK.afterValidateCU = () => {
-  return true
-}
-
-function checkboxT(row, rowIndex) {
-  return row.id !== 1
 }
 </script>
 

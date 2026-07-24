@@ -50,7 +50,7 @@ const handleSetSize = (size) => {
 }
 
 const refreshView = () => {
-  tagsViewStore.DEL_ALL_CACHED_VIEWS()
+  tagsViewStore.delAllCachedViews()
 
   const { fullPath } = route
 

@@ -1,16 +1,16 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar class="sidebar-container" />
+    <div v-if="device==='mobile'&&sidebarState.opened" class="drawer-bg" @click="handleClickOutside" />
+    <Sidebar class="sidebar-container" />
     <div :class="{hasTagsView:needTagsView}" class="main-container">
       <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
-        <tags-view v-if="needTagsView" />
+        <Navbar />
+        <TagsView v-if="needTagsView" />
       </div>
-      <app-main />
-      <right-panel v-if="showSettings">
-        <settings />
-      </right-panel>
+      <AppMain />
+      <RightPanel v-if="showSettings">
+        <Settings />
+      </RightPanel>
     </div>
   </div>
 </template>
@@ -18,25 +18,27 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import ResizeMixin from './mixin/ResizeHandler'
 import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
+import RightPanel from '@/components/RightPanel/index.vue'
 import { useAppStore } from '@/store/modules/app'
 import { useSettingsStore } from '@/store/modules/settings'
+
+defineOptions({ name: 'Layout' })
 
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const route = useRoute()
 
-const sidebar = computed(() => appStore.sidebar)
+const sidebarState = computed(() => appStore.sidebar)
 const device = computed(() => appStore.device)
 const showSettings = computed(() => settingsStore.showSettings)
 const needTagsView = computed(() => settingsStore.tagsView)
 const fixedHeader = computed(() => settingsStore.fixedHeader)
 
 const classObj = computed(() => ({
-  hideSidebar: !sidebar.value.opened,
-  openSidebar: sidebar.value.opened,
-  withoutAnimation: sidebar.value.withoutAnimation,
+  hideSidebar: !sidebarState.value.opened,
+  openSidebar: sidebarState.value.opened,
+  withoutAnimation: sidebarState.value.withoutAnimation,
   mobile: device.value === 'mobile'
 }))
 
@@ -46,8 +48,8 @@ const handleClickOutside = () => {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/mixin.scss";
-@import "@/assets/styles/variables.scss";
+@use "@/assets/styles/mixin.scss" as *;
+@use "@/assets/styles/variables.scss" as *;
 
 .app-wrapper {
   @include clearfix;

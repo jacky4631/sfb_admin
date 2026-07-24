@@ -4,25 +4,25 @@
 
       <el-tabs v-model="status" type="card" @tab-click="handleOrder">
         <el-tab-pane name="">
-          <template #label><i class="el-icon-s-order"></i> 全部订单</template>
+          <template #label><el-icon><Tickets /></el-icon> 全部订单</template>
         </el-tab-pane>
         <el-tab-pane name="4">
-          <template #label><i class="el-icon-bank-card"></i> 审核失败</template>
+          <template #label><el-icon><CreditCard /></el-icon> 审核失败</template>
         </el-tab-pane>
         <el-tab-pane name="3">
-          <template #label><i class="el-icon-refrigerator"></i> 审核成功</template>
+          <template #label><el-icon><Refrigerator /></el-icon> 审核成功</template>
         </el-tab-pane>
         <el-tab-pane name="5">
-          <template #label><i class="el-icon-truck"></i> 已经结算</template>
+          <template #label><el-icon><Van /></el-icon> 已经结算</template>
         </el-tab-pane>
         <el-tab-pane name="2">
-          <template #label><i class="el-icon-document"></i> 确认收货</template>
+          <template #label><el-icon><Document /></el-icon> 确认收货</template>
         </el-tab-pane>
         <el-tab-pane name="-1">
-          <template #label><i class="el-icon-refrigerator"></i> 未支付</template>
+          <template #label><el-icon><Refrigerator /></el-icon> 未支付</template>
         </el-tab-pane>
         <el-tab-pane name="1">
-          <template #label><i class="el-icon-document"></i> 已成团</template>
+          <template #label><el-icon><Document /></el-icon> 已成团</template>
         </el-tab-pane>
       </el-tabs>
       <!--工具栏-->
@@ -44,17 +44,17 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
-        <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+        <el-button class="filter-item" size="small" type="success" :icon="Search" @click="toQuery">搜索</el-button>
         <!-- 新增 -->
         <el-button
           type="danger"
           class="filter-item"
-          size="mini"
-          icon="el-icon-refresh"
+          size="small"
+          :icon="Refresh"
           @click="toQuery"
         >刷新</el-button>
       </div>
@@ -67,25 +67,25 @@
         <el-table-column prop="orderSn" label="订单编号" fixed width="185" :show-overflow-tooltip="true"/>
 
         <el-table-column prop="orderCreateTime" label="订单生成时间"  width="150" :show-overflow-tooltip="true">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderCreateTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderStatusDesc" label="订单状态" >
-          <template v-slot="scope">
+          <template #default="scope">
             <el-tag v-if="scope.row.orderStatusDesc !== '审核失败'" :type="'success'">{{ scope.row.orderStatusDesc }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ scope.row.orderStatusDesc }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="bind" label="拆红包" width="120">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-tag v-if="scope.row.bind === 1" style="cursor: pointer" :type="'success'">{{ isBinding(scope.row.bind) }}</el-tag>
             <el-tag v-else-if="scope.row.bind === 0" style="cursor: pointer" :type=" '' ">{{ isBinding(scope.row.bind) }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ isBinding(scope.row.bind) }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="promotionAmount" label="预估佣金">
-          <template v-slot="scope">
+          <template #default="scope">
             {{ scope.row.promotionAmount/100 }}
           </template>
         </el-table-column>
@@ -95,7 +95,7 @@
         <el-table-column prop="priceCompareStatus" label="比价=1" />
         <el-table-column prop="goodsName" label="商品名称"  width="100" :show-overflow-tooltip="true"/>
         <el-table-column prop="orderAmount" label="支付金额" >
-          <template v-slot="scope">
+          <template #default="scope">
             {{ scope.row.orderAmount/100 }}
           </template>
         </el-table-column>
@@ -103,7 +103,7 @@
         <el-table-column prop="orderStatus" label="订单状态" />
         <el-table-column prop="goodsId" label="商品ID"  width="150" :show-overflow-tooltip="true"/>
         <el-table-column prop="goodsPrice" label="单件价格" >
-          <template v-slot="scope">
+          <template #default="scope">
             {{ scope.row.goodsPrice/100 }}
           </template>
         </el-table-column>
@@ -124,43 +124,43 @@
         <el-table-column prop="noSubsidyReason" label="非补贴原因" />
 
         <el-table-column prop="orderGroupSuccessTime" label="成团时间"  width="100" :show-overflow-tooltip="true">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderGroupSuccessTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderModifyAt" label="最后更新时间"  width="100" :show-overflow-tooltip="true">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderModifyAt) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderPayTime" label="支付时间"  width="100" :show-overflow-tooltip="true">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderPayTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderReceiveTime" label="确认收货时间"  width="100" :show-overflow-tooltip="true">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderReceiveTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderSettleTime" label="结算时间"  width="200" :show-overflow-tooltip="true">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderSettleTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderVerifyTime" label="审核时间"  width="200" :show-overflow-tooltip="true">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderVerifyTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="pId" label="推广位ID" />
         <el-table-column prop="platformDiscount" label="平台券元" >
-          <template v-slot="scope">
+          <template #default="scope">
             {{ scope.row.platformDiscount/100 }}
           </template>
         </el-table-column>
         <el-table-column prop="promotionRate" label="佣金比例%" >
-          <template v-slot="scope">
+          <template #default="scope">
             {{ scope.row.promotionRate/10 }}
           </template>
         </el-table-column>
@@ -180,26 +180,26 @@
         <el-table-column prop="type" label="下单场景类型" />
         <el-table-column prop="zsDuoId" label="招商多多客id" />
         <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="updateTime" label="修改时间" :show-overflow-tooltip="true">
-          <template v-slot="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.updateTime) }}</span>
           </template>
         </el-table-column>
 
         <el-table-column v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="200" align="center" fixed="right">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-button
               v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
-              size="mini"
+              size="small"
               type="primary"
-              @click="editOrder(scope.row)"
+              @click="handleEditOrder(scope.row)"
             >
               绑定用户</el-button>
-            <el-dropdown size="mini" split-button type="primary" trigger="click">
+            <el-dropdown size="small" split-button type="primary" trigger="click">
               操作
               <template #dropdown>
                 <el-dropdown-menu>
@@ -212,11 +212,11 @@
                     >
                       <p>确定删除本条数据吗？</p>
                       <div style="text-align: right; margin: 0">
-                        <el-button size="mini" type="text" @click="popoverRefs[scope.row.orderSn]?.doClose()">取消</el-button>
-                        <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete([scope.row.orderSn])">确定</el-button>
+                        <el-button size="small" link @click="popoverRefs[scope.row.orderSn]?.doClose()">取消</el-button>
+                        <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.orderSn])">确定</el-button>
                       </div>
                       <template #reference>
-                        <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+                        <el-button type="danger" :icon="Delete" size="small">删除</el-button>
                       </template>
                     </el-popover>
                   </el-dropdown-item>
@@ -411,7 +411,7 @@ function subDelete(id) {
   })
 }
 
-function editOrder(rowData) {
+function handleEditOrder(rowData) {
   isAdd.value = false
   const _this = form3.value
   if (_this) {

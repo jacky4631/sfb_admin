@@ -6,7 +6,7 @@
       <el-radio label="1">手动添加</el-radio>
       <div class="mode2">
         <el-radio label="2">自动获取</el-radio>
-        <el-tooltip class="item" effect="dark" content="系统自动获取仅设置为"公开领取"的店铺优惠券，新创建的券排在前面" placement="bottom">
+        <el-tooltip class="item" effect="dark" content="系统自动获取仅设置为&quot;公开领取&quot;的店铺优惠券，新创建的券排在前面" placement="bottom">
         <span class="iconfont">&#xe60a;</span>
         </el-tooltip>
       </div>
@@ -17,7 +17,7 @@
       <i class="iconfont">&#xe685;</i><span>添加优惠券</span>
     </div>
   </div>
-  <el-dialog title="选择优惠券" :visible.sync="couponDialogVisible" width="1000">
+  <el-dialog title="选择优惠券" v-model="couponDialogVisible" width="1000">
     <coupon-select ref="couponSelect"></coupon-select>
     <template #footer>
       <span class="dialog-footer">
@@ -73,10 +73,10 @@ function modeChange(val) {
       cursor: pointer;
     }
   }
-  >>> .el-radio {
+  :deep(.el-radio) {
     margin-right: 0;
   }
-  >>> .el-radio__label {
+  :deep(.el-radio__label) {
     padding-left: 5px;
   }
   .mode2 {

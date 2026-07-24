@@ -1,10 +1,10 @@
 <template>
   <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
+    <router-view v-slot="{ Component }">
       <keep-alive :include="cachedViews">
-        <router-view :key="key" />
+        <component v-if="Component" :is="Component" :key="key" />
       </keep-alive>
-    </transition>
+    </router-view>
     <div v-if="showFooter" id="el-main-footer">
       <span v-html="footerTxt" />
       <span> ⋅ </span>
@@ -18,6 +18,8 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { useSettingsStore } from '@/store/modules/settings'
+
+defineOptions({ name: 'AppMain' })
 
 const tagsViewStore = useTagsViewStore()
 const settingsStore = useSettingsStore()

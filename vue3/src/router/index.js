@@ -15,7 +15,7 @@ const whiteList = ['/login']
 
 const router = createRouter({
   history: createWebHistory(),
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({ top: 0 }),
   routes: constantRouterMap
 })
 
@@ -31,9 +31,8 @@ export const loadMenus = (next, to) => {
     })
   }).catch(err => {
     console.log(err)
-    userStore.LogOut().then(() => {
-      location.reload()
-    })
+    userStore.FedLogOut()
+    location.reload()
   })
 }
 
@@ -48,19 +47,14 @@ router.beforeEach((to, from, next) => {
       NProgress.done()
     } else {
       const userStore = useUserStore()
-      const permissionStore = usePermissionStore()
       if (userStore.roles && userStore.roles.length === 0) {
         userStore.GetInfo().then(res => {
           loadMenus(next, to)
         }).catch((err) => {
           console.log(err)
-          userStore.LogOut().then(() => {
-            location.reload()
-          })
+          userStore.FedLogOut()
+          location.reload()
         })
-      } else if (permissionStore.loadMenus) {
-        permissionStore.updateLoadMenus().then(res => {})
-        loadMenus(next, to)
       } else {
         next()
       }

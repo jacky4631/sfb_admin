@@ -4,7 +4,7 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <el-select v-model="query.type" clearable placeholder="类型" class="filter-item" style="width: 130px">
           <el-option v-for="item in queryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
         </el-select>
@@ -16,18 +16,18 @@
           <el-tooltip class="item" effect="dark" content="数据库中表字段变动时使用该功能" placement="top-start">
             <el-button
               class="filter-item"
-              size="mini"
+              size="small"
               type="success"
               :icon="Icons.Refresh"
               :loading="syncLoading"
               :disabled="crud.selections.length === 0"
-              @click="sync"
+              @click="doSync"
             >同步</el-button>
           </el-tooltip>
         </template>
       </crudOperation>
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="crud.status.cu > 0" :title="crud.status.title" width="800px">
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :model-value="crud.status.cu > 0" :title="crud.status.title" width="800px">
         <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="140px">
           <el-form-item label="选择商品" prop="coverImgeUrl" >
             <cgood v-model="form.good" :disabled="isdisabled" ></cgood>
@@ -82,7 +82,7 @@
         </el-form>
         <template #footer>
           <div class="dialog-footer">
-            <el-button type="text" @click="crud.cancelCU">取消</el-button>
+            <el-button link @click="crud.cancelCU">取消</el-button>
             <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
           </div>
         </template>
@@ -150,7 +150,7 @@
 import { ref, reactive, watch, computed } from 'vue'
 import { sync } from '@/api/mwWechatLiveGoods'
 import crudMwWechatLiveGoods from '@/api/mwWechatLiveGoods'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import CRUD, { presenter, header } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
@@ -238,7 +238,7 @@ const columns = ref({
   visible: (key) => true
 })
 
-const crud = presenter(defaultCrud)
+const { crud } = presenter(defaultCrud)
 
 // Watch for form.good changes
 watch(() => form.good, (val, oldVal) => {
@@ -253,7 +253,7 @@ watch(() => form.good, (val, oldVal) => {
   isdisabled.value = false
 }, { deep: true })
 
-const sync = () => {
+const doSync = () => {
   const ids = []
   crud.selections.forEach(val => {
     ids.push(val.goodsId)

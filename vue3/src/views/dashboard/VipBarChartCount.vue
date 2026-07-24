@@ -1,9 +1,9 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div ref="chartRef" :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script setup>
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import 'echarts/theme/macarons'
 import { debounce } from '@/utils'
 import { chart } from '@/api/visits'
@@ -28,13 +28,13 @@ const props = defineProps({
 
 defineOptions({ name: 'VipBarChartCount' })
 
-const chart = ref(null)
+const chartInstance = ref(null)
 const day = ref([])
 const num = ref([])
 let __resizeHandler
 
 function initChart() {
-  chart.value = echarts.init(document.querySelector('.' + props.className), 'macarons')
+  chartInstance.value = echarts.init(document.querySelector('.' + props.className), 'macarons')
 
   chart('vip', 'count').then(res => {
     const _info = res.chart
@@ -49,7 +49,7 @@ function initChart() {
     day.value = dayArr
     num.value = numArr
 
-    chart.value.setOption({
+    chartInstance.value.setOption({
       tooltip: {
         trigger: 'axis',
         axisPointer: {
@@ -93,19 +93,19 @@ function initChart() {
 onMounted(() => {
   initChart()
   __resizeHandler = debounce(() => {
-    if (chart.value) {
-      chart.value.resize()
+    if (chartInstance.value) {
+      chartInstance.value.resize()
     }
   }, 100)
   window.addEventListener('resize', __resizeHandler)
 })
 
 onBeforeUnmount(() => {
-  if (!chart.value) {
+  if (!chartInstance.value) {
     return
   }
   window.removeEventListener('resize', __resizeHandler)
-  chart.value.dispose()
-  chart.value = null
+  chartInstance.value.dispose()
+  chartInstance.value = null
 })
 </script>

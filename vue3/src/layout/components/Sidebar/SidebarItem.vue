@@ -1,18 +1,18 @@
 <template>
   <div v-if="!item.hidden" class="menu-wrapper">
-    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
-      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
+    <template v-if="hasOneShowingChild && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
+      <AppLink v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
+          <Item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
         </el-menu-item>
-      </app-link>
+      </AppLink>
     </template>
 
     <el-sub-menu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template #title>
-        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
+        <Item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
       </template>
-      <sidebar-item
+      <SidebarItem
         v-for="(child,index) in item.children"
         :key="index"
         :is-nest="true"
@@ -25,17 +25,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import path from 'path'
+import { ref, computed, onMounted } from 'vue'
+import { resolveUrlPath } from '@/utils'
 import { isExternal } from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
-import FixiOSBug from './FixiOSBug'
+import { useAppStore } from '@/store/modules/app'
 
 defineOptions({
-  name: 'SidebarItem',
-  components: { Item, AppLink },
-  mixins: [FixiOSBug]
+  name: 'SidebarItem'
 })
 
 const props = defineProps({
@@ -54,29 +52,40 @@ const props = defineProps({
 })
 
 const subMenu = ref(null)
-const onlyOneChild = ref(null)
 
-const hasOneShowingChild = (children = [], parent) => {
-  const showingChildren = children.filter(item => {
-    if (item.hidden) {
-      return false
-    } else {
-      onlyOneChild.value = item
-      return true
+// FixiOSBug mixin logic
+const appStore = useAppStore()
+const device = computed(() => appStore.device)
+
+onMounted(() => {
+  const $subMenu = subMenu.value
+  if ($subMenu) {
+    const handleMouseleave = $subMenu.handleMouseleave
+    $subMenu.handleMouseleave = (e) => {
+      if (device.value === 'mobile') {
+        return
+      }
+      handleMouseleave(e)
     }
-  })
-
-  if (showingChildren.length === 1) {
-    return true
   }
+})
 
-  if (showingChildren.length === 0) {
-    onlyOneChild.value = { ...parent, path: '', noShowingChildren: true }
-    return true
+// Convert render-time mutation to computed properties
+// to avoid recursive updates (ref mutation during render triggers re-render)
+const showingChildren = computed(() => {
+  return (props.item.children || []).filter(item => !item.hidden)
+})
+
+const hasOneShowingChild = computed(() => {
+  return showingChildren.value.length <= 1
+})
+
+const onlyOneChild = computed(() => {
+  if (showingChildren.value.length === 1) {
+    return showingChildren.value[0]
   }
-
-  return false
-}
+  return { ...props.item, path: '', noShowingChildren: true }
+})
 
 const resolvePath = (routePath) => {
   if (isExternal(routePath)) {
@@ -85,6 +94,6 @@ const resolvePath = (routePath) => {
   if (isExternal(props.basePath)) {
     return props.basePath
   }
-  return path.resolve(props.basePath, routePath)
+  return resolveUrlPath(props.basePath, routePath)
 }
 </script>

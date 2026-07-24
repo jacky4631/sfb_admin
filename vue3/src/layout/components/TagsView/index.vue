@@ -1,20 +1,18 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
-      <router-link
-        v-for="tag in visitedViews"
-        ref="tag"
+    <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+      <span
+        v-for="tag in tagsViewStore.visitedViews"
         :key="tag.path"
         :class="isActive(tag)?'active':''"
-        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-        tag="span"
         class="tags-view-item"
-        @click.middle.native="closeSelectedTag(tag)"
-        @contextmenu.prevent.native="openMenu(tag,$event)"
+        @click="navigateTo(tag)"
+        @click.middle="closeSelectedTag(tag)"
+        @contextmenu.prevent="openMenu(tag,$event)"
       >
-        {{ tag.title }}
-        <span v-if="!(tag.meta && tag.meta.affix)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
-      </router-link>
+        <span>{{ tag.title }}</span>
+        <span v-if="!(tag.meta && tag.meta.affix)" class="tags-view-item-close" @click.prevent.stop="closeSelectedTag(tag)"><el-icon><Close /></el-icon></span>
+      </span>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">刷新</li>
@@ -26,41 +24,40 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import path from 'path'
+import { Close } from '@element-plus/icons-vue'
+import { resolveUrlPath } from '@/utils'
 import ScrollPane from './ScrollPane'
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { usePermissionStore } from '@/store/modules/permission'
 
-defineOptions({
-  components: { ScrollPane }
-})
+defineOptions({ name: 'TagsView' })
 
 const route = useRoute()
 const router = useRouter()
 const tagsViewStore = useTagsViewStore()
 const permissionStore = usePermissionStore()
 
-const visitedViews = computed(() => tagsViewStore.visitedViews)
-const routes = computed(() => permissionStore.routers)
-
 const visible = ref(false)
 const top = ref(0)
 const left = ref(0)
 const selectedTag = ref({})
-const affixTags = ref([])
-
 const scrollPane = ref(null)
-const tag = ref([])
 
 const isActive = (tag_) => tag_.path === route.path
+
+const navigateTo = (tag) => {
+  if (tag.path !== route.path) {
+    router.push(tag.fullPath || tag.path)
+  }
+}
 
 const filterAffixTags = (routes, basePath = '/') => {
   let tags = []
   routes.forEach(route_ => {
     if (route_.meta && route_.meta.affix) {
-      const tagPath = path.resolve(basePath, route_.path)
+      const tagPath = resolveUrlPath(basePath, route_.path)
       tags.push({
         fullPath: tagPath,
         path: tagPath,
@@ -79,76 +76,60 @@ const filterAffixTags = (routes, basePath = '/') => {
 }
 
 const initTags = () => {
-  const affix = affixTags.value = filterAffixTags(routes.value)
+  const affix = filterAffixTags(permissionStore.routers)
   for (const tag_ of affix) {
     if (tag_.name) {
-      tagsViewStore.ADD_VISITED_VIEW(tag_)
+      tagsViewStore.addAffixView(tag_)
     }
   }
 }
 
 const addTags = () => {
-  const { name } = route
+  const { name, path, fullPath, query, meta } = route
   if (name) {
-    tagsViewStore.addView(route)
+    // Pass a plain object to avoid any reactive proxy leaking into the store
+    tagsViewStore.addView({
+      name,
+      path,
+      fullPath,
+      query: query ? { ...query } : {},
+      meta: meta ? { ...meta } : {}
+    })
   }
-  return false
-}
-
-const moveToCurrentTag = () => {
-  const tags = tag.value
-  nextTick(() => {
-    for (const tag_ of tags) {
-      if (tag_.to.path === route.path) {
-        scrollPane.value.moveToTarget(tag_)
-        if (tag_.to.fullPath !== route.fullPath) {
-          tagsViewStore.UPDATE_VISITED_VIEW(route)
-        }
-        break
-      }
-    }
-  })
 }
 
 const refreshSelectedTag = (view) => {
-  tagsViewStore.delCachedView(view).then(() => {
-    const { fullPath } = view
-    nextTick(() => {
-      router.replace({
-        path: '/redirect' + fullPath
-      })
-    })
-  })
+  tagsViewStore.delCachedView(view)
+  const { fullPath } = view
+  router.replace({ path: '/redirect' + fullPath })
 }
 
 const closeSelectedTag = (view) => {
-  tagsViewStore.delView(view).then(({ visitedViews }) => {
+  tagsViewStore.delView(view).then(({ visitedViews: views }) => {
     if (isActive(view)) {
-      toLastView(visitedViews, view)
+      toLastView(views, view)
     }
   })
 }
 
 const closeOthersTags = () => {
-  router.push(selectedTag.value)
-  tagsViewStore.delOthersViews(selectedTag.value).then(() => {
-    moveToCurrentTag()
-  })
+  if (selectedTag.value.fullPath && selectedTag.value.fullPath !== route.fullPath) {
+    router.push(selectedTag.value)
+  }
+  tagsViewStore.delOthersViews(selectedTag.value)
 }
 
 const closeAllTags = (view) => {
-  tagsViewStore.delAllViews().then(({ visitedViews }) => {
-    if (affixTags.value.some(tag_ => tag_.path === view.path)) {
-      return
-    }
-    toLastView(visitedViews, view)
-  })
+  tagsViewStore.delAllViews()
+  const isAffix = tagsViewStore.visitedViews.some(tag_ => tag_.meta && tag_.meta.affix && tag_.path === view.path)
+  if (isAffix) return
+  toLastView(tagsViewStore.visitedViews, view)
 }
 
 const toLastView = (visitedViews, view) => {
   const latestView = visitedViews.slice(-1)[0]
   if (latestView) {
-    router.push(latestView)
+    router.push(latestView.fullPath || latestView.path)
   } else {
     if (view.name === 'Dashboard') {
       router.replace({ path: '/redirect' + view.fullPath })
@@ -176,16 +157,13 @@ const openMenu = (tag_, e) => {
 }
 
 const closeMenu = () => {
-  visible.value = false
-}
-
-const handleScroll = () => {
-  closeMenu()
+  if (visible.value) {
+    visible.value = false
+  }
 }
 
 watch(() => route.path, () => {
   addTags()
-  moveToCurrentTag()
 })
 
 watch(() => visible.value, (val) => {
@@ -199,10 +177,6 @@ watch(() => visible.value, (val) => {
 onMounted(() => {
   initTags()
   addTags()
-})
-
-defineExpose({
-  tag
 })
 </script>
 
@@ -264,6 +238,7 @@ defineExpose({
     box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
     li {
       margin: 0;
+      background: #fff;
       padding: 7px 16px;
       cursor: pointer;
       &:hover {
@@ -275,10 +250,10 @@ defineExpose({
 </style>
 
 <style lang="scss">
-//reset element css of el-icon-close
+//reset el-icon-close css
 .tags-view-wrapper {
   .tags-view-item {
-    .el-icon-close {
+    .tags-view-item-close {
       width: 16px;
       height: 16px;
       vertical-align: 2px;
@@ -286,11 +261,9 @@ defineExpose({
       text-align: center;
       transition: all .3s cubic-bezier(.645, .045, .355, 1);
       transform-origin: 100% 50%;
-      &:before {
-        transform: scale(.6);
-        display: inline-block;
-        vertical-align: -3px;
-      }
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       &:hover {
         background-color: #b4bccc;
         color: #fff;

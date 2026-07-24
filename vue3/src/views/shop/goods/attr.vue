@@ -1,13 +1,13 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialogRef" :title="title" width="900px">
-    <el-form v-show="hidden == false" ref="formRef" :model="form" :inline="true" :rules="rules" label-width="80px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="title" width="900px">
+    <el-form v-show="hidden == false" ref="form" :model="form" :inline="true" :rules="rules" label-width="80px">
       <el-form-item label="规则名称">
         <el-row :gutter="10">
           <el-col :span="10"><el-button type="primary" @click="hiddenBool">添加新规则</el-button></el-col>
         </el-row>
       </el-form-item>
     </el-form>
-    <el-form v-show="hidden == true" ref="formRef" :model="form" :rules="rules" label-width="80px">
+    <el-form v-show="hidden == true" ref="form" :model="form" :rules="rules" label-width="80px">
       <el-form-item label="规则名称">
         <el-row :gutter="10">
           <el-col
@@ -17,8 +17,8 @@
             style="position: relative;margin-right: 6px"
           >
             <el-input v-model="item.value" style="width: 150px;" placeholder="设置名称" />
-            <el-button v-show="item.attrHidden == true" type="text" style="position: absolute;top:-6px;right:17px;margin-top:1px;border: none;font-size: 14px;font-weight:bold;line-height: 1.8" icon="el-icon-close" @click="handleRemove(index)" />
-            <el-button v-show="item.attrHidden == false" type="text" style="position: absolute;top:-6px;right:17px;margin-top:1px;border: none;font-size: 14px;font-weight:bold;line-height: 1.8" icon="el-icon-check" @click="attrHiddenBool(item)" />
+            <el-button v-show="item.attrHidden == true" type="text" style="position: absolute;top:-6px;right:17px;margin-top:1px;border: none;font-size: 14px;font-weight:bold;line-height: 1.8" @click="handleRemove(index)" ><el-icon><Close /></el-icon></el-button>
+            <el-button v-show="item.attrHidden == false" type="text" style="position: absolute;top:-6px;right:17px;margin-top:1px;border: none;font-size: 14px;font-weight:bold;line-height: 1.8" @click="attrHiddenBool(item)" ><el-icon><Check /></el-icon></el-button>
           </el-col>
           <el-col :span="5"><el-button type="primary" @click="handleAdd">添加新规则</el-button></el-col>
         </el-row>
@@ -75,6 +75,7 @@
               </el-col>
               <el-col :span="3" style="margin-right: 2px">
                 <div class="demo-upload">
+                  <!--<img :src="attr.pic">-->
                   <pic-upload-two v-model="attr.pic" />
                 </div>
               </el-col>
@@ -101,306 +102,308 @@
 
 </template>
 
-<script setup>
-import { ref, reactive, onMounted, computed } from 'vue'
+<script>
+import { ElNotification, ElMessageBox } from 'element-plus'
 import { getCates } from '@/api/mwStoreCategory'
 import { add, edit, isFormatAttr, setAttr, clearAttr, getAttr } from '@/api/mwStoreProduct'
 import editor from '../../components/Editor'
 import picUploadTwo from '@/components/pic-upload-two'
 import mulpicUpload from '@/components/mul-pic-upload'
-import { ElMessage, ElMessageBox } from 'element-plus'
-
-defineOptions({ name: 'ShopGoodsAttr' })
-
-const props = defineProps({
-  isAttr: {
-    type: Boolean,
-    required: true
-  }
-})
-
-const emit = defineEmits(['update:visible'])
-
-const loading = ref(false)
-const dialogRef = ref(false)
-const cates = ref([])
-const title = ref('规则属性')
-const formRef = ref(null)
-const form = reactive({
-  id: '',
-  merId: '',
-  image: '',
-  sliderImage: '',
-  storeName: '',
-  storeInfo: '',
-  keyword: '',
-  barCode: '',
-  cateId: 1,
-  price: '',
-  vipPrice: '',
-  otPrice: '',
-  postage: '',
-  unitName: '',
-  sort: '',
-  sales: '',
-  stock: '',
-  isShow: '',
-  isHot: '',
-  isBenefit: '',
-  isBest: '',
-  isNew: '',
-  description: '',
-  addTime: '',
-  isPostage: '',
-  isDel: '',
-  merUse: '',
-  giveIntegral: '',
-  cost: '',
-  isSeckill: '',
-  isBargain: '',
-  isGood: '',
-  ficti: '',
-  browse: '',
-  codePath: '',
-  soureLink: ''
-})
-const rules = {}
-const items = ref([{
-  value: '',
-  detailValue: '',
-  attrHidden: false,
-  detail: []
-}])
-const attrs = ref([])
-const hidden = ref(false)
-const attrHidden = ref(false)
-const submiting = ref(false)
-
-onMounted(() => {
-})
-
-const getAttrs = (id) => {
-  getAttr(id).then(res => {
-    console.log('res' + res)
-    if (res) {
-      hidden.value = true
-      items.value = res.attr
-      attrs.value = res.value
-    } else {
-      hidden.value = false
-      items.value = [{
+import { ElMessage } from 'element-plus'
+export default {
+  components: { editor, picUploadTwo, mulpicUpload },
+  props: {
+    isAttr: {
+      type: Boolean,
+      required: true
+    }
+  },
+  data() {
+    return {
+      loading: false, dialog: false, cates: [], title: '规则属性',
+      form: {
+        id: '',
+        merId: '',
+        image: '',
+        sliderImage: '',
+        storeName: '',
+        storeInfo: '',
+        keyword: '',
+        barCode: '',
+        cateId: 1,
+        price: '',
+        vipPrice: '',
+        otPrice: '',
+        postage: '',
+        unitName: '',
+        sort: '',
+        sales: '',
+        stock: '',
+        isShow: '',
+        isHot: '',
+        isBenefit: '',
+        isBest: '',
+        isNew: '',
+        description: '',
+        addTime: '',
+        isPostage: '',
+        isDel: '',
+        merUse: '',
+        giveIntegral: '',
+        cost: '',
+        isSeckill: '',
+        isBargain: '',
+        isGood: '',
+        ficti: '',
+        browse: '',
+        codePath: '',
+        soureLink: ''
+      },
+      rules: {
+      },
+      items: [{
         value: '',
         detailValue: '',
         attrHidden: false,
         detail: []
-      }]
-      attrs.value = []
+      }],
+      attrs: [],
+      hidden: false,
+      attrHidden: false,
+      submiting: false
     }
-  })
-}
+  },
+  mounted() {
+    // console.log('items'+this.items)
+    // console.log('attrs'+this.attrs)
+    // if(this.items && this.attrs) this.hidden = true;
 
-const cancel = () => {
-  resetForm()
-}
-
-const doSubmit = () => {
-  loading.value = true
-  if (props.isAttr) {
-    doAdd()
-  } else doEdit()
-}
-
-const doAdd = () => {
-  add(form).then(res => {
-    resetForm()
-    emit('update:visible', false)
-    loading.value = false
-    // Note: $parent.init() would need to be handled differently in Vue 3
-  }).catch(err => {
-    loading.value = false
-    console.log(err.response.data.message)
-  })
-}
-
-const doEdit = () => {
-  edit(form).then(res => {
-    resetForm()
-    emit('update:visible', false)
-    loading.value = false
-  }).catch(err => {
-    loading.value = false
-    console.log(err.response.data.message)
-  })
-}
-
-const resetForm = () => {
-  dialogRef.value = false
-  formRef.value?.resetFields()
-  Object.assign(form, {
-    id: '',
-    merId: '',
-    image: '',
-    sliderImage: '',
-    storeName: '',
-    storeInfo: '',
-    keyword: '',
-    barCode: '',
-    cateId: '',
-    price: '',
-    vipPrice: '',
-    otPrice: '',
-    postage: '',
-    unitName: '',
-    sort: '',
-    sales: '',
-    stock: '',
-    isShow: '',
-    isHot: '',
-    isBenefit: '',
-    isBest: '',
-    isNew: '',
-    description: '',
-    addTime: '',
-    isPostage: '',
-    isDel: '',
-    merUse: '',
-    giveIntegral: '',
-    cost: '',
-    isSeckill: '',
-    isBargain: '',
-    isGood: '',
-    ficti: '',
-    browse: '',
-    codePath: '',
-    soureLink: ''
-  })
-}
-
-const setAttrPic = (index, pic) => {
-  attrs.value[index].pic = pic
-}
-
-const attrHiddenBool = (item) => {
-  if (item.value == '') {
-    ElMessage({ message: '请填写规则名称', type: 'error' })
-  } else {
-    item.attrHidden = true
-  }
-}
-
-const hiddenBool = () => {
-  hidden.value = true
-}
-
-const handleAdd = () => {
-  if (!checkAttr()) return
-  items.value.push({
-    value: '',
-    detailValue: '',
-    attrHidden: false,
-    detail: []
-  })
-}
-
-const checkAttr = () => {
-  var bool = true
-  items.value.map(function (item) {
-    if (!bool) return
-    if (!item.value) {
-      ElMessage({ message: '请填写规则名称', type: 'error' })
-      bool = false
-    } else if (!item.detail.length) {
-      ElMessage({ message: '请设置规则属性', type: 'error' })
-      bool = false
-    }
-  })
-  return bool
-}
-
-const attrAdd = (item) => {
-  if (!item.detailValue) return false
-  item.detail.push(item.detailValue)
-  item.detailValue = ''
-}
-
-const handleRemove = (index) => {
-  if (items.value.length > 1) { items.value.splice(index, 1) } else { ElMessage({ message: '请设置至少一个规则', type: 'error' }) }
-}
-
-const attrRemove = (item, k) => {
-  console.log('item:')
-  if (item.detail.length == 1) {
-    ElMessage({ message: '请设置至少一个属性', type: 'error' })
-    return false
-  }
-  item.detail.splice(k, 1)
-}
-
-const removeGoods = (index) => {
-  attrs.value.splice(index, 1)
-}
-
-const checkGoods = () => {
-  var bool = true
-  attrs.value.map(function (attr) {
-    if (!bool) return
-    if (!Object.keys(attr.detail).length) {
-      ElMessage({ message: '请选择至少一个属性', type: 'error' })
-      bool = false
-    } else if (attr.price != parseFloat(attr.price) || attr.price < 0) {
-      ElMessage({ message: '请输入正确的商品价格', type: 'error' })
-      bool = false
-    } else if (attr.sales != parseInt(attr.sales) || attr.sales < 0) {
-      ElMessage({ message: '请输入正确的商品库存', type: 'error' })
-      bool = false
-    }
-  })
-  return bool
-}
-
-const addGoods = (type) => {
-  if (attrs.value.length) {
-    if (!checkGoods()) return
-  }
-  isFormatAttr(form.id, { items: items.value, attrs: attrs.value }).then(res => {
-    attrs.value = res
-  }).catch(err => {
-    loading.value = false
-    console.log(err.response.data.message)
-  })
-}
-
-const submit = () => {
-  submiting.value = true
-  if (!checkAttr() || !checkGoods()) return
-  for (const attr in attrs.value) {
-    attrs.value[attr].check = false
-  }
-
-  loading.value = false
-  setAttr(form.id, { items: items.value, attrs: attrs.value }).then(res => {
-    attrs.value = res
-    ElMessage({ message: '操作成功', type: 'success' })
-  }).catch(err => {
-    loading.value = false
-    console.log(err.response.data.message)
-  })
-  dialogRef.value = false
-}
-
-const clear = () => {
-  ElMessageBox.confirm(`确定要清空属性数据'}]操作?`, '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  })
-    .then(() => {
-      clearAttr(form.id).then(({ data }) => {
-        ElMessage({ message: '操作成功', type: 'success' })
-        getAttrs(form.id)
+    // window.changeIMG = (index,pic)=>{
+    //   _vm.setAttrPic(index,pic);
+    // };
+  },
+  methods: {
+    getAttrs(id) {
+      getAttr(id).then(res => {
+        console.log('res' + res)
+        // this.items = JSON.parse(res.attr)
+        if (res) {
+          this.hidden = true
+          this.items = res.attr
+          this.attrs = res.value
+        } else {
+          this.hidden = false
+          this.items = [{
+            value: '',
+            detailValue: '',
+            attrHidden: false,
+            detail: []
+          }]
+          this.attrs = []
+        }
       })
-    })
-    .catch(() => { })
+    },
+    cancel() {
+      this.resetForm()
+    },
+    doSubmit() {
+      this.loading = true
+      if (this.isAttr) {
+        this.doAdd()
+      } else this.doEdit()
+    },
+    doAdd() {
+      add(this.form).then(res => {
+        this.resetForm()
+        ElNotification({
+          title: '添加成功',
+          type: 'success',
+          duration: 2500
+        })
+        this.loading = false
+        this.$parent.init()
+      }).catch(err => {
+        this.loading = false
+        console.log(err.response.data.message)
+      })
+    },
+    doEdit() {
+      edit(this.form).then(res => {
+        this.resetForm()
+        ElNotification({
+          title: '修改成功',
+          type: 'success',
+          duration: 2500
+        })
+        this.loading = false
+        this.$parent.init()
+      }).catch(err => {
+        this.loading = false
+        console.log(err.response.data.message)
+      })
+    },
+    resetForm() {
+      this.dialog = false
+      this.$refs['form'].resetFields()
+      this.form = {
+        id: '',
+        merId: '',
+        image: '',
+        sliderImage: '',
+        storeName: '',
+        storeInfo: '',
+        keyword: '',
+        barCode: '',
+        cateId: '',
+        price: '',
+        vipPrice: '',
+        otPrice: '',
+        postage: '',
+        unitName: '',
+        sort: '',
+        sales: '',
+        stock: '',
+        isShow: '',
+        isHot: '',
+        isBenefit: '',
+        isBest: '',
+        isNew: '',
+        description: '',
+        addTime: '',
+        isPostage: '',
+        isDel: '',
+        merUse: '',
+        giveIntegral: '',
+        cost: '',
+        isSeckill: '',
+        isBargain: '',
+        isGood: '',
+        ficti: '',
+        browse: '',
+        codePath: '',
+        soureLink: ''
+      }
+    },
+    setAttrPic(index, pic) {
+      this.attrs[index].pic = pic
+    },
+    attrHiddenBool(item) {
+      if (item.value == '') {
+        ElMessage.error('请填写规则名称')
+      } else {
+        item.attrHidden = true
+      }
+    },
+    hiddenBool() {
+      this.hidden = true
+    },
+    handleAdd() {
+      if (!this.checkAttr()) return
+      this.items.push({
+        value: '',
+        detailValue: '',
+        attrHidden: false,
+        detail: []
+      })
+    },
+    checkAttr() {
+      var bool = true
+      this.items.map(function(item) {
+        if (!bool) return
+        if (!item.value) {
+          ElMessage.error('请填写规则名称')
+          bool = false
+        } else if (!item.detail.length) {
+          ElMessage.error('请设置规则属性')
+          bool = false
+        }
+      })
+      return bool
+    },
+    attrAdd(item) {
+      if (!item.detailValue) return false
+      item.detail.push(item.detailValue)
+      item.detailValue = ''
+    },
+    handleRemove(index) {
+      if (this.items.length > 1) { this.items.splice(index, 1) } else { ElMessage.error('请设置至少一个规则') }
+    },
+    attrRemove(item, k) {
+      console.log('item:')
+      if (item.detail.length == 1) {
+        ElMessage.error('请设置至少一个属性')
+        return false
+      }
+      item.detail.splice(k, 1)
+    },
+    removeGoods(index) {
+      this.attrs.splice(index, 1)
+    },
+    checkGoods() {
+      var bool = true
+      this.attrs.map(function(attr) {
+        if (!bool) return
+        if (!Object.keys(attr.detail).length) {
+          ElMessage.error('请选择至少一个属性')
+          bool = false
+        } else if (attr.price != parseFloat(attr.price) || attr.price < 0) {
+          ElMessage.error('请输入正确的商品价格')
+          bool = false
+        } else if (attr.sales != parseInt(attr.sales) || attr.sales < 0) {
+          ElMessage.error('请输入正确的商品库存')
+          bool = false
+        }
+      })
+      return bool
+    },
+    addGoods(type) {
+      if (this.attrs.length) {
+        if (!this.checkGoods()) return
+      }
+      var that = this
+      isFormatAttr(this.form.id, { items: this.items, attrs: this.attrs }).then(res => {
+        this.attrs = res
+      }).catch(err => {
+        this.loading = false
+        console.log(err.response.data.message)
+      })
+    },
+    submit() {
+      var that = this
+      that.submiting = true
+      if (!this.checkAttr() || !this.checkGoods()) return
+      for (const attr in that.attrs) {
+        that.attrs[attr].check = false
+      }
+
+      // console.log({items:this.items,attrs:this.attrs})
+      this.loading = false
+      setAttr(this.form.id, { items: this.items, attrs: this.attrs }).then(res => {
+        this.attrs = res
+        ElMessage.success('操作成功')
+        this.$parent.init()
+      }).catch(err => {
+        this.loading = false
+        console.log(err.response.data.message)
+      })
+      this.dialog = false
+    },
+    clear() {
+      ElMessageBox.confirm(`确定要清空属性数据'}]操作?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          clearAttr(this.form.id).then(({ data }) => {
+            ElMessage.success('操作成功')
+            // this.dialog = false
+            this.getAttrs(this.form.id)
+          })
+        })
+        .catch(() => { })
+    }
+  }
 }
 </script>
 
