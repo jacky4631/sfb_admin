@@ -11,4 +11,4 @@ export const include = [
 ]
 
 // 排除优化的依赖
-export const exclude = ['node_modules']
+export const exclude = []

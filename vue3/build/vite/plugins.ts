@@ -20,11 +20,10 @@ export function createVitePlugins() {
     // 自动组件
     Components({
       resolvers: [ElementPlusResolver()],
-      dirs: [
-        'src/components'
-      ],
+      dirs: ['src/components'],
       extensions: ['vue'],
-      dts: 'src/types/auto-components.d.ts'
+      dts: 'src/types/auto-components.d.ts',
+      deep: true
     }),
     progress()
   ]

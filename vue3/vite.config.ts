@@ -21,7 +21,8 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     resolve: {
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.scss', '.css'],
       alias: {
-        '@': pathResolve('src')
+        '@': pathResolve('src'),
+        '@crud': pathResolve('src/components/Crud')
       }
     },
     server: {

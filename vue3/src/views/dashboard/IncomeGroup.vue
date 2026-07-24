@@ -104,7 +104,7 @@
   </div>
 </template>
 <script setup>
-import CountUp from '@/components/CountUp'
+import CountUp from '@/components/CountUp/index.vue'
 import { getIncomeData } from '@/api/visits'
 import { onMounted, reactive } from 'vue'
 

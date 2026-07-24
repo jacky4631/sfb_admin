@@ -37,3 +37,7 @@ export function onsale(id, data) {
     data
   })
 }
+
+// 兼容别名
+export const onsaleCombination = onsale
+export const delCombination = del
