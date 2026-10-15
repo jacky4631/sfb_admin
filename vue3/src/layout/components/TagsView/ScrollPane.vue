@@ -13,7 +13,8 @@ defineOptions({
 
 const scrollContainer = ref(null)
 
-const scrollWrapper = computed(() => scrollContainer.value?.$refs.wrap)
+// element-plus 2.x 的 ElScrollbar 通过 defineExpose 暴露 wrap，不存在 $refs.wrap
+const scrollWrapper = computed(() => scrollContainer.value?.wrap)
 
 const handleScroll = (e) => {
   const eventDelta = e.wheelDelta || -e.deltaY * 40

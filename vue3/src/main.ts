@@ -24,6 +24,12 @@ import router from '@/router'
 // 指令
 import { setupAuth } from '@/directives'
 
+// 数据字典（页面 dicts 选项的全局 mixin）
+import dict from '@/components/Dict'
+
+// 按钮权限指令 v-permission
+import permission from '@/components/Permission'
+
 import { createApp } from 'vue'
 
 import App from './App.vue'
@@ -47,6 +53,12 @@ const setupAll = async () => {
 
   // 指令
   setupAuth(app)
+
+  // 数据字典
+  app.use(dict)
+
+  // v-permission 指令
+  app.use(permission)
 
   await router.isReady()
 
