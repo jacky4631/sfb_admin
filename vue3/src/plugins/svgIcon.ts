@@ -1,2 +1,4 @@
-// SVG 图标插件 - 实际使用 vite-plugin-svg-icons 或类似方案
-// 此文件作为占位符，实际图标通过 SvgIcon 组件注册
+// SVG 图标：由 vite-plugin-svg-icons 生成的虚拟模块，
+// 导入后会把 src/assets/icons/svg 下的图标以 #icon-xxx 注册到页面雪碧图中，
+// 供全局 <svg-icon icon-class="xxx"> 组件消费
+import 'virtual:svg-icons-register'
