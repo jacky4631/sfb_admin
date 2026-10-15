@@ -47,3 +47,19 @@
   line-height: 32px;
   font-size: 14px;
 }
+
+/**
+ * 遗留样式降级了 EP 按钮的 flex 布局，导致图标与文字不在一行（文字偏下）
+ *
+ * eladmin.scss 里的 `.head-container .filter-item { display: inline-block }` 是为
+ * Element UI 写的——EU 的 .el-button 本来就是 inline-block，所以那条规则当时是无害的。
+ * 但 Element Plus 把 .el-button 改成了 inline-flex（靠 align-items: center 对齐图标与文字），
+ * 而 `.head-container .filter-item` 特异性(0,2,0) 高于 EP 的 `.el-button`(0,1,0)，
+ * 会把按钮降级回 inline-block，图标与文字退回基线对齐，表现为文字比图标低。
+ *
+ * 这里不改动 eladmin.scss（.filter-item 同时挂在搜索框上，改掉会影响输入框布局），
+ * 只在真正冲突的按钮上还原 EP 自己的 display。
+ */
+.head-container .filter-item.el-button {
+  display: inline-flex;
+}
