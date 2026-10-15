@@ -3,7 +3,7 @@
     <div style="display:flex;justify-content:space-between;align-items: center;">
       <div style="padding: 0 60px 0 0">
         <h3 style="color: #ffffff;font-size: 24px;padding: 0;margin-bottom: 10px">
-          电商系统
+          迈沃管理系统
         </h3>
       </div>
     <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" label-position="left" label-width="0px" class="login-form">
