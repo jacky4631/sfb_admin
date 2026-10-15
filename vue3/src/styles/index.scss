@@ -44,7 +44,8 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  // 不锁死 overflow：el-admin 布局靠文档（body）滚动，
+  // 这里 overflow:hidden 会导致页面内容超出视口时无法下滑
 }
 
 #app {

@@ -36,7 +36,7 @@ body {
 
   padding: 0 !important;
   margin: 0;
-  overflow: hidden;
+  // 不锁死 overflow：el-admin 布局靠文档（body）滚动
 
   #app {
     @extend .size;
