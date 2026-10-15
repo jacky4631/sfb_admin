@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 400" fill="none">
+  <!-- 抽象淘客网络节点图 - 代表分销网络生态 -->
+  <!-- 连接线 -->
+  <g stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
+    <!-- 中心到外围连线 -->
+    <line x1="240" y1="200" x2="120" y2="100"/>
+    <line x1="240" y1="200" x2="360" y2="100"/>
+    <line x1="240" y1="200" x2="100" y2="280"/>
+    <line x1="240" y1="200" x2="380" y2="280"/>
+    <line x1="240" y1="200" x2="240" y2="60"/>
+    <line x1="240" y1="200" x2="60" y2="180"/>
+    <line x1="240" y1="200" x2="420" y2="180"/>
+    <line x1="240" y1="200" x2="180" y2="340"/>
+    <line x1="240" y1="200" x2="300" y2="340"/>
+    <!-- 外围节点间连线 -->
+    <line x1="120" y1="100" x2="240" y2="60"/>
+    <line x1="360" y1="100" x2="240" y2="60"/>
+    <line x1="120" y1="100" x2="60" y2="180"/>
+    <line x1="360" y1="100" x2="420" y2="180"/>
+    <line x1="100" y1="280" x2="60" y2="180"/>
+    <line x1="380" y1="280" x2="420" y2="180"/>
+    <line x1="100" y1="280" x2="180" y2="340"/>
+    <line x1="380" y1="280" x2="300" y2="340"/>
+    <line x1="120" y1="100" x2="180" y2="340" stroke="rgba(255,255,255,0.06)"/>
+    <line x1="360" y1="100" x2="300" y2="340" stroke="rgba(255,255,255,0.06)"/>
+    <!-- 二级连线 -->
+    <line x1="120" y1="100" x2="80" y2="60" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="360" y1="100" x2="400" y2="60" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="100" y1="280" x2="50" y2="320" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="380" y1="280" x2="430" y2="320" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="240" y1="60" x2="200" y2="30" stroke="rgba(255,255,255,0.08)"/>
+    <line x1="240" y1="60" x2="280" y2="30" stroke="rgba(255,255,255,0.08)"/>
+  </g>
+
+  <!-- 装饰小粒子 -->
+  <g fill="rgba(255,255,255,0.2)">
+    <circle cx="160" cy="150" r="1.5"/>
+    <circle cx="320" cy="150" r="1.5"/>
+    <circle cx="180" cy="250" r="1.5"/>
+    <circle cx="300" cy="250" r="1.5"/>
+    <circle cx="200" cy="130" r="1"/>
+    <circle cx="280" cy="130" r="1"/>
+    <circle cx="150" cy="220" r="1"/>
+    <circle cx="330" cy="220" r="1"/>
+    <circle cx="240" cy="280" r="1"/>
+    <circle cx="140" cy="310" r="1.5"/>
+    <circle cx="340" cy="310" r="1.5"/>
+  </g>
+
+  <!-- 二级小节点 -->
+  <g>
+    <circle cx="80" cy="60" r="4" fill="rgba(147,197,253,0.3)" stroke="rgba(147,197,253,0.5)" stroke-width="1"/>
+    <circle cx="400" cy="60" r="4" fill="rgba(147,197,253,0.3)" stroke="rgba(147,197,253,0.5)" stroke-width="1"/>
+    <circle cx="50" cy="320" r="3" fill="rgba(251,191,36,0.3)" stroke="rgba(251,191,36,0.5)" stroke-width="1"/>
+    <circle cx="430" cy="320" r="3" fill="rgba(251,191,36,0.3)" stroke="rgba(251,191,36,0.5)" stroke-width="1"/>
+    <circle cx="200" cy="30" r="3" fill="rgba(147,197,253,0.2)" stroke="rgba(147,197,253,0.4)" stroke-width="1"/>
+    <circle cx="280" cy="30" r="3" fill="rgba(147,197,253,0.2)" stroke="rgba(147,197,253,0.4)" stroke-width="1"/>
+  </g>
+
+  <!-- 一级外围节点 -->
+  <g>
+    <!-- 左上节点 -->
+    <circle cx="120" cy="100" r="12" fill="rgba(59,130,246,0.15)" stroke="rgba(96,165,250,0.6)" stroke-width="1.5"/>
+    <circle cx="120" cy="100" r="5" fill="rgba(96,165,250,0.8)"/>
+    <!-- 右上节点 -->
+    <circle cx="360" cy="100" r="12" fill="rgba(59,130,246,0.15)" stroke="rgba(96,165,250,0.6)" stroke-width="1.5"/>
+    <circle cx="360" cy="100" r="5" fill="rgba(96,165,250,0.8)"/>
+    <!-- 顶部节点 -->
+    <circle cx="240" cy="60" r="10" fill="rgba(251,191,36,0.15)" stroke="rgba(251,191,36,0.6)" stroke-width="1.5"/>
+    <circle cx="240" cy="60" r="4" fill="rgba(251,191,36,0.8)"/>
+    <!-- 左节点 -->
+    <circle cx="60" cy="180" r="10" fill="rgba(59,130,246,0.15)" stroke="rgba(96,165,250,0.5)" stroke-width="1.5"/>
+    <circle cx="60" cy="180" r="4" fill="rgba(96,165,250,0.7)"/>
+    <!-- 右节点 -->
+    <circle cx="420" cy="180" r="10" fill="rgba(59,130,246,0.15)" stroke="rgba(96,165,250,0.5)" stroke-width="1.5"/>
+    <circle cx="420" cy="180" r="4" fill="rgba(96,165,250,0.7)"/>
+    <!-- 左下节点 -->
+    <circle cx="100" cy="280" r="11" fill="rgba(251,191,36,0.12)" stroke="rgba(251,191,36,0.5)" stroke-width="1.5"/>
+    <circle cx="100" cy="280" r="4.5" fill="rgba(251,191,36,0.7)"/>
+    <!-- 右下节点 -->
+    <circle cx="380" cy="280" r="11" fill="rgba(251,191,36,0.12)" stroke="rgba(251,191,36,0.5)" stroke-width="1.5"/>
+    <circle cx="380" cy="280" r="4.5" fill="rgba(251,191,36,0.7)"/>
+    <!-- 底部左节点 -->
+    <circle cx="180" cy="340" r="9" fill="rgba(59,130,246,0.12)" stroke="rgba(96,165,250,0.5)" stroke-width="1.5"/>
+    <circle cx="180" cy="340" r="3.5" fill="rgba(96,165,250,0.7)"/>
+    <!-- 底部右节点 -->
+    <circle cx="300" cy="340" r="9" fill="rgba(59,130,246,0.12)" stroke="rgba(96,165,250,0.5)" stroke-width="1.5"/>
+    <circle cx="300" cy="340" r="3.5" fill="rgba(96,165,250,0.7)"/>
+  </g>
+
+  <!-- 中心主节点 - 代表平台核心 -->
+  <g>
+    <circle cx="240" cy="200" r="32" fill="rgba(59,130,246,0.08)" stroke="rgba(96,165,250,0.2)" stroke-width="1"/>
+    <circle cx="240" cy="200" r="22" fill="rgba(59,130,246,0.12)" stroke="rgba(96,165,250,0.4)" stroke-width="1.5"/>
+    <circle cx="240" cy="200" r="10" fill="rgba(59,130,246,0.9)"/>
+    <circle cx="240" cy="200" r="4" fill="white" opacity="0.9"/>
+  </g>
+</svg>
