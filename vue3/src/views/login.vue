@@ -62,7 +62,7 @@
                 </template>
               </el-input>
             </el-form-item>
-            <el-form-item prop="code">
+            <el-form-item v-if="captchaEnabled" prop="code">
               <div class="login-code-row">
                 <el-input v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码" class="login-input code-input" @keyup.enter="handleLogin">
                   <template #prefix>
@@ -91,11 +91,11 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onUnmounted } from 'vue'
+import { ref, reactive, computed, onUnmounted, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { encrypt } from '@/utils/rsaEncrypt'
 import Config from '@/settings'
-import { getCodeImg } from '@/api/login'
+import { getCodeImg, getCaptchaEnable } from '@/api/login'
 import Cookies from 'js-cookie'
 import { useUserStore } from '@/store/modules/user'
 import { useSettingsStore } from '@/store/modules/settings'
@@ -129,10 +129,11 @@ const loginForm = reactive({
 const loginRules = {
   username: [{ required: true, trigger: 'blur', message: '用户名不能为空' }],
   password: [{ required: true, trigger: 'blur', message: '密码不能为空' }],
-  code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
+  code: [{ required: false, trigger: 'change', message: '验证码不能为空' }]
 }
 
 const loading = ref(false)
+const captchaEnabled = ref(true)
 const captchaOnOff = ref(false)
 const captchaNum = ref(60)
 const captchaBtn = ref('获取验证码')
@@ -208,6 +209,13 @@ const handleLogin = () => {
     console.error('Validation failed:', err)
   })
 }
+
+onMounted(() => {
+  // 查询后端验证码开关，关闭时隐藏验证码输入框
+  getCaptchaEnable().then(res => {
+    captchaEnabled.value = !!res.enable
+  }).catch(() => {})
+})
 
 onUnmounted(() => {
   inTime && clearInterval(inTime)

@@ -27,6 +27,13 @@ export function getCodeImg(username) {
   })
 }
 
+export function getCaptchaEnable() {
+  return request({
+    url: 'auth/captchaEnable',
+    method: 'get'
+  })
+}
+
 export function logout() {
   return request({
     url: 'auth/logout',

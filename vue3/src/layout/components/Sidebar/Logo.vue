@@ -27,7 +27,7 @@ defineProps({
   }
 })
 
-const title = 'MSHOP-后台管理'
+const title = '迈沃管理系统'
 const logo = Logo
 </script>
 
