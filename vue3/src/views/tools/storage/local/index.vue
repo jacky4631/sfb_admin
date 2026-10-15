@@ -127,7 +127,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { getToken } from '@/utils/auth'
 import crudFile from '@/api/tools/localStorage'
-import CRUD, { presenter, header, form } from '@crud/crud'
+import CRUD, { presenter, header, form as crudForm } from '@crud/crud'
 import { parseTime } from '@/utils/index'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
@@ -154,6 +154,8 @@ const fileUploadApi = computed(() => baseUrl + '/api/localStorage')
 const defaultCrud = CRUD({ title: '文件', url: 'api/localStorage', crudMethod: { ...crudFile }})
 const defaultForm = { id: null, name: '' }
 const { crud, columns, query } = presenter(defaultCrud)
+// 之前模板里的 form 指向的是导入的 form() 函数本身（并非表单数据），这里绑回 crud.form
+const { form } = crudForm(defaultForm)
 
 defineExpose({ crud })
 

@@ -63,7 +63,7 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
 import crudMwUserFeedback from '@/api/mwUserFeedback'
-import CRUD, { presenter, header } from '@crud/crud'
+import CRUD, { presenter, header, form as crudForm } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
@@ -108,6 +108,8 @@ const formRef = ref(null)
 
 // presenter 返回 { crud, columns, query, tableRef }
 const { crud, columns, query: presenterQuery } = presenter(defaultCrud)
+// 模板里的 <el-form :model="form"> 必须绑到 crud.form，否则打开弹窗即渲染报错
+const { form } = crudForm(defaultForm)
 
 const dialogVisible = computed({
   get: () => crud.status.cu > 0,

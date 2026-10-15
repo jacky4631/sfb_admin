@@ -174,7 +174,7 @@ function CRUD(options) {
       }
       const formRef = crud.findFormRef()
       if (!formRef) {
-        console.warn('[CRUD] 未找到表单实例，请确认表单组件内存在 <el-form ref="form">')
+        console.warn('[CRUD] 未找到表单实例，请确认 <el-form ref="form"> 或 ref="formRef" 已渲染')
         return
       }
       formRef.validate(valid => {
@@ -370,11 +370,15 @@ function CRUD(options) {
       return crud._refs[type] || null
     },
     // 表单 ref 从未被注册过（el-dialog 内容是懒渲染的，挂不上 mounted 时的 $refs），
-    // 这里对齐 vue2 的做法：提交时实时从 form VM 上取，取不到再回退到注册表
+    // 这里对齐 vue2 的做法：提交时实时从 VM 上取
     findFormRef() {
-      const vm = crud.findVM('form')
-      if (vm) {
-        // 页面里 <el-form> 的 ref 有两种命名：form（vue2 沿用）与 formRef（vue3 新写）
+      // 优先取 form() 注册的表单 VM（Options API 的 module/form.vue），
+      // 再遍历其余 VM：script setup 页面把 <el-form> 直写在页面里，ref 命名有 form / formRef 两种
+      const vms = [crud.findVM('form'), ...crud.vms.map(entry => entry && entry.vm)]
+      for (const vm of vms) {
+        if (!vm) {
+          continue
+        }
         const ref = vm.$refs.form || vm.$refs.formRef
         if (ref) {
           return ref
@@ -470,6 +474,16 @@ function mergeOptions(src, opts) {
 
 // 模块级 crud 实例栈，作为 provide/inject 失败时的兜底
 const _crudStack = []
+
+/**
+ * composable 模式下获取 crud 实例
+ * <script setup> 里 presenter() 与 form()/header() 等处于同一组件，
+ * 而 Vue 的 inject() 只查父级 provides，注入不到自己 provide 的值，
+ * 所以这里用模块级栈兜底（presenter 已先一步入栈）
+ */
+function resolveInjectedCrud() {
+  return inject('crud', null) || (_crudStack.length ? _crudStack[_crudStack.length - 1] : null)
+}
 
 /**
  * 解析 crud 实例 - 兼容 Vue 3.5 defineOptions + mixin 场景
@@ -580,6 +594,13 @@ function presenter(crudInstance) {
   provide('crud', crudInstance)
   _crudStack.push(crudInstance)
 
+  // 把宿主组件登记为 presenter VM：脚本式组件没有 form()/header() 子组件，
+  // 表单/表格的 ref 全部挂在宿主身上，callVmHook 也需要它才能找到页面里的 hook
+  const hostInstance = getCurrentInstance()
+  if (hostInstance) {
+    crudInstance.registerVM('presenter', hostInstance.proxy, 0)
+  }
+
   const columns = ref({
     visible(col) { return true }
   })
@@ -587,7 +608,8 @@ function presenter(crudInstance) {
 
   onMounted(() => {
     const cols = {}
-    const table = tableRef.value
+    const host = hostInstance && hostInstance.proxy
+    const table = tableRef.value || (host && (host.$refs.table || host.$refs.tableRef))
     if (table && table.columns) {
       table.columns.forEach(e => {
         if (!e.property || e.type !== 'default') return
@@ -600,7 +622,7 @@ function presenter(crudInstance) {
       }
     }
     crudInstance.updateProp('tableColumns', cols)
-    crudInstance.registerRef('table', tableRef.value)
+    crudInstance.registerRef('table', table)
     if (crudInstance.queryOnPresenterCreated) {
       crudInstance.toQuery()
     }
@@ -631,7 +653,7 @@ function header() {
   if (!hasInjectionContext()) {
     return _headerMixin()
   }
-  const crudInst = inject('crud', null)
+  const crudInst = resolveInjectedCrud()
   if (!crudInst) {
     // inject 未找到 provider（如同组件 mixin 场景），回退到 mixin 模式
     return _headerMixin()
@@ -678,7 +700,7 @@ function _headerMixin() {
  */
 function pagination() {
   if (!hasInjectionContext()) return _paginationMixin()
-  const crudInst = inject('crud', null)
+  const crudInst = resolveInjectedCrud()
   if (!crudInst) return _paginationMixin()
 
   onBeforeUnmount(() => {
@@ -715,7 +737,7 @@ function _paginationMixin() {
  */
 function form(defaultForm) {
   if (!hasInjectionContext()) return _formMixin(defaultForm)
-  const crudInst = inject('crud', null)
+  const crudInst = resolveInjectedCrud()
   if (!crudInst) return _formMixin(defaultForm)
 
   crudInst.defaultForm = defaultForm
@@ -763,7 +785,7 @@ function crud(options = {}) {
   options = mergeOptions(defaultOptions, options)
 
   if (!hasInjectionContext()) return _crudMixin(options)
-  const crudInst = inject('crud', null)
+  const crudInst = resolveInjectedCrud()
   if (!crudInst) return _crudMixin(options)
 
   onBeforeUnmount(() => {
