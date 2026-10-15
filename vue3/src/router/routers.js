@@ -1,4 +1,5 @@
-import Layout from '@/layout/index.vue'
+// 使用动态导入避免与 store/permission 形成 ESM 循环依赖
+const Layout = () => import('@/layout/index.vue')
 
 export const constantRouterMap = [
   {

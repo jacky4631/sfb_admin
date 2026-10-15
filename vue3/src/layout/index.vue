@@ -1,6 +1,6 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+    <div v-if="device==='mobile' && sidebarState.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar class="sidebar-container" />
     <div :class="{ hasTagsView: needTagsView }" class="main-container">
       <div :class="{ 'fixed-header': fixedHeader }">
@@ -29,16 +29,17 @@ const route = useRoute()
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 
-const sidebar = computed(() => appStore.sidebar)
+// 注意：变量名不能叫 sidebar，否则模板中 <sidebar> 会误匹配到该 computed 而非导入的 Sidebar 组件
+const sidebarState = computed(() => appStore.sidebar)
 const device = computed(() => appStore.device)
 const showSettings = computed(() => settingsStore.showSettings)
 const needTagsView = computed(() => settingsStore.tagsView)
 const fixedHeader = computed(() => settingsStore.fixedHeader)
 
 const classObj = computed(() => ({
-  hideSidebar: !sidebar.value.opened,
-  openSidebar: sidebar.value.opened,
-  withoutAnimation: sidebar.value.withoutAnimation,
+  hideSidebar: !sidebarState.value.opened,
+  openSidebar: sidebarState.value.opened,
+  withoutAnimation: sidebarState.value.withoutAnimation,
   mobile: device.value === 'mobile'
 }))
 
@@ -73,7 +74,7 @@ onBeforeUnmount(() => {
 
 // 移动端切换路由后自动收起侧边栏
 watch(() => route.path, () => {
-  if (device.value === 'mobile' && sidebar.value.opened) {
+  if (device.value === 'mobile' && sidebarState.value.opened) {
     appStore.closeSideBar(false)
   }
 })
