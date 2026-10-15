@@ -1,0 +1,49 @@
+/**
+ * Element Plus 尺寸档位兼容层
+ *
+ * 背景：Element UI(vue2) 与 Element Plus(vue3) 的 size 档位不是同一套刻度，
+ * EP 整体比 EU 小一级 —— EP 的 small(控件高 24px) 约等于 EU 的 mini，
+ * 而 EU 的 small 是 32px（对应 EP 的 default）。
+ *
+ * 本项目全局配置为 size: 'small'（从 vue2 的 Vue.use(Element, { size: 'small' })
+ * 原样迁移而来），且业务代码中还有大量显式 size="small"，若照搬 EP 的 small 刻度，
+ * 整个后台的控件高度、输入框字号会比原版小一圈。
+ *
+ * 因此这里不做逐文件改写，而是把 EP 的 small 档重映射回 Element UI 的度量，
+ * 保持与 vue2 原版一致的视觉密度。
+ *
+ * 选择器统一提升一级特异性（重复类名 / :root:root），
+ * 避免被 unplugin-vue-components 按组件注入的 element-plus 样式覆盖。
+ */
+:root:root {
+  // EU small 档控件高度为 32px（EP 默认 24px）
+  --el-component-size-small: 32px;
+}
+
+// 按钮：对齐 EU .el-button--small { padding: 9px 15px; font-size: 12px } 实测高 32px
+.el-button.el-button--small {
+  --el-button-size: 32px;
+  padding: 9px 15px;
+  font-size: 12px;
+}
+
+// 输入框：对齐 EU .el-input--small .el-input__inner { height: 32px; font-size: 13px }
+.el-input.el-input--small {
+  --el-input-height: 32px;
+  font-size: 13px;
+}
+
+// 标签：对齐 EU .el-tag--small { height: 24px; padding: 0 8px; line-height: 22px }
+.el-tag.el-tag--small {
+  height: 24px;
+  padding: 0 8px;
+  line-height: 22px;
+}
+
+// 表单标签：高度与 32px 控件对齐，字号回到 EU 的 14px
+// （重复类名提升一级特异性，压过 EP 的 .el-form-item--small .el-form-item__label）
+.el-form-item--small .el-form-item__label.el-form-item__label {
+  height: 32px;
+  line-height: 32px;
+  font-size: 14px;
+}

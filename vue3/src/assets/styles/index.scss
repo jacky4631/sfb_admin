@@ -5,6 +5,8 @@
 @use 'btn' as *;
 @use 'eladmin' as *;
 @use 'mshop' as *;
+// Element Plus 尺寸档位兼容层（把 EP 的 small 档重映射回 Element UI 的度量）
+@use 'element-plus-compat' as *;
 
 body {
   height: 100%;
