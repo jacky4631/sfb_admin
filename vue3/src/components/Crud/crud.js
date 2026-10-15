@@ -163,7 +163,7 @@ function CRUD(options) {
         callVmHook(crud, CRUD.HOOK.afterEditCancel, crud.form)
       }
       // 清除表单验证
-      const formRef = crud.getRef('form')
+      const formRef = crud.findFormRef()
       if (formRef) {
         formRef.clearValidate()
       }
@@ -172,8 +172,11 @@ function CRUD(options) {
       if (!callVmHook(crud, CRUD.HOOK.beforeValidateCU)) {
         return
       }
-      const formRef = crud.getRef('form')
-      if (!formRef) return
+      const formRef = crud.findFormRef()
+      if (!formRef) {
+        console.warn('[CRUD] 未找到表单实例，请确认表单组件内存在 <el-form ref="form">')
+        return
+      }
       formRef.validate(valid => {
         if (!valid) {
           return
@@ -365,6 +368,19 @@ function CRUD(options) {
     },
     getRef(type) {
       return crud._refs[type] || null
+    },
+    // 表单 ref 从未被注册过（el-dialog 内容是懒渲染的，挂不上 mounted 时的 $refs），
+    // 这里对齐 vue2 的做法：提交时实时从 form VM 上取，取不到再回退到注册表
+    findFormRef() {
+      const vm = crud.findVM('form')
+      if (vm) {
+        // 页面里 <el-form> 的 ref 有两种命名：form（vue2 沿用）与 formRef（vue3 新写）
+        const ref = vm.$refs.form || vm.$refs.formRef
+        if (ref) {
+          return ref
+        }
+      }
+      return crud._refs.form || null
     },
     findVM(type) {
       const entry = crud.vms.find(vm => vm && vm.type === type)

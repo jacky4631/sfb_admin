@@ -44,9 +44,25 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error)
+    const data = error.response && error.response.data
+    // 导出等 responseType=blob 的请求，错误体是 Blob，直接当 message 用会显示成 [object Blob]
+    if (typeof Blob !== 'undefined' && data instanceof Blob) {
+      return data.text().then(text => {
+        let message = text
+        try {
+          message = JSON.parse(text).message || message
+        } catch (e) { /* 非 JSON 则保留原文 */ }
+        ElMessage({
+          message: message || error.message,
+          type: 'error',
+          duration: 5 * 1000
+        })
+        return Promise.reject(error)
+      })
+    }
     let message = error.message
-    if (error.response && error.response.data) {
-      message = error.response.data.message || error.response.data
+    if (data) {
+      message = data.message || message
     }
     ElMessage({
       message: message,
