@@ -19,7 +19,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     plugins,
     base: env.VITE_BASE_PATH || '/',
     resolve: {
-      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.scss', '.css'],
+      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.scss', '.css'],
       alias: {
         '@': pathResolve('src'),
         '@crud': pathResolve('src/components/Crud')
