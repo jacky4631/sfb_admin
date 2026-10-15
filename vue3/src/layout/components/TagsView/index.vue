@@ -1,6 +1,6 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+    <scroll-pane ref="scrollPaneRef" class="tags-view-wrapper">
       <span
         v-for="tag in tagsViewStore.visitedViews"
         :key="tag.path"
@@ -43,7 +43,9 @@ const visible = ref(false)
 const top = ref(0)
 const left = ref(0)
 const selectedTag = ref({})
-const scrollPane = ref(null)
+// 注意：变量名不能叫 scrollPane，否则模板中的 <scroll-pane> 会优先解析到这个 ref（初始 null）
+// 而不是导入的 ScrollPane 组件，报 "Invalid vnode type when creating vnode: null"
+const scrollPaneRef = ref(null)
 
 const isActive = (tag_) => tag_.path === route.path
 
