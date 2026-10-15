@@ -431,8 +431,9 @@ function callVmHook(crud, hook) {
   crud.vms.forEach(entry => {
     if (entry && entry.vm) vmSet.add(entry.vm)
   })
+  // 'afterXxx' 这类 hook 名在实例上未声明时，直接读 proxy 会触发 Vue3 dev 告警，先用 in 探测
   vmSet.forEach(vm => {
-    if (vm && typeof vm[hook] === 'function') {
+    if (vm && (hook in vm) && typeof vm[hook] === 'function') {
       ret = vm[hook].apply(vm, nargs) !== false && ret
     }
   })
@@ -520,6 +521,13 @@ function presenter(crudInstance) {
         return {
           searchToggle: true,
           columns: obColumns()
+        }
+      },
+      computed: {
+        // 对齐 vue2 presenter 的 inject: ['crud']：本组件自己的模板也要直接访问 crud.data / crud.loading。
+        // Vue3 中组件无法 inject 到自身的 provide，所以这里直接把闭包内的实例暴露出来。
+        crud() {
+          return crudInstance
         }
       },
       methods: {
