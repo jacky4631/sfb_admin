@@ -101,7 +101,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <updateEmail ref="emailRef" :email="user.email" />
+    <updateEmail ref="emailRef" :email="user.email || ''" />
     <updatePass ref="passRef" />
   </div>
 </template>
@@ -289,6 +289,11 @@ onMounted(() => {
 
       a{
         color: #317EF3;
+      }
+
+      // 与 vue2 原版对齐：修改密码 / 修改邮箱 两个链接之间留出间距
+      a + a {
+        margin-left: 8px;
       }
     }
   }
