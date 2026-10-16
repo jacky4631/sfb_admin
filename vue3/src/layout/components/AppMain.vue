@@ -34,23 +34,23 @@ const caseNumber = computed(() => settingsStore.caseNumber)
 
 <style lang="scss" scoped>
 .app-main {
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh - var(--top-tool-height));
   width: 100%;
   position: relative;
   overflow: hidden;
 }
 
 .fixed-header+.app-main {
-  padding-top: 50px;
+  padding-top: var(--top-tool-height);
 }
 
 .hasTagsView {
   .app-main {
-    min-height: calc(100vh - 84px);
+    min-height: calc(100vh - var(--top-tool-height) - var(--tags-view-height));
   }
 
   .fixed-header+.app-main {
-    padding-top: 84px;
+    padding-top: calc(var(--top-tool-height) + var(--tags-view-height));
   }
 }
 </style>

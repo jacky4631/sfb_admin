@@ -9,22 +9,19 @@
         <el-input v-model="form.cname" style="width: 300px;" :disabled="true" />
       </el-form-item>
       <el-form-item label="领取开启时间">
-        <template>
-          <el-date-picker
-            v-model="form.startTime"
-            type="datetime"
-            placeholder="选择日期时间"
-          />
-        </template>
+        <!-- Vue3 中无指令的裸 template 内容不会被渲染，须直接放控件 -->
+        <el-date-picker
+          v-model="form.startTime"
+          type="datetime"
+          placeholder="选择日期时间"
+        />
       </el-form-item>
       <el-form-item label="券领结束时间">
-        <template>
-          <el-date-picker
-            v-model="form.endTime"
-            type="datetime"
-            placeholder="选择日期时间"
-          />
-        </template>
+        <el-date-picker
+          v-model="form.endTime"
+          type="datetime"
+          placeholder="选择日期时间"
+        />
       </el-form-item>
       <el-form-item label="发布数量">
         <el-input v-model="form.totalCount" style="width: 300px;" />

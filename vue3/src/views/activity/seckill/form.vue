@@ -26,24 +26,21 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="秒杀开始时间">
-              <template>
-                <el-date-picker
-                  v-model="formValidate.startTime"
-                  type="date"
-                  placeholder="选择日期时间"
-                />
-              </template>
+              <!-- Vue3 中无指令的裸 template 内容不会被渲染，须直接放控件 -->
+              <el-date-picker
+                v-model="formValidate.startTime"
+                type="date"
+                placeholder="选择日期时间"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="秒杀结束时间">
-              <template>
-                <el-date-picker
-                  v-model="formValidate.stopTime"
-                  type="date"
-                  placeholder="选择日期时间"
-                />
-              </template>
+              <el-date-picker
+                v-model="formValidate.stopTime"
+                type="date"
+                placeholder="选择日期时间"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="24">

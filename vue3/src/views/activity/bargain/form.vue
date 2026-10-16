@@ -16,22 +16,19 @@
         <el-input v-model="form.unitName" style="width: 500px;" />
       </el-form-item>
       <el-form-item label="活动开始时间">
-        <template>
-          <el-date-picker
-            v-model="form.startTime"
-            type="datetime"
-            placeholder="选择日期时间"
-          />
-        </template>
+        <!-- Vue3 中无指令的裸 template 内容不会被渲染，须直接放控件 -->
+        <el-date-picker
+          v-model="form.startTime"
+          type="datetime"
+          placeholder="选择日期时间"
+        />
       </el-form-item>
       <el-form-item label="活动结束时间">
-        <template>
-          <el-date-picker
-            v-model="form.stopTime"
-            type="datetime"
-            placeholder="选择日期时间"
-          />
-        </template>
+        <el-date-picker
+          v-model="form.stopTime"
+          type="datetime"
+          placeholder="选择日期时间"
+        />
       </el-form-item>
       <el-form-item label="砍价产品主图片">
         <single-pic v-model="form.image" style="width: 500px" type="image" :num="1" :width="150" :height="150" />

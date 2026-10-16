@@ -31,24 +31,21 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="拼团开始时间" prop="startTime">
-              <template>
-                <el-date-picker
-                    v-model="formValidate.startTime"
-                    type="datetime"
-                    placeholder="选择日期时间"
-                />
-              </template>
+              <!-- Vue3 中无指令的裸 template 内容不会被渲染，须直接放控件 -->
+              <el-date-picker
+                  v-model="formValidate.startTime"
+                  type="datetime"
+                  placeholder="选择日期时间"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="拼团结束时间" prop="stopTime">
-              <template>
-                <el-date-picker
-                    v-model="formValidate.stopTime"
-                    type="datetime"
-                    placeholder="选择日期时间"
-                />
-              </template>
+              <el-date-picker
+                  v-model="formValidate.stopTime"
+                  type="datetime"
+                  placeholder="选择日期时间"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="24">

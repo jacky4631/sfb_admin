@@ -62,10 +62,10 @@ const open = () => {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 50px;
+  height: var(--top-tool-height);
   overflow: hidden;
   position: relative;
-  background: #fff;
+  background: var(--top-header-bg-color);
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
@@ -77,7 +77,7 @@ const open = () => {
     -webkit-tap-highlight-color:transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: var(--top-header-hover-color);
     }
   }
 
@@ -107,30 +107,30 @@ const open = () => {
         transition: background .3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: var(--top-header-hover-color);
         }
       }
     }
 
     .avatar-container {
-      margin-right: 30px;
+      margin-right: 16px;
 
       .avatar-wrapper {
-        margin-top: 5px;
+        margin-top: 0;
         position: relative;
 
         .user-avatar {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
         }
 
         .el-icon {
           cursor: pointer;
           position: absolute;
-          right: -20px;
-          top: 25px;
+          right: -16px;
+          top: 20px;
           font-size: 12px;
         }
       }
