@@ -52,7 +52,7 @@
       <el-button type="primary" icon="md-add" @click="addBtn" v-if="!isBtn" class="ml95 mt10">添加新规格</el-button>
     </el-form>
     <template #footer><div class="dialog-footer">
-      <el-button type="link" @click="crud.cancelCU">取消</el-button>
+      <el-button link @click="crud.cancelCU">取消</el-button>
       <el-button :loading="modal_loading" type="primary" @click="handleSubmit('formData')">确认</el-button>
     </div>
   </template>

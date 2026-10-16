@@ -137,7 +137,7 @@
       </el-row>
     </el-form>
     <template #footer><div class="dialog-footer">
-      <!--<el-button type="link" @click="crud.cancelCU">取消</el-button>-->
+      <!--<el-button link @click="crud.cancelCU">取消</el-button>-->
       <!--<el-button :loading="modal_loading" type="primary" @click="handleSubmit('formData')">确认</el-button>-->
     </div>
     <city ref="city" @selectCity="selectCity" :type="type"></city>

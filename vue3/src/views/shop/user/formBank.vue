@@ -12,14 +12,14 @@
       </el-form-item>
       <el-form-item label="手机号">
         <el-input v-model="form.phone" style="width: 370px;" />
-        <el-button type="link" @click="getCode">获取验证码</el-button>
+        <el-button link @click="getCode">获取验证码</el-button>
       </el-form-item>
       <el-form-item label="验证码">
         <el-input v-model="form.code" style="width: 370px;" />
       </el-form-item>
     </el-form>
     <template #footer><div class="dialog-footer">
-      <el-button type="link" @click="cancel">取消</el-button>
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
   </template>

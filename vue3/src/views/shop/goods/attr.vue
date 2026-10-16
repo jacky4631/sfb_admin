@@ -17,8 +17,8 @@
             style="position: relative;margin-right: 6px"
           >
             <el-input v-model="item.value" style="width: 150px;" placeholder="设置名称" />
-            <el-button v-show="item.attrHidden == true" type="link" style="position: absolute;top:-6px;right:17px;margin-top:1px;border: none;font-size: 14px;font-weight:bold;line-height: 1.8" @click="handleRemove(index)" ><el-icon><Close /></el-icon></el-button>
-            <el-button v-show="item.attrHidden == false" type="link" style="position: absolute;top:-6px;right:17px;margin-top:1px;border: none;font-size: 14px;font-weight:bold;line-height: 1.8" @click="attrHiddenBool(item)" ><el-icon><Check /></el-icon></el-button>
+            <el-button v-show="item.attrHidden == true" link style="position: absolute;top:-6px;right:17px;margin-top:1px;border: none;font-size: 14px;font-weight:bold;line-height: 1.8" @click="handleRemove(index)" ><el-icon><Close /></el-icon></el-button>
+            <el-button v-show="item.attrHidden == false" link style="position: absolute;top:-6px;right:17px;margin-top:1px;border: none;font-size: 14px;font-weight:bold;line-height: 1.8" @click="attrHiddenBool(item)" ><el-icon><Check /></el-icon></el-button>
           </el-col>
           <el-col :span="5"><el-button type="primary" @click="handleAdd">添加新规则</el-button></el-col>
         </el-row>

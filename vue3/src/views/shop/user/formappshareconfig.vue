@@ -12,7 +12,7 @@
         </el-form>
       </el-card>
     <template #footer><div class="dialog-footer">
-      <el-button type="link" @click="cancel">取消</el-button>
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="handleSubmit">确认</el-button>
     </div>
   </template>

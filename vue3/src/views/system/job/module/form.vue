@@ -71,7 +71,7 @@
         class="dialog-footer"
       >
         <el-button
-          type="link"
+          link
           @click="crud.cancelCU"
         >
           取消

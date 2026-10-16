@@ -60,7 +60,7 @@
           </el-form-item>
         </el-form>
         <template #footer><div class="dialog-footer">
-          <el-button type="link" @click="crud.cancelCU">取消</el-button>
+          <el-button link @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
       </template>

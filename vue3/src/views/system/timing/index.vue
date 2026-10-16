@@ -61,7 +61,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="link" @click="crud.cancelCU">取消</el-button>
+          <el-button link @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
       </template>
@@ -87,9 +87,9 @@
       </el-table-column>
       <el-table-column v-if="checkPermission(['admin','timing:edit','timing:del'])" label="操作" width="180px" align="center" fixed="right">
         <template #default="scope">
-          <el-button v-permission="['admin','timing:edit']" size="small" style="margin-right: 3px;" type="link" @click="crud.toEdit(scope.row)">编辑</el-button>
-          <el-button v-permission="['admin','timing:edit']" style="margin-left: -2px" type="link" size="small" @click="execute(scope.row.id)">执行</el-button>
-          <el-button v-permission="['admin','timing:edit']" style="margin-left: 3px" type="link" size="small" @click="updateStatus(scope.row.id,scope.row.isPause ? '恢复' : '暂停')">
+          <el-button v-permission="['admin','timing:edit']" size="small" style="margin-right: 3px;" link @click="crud.toEdit(scope.row)">编辑</el-button>
+          <el-button v-permission="['admin','timing:edit']" style="margin-left: -2px" link size="small" @click="execute(scope.row.id)">执行</el-button>
+          <el-button v-permission="['admin','timing:edit']" style="margin-left: 3px" link size="small" @click="updateStatus(scope.row.id,scope.row.isPause ? '恢复' : '暂停')">
             {{ scope.row.isPause ? '恢复' : '暂停' }}
           </el-button>
           <el-popover
@@ -99,11 +99,11 @@
           >
             <p>确定停止并删除该任务吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="small" type="link" @click="$refs[scope.row.id].doClose()">取消</el-button>
+              <el-button size="small" link @click="$refs[scope.row.id].doClose()">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="small" @click="delMethod(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
-              <el-button v-permission="['admin','timing:del']" type="link" size="small">删除</el-button>
+              <el-button v-permission="['admin','timing:del']" link size="small">删除</el-button>
             </template>
           </el-popover>
         </template>
