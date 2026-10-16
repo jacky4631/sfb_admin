@@ -4,8 +4,9 @@
     :page-size="crud.page.size"
     :total="crud.page.total"
     :current-page="crud.page.page"
-    style="margin-top: 8px;"
+    background
     layout="total, prev, pager, next, sizes"
+    class="crud-pagination"
     @size-change="crud.sizeChangeHandler"
     @current-change="crud.pageChangeHandler"
   />
@@ -19,3 +20,11 @@ defineOptions({
 
 const { crud } = pagination()
 </script>
+
+<style scoped>
+.crud-pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin: 15px 0;
+}
+</style>

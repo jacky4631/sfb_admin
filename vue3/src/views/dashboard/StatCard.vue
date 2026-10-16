@@ -111,7 +111,7 @@ const badgeStyle = computed(() => ({
 
 <style scoped lang="scss">
 .stat-card {
-  border-radius: 8px;
+  border-radius: var(--el-card-border-radius);
 
   :deep(.el-card__body) {
     padding: 18px 20px 16px;

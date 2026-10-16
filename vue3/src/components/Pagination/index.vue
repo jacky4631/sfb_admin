@@ -96,8 +96,9 @@ const handleCurrentChange = (val) => {
 
 <style scoped>
 .pagination-container {
-  background: #fff;
-  padding: 32px 16px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 0;
 }
 .pagination-container.hidden {
   display: none;
