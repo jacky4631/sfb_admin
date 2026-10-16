@@ -41,6 +41,19 @@
     <el-table ref="table" v-loading="crud.loading" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" :data="crud.data" row-key="id" @select="crud.selectChange" @select-all="crud.selectAllChange" @selection-change="crud.selectionChangeHandler">
       <el-table-column :selectable="checkboxT" type="selection" width="55" />
       <el-table-column v-if="columns.visible('cateName')" label="名称" prop="cateName" />
+      <el-table-column v-if="columns.visible('pic')" label="图片" width="100" align="center" prop="pic">
+        <template #default="scope">
+          <el-image
+            v-if="scope.row.pic"
+            :src="scope.row.pic.split(',')[0]"
+            :preview-src-list="[scope.row.pic.split(',')[0]]"
+            :hide-on-click-modal="true"
+            fit="cover"
+            style="width: 48px; height: 48px; border-radius: 4px;"
+          />
+          <span v-else>—</span>
+        </template>
+      </el-table-column>
       <el-table-column v-if="columns.visible('isShow')" label="状态" align="center" prop="isShow">
         <template #default="scope">
           <div>
