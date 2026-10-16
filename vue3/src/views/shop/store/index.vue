@@ -60,7 +60,7 @@
           </el-form-item>
         </el-form>
         <template #footer><div class="dialog-footer">
-          <el-button type="text" @click="crud.cancelCU">取消</el-button>
+          <el-button type="link" @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
       </template>
@@ -87,7 +87,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column v-permission="['admin','mwSystemStore:edit','mwSystemStore:del']" label="操作" width="150px" align="center">
+        <el-table-column v-if="checkPermission(['admin','mwSystemStore:edit','mwSystemStore:del'])" label="操作" width="150px" align="center">
           <template #default="scope">
             <udOperation
               :data="scope.row"
@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import checkPermission from '@/utils/permission'
   import crudMwSystemStore from '@/api/mwSystemStore'
   import CRUD, { presenter, header, form, crud } from '@crud/crud'
   import rrOperation from '@crud/RR.operation'
@@ -153,6 +154,7 @@
         }
     },
     methods: {
+    checkPermission,
       // 获取数据前设置好接口地址
       [CRUD.HOOK.beforeRefresh]() {
         return true

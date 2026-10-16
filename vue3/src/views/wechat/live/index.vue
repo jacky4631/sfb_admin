@@ -188,7 +188,7 @@
               </div>
             </template>
         </el-table-column>
-        <el-table-column v-permission="['admin','mwWechatLive:edit','mwWechatLive:del']" label="操作" width="150px" align="center">
+        <el-table-column v-if="checkPermission(['admin','mwWechatLive:edit','mwWechatLive:del'])" label="操作" width="150px" align="center">
           <template #default="scope">
 
             <udOperation
@@ -213,6 +213,7 @@
 </template>
 
 <script setup>
+import checkPermission from '@/utils/permission'
 import { ref, reactive, computed } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { sync } from '@/api/mwWechatLive'

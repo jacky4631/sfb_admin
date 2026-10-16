@@ -38,7 +38,6 @@
         <template #default="scope">
           <el-popover
             :ref="(el) => setPopoverRef(scope.$index, el)"
-            v-permission="['admin']"
             placement="top"
             width="180"
           >
@@ -48,7 +47,7 @@
               <el-button :loading="delLoading" type="primary" size="small" @click="delMethod(scope.row.key, scope.$index)">确定</el-button>
             </div>
             <template #reference>
-              <el-button size="small" link>强退</el-button>
+              <el-button v-permission="['admin']" size="small" link>强退</el-button>
             </template>
           </el-popover>
         </template>

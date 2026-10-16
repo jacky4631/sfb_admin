@@ -21,7 +21,7 @@
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column v-permission="['admin','mwStoreProductRule:edit','mwStoreProductRule:del']" label="操作" width="150px" align="center">
+        <el-table-column v-if="checkPermission(['admin','mwStoreProductRule:edit','mwStoreProductRule:del'])" label="操作" width="150px" align="center">
           <template #default="scope">
             <udOperation
               :data="scope.row"
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import checkPermission from '@/utils/permission'
 import crudMwStoreProductRule from '@/api/storeProductRule'
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
@@ -65,6 +66,7 @@ export default {
   watch: {
   },
   methods: {
+    checkPermission,
     // 获取数据前设置好接口地址
     [CRUD.HOOK.beforeRefresh]() {
       return true

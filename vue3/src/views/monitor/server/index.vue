@@ -87,7 +87,7 @@
           </el-row>
         </template>
       </el-table-column>
-      <el-table-column v-permission="['admin','server:edit','server:del']" label="操作" width="150px" align="center">
+      <el-table-column v-if="checkPermission(['admin','server:edit','server:del'])" label="操作" width="150px" align="center">
         <template #default="scope">
           <udOperation
             :data="scope.row"
@@ -102,6 +102,7 @@
 </template>
 
 <script setup>
+import checkPermission from '@/utils/permission'
 import { ref, computed, onMounted } from 'vue'
 import crudServer from '@/api/monitor/server'
 import CRUD, { presenter, header, form as crudForm } from '@crud/crud'

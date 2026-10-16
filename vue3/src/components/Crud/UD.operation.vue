@@ -1,14 +1,14 @@
 <template>
   <div>
     <el-button v-permission="permission.edit" :disabled="disabledEdit" size="small" type="primary" :icon="Edit" @click="crud.toEdit(data)" />
-    <el-popover ref="popoverRef" v-permission="permission.del" :visible="pop" placement="top" width="180" trigger="click">
+    <el-popover ref="popoverRef" :visible="pop" placement="top" width="180" trigger="click">
       <p>{{ msg }}</p>
       <div style="text-align: right; margin: 0">
         <el-button size="small" link @click="doCancel">取消</el-button>
         <el-button :loading="crud.dataStatus[data.id]?.delete === 2" type="primary" size="small" @click="crud.doDelete(data)">确定</el-button>
       </div>
       <template #reference>
-        <el-button :disabled="disabledDle" type="danger" :icon="Delete" size="small" @click.stop="toDelete" />
+        <el-button v-permission="permission.del" :disabled="disabledDle" type="danger" :icon="Delete" size="small" @click.stop="toDelete" />
       </template>
     </el-popover>
   </div>

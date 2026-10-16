@@ -144,7 +144,6 @@
                   <el-dropdown-item >
                     <el-popover
                       :ref="el => popoverRefs[scope.row.tradeParentId] = el"
-                      v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_DELETE']"
                       placement="top"
                       width="180"
                     >
@@ -154,7 +153,7 @@
                         <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.tradeParentId])">确定</el-button>
                       </div>
                       <template #reference>
-                        <el-button type="danger" :icon="Delete" size="small">删除</el-button>
+                        <el-button v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_DELETE']" type="danger" :icon="Delete" size="small">删除</el-button>
                       </template>
                     </el-popover>
                   </el-dropdown-item>

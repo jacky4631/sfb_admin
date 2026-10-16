@@ -38,7 +38,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="text" @click="crud.cancelCU">取消</el-button>
+          <el-button type="link" @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
       </template>
@@ -63,7 +63,7 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-permission="['admin','dept:edit','dept:del']" label="操作" width="130px" align="center" fixed="right">
+      <el-table-column v-if="checkPermission(['admin','dept:edit','dept:del'])" label="操作" width="130px" align="center" fixed="right">
         <template #default="scope">
           <udOperation
             :data="scope.row"
@@ -84,6 +84,7 @@ import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
+import checkPermission from '@/utils/permission'
 
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '部门', url: 'api/dept', crudMethod: { ...crudDept }})
@@ -114,6 +115,7 @@ export default {
     }
   },
   methods: {
+    checkPermission,
     getDeptDatas(tree, treeNode, resolve) {
       const params = { pid: tree.id }
       setTimeout(() => {

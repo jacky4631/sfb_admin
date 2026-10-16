@@ -12,7 +12,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="text" @click="cancel">取消</el-button>
+          <el-button type="link" @click="cancel">取消</el-button>
           <el-button :loading="loading" type="primary" @click="submitMethod">确认</el-button>
         </div>
       </template>
@@ -66,17 +66,16 @@
                 </el-button>
                 <el-popover
                   :ref="scope.row.id"
-                  v-permission="['admin','dict:del']"
                   placement="top"
                   width="180"
                 >
                   <p>此操作将删除字典与对应的字典详情，确定要删除吗？</p>
                   <div style="text-align: right; margin: 0">
-                    <el-button size="small" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
+                    <el-button size="small" type="link" @click="$refs[scope.row.id].doClose()">取消</el-button>
                     <el-button :loading="delLoading" type="primary" size="small" @click="delMethod(scope.row.id)">确定</el-button>
                   </div>
                   <template #reference>
-                    <el-button type="danger" size="small">
+                    <el-button v-permission="['admin','dict:del']" type="danger" size="small">
                       <el-icon><Delete /></el-icon>
                     </el-button>
                   </template>

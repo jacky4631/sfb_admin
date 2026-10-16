@@ -98,7 +98,7 @@
       <el-table-column
       v-permission="['admin','mwStoreAfterSales:edit','mwStoreAfterSales:del']" label="操作" width="150px" align="center">
         <template #default="scope">
-          <el-button type="text" @click="checkItem(scope.row, 0)">订单详情</el-button>
+          <el-button type="link" @click="checkItem(scope.row, 0)">订单详情</el-button>
           <el-button
           size="small"
           type="success"

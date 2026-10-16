@@ -75,7 +75,7 @@
                 <span>{{ parseTime(scope.row.createTime) }}</span>
               </template>
             </el-table-column>
-            <el-table-column v-permission="['admin','roles:edit','roles:del']" label="操作" width="130px" align="center" fixed="right">
+            <el-table-column v-if="checkPermission(['admin','roles:edit','roles:del'])" label="操作" width="130px" align="center" fixed="right">
               <template #default="scope">
                 <udOperation
                   v-if="scope.row.level >= level"
@@ -122,6 +122,7 @@
 </template>
 
 <script setup>
+import checkPermission from '@/utils/permission'
 import { ref, onMounted } from 'vue'
 import crudRoles from '@/api/system/role'
 import { getDepts } from '@/api/system/dept'

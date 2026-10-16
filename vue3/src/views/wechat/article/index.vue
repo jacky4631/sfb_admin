@@ -45,7 +45,6 @@
           </el-button>
           <el-popover
             :ref="'popover-' + scope.row.id"
-            v-permission="['admin','MWARTICLE_ALL','MWARTICLE_DELETE']"
             placement="top"
             width="180"
           >
@@ -55,12 +54,11 @@
               <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
-              <el-button type="danger" :icon="Icons.Delete" size="small" />
+              <el-button v-permission="['admin','MWARTICLE_ALL','MWARTICLE_DELETE']" type="danger" :icon="Icons.Delete" size="small" />
             </template>
           </el-popover>
           <el-popover
             :ref="'item' + scope.row.id"
-            v-permission="['admin','MWARTICLE_ALL','MWARTICLE_DELETE']"
             placement="top"
             width="180"
           >
@@ -70,7 +68,7 @@
               <el-button :loading="delLoading" type="primary" size="small" @click="subPublish(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
-              <el-button type="primary" size="small">发布</el-button>
+              <el-button v-permission="['admin','MWARTICLE_ALL','MWARTICLE_DELETE']" type="primary" size="small">发布</el-button>
             </template>
           </el-popover>
         </template>

@@ -93,7 +93,7 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="text" @click="crud.cancelCU">取消</el-button>
+          <el-button type="link" @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
       </template>
@@ -138,7 +138,7 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-permission="['admin','menu:edit','menu:del']" label="操作" width="130px" align="center" fixed="right">
+      <el-table-column v-if="checkPermission(['admin','menu:edit','menu:del'])" label="操作" width="130px" align="center" fixed="right">
         <template #default="scope">
           <udOperation
             :data="scope.row"
@@ -152,6 +152,7 @@
 </template>
 
 <script>
+import checkPermission from '@/utils/permission'
 import { Search } from '@element-plus/icons-vue'
 import crudMenu from '@/api/system/menu'
 import IconSelect from '@/components/IconSelect'
@@ -187,6 +188,7 @@ export default {
     }
   },
   methods: {
+    checkPermission,
     // 新增与编辑前做的操作
     [CRUD.HOOK.afterToCU](crud, form) {
       crudMenu.getMenusTree().then(res => {

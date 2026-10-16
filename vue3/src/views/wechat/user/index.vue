@@ -47,7 +47,6 @@
           <el-button v-permission="['admin','MWWECHATUSER_ALL','MWWECHATUSER_EDIT']" size="small" type="primary" :icon="Icons.Edit" @click="edit(scope.row)" />
           <el-popover
             :ref="scope.row.uid"
-            v-permission="['admin','MWWECHATUSER_ALL','MWWECHATUSER_DELETE']"
             placement="top"
             width="180"
           >
@@ -57,7 +56,7 @@
               <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.uid)">确定</el-button>
             </div>
             <template #reference>
-              <el-button type="danger" :icon="Icons.Delete" size="small" />
+              <el-button v-permission="['admin','MWWECHATUSER_ALL','MWWECHATUSER_DELETE']" type="danger" :icon="Icons.Delete" size="small" />
             </template>
           </el-popover>
         </template>

@@ -9,7 +9,7 @@
       </el-form-item>
     </el-form>
     <template #footer><div class="dialog-footer">
-      <el-button type="text" @click="cancel">取消</el-button>
+      <el-button type="link" @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
   </template>

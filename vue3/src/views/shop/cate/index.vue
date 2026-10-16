@@ -32,7 +32,7 @@
         </el-form-item>
       </el-form>
       <template #footer><div class="dialog-footer">
-        <el-button type="text" @click="crud.cancelCU">取消</el-button>
+        <el-button type="link" @click="crud.cancelCU">取消</el-button>
         <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
       </div>
     </template>
@@ -50,7 +50,7 @@
         </template>
       </el-table-column>
       <el-table-column v-if="columns.visible('sort')" label="排序" prop="sort" sortable/>
-      <el-table-column v-permission="['admin','MWSTORECATEGORY_EDIT','MWSTORECATEGORY_DELETE']" label="操作" width="130px" align="center" fixed="right">
+      <el-table-column v-if="checkPermission(['admin','MWSTORECATEGORY_EDIT','MWSTORECATEGORY_DELETE'])" label="操作" width="130px" align="center" fixed="right">
         <template #default="scope">
           <udOperation
             :data="scope.row"
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import checkPermission from '@/utils/permission'
 import crudDept from '@/api/mwStoreCategory'
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
@@ -106,6 +107,7 @@ export default {
     }
   },
   methods: {
+    checkPermission,
     // 新增与编辑前做的操作
     [CRUD.HOOK.afterToCU](crud, form) {
       this.picArr = []

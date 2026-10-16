@@ -67,16 +67,15 @@
                 <el-dropdown-item >
                   <el-popover
                     :ref="scope.row.uid"
-                    v-permission="['admin','ENERGY_ALL','ENERGY_DELETE']"
                     placement="top"
                     width="180"
                   >
                     <p>确定删除本条数据吗？</p>
                     <div style="text-align: right; margin: 0">
-                      <el-button size="small" type="text" @click="$refs[scope.row.uid].doClose()">取消</el-button>
+                      <el-button size="small" type="link" @click="$refs[scope.row.uid].doClose()">取消</el-button>
                       <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.uid])">确定</el-button>
                     </div>
-                    <template #reference><el-button type="danger" size="small"><el-icon><Delete /></el-icon>删除</el-button></template>
+                    <template #reference><el-button v-permission="['admin','ENERGY_ALL','ENERGY_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon>删除</el-button></template>
                   </el-popover>
                 </el-dropdown-item>
               </el-dropdown-menu>
