@@ -43,7 +43,7 @@ const headers = ref({
   'Authorization': getToken()
 })
 
-const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
+const baseUrl = import.meta.env.VITE_BASE_API || ''
 const qiNiuUploadApi = computed(() => baseUrl + '/api/qiNiuContent')
 
 const imageList = computed(() => {

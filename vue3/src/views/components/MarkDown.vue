@@ -14,7 +14,7 @@ import { ref, onMounted } from 'vue'
 import { upload } from '@/utils/upload'
 
 const md = ref(null)
-const baseUrl = import.meta.env.VITE_APP_BASE_API
+const baseUrl = import.meta.env.VITE_BASE_API
 const imagesUploadApi = baseUrl + '/api/pictures'
 const height = ref(document.documentElement.clientHeight - 200 + 'px')
 

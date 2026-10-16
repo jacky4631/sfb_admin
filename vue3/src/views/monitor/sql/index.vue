@@ -5,6 +5,6 @@
 import { computed } from 'vue'
 import elFrame from '@/components/Iframe/index'
 
-const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
+const baseUrl = import.meta.env.VITE_BASE_API || ''
 const sqlApi = computed(() => baseUrl + '/druid/index.html')
 </script>

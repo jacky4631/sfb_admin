@@ -20,7 +20,7 @@ const emit = defineEmits(['change', 'update:value'])
 
 const editor = ref(null)
 const editorRef = ref(null)
-const baseUrl = import.meta.env.VITE_APP_BASE_API
+const baseUrl = import.meta.env.VITE_BASE_API
 
 const uploadApi = computed(() => baseUrl + '/api/upload')
 

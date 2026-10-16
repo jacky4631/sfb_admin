@@ -135,7 +135,7 @@ import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
 import { ElMessage } from 'element-plus'
 
-const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
+const baseUrl = import.meta.env.VITE_BASE_API || ''
 const loading = ref(false)
 const dialogVisible = computed({
   get() { return crud.status.cu > 0 },

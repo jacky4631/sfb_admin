@@ -177,7 +177,7 @@ export default {
     [CRUD.HOOK.beforeToAdd]() {
       this.randomStr = RandomNumber();
       this.src =
-        import.meta.env.VITE_APP_BASE_API + "/api/wxmp/qrcode?key=" + this.randomStr;
+        import.meta.env.VITE_BASE_API + "/api/wxmp/qrcode?key=" + this.randomStr;
       this.setIntervaltimer();
       crudYzCustomer.getwechatCode()
         //getOpenId("FK14YV17TURrFdyWG4")
@@ -199,7 +199,7 @@ export default {
     [CRUD.HOOK.beforeToCU]() {
       this.randomStr = RandomNumber();
       this.src =
-        import.meta.env.VITE_APP_BASE_API + "/api/wxmp/qrcode?key=" + this.randomStr;
+        import.meta.env.VITE_BASE_API + "/api/wxmp/qrcode?key=" + this.randomStr;
       this.setIntervaltimer();
       return true;
     },

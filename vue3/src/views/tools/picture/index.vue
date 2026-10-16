@@ -109,7 +109,7 @@ import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
 
-const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
+const baseUrl = import.meta.env.VITE_BASE_API || ''
 const dialog = ref(false)
 const syncLoading = ref(false)
 const headers = ref({

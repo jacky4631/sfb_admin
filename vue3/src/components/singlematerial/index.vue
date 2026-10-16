@@ -205,7 +205,7 @@ const tableLoading = ref(false)
 const groupId = ref(null)
 const urls = ref([])
 
-const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
+const baseUrl = import.meta.env.VITE_BASE_API || ''
 const uploadApi = computed(() => baseUrl + '/api/upload')
 
 watch(() => props.modelValue, (val) => {

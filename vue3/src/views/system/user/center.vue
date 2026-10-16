@@ -126,7 +126,7 @@ defineOptions({
 const userStore = useUserStore()
 
 // 与 vue2 的 api store 对齐：修改头像接口（DEV 下走 '/' 由 vite 代理转发）
-const updateAvatarApi = (import.meta.env.DEV ? '/' : (import.meta.env.VITE_APP_BASE_API || '/admin')) + 'api/users/updateAvatar'
+const updateAvatarApi = (import.meta.env.DEV ? '/' : (import.meta.env.VITE_BASE_API || '/admin')) + 'api/users/updateAvatar'
 
 // 自定义验证
 const validPhone = (rule, value, callback) => {

@@ -97,7 +97,7 @@ import pagination from '@crud/Pagination'
 import { ElMessage } from 'element-plus'
 import { Refresh, Loading } from '@element-plus/icons-vue'
 
-const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
+const baseUrl = import.meta.env.VITE_BASE_API || ''
 const permission = ref({
   del: ['admin', 'storage:del']
 })
