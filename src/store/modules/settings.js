@@ -9,7 +9,7 @@ export const useSettingsStore = defineStore('settings', {
     fixedHeader: true,
     sidebarLogo: true,
     showFooter: true,
-    footerTxt: '© 2018-2024 MSHOP <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">All Rights Reserved</a>',
+    footerTxt: '© 2018-2026 MSHOP <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">All Rights Reserved</a>',
     caseNumber: '苏ICP备17030620号-5'
   }),
   actions: {

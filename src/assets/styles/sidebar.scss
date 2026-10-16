@@ -147,6 +147,17 @@
           }
         }
       }
+
+      // 单链接菜单项（如首页）折叠时同样隐藏标题文字
+      .el-menu-item {
+        & > span {
+          height: 0;
+          width: 0;
+          overflow: hidden;
+          visibility: hidden;
+          display: inline-block;
+        }
+      }
     }
   }
 
