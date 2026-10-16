@@ -105,6 +105,7 @@
                         :src="item.url"
                         fit="contain"
                         :preview-src-list="[item.url]"
+                        :hide-on-click-modal="true"
                         :z-index="9999"
                       />
                       <div>
