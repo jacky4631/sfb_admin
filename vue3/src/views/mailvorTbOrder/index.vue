@@ -149,7 +149,7 @@
                     >
                       <p>确定删除本条数据吗？</p>
                       <div style="text-align: right; margin: 0">
-                        <el-button size="small" link @click="popoverRefs[scope.row.tradeParentId]?.doClose()">取消</el-button>
+                        <el-button size="small" link @click="popoverRefs[scope.row.tradeParentId]?.hide()">取消</el-button>
                         <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.tradeParentId])">确定</el-button>
                       </div>
                       <template #reference>
@@ -340,7 +340,7 @@ function subDelete(id) {
   delLoading.value = true
   del(id).then(() => {
     delLoading.value = false
-    popoverRefs[id[0]]?.doClose()
+    popoverRefs[id[0]]?.hide()
     dleChangePage()
     init()
     ElNotification({
@@ -350,7 +350,7 @@ function subDelete(id) {
     })
   }).catch(err => {
     delLoading.value = false
-    popoverRefs[id[0]]?.doClose()
+    popoverRefs[id[0]]?.hide()
     console.log(err.response?.data?.message)
   })
 }

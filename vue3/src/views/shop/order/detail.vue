@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div>
+    <div v-if="orderStatus">
       <el-steps v-if="order.refundStatus===0" :active="orderStatus.size" align-center process-status="process" finish-status="success">
         <el-step title="用户下单" :description="orderStatus.cacheKeyCreateOrder"></el-step>
         <el-step title="待发货" :description="orderStatus.paySuccess"></el-step>

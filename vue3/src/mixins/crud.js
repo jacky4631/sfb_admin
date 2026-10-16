@@ -146,14 +146,14 @@ export default {
       this.delLoading = true
       this.crudMethod.del(id).then(() => {
         this.delLoading = false
-        if (this.$refs[id]) this.$refs[id].doClose()
+        if (this.$refs[id]) this.$refs[id].hide()
         this.dleChangePage()
         this.delSuccessNotify()
         this.afterDelMethod()
         this.init()
       }).catch(() => {
         this.delLoading = false
-        if (this.$refs[id]) this.$refs[id].doClose()
+        if (this.$refs[id]) this.$refs[id].hide()
       })
     },
     afterDelMethod() {},

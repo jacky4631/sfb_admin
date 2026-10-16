@@ -52,7 +52,7 @@
             >
               <p>确定删除本条数据吗？</p>
               <div style="text-align: right; margin: 0">
-                <el-button size="small" link @click="$refs[scope.row.id].doClose()">取消</el-button>
+                <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
                 <el-button :loading="delLoading" type="primary" size="small" @click="delMethod(scope.row.id)">确定</el-button>
               </div>
               <template #reference>

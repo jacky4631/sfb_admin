@@ -112,7 +112,7 @@ import { ElNotification } from 'element-plus'
         this.delLoading = true
         del(id).then(res => {
           this.delLoading = false
-          this.$refs[id].doClose()
+          this.$refs[id].hide()
           this.dleChangePage()
           this.init()
           ElNotification({
@@ -122,7 +122,7 @@ import { ElNotification } from 'element-plus'
           })
         }).catch(err => {
           this.delLoading = false
-          this.$refs[id].doClose()
+          this.$refs[id].hide()
           console.log(err.response.data.message)
         })
       },

@@ -5,7 +5,7 @@
         <span>进度信息</span>
       </template>
       <el-steps
-        v-if="form.refundStatus===0"
+        v-if="orderStatus && form.refundStatus===0"
         :active="orderStatus.size"
         align-center
         process-status="process"
@@ -16,7 +16,7 @@
         <el-step title="待评价" :description="orderStatus.orderVerific"></el-step>
         <el-step title="已完成" :description="orderStatus.checkOrderOver"></el-step>
       </el-steps>
-      <el-steps v-else :active="form.refundStatus+1" align-center process-status="process" finish-status="success">
+      <el-steps v-else-if="orderStatus" :active="form.refundStatus+1" align-center process-status="process" finish-status="success">
         <el-step title="用户下单" :description="orderStatus.cacheKeyCreateOrder"></el-step>
         <el-step title="用户申请退款" :description="orderStatus.applyRefund"></el-step>
         <el-step title="退款申请通过" :description="orderStatus.refundOrderSuccess"></el-step>

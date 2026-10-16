@@ -99,7 +99,7 @@
           >
             <p>确定停止并删除该任务吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="small" link @click="$refs[scope.row.id].doClose()">取消</el-button>
+              <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="small" @click="delMethod(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
@@ -178,13 +178,13 @@ export default {
       this.delLoading = true
       crudJob.del([id]).then(() => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         this.crud.dleChangePage(1)
         this.crud.delSuccessNotify()
         this.crud.toQuery()
       }).catch(() => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
       })
     },
     // 显示日志

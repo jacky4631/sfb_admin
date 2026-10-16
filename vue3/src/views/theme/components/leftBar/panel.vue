@@ -45,8 +45,9 @@
       @click="sidebarShow = !sidebarShow"
       :class="{ on: sidebarShow }"
     >
-      <el-icon class="iconfont icon-arrow-right"><ArrowRight /></el-icon>
-      <el-icon class="iconfont icon-arrow-left"><ArrowLeft /></el-icon>
+      <!-- 箭头由 el-icon 的 SVG 提供；类名避开 iconfont.css 的 .icon-arrow-*（其 :before 会叠加多余字形） -->
+      <el-icon class="toggle-arrow-right"><ArrowRight /></el-icon>
+      <el-icon class="toggle-arrow-left"><ArrowLeft /></el-icon>
     </div>
   </div>
 </template>
@@ -242,16 +243,16 @@ export default {
   cursor: pointer;
   z-index: 9;
 
-  .icon-arrow-left {
+  .toggle-arrow-left {
     display: none;
   }
 
   &.on {
-    .icon-arrow-left {
+    .toggle-arrow-left {
       display: block;
     }
 
-    .icon-arrow-right {
+    .toggle-arrow-right {
       display: none;
     }
   }

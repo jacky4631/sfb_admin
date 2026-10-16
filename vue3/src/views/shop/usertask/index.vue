@@ -67,7 +67,7 @@ export default {
       this.delLoading = true
       del(id).then(res => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         this.dleChangePage()
         this.init()
         ElNotification({
@@ -77,7 +77,7 @@ export default {
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         console.log(err.response.data.message)
       })
     },

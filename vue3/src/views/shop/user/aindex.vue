@@ -57,7 +57,7 @@
       <!--width="180">-->
       <!--<p>确定删除本条数据吗？</p>-->
       <!--<div style="text-align: right; margin: 0">-->
-      <!--<el-button size="small" link @click="$refs[scope.row.uid].doClose()">取消</el-button>-->
+      <!--<el-button size="small" link @click="$refs[scope.row.uid].hide()">取消</el-button>-->
       <!--<el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.uid)">确定</el-button>-->
       <!--</div>-->
       <!--<template #reference><el-button type="danger" size="small"/></template>-->
@@ -139,7 +139,7 @@ export default {
       this.delLoading = true
       del(uid).then(res => {
         this.delLoading = false
-        this.$refs[uid].doClose()
+        this.$refs[uid].hide()
         this.dleChangePage()
         this.init()
         ElNotification({
@@ -149,7 +149,7 @@ export default {
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[uid].doClose()
+        this.$refs[uid].hide()
         console.log(err.response.data.message)
       })
     },

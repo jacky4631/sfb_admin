@@ -71,7 +71,7 @@
                 >
                   <p>此操作将删除字典与对应的字典详情，确定要删除吗？</p>
                   <div style="text-align: right; margin: 0">
-                    <el-button size="small" link @click="$refs[scope.row.id].doClose()">取消</el-button>
+                    <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
                     <el-button :loading="delLoading" type="primary" size="small" @click="delMethod(scope.row.id)">确定</el-button>
                   </div>
                   <template #reference>
@@ -101,12 +101,12 @@
             <div class="clearfix">
               <span>字典详情</span>
               <el-button
-                v-if="checkPermission(['admin','dict:add']) && $refs.dictDetail && $refs.dictDetail.dictName"
+                v-if="checkPermission(['admin','dict:add']) && currentDictName"
                 class="filter-item"
                 size="small"
                 style="float: right;padding: 4px 10px"
                 type="primary"
-                @click="$refs.dictDetail.showAddFormDialog"
+                @click="$refs.dictDetail.showAddFormDialog()"
               >
                 <el-icon><Plus /></el-icon>新增
               </el-button>
@@ -132,6 +132,8 @@ export default {
     return {
       title: '字典',
       crudMethod: { ...crudDict },
+      // 当前选中的字典名称：Vue3 中 $refs 不是响应式数据，不能直接在模板里做 v-if 判断
+      currentDictName: '',
       queryTypeOptions: [
         { key: 'name', display_name: '字典名称' },
         { key: 'remark', display_name: '描述' }
@@ -157,11 +159,13 @@ export default {
         this.$refs.dictDetail.data = []
         this.$refs.dictDetail.dictName = ''
       }
+      this.currentDictName = ''
       return true
     },
     // 选中字典后，设置字典详情数据
     handleCurrentChange(val) {
       if (val) {
+        this.currentDictName = val.name
         this.$refs.dictDetail.dictName = val.name
         this.$refs.dictDetail.form.dict.id = val.id
         this.$refs.dictDetail.init()

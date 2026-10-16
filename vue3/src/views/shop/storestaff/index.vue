@@ -100,7 +100,7 @@ import crudMwSystemStore from '@/api/mwSystemStore'
 import { formatTimeTwo } from '@/utils/index'
 
 // crud交由presenter持有
-const defaultCrud = CRUD({ title: '门店店员', url: 'api/mwSystemStoreStaff', sort: 'id,desc', crudMethod: { ...crudMwSystemStoreStaff }})
+const defaultCrud = CRUD({ title: '门店店员', url: 'api/mwSystemStoreStaff', sort: 'id,desc', crudMethod: { ...crudmwSystemStoreStaff }})
 const defaultForm = { user: {uid: null,nickname: null,avatar: null}, id: null, uid: null, avatar: null, storeId: null, staffName: null, phone: null, verifyStatus: 1, status: null, addTime: null, nickname: null, storeName: null }
 export default {
   name: 'MwSystemStoreStaff',

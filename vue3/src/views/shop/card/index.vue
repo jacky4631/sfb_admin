@@ -209,7 +209,7 @@ export default {
       this.delLoading = true
       del(uid).then(res => {
         this.delLoading = false
-        this.$refs[uid].doClose()
+        this.$refs[uid].hide()
         this.dleChangePage()
         this.init()
         ElNotification({
@@ -219,7 +219,7 @@ export default {
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[uid].doClose()
+        this.$refs[uid].hide()
         console.log(err.response.data.message)
       })
     },

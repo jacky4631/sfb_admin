@@ -165,7 +165,7 @@ const defaultCrud = CRUD({
   title: '直播商品',
   url: 'api/mwWechatLiveGoods',
   sort: 'goods_id,desc',
-  crudMethod: { ...crudmwWechatLiveGoods }
+  crudMethod: { ...crudMwWechatLiveGoods }
 })
 
 const defaultForm = {
