@@ -96,8 +96,8 @@
                 center
                 show-icon
               />
-              <el-row :gutter="5">
-                <el-checkbox-group v-model="urls" :max="num - modelValue.length">
+              <el-checkbox-group v-model="urls" :max="num - modelValue.length" class="material-checkbox-group">
+                <el-row :gutter="5">
                   <el-col v-for="(item,index) in tableData" :key="index" :span="4">
                     <el-card :body-style="{ padding: '5px' }">
                       <el-image
@@ -120,8 +120,8 @@
                       </div>
                     </el-card>
                   </el-col>
-                </el-checkbox-group>
-              </el-row>
+                </el-row>
+              </el-checkbox-group>
               <el-pagination
                 v-model:current-page="page.currentPage"
                 :page-sizes="[12, 24]"
@@ -502,6 +502,10 @@ const sureUrls = () => {
 }
 .material-name{
   padding: 8px 0px;
+}
+.material-checkbox-group {
+  display: block;
+  width: 100%;
 }
 .col-do{
   text-align: center;
