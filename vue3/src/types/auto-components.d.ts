@@ -88,7 +88,6 @@ declare module 'vue' {
     Line3D: typeof import('./../components/Echarts/Line3D.vue')['default']
     Material: typeof import('./../components/material/index.vue')['default']
     MulPicUpload: typeof import('./../components/mul-pic-upload/index.vue')['default']
-    Pagination: typeof import('./../components/Pagination/index.vue')['default']
     PanThumb: typeof import('./../components/PanThumb/index.vue')['default']
     Permission: typeof import('./../components/Permission/index.vue')['default']
     PicUpload: typeof import('./../components/pic-upload/index.vue')['default']
