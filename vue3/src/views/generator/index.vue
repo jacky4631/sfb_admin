@@ -62,6 +62,7 @@
 </template>
 
 <script setup>
+import { Refresh } from '@element-plus/icons-vue'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { generator, sync } from '@/api/generator/generator'

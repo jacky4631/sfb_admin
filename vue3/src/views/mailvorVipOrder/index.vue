@@ -185,6 +185,7 @@
 </template>
 
 <script setup>
+import { Search, Refresh, Delete } from '@element-plus/icons-vue'
 import { ref, reactive, onMounted } from 'vue'
 import { ElNotification } from 'element-plus'
 import checkPermission from '@/utils/permission'

@@ -35,7 +35,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import initData from '@/mixins/crud'
+import { Refresh } from '@element-plus/icons-vue'
+import { initData } from '@/api/data'
 import { parseTime } from '@/utils/index'
 
 const data = ref([])
@@ -44,9 +45,9 @@ const page = ref(0)
 const size = ref(0)
 const loading = ref(false)
 const query = ref({})
-const url = ref('')
 
 const toQuery = () => {
+  page.value = 0
   init()
 }
 
@@ -61,9 +62,14 @@ const pageChange = (val) => {
 }
 
 const init = () => {
-  const value = query.value.value
-  const params = { page: page.value, size: size.value }
-  if (value) { params['blurry'] = value }
+  loading.value = true
+  initData('api/logs/mlogs', { page: page.value, size: size.value }).then(res => {
+    data.value = res.content
+    total.value = res.totalElements
+    loading.value = false
+  }).catch(() => {
+    loading.value = false
+  })
 }
 
 onMounted(() => {

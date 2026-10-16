@@ -84,6 +84,7 @@
 </template>
 
 <script setup>
+import { Upload, Tools } from '@element-plus/icons-vue'
 import { ref, computed, onMounted, watch } from 'vue'
 import { getToken } from '@/utils/auth'
 import crudQiNiu from '@/api/tools/qiniu'

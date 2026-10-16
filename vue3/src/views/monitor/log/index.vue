@@ -55,6 +55,7 @@
 </template>
 
 <script setup>
+import { Delete } from '@element-plus/icons-vue'
 import { ref, onMounted } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import Search from './search.vue'

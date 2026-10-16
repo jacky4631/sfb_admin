@@ -56,6 +56,7 @@
 </template>
 
 <script setup>
+import { Delete } from '@element-plus/icons-vue'
 import { ref, onMounted } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { getErrDetail, delAllError } from '@/api/monitor/log'

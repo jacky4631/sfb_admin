@@ -28,6 +28,7 @@
 </template>
 
 <script setup>
+import { Plus, Minus } from '@element-plus/icons-vue'
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { send } from '@/api/tools/email'

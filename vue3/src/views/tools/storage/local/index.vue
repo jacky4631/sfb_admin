@@ -124,6 +124,7 @@
 </template>
 
 <script setup>
+import { Upload } from '@element-plus/icons-vue'
 import { ref, computed, onMounted } from 'vue'
 import { getToken } from '@/utils/auth'
 import crudFile from '@/api/tools/localStorage'

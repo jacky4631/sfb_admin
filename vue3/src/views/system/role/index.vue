@@ -122,6 +122,7 @@
 </template>
 
 <script setup>
+import { Check } from '@element-plus/icons-vue'
 import checkPermission from '@/utils/permission'
 import { ref, onMounted } from 'vue'
 import crudRoles from '@/api/system/role'

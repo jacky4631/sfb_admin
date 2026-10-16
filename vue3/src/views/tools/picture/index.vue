@@ -99,6 +99,7 @@
 </template>
 
 <script setup>
+import { Refresh, Upload } from '@element-plus/icons-vue'
 import { ref, computed, onMounted } from 'vue'
 import { getToken } from '@/utils/auth'
 import crudPic from '@/api/tools/picture'
