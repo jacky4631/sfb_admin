@@ -59,6 +59,7 @@
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.5.4",
     "sass": "^1.69.5",
+    "stylus": "^0.64.0",
     "terser": "^5.28.1",
     "typescript": "^5.3.3",
     "unocss": "^0.58.5",
