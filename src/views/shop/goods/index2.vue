@@ -45,7 +45,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column v-if="checkPermission(['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT','MWSTOREPRODUCT_DELETE'])" label="操作" width="150px" align="center">
+      <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT','MWSTOREPRODUCT_DELETE'])" label="操作" width="150px" align="center">
         <template #default="scope">
           <el-button v-permission="['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT']" size="small" type="primary">
             <el-icon><Edit /></el-icon><router-link :to="'/shop/goodsEdit/'+scope.row.id">编辑</router-link>
@@ -60,7 +60,7 @@
               <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
-            <template #reference><el-button v-permission="['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_DELETE']" type="danger" size="small" ><el-icon><Delete /></el-icon></el-button></template>
+            <template #reference><el-button title="删除" aria-label="删除" class="table-icon-action" v-permission="['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_DELETE']" type="danger" size="small" ><el-icon><Delete /></el-icon></el-button></template>
           </el-popover>
         </template>
       </el-table-column>

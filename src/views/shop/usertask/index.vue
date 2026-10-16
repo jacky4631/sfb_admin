@@ -13,9 +13,9 @@
           <el-tag v-else style="cursor: pointer" :type=" 'info' ">否</el-tag>
         </template>
       </el-table-column>
-      <el-table-column v-if="checkPermission(['admin','MWSYSTEMUSERTASK_ALL','MWSYSTEMUSERTASK_EDIT','MWSYSTEMUSERTASK_DELETE'])" label="操作" width="150px" align="center">
+      <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWSYSTEMUSERTASK_ALL','MWSYSTEMUSERTASK_EDIT','MWSYSTEMUSERTASK_DELETE'])" label="操作" width="150px" align="center">
         <template #default="scope">
-          <el-button v-permission="['admin','MWSYSTEMUSERTASK_ALL','MWSYSTEMUSERTASK_EDIT']" size="small" type="primary" @click="edit(scope.row)" ><el-icon><Edit /></el-icon></el-button>
+          <el-button title="编辑" aria-label="编辑" class="table-icon-action" v-permission="['admin','MWSYSTEMUSERTASK_ALL','MWSYSTEMUSERTASK_EDIT']" size="small" type="primary" @click="edit(scope.row)" ><el-icon><Edit /></el-icon></el-button>
         </template>
       </el-table-column>
     </el-table>

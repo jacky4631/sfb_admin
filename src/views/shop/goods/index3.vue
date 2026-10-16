@@ -32,9 +32,9 @@
       <el-table-column prop="price" label="商品价格" />
       <el-table-column prop="sales" label="销量" />
       <el-table-column prop="stock" label="库存" />
-      <el-table-column v-if="checkPermission(['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT','MWSTOREPRODUCT_DELETE'])" label="操作" width="150px" align="center">
+      <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT','MWSTOREPRODUCT_DELETE'])" label="操作" width="150px" align="center">
         <template #default="scope">
-          <el-button v-permission="['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT']" size="small" type="primary" @click="edit(scope.row)" ><el-icon><Edit /></el-icon></el-button>
+          <el-button title="编辑" aria-label="编辑" class="table-icon-action" v-permission="['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT']" size="small" type="primary" @click="edit(scope.row)" ><el-icon><Edit /></el-icon></el-button>
           <el-popover trigger="click"
             :ref="scope.row.id"
             placement="top"

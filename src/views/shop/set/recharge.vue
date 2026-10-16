@@ -29,9 +29,9 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column v-if="checkPermission(['admin','MWSYSTEMGROUPDATA_ALL','MWSYSTEMGROUPDATA_EDIT','MWSYSTEMGROUPDATA_DELETE'])" label="操作" width="150px" align="center">
+      <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWSYSTEMGROUPDATA_ALL','MWSYSTEMGROUPDATA_EDIT','MWSYSTEMGROUPDATA_DELETE'])" label="操作" width="150px" align="center">
         <template #default="scope">
-          <el-button v-permission="['admin','MWSYSTEMGROUPDATA_ALL','MWSYSTEMGROUPDATA_EDIT']" size="small" type="primary" @click="edit(scope.row)" ><el-icon><Edit /></el-icon></el-button>
+          <el-button title="编辑" aria-label="编辑" class="table-icon-action" v-permission="['admin','MWSYSTEMGROUPDATA_ALL','MWSYSTEMGROUPDATA_EDIT']" size="small" type="primary" @click="edit(scope.row)" ><el-icon><Edit /></el-icon></el-button>
           <el-popover trigger="click"
             :ref="scope.row.id"
             placement="top"
@@ -42,7 +42,7 @@
               <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
-            <template #reference><el-button v-permission="['admin','MWSYSTEMGROUPDATA_ALL','MWSYSTEMGROUPDATA_DELETE']" type="danger" size="small" ><el-icon><Delete /></el-icon></el-button></template>
+            <template #reference><el-button title="删除" aria-label="删除" class="table-icon-action" v-permission="['admin','MWSYSTEMGROUPDATA_ALL','MWSYSTEMGROUPDATA_DELETE']" type="danger" size="small" ><el-icon><Delete /></el-icon></el-button></template>
           </el-popover>
         </template>
       </el-table-column>

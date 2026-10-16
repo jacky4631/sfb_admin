@@ -529,3 +529,38 @@ body {
   padding: 0;
   border: 0;
 }
+
+/* All icon-based row actions share the same size, alignment and spacing. */
+.el-table .table-icon-column .cell,
+.crud-icon-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.el-table .el-button.table-icon-action,
+.crud-icon-actions .el-button.table-icon-action {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+}
+
+.el-button.table-icon-action > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.el-button.table-icon-action .el-icon {
+  margin: 0;
+  font-size: 14px;
+}

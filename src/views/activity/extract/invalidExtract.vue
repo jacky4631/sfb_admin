@@ -38,7 +38,7 @@
             <span>{{ parseTime(scope.row.updateTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column v-if="checkPermission(['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_EDIT','MWUSEREXTRACT_DELETE'])" label="操作" width="200" align="center" fixed="right">
+        <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_EDIT','MWUSEREXTRACT_DELETE'])" label="操作" width="200" align="center" fixed="right">
           <template #default="scope">
             <el-dropdown size="small" split-button type="primary" trigger="click">
               操作
@@ -54,7 +54,7 @@
                       <el-button size="small" link @click="$refs[scope.row.uid].hide()">取消</el-button>
                       <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.uid])">确定</el-button>
                     </div>
-                    <template #reference><el-button v-permission="['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon>删除</el-button></template>
+                    <template #reference><el-button title="删除" aria-label="删除" class="table-icon-action" v-permission="['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon></el-button></template>
                   </el-popover>
                 </el-dropdown-item>
               </el-dropdown-menu>

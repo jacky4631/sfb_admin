@@ -208,6 +208,7 @@
           >
             <template #default="scope">
               <udOperation
+                class="user-row-actions"
                 :data="scope.row"
                 :permission="permission"
                 :disabled-dle="scope.row.id === user.id"
@@ -464,4 +465,21 @@ export default {
 </script>
 
 <style scoped>
+.user-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+.user-row-actions :deep(.el-button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+}
 </style>

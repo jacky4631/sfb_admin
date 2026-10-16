@@ -188,21 +188,14 @@
               </div>
             </template>
         </el-table-column>
-        <el-table-column v-if="checkPermission(['admin','mwWechatLive:edit','mwWechatLive:del'])" label="操作" width="150px" align="center">
+        <el-table-column v-if="checkPermission(['admin','mwWechatLive:edit','mwWechatLive:del'])" label="操作" width="200px" align="center" fixed="right">
           <template #default="scope">
 
-            <udOperation
-              :data="scope.row"
-              :permission="permission"
-            >
+            <udOperation text-actions class="live-row-actions" :data="scope.row" :permission="permission">
+              <template #between>
+                <el-button size="small" type="primary" link @click="showCloseOrderDialog(scope.row)">添加商品</el-button>
+              </template>
             </udOperation>
-            <el-button
-              size="small"
-              type="success"
-              @click="showCloseOrderDialog(scope.row)"
-            >
-              添加商品
-            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -410,6 +403,20 @@ const beforeToEdit = (crud, formData) => {
 </script>
 
 <style scoped>
+.live-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.live-row-actions :deep(.el-button.is-link) {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
 .table-img {
   display: inline-block;
   text-align: center;

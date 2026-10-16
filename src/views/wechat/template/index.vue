@@ -38,9 +38,9 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column v-if="checkPermission(['admin','MWWECHATTEMPLATE_ALL','MWWECHATTEMPLATE_EDIT','MWWECHATTEMPLATE_DELETE'])" label="操作" width="150px" align="center">
+      <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWWECHATTEMPLATE_ALL','MWWECHATTEMPLATE_EDIT','MWWECHATTEMPLATE_DELETE'])" label="操作" width="150px" align="center">
         <template #default="scope">
-          <el-button v-permission="['admin','MWWECHATTEMPLATE_ALL','MWWECHATTEMPLATE_EDIT']" size="small" type="primary" :icon="Icons.Edit" @click="edit(scope.row)" />
+          <el-button title="编辑" aria-label="编辑" class="table-icon-action" v-permission="['admin','MWWECHATTEMPLATE_ALL','MWWECHATTEMPLATE_EDIT']" size="small" type="primary" :icon="Icons.Edit" @click="edit(scope.row)" />
           <el-popover trigger="click"
             :ref="scope.row.id"
             placement="top"
@@ -52,7 +52,7 @@
               <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
-              <el-button v-permission="['admin','MWWECHATTEMPLATE_ALL','MWWECHATTEMPLATE_DELETE']" type="danger" :icon="Icons.Delete" size="small" />
+              <el-button title="删除" aria-label="删除" class="table-icon-action" v-permission="['admin','MWWECHATTEMPLATE_ALL','MWWECHATTEMPLATE_DELETE']" type="danger" :icon="Icons.Delete" size="small" />
             </template>
           </el-popover>
         </template>

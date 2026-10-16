@@ -42,9 +42,9 @@
       <el-table-column prop="nowMoney" label="佣金" />
       <el-table-column prop="sessionKey" label="小程序用户会话密匙" />
       <el-table-column prop="userType" label="用户类型" />
-      <el-table-column v-if="checkPermission(['admin','MWWECHATUSER_ALL','MWWECHATUSER_EDIT','MWWECHATUSER_DELETE'])" label="操作" width="150px" align="center">
+      <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWWECHATUSER_ALL','MWWECHATUSER_EDIT','MWWECHATUSER_DELETE'])" label="操作" width="150px" align="center">
         <template #default="scope">
-          <el-button v-permission="['admin','MWWECHATUSER_ALL','MWWECHATUSER_EDIT']" size="small" type="primary" :icon="Icons.Edit" @click="edit(scope.row)" />
+          <el-button title="编辑" aria-label="编辑" class="table-icon-action" v-permission="['admin','MWWECHATUSER_ALL','MWWECHATUSER_EDIT']" size="small" type="primary" :icon="Icons.Edit" @click="edit(scope.row)" />
           <el-popover trigger="click"
             :ref="scope.row.uid"
             placement="top"
@@ -56,7 +56,7 @@
               <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.uid)">确定</el-button>
             </div>
             <template #reference>
-              <el-button v-permission="['admin','MWWECHATUSER_ALL','MWWECHATUSER_DELETE']" type="danger" :icon="Icons.Delete" size="small" />
+              <el-button title="删除" aria-label="删除" class="table-icon-action" v-permission="['admin','MWWECHATUSER_ALL','MWWECHATUSER_DELETE']" type="danger" :icon="Icons.Delete" size="small" />
             </template>
           </el-popover>
         </template>

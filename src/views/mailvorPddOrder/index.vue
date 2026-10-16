@@ -190,7 +190,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="200" align="center" fixed="right">
+        <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="200" align="center" fixed="right">
           <template #default="scope">
             <el-button
               v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
@@ -215,7 +215,7 @@
                         <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.orderSn])">确定</el-button>
                       </div>
                       <template #reference>
-                        <el-button v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_DELETE']" type="danger" :icon="Delete" size="small">删除</el-button>
+                        <el-button title="删除" aria-label="删除" class="table-icon-action" v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_DELETE']" type="danger" :icon="Delete" size="small"></el-button>
                       </template>
                     </el-popover>
                   </el-dropdown-item>

@@ -26,9 +26,9 @@
       <el-table-column prop="status" label="状态 1参与中 2 活动结束参与失败 3活动结束参与成功" />
       <el-table-column prop="addTime" label="参与时间" />
       <el-table-column prop="isDel" label="是否取消" />
-      <el-table-column v-if="checkPermission(['admin','MWSTOREBARGAINUSER_ALL','MWSTOREBARGAINUSER_EDIT','MWSTOREBARGAINUSER_DELETE'])" label="操作" width="150px" align="center">
+      <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWSTOREBARGAINUSER_ALL','MWSTOREBARGAINUSER_EDIT','MWSTOREBARGAINUSER_DELETE'])" label="操作" width="150px" align="center">
         <template #default="scope">
-          <el-button v-permission="['admin','MWSTOREBARGAINUSER_ALL','MWSTOREBARGAINUSER_EDIT']" size="small" type="primary" @click="edit(scope.row)"><el-icon><Edit /></el-icon></el-button>
+          <el-button title="编辑" aria-label="编辑" class="table-icon-action" v-permission="['admin','MWSTOREBARGAINUSER_ALL','MWSTOREBARGAINUSER_EDIT']" size="small" type="primary" @click="edit(scope.row)"><el-icon><Edit /></el-icon></el-button>
           <el-popover trigger="click"
             :ref="scope.row.id"
             placement="top"
@@ -39,7 +39,7 @@
               <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
-            <template #reference><el-button v-permission="['admin','MWSTOREBARGAINUSER_ALL','MWSTOREBARGAINUSER_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon></el-button></template>
+            <template #reference><el-button title="删除" aria-label="删除" class="table-icon-action" v-permission="['admin','MWSTOREBARGAINUSER_ALL','MWSTOREBARGAINUSER_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon></el-button></template>
           </el-popover>
         </template>
       </el-table-column>

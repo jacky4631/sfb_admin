@@ -34,29 +34,11 @@
           <span>{{ scope.row.createTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="checkPermission(['admin','MWARTICLE_ALL','MWARTICLE_EDIT','MWARTICLE_DELETE'])" label="操作" width="220px" align="center">
+      <el-table-column v-if="checkPermission(['admin','MWARTICLE_ALL','MWARTICLE_EDIT','MWARTICLE_DELETE'])" label="操作" width="180px" align="center" fixed="right">
         <template #default="scope">
+          <div class="article-row-actions">
           <el-button v-permission="['admin','MWARTICLE_ALL','MWARTICLE_EDIT']" size="small"
-                     type="primary" :icon="Icons.Edit"
-                     >
-            <router-link :to="'/wechat/artadd/'+scope.row.id">
-              编辑
-            </router-link>
-          </el-button>
-          <el-popover trigger="click"
-            :ref="'popover-' + scope.row.id"
-            placement="top"
-            width="180"
-          >
-            <p>确定删除本条数据吗？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button size="small" link @click="$refs['popover-' + scope.row.id].hide()">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
-            </div>
-            <template #reference>
-              <el-button v-permission="['admin','MWARTICLE_ALL','MWARTICLE_DELETE']" type="danger" :icon="Icons.Delete" size="small" />
-            </template>
-          </el-popover>
+            type="primary" link class="table-text-action" @click="router.push('/wechat/artadd/' + scope.row.id)">编辑</el-button>
           <el-popover trigger="click"
             :ref="'item' + scope.row.id"
             placement="top"
@@ -68,9 +50,24 @@
               <el-button :loading="delLoading" type="primary" size="small" @click="subPublish(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
-              <el-button v-permission="['admin','MWARTICLE_ALL','MWARTICLE_DELETE']" type="primary" size="small">发布</el-button>
+              <el-button v-permission="['admin','MWARTICLE_ALL','MWARTICLE_DELETE']" type="primary" link class="table-text-action" size="small">发布</el-button>
             </template>
           </el-popover>
+          <el-popover trigger="click"
+            :ref="'popover-' + scope.row.id"
+            placement="top"
+            width="180"
+          >
+            <p>确定删除本条数据吗？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="small" link @click="$refs['popover-' + scope.row.id].hide()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
+            </div>
+            <template #reference>
+              <el-button v-permission="['admin','MWARTICLE_ALL','MWARTICLE_DELETE']" type="danger" link class="table-text-action" size="small">删除</el-button>
+            </template>
+          </el-popover>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -90,6 +87,7 @@
 
 <script setup>
 import { ref, onMounted, onActivated } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElNotification, ElMessage } from 'element-plus'
 import checkPermission from '@/utils/permission.js'
 import { del, publish } from '@/api/mwArticle.js'
@@ -97,6 +95,7 @@ import { initData } from '@/api/data.js'
 import { formatTime } from '@/utils/index.js'
 import * as Icons from '@element-plus/icons-vue'
 
+const router = useRouter()
 const loading = ref(false)
 const isAdd = ref(true)
 const delLoading = ref(false)
@@ -185,5 +184,17 @@ const dleChangePage = () => {
 </script>
 
 <style scoped>
-
+.article-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.article-row-actions .el-button.is-link {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
 </style>
