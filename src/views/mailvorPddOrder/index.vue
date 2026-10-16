@@ -573,5 +573,10 @@ function downloadMethod() {
   .order-page :deep(.order-table th.el-table__cell) { height:40px; background:#f7f9fc; color:#667085; font-weight:600; }
   .order-page :deep(.order-table td.el-table__cell) { padding:4px 0; }
   .order-page .footer-contains { position:static; flex:none; min-height:48px; border:1px solid #e8edf4; border-radius:10px; background:#fff; box-shadow:0 2px 8px rgba(31,45,61,.04); }
+
+  .order-page { width: 100% !important; max-width: none !important; }
+  .order-page .order-content,
+  .order-page .footer-contains { width: 100% !important; max-width: none !important; }
+
   @media (max-width:768px) { .order-page{height:auto;min-height:calc(100vh - 117px);padding:10px}.order-page .order-content{overflow:visible}.order-page :deep(.order-table){min-height:420px}.order-page .footer-contains{flex-wrap:wrap;gap:8px;padding:10px} }
 </style>

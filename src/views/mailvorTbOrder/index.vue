@@ -615,6 +615,11 @@ function downloadMethod() {
     box-shadow: 0 2px 8px rgba(31, 45, 61, 0.04);
   }
 
+
+  .order-page { width: 100% !important; max-width: none !important; }
+  .order-page .order-content,
+  .order-page .footer-contains { width: 100% !important; max-width: none !important; }
+
   @media (max-width: 768px) {
     .order-page { height: auto; min-height: calc(100vh - 117px); padding: 10px; }
     .order-page .order-content { overflow: visible; }

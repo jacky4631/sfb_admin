@@ -5,7 +5,8 @@
         <el-form label-width="130px" >
           <el-row :gutter="24">
             <el-col :span="24">
-                <MaterialList v-model="slider_image"  type="image" :num="15" :width="150" :height="150" />
+                <!-- 分享图为 1080x1920（9:16）竖图，预览卡片按同比例设高 -->
+                <MaterialList v-model="slider_image"  type="image" :num="15" :width="150" :height="267" />
             </el-col>
           </el-row>
 
