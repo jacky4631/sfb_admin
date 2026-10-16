@@ -5,6 +5,8 @@
 @use 'btn' as *;
 @use 'eladmin' as *;
 @use 'mshop' as *;
+// Keep shared component fixes migrated from Element UI, updated for Element Plus selectors.
+@use 'element-ui' as *;
 // Element Plus 尺寸档位兼容层（把 EP 的 small 档重映射回 Element UI 的度量）
 @use 'element-plus-compat' as *;
 
@@ -13,7 +15,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+  font-family: var(--el-font-family);
   color: var(--el-text-color-primary);
   background: var(--app-content-bg-color);
 }
@@ -115,11 +117,11 @@ aside {
   -moz-osx-font-smoothing: grayscale;
 
   a {
-    color: #337ab7;
+    color: var(--el-color-primary);
     cursor: pointer;
 
     &:hover {
-      color: rgb(32, 160, 255);
+      color: var(--el-color-primary);
     }
   }
 }
@@ -127,6 +129,8 @@ aside {
 //main-container全局样式
 .app-container {
   padding: var(--app-content-padding) var(--app-content-padding) 45px;
+  background-color: var(--app-container-bg-color);
+  border-radius: var(--el-border-radius-base);
 }
 
 .main-container {
@@ -172,11 +176,11 @@ aside {
 
 .link-type,
 .link-type:focus {
-  color: #337ab7;
+  color: var(--el-color-primary);
   cursor: pointer;
 
   &:hover {
-    color: rgb(32, 160, 255);
+    color: var(--el-color-primary);
   }
 }
 

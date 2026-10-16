@@ -99,7 +99,7 @@ const open = () => {
       padding: 0 8px;
       height: 100%;
       font-size: 18px;
-      color: #5a5e66;
+      color: var(--top-header-text-color);
       vertical-align: text-bottom;
 
       &.hover-effect {

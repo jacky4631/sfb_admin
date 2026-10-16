@@ -5,6 +5,9 @@
   --el-color-warning: #e6a23c;
   --el-color-danger: #f56c6c;
   --el-color-info: #909399;
+  --el-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+  --el-border-radius-base: 4px;
 
   --el-bg-color: #ffffff;
   --el-bg-color-page: #f5f7f9;
@@ -23,9 +26,12 @@
   --el-fill-color-light: #f5f7fa;
   --el-fill-color-lighter: #fafafa;
   --el-fill-color-blank: #ffffff;
+  --el-card-border-radius: var(--el-border-radius-base);
+  --el-dialog-border-radius: var(--el-border-radius-base);
 
   /* TSQ Admin aligned shell colors */
   --app-content-bg-color: #f5f7f9;
+  --app-container-bg-color: #ffffff;
   --app-content-padding: 20px;
   --top-tool-height: 50px;
   --tags-view-height: 35px;
