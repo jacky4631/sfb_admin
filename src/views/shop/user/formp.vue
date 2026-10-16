@@ -1,26 +1,28 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="isAdd ? '新增' : '余额修改'" width="500px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '余额修改'" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
       <el-form-item label="用户昵称">
         <el-input v-model="form.nickname" :disabled="true" style="width: 370px;" />
       </el-form-item>
       <el-form-item label="修改余额">
-        <el-radio v-model="form.ptype" :label="1">增加</el-radio>
-        <el-radio v-model="form.ptype" :label="2">减少</el-radio>
+        <el-radio v-model="form.ptype" :value="1">增加</el-radio>
+        <el-radio v-model="form.ptype" :value="2">减少</el-radio>
       </el-form-item>
       <el-form-item label="用户余额">
         <el-input v-model="form.money" style="width: 370px;" />
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="cancel">取消</el-button>
+    <template #footer><div class="dialog-footer">
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
-import { add, edit, editp } from '@/api/mwUser'
+import { ElNotification } from 'element-plus'
+import { add, edit, editp } from '@/api/mwUser.js'
 import md5 from 'js-md5';
 export default {
   props: {
@@ -55,7 +57,7 @@ export default {
     doAdd() {
       add(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '添加成功',
           type: 'success',
           duration: 2500
@@ -70,7 +72,7 @@ export default {
     doEdit() {
       editp(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '修改成功',
           type: 'success',
           duration: 2500

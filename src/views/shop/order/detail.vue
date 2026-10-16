@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div>
+    <div v-if="orderStatus">
       <el-steps v-if="order.refundStatus===0" :active="orderStatus.size" align-center process-status="process" finish-status="success">
         <el-step title="用户下单" :description="orderStatus.cacheKeyCreateOrder"></el-step>
         <el-step title="待发货" :description="orderStatus.paySuccess"></el-step>
@@ -17,27 +17,27 @@
     </div>
     <el-card shadow="never" style="margin-top: 15px">
       <div class="operate-container">
-        <i class="el-icon-warning color-danger" style="margin-left: 20px"></i>
+        <el-icon class="color-danger" style="margin-left: 20px"><Warning /></el-icon>
         <span class="color-danger">当前订单状态：<span v-html="order.statusName"></span></span>
         <div class="operate-button-container" v-show="order._status===1">
-          <el-button size="mini" @click="editOrder(order)">修改订单</el-button>
-          <el-button size="mini" @click="remark(order)">备注订单</el-button>
+          <el-button size="small" @click="editOrder(order)">修改订单</el-button>
+          <el-button size="small" @click="remark(order)">备注订单</el-button>
         </div>
         <div class="operate-button-container" v-show="order._status===3">
-          <el-button size="mini" @click="refund(order)">立即退款</el-button>
-          <el-button size="mini" @click="remark(order)">备注订单</el-button>
+          <el-button size="small" @click="refund(order)">立即退款</el-button>
+          <el-button size="small" @click="remark(order)">备注订单</el-button>
         </div>
         <div class="operate-button-container" v-show="order._status===2">
-          <el-button size="mini" @click="edit(order)">去发货</el-button>
-          <el-button size="mini" @click="remark(order)">备注订单</el-button>
+          <el-button size="small" @click="edit(order)">去发货</el-button>
+          <el-button size="small" @click="remark(order)">备注订单</el-button>
         </div>
         <div class="operate-button-container" v-show="order._status===4">
-          <el-button size="mini" @click="showLogisticsDialog">订单跟踪</el-button>
-          <el-button size="mini" @click="remark(order)">备注订单</el-button>
+          <el-button size="small" @click="showLogisticsDialog">订单跟踪</el-button>
+          <el-button size="small" @click="remark(order)">备注订单</el-button>
         </div>
         <div class="operate-button-container" v-show="order._status===6||order._status===7 ">
-          <el-button size="mini" @click="showLogisticsDialog">订单跟踪</el-button>
-          <el-button size="mini" @click="remark(order)">备注订单</el-button>
+          <el-button size="small" @click="showLogisticsDialog">订单跟踪</el-button>
+          <el-button size="small" @click="remark(order)">备注订单</el-button>
         </div>
       </div>
       <div style="margin-top: 20px">
@@ -58,7 +58,7 @@
           <el-col :span="4" class="table-cell">暂无</el-col>
           <el-col :span="4" class="table-cell">{{userDTO.nickname}}</el-col>
           <el-col :span="4" class="table-cell">{{order.payTypeName }}</el-col>
-          <el-col :span="4" class="table-cell">{{order.isChannel | formatSourceType}}</el-col>
+          <el-col :span="4" class="table-cell">{{formatSourceType(order.isChannel)}}</el-col>
           <el-col :span="4" class="table-cell">{{order.pinkName }}</el-col>
         </el-row>
         <el-row>
@@ -70,8 +70,8 @@
           <el-col :span="4" class="table-cell-title">活动信息</el-col>
         </el-row>
         <el-row>
-          <el-col :span="4" class="table-cell">{{order.shippingType | formatShippingType}}</el-col>
-          <el-col :span="4" class="table-cell">{{order.deliverySn | formatNull}}</el-col>
+          <el-col :span="4" class="table-cell">{{formatShippingType(order.shippingType)}}</el-col>
+          <el-col :span="4" class="table-cell">{{formatNull(order.deliverySn)}}</el-col>
           <el-col :span="4" class="table-cell">7天</el-col>
           <el-col :span="4" class="table-cell">{{order.gainIntegral}}</el-col>
           <el-col :span="4" class="table-cell">{{order.payIntegral}}</el-col>
@@ -82,7 +82,7 @@
               width="200"
               trigger="hover"
               :content="order.promotionInfo">
-              <span slot="reference">{{order.promotionInfo | formatLongText}}</span>
+              <template #reference><span>{{formatLongText(order.promotionInfo)}}</span></template>
             </el-popover>
           </el-col>
         </el-row>
@@ -111,7 +111,7 @@
               width="300"
               trigger="hover"
               :content="order.userAddress">
-              <span slot="reference">{{order.userAddress | formatLongText}}</span>
+              <template #reference><span>{{formatLongText(order.userAddress)}}</span></template>
             </el-popover>
           </el-col>
           <el-col :span="4" class="table-cell">
@@ -121,7 +121,7 @@
               width="300"
               trigger="hover"
               :content="order.mark">
-              <span slot="reference">{{order.mark | formatLongText}}</span>
+              <template #reference><span>{{formatLongText(order.mark)}}</span></template>
             </el-popover>
           </el-col>
           <el-col :span="4" class="table-cell">
@@ -131,7 +131,7 @@
               width="200"
               trigger="hover"
               :content="order.remark">
-              <span slot="reference">{{order.remark | formatLongText}}</span>
+              <template #reference><span>{{formatLongText(order.remark)}}</span></template>
             </el-popover>
           </el-col>
         </el-row>
@@ -145,33 +145,33 @@
         size="small"
         style="width: 100%;margin-top: 20px" >
         <el-table-column label="商品图片" width="150" align="center">
-          <template slot-scope="scope">
+          <template #default="scope">
             <img :src="scope.row.cartInfoMap.productInfo.attrInfo.image" style="height: 80px">
           </template>
         </el-table-column>
         <el-table-column label="商品名称" width="300" align="center">
-          <template slot-scope="scope">
+          <template #default="scope">
             <p>{{scope.row.cartInfoMap.productInfo.storeName}}</p>
           </template>
         </el-table-column>
         <el-table-column label="价格/货号" width="240" align="center">
-          <template slot-scope="scope">
+          <template #default="scope">
             <p>价格：￥{{scope.row.cartInfoMap.productInfo.attrInfo.price}}</p>
             <p>货号：{{scope.row.cartInfoMap.productInfo.attrInfo.barCode}}</p>
           </template>
         </el-table-column>
         <el-table-column label="属性" width="240" align="center">
-          <template slot-scope="scope">
+          <template #default="scope">
             {{scope.row.cartInfoMap.productInfo.attrInfo.sku}}
           </template>
         </el-table-column>
         <el-table-column label="数量" width="180" align="center">
-          <template slot-scope="scope">
+          <template #default="scope">
             {{scope.row.cartInfoMap.cartNum}}
           </template>
         </el-table-column>
         <el-table-column label="小计"  align="center">
-          <template slot-scope="scope">
+          <template #default="scope">
             ￥{{scope.row.cartInfoMap.truePrice}}
           </template>
         </el-table-column>
@@ -221,39 +221,39 @@
                 ref="orderHistoryTable"
                 :data="order.storeOrderStatusList" border>
 <!--        <el-table-column label="操作者"  width="120" align="center">-->
-<!--          <template slot-scope="scope">-->
+<!--          <template #default="scope">-->
 <!--           &lt;!&ndash; {{scope.row.operateMan}}&ndash;&gt;-->
 <!--          </template>-->
 <!--        </el-table-column>-->
         <el-table-column label="操作时间"  width="160" align="center">
-          <template slot-scope="scope">
+          <template #default="scope">
             {{scope.row.changeTime}}
           </template>
         </el-table-column>
 <!--        <el-table-column label="订单状态"  width="120" align="center">-->
-<!--          <template slot-scope="scope">-->
+<!--          <template #default="scope">-->
 <!--            {{scope.row.changeType | formatStatus}}-->
 <!--          </template>-->
 <!--        </el-table-column>-->
 <!--        <el-table-column label="付款状态"  width="120" align="center">-->
-<!--          <template slot-scope="scope">-->
+<!--          <template #default="scope">-->
 <!--            {{scope.row.changeType | formatPayStatus}}-->
 <!--          </template>-->
 <!--        </el-table-column>-->
 <!--        <el-table-column label="发货状态"  width="120" align="center">-->
-<!--          <template slot-scope="scope">-->
+<!--          <template #default="scope">-->
 <!--            {{scope.row.changeType | formatDeliverStatus}}-->
 <!--          </template>-->
 <!--        </el-table-column>-->
         <el-table-column label="备注" align="center">
-          <template slot-scope="scope">
+          <template #default="scope">
             {{scope.row.changeMessage}}
           </template>
         </el-table-column>
       </el-table>
     </el-card>
     <el-dialog title="订单跟踪"
-               :visible.sync="kuaidiDialogVisible"
+               v-model="kuaidiDialogVisible"
                width="40%">
       <el-steps direction="vertical"
                 :active="90"
@@ -266,7 +266,7 @@
       </el-steps>
     </el-dialog>
    <!-- <el-dialog title="修改收货人信息"
-              :visible.sync="receiverDialogVisible"
+              v-model="receiverDialogVisible"
               width="40%">
      <el-form :model="receiverInfo"
               ref="receiverInfoForm"
@@ -289,17 +289,18 @@
                        @selected="onSelectRegion"></v-distpicker>
        </el-form-item>
        <el-form-item label="详细地址：">
-         <el-input v-model="receiverInfo.receiverDetailAddress" type="textarea" rows="3">
+         <el-input v-model="receiverInfo.receiverDetailAddress" type="textarea" :rows="3">
          </el-input>
        </el-form-item>
      </el-form>
-     <span slot="footer" class="dialog-footer">
+     <template #footer><span class="dialog-footer">
      <el-button @click="receiverDialogVisible = false">取 消</el-button>
      <el-button type="primary" @click="handleUpdateReceiverInfo">确 定</el-button>
      </span>
+     </template>
    </el-dialog> -->
     <!-- <el-dialog title="修改费用信息"
-               :visible.sync="moneyDialogVisible"
+               v-model="moneyDialogVisible"
                width="80%">
       <div class="table-layout">
         <el-row>
@@ -311,7 +312,7 @@
         <el-row>
           <el-col :span="6" class="table-cell">￥{{order.totalPrice}}</el-col>
           <el-col :span="6" class="table-cell">
-            <el-input type="number" v-model="order.payPostage" size="mini"><template slot="prepend">￥</template></el-input>
+            <el-input type="number" v-model="order.payPostage" size="small"><template #prepend>￥</template></el-input>
           </el-col>
           <el-col :span="6" class="table-cell">-￥{{order.couponPrice}}</el-col>
           <el-col :span="6" class="table-cell">-￥{{order.useIntegral}}</el-col>
@@ -325,7 +326,7 @@
         <el-row>
           <el-col :span="6" class="table-cell">-￥{{order.promotionAmount}}</el-col>
           <el-col :span="6" class="table-cell">
-            <el-input type="number" v-model="order.deductionPrice" size="mini"><template slot="prepend">-￥</template></el-input>
+            <el-input type="number" v-model="order.deductionPrice" size="small"><template #prepend>-￥</template></el-input>
           </el-col>
           <el-col :span="6" class="table-cell">
             <span class="color-danger">￥{{order.totalPrice}}</span>
@@ -335,41 +336,44 @@
           </el-col>
         </el-row>
       </div>
-      <span slot="footer" class="dialog-footer">
+      <template #footer><span class="dialog-footer">
       <el-button @click="moneyDialogVisible = false">取 消</el-button>
       <el-button type="primary" @click="handleUpdateMoneyInfo">确 定</el-button>
       </span>
+      </template>
     </el-dialog>
     <el-dialog title="关闭订单"
-               :visible.sync="closeDialogVisible"
+               v-model="closeDialogVisible"
                width="40%">
       <el-form :model="closeInfo"
                label-width="150px">
         <el-form-item label="操作备注：">
-          <el-input v-model="closeInfo.note" type="textarea" rows="3">
+          <el-input v-model="closeInfo.note" type="textarea" :rows="3">
           </el-input>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
+      <template #footer><span class="dialog-footer">
         <el-button @click="closeDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleCloseOrder">确 定</el-button>
       </span>
+      </template>
     </el-dialog>
 
     <el-dialog title="备注订单"
-               :visible.sync="markOrderDialogVisible"
+               v-model="markOrderDialogVisible"
                width="40%">
       <el-form :model="markInfo"
                label-width="150px">
         <el-form-item label="操作备注：">
-          <el-input v-model="markInfo.note" type="textarea" rows="3">
+          <el-input v-model="markInfo.note" type="textarea" :rows="3">
           </el-input>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
+      <template #footer><span class="dialog-footer">
         <el-button @click="markOrderDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleMarkOrder">确 定</el-button>
       </span>
+      </template>
     </el-dialog> -->
 
       <eForm ref="form" :is-add="isAdd" />
@@ -379,13 +383,14 @@
   </div>
 </template>
 <script>
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { express, getOrderDetail,
-  getNowOrderStatus} from '@/api/mwStoreOrder'
-import {formatTimeTwo} from '@/utils/index';
-import eForm from './form'
-import eRefund from './refund'
-import editOrder from './edit'
-import eRemark from './remark'
+  getNowOrderStatus} from '@/api/mwStoreOrder.js'
+import {formatTimeTwo} from '@/utils/index.js';
+import eForm from './form.vue'
+import eRefund from './refund.vue'
+import editOrder from './edit.vue'
+import eRemark from './remark.vue'
   const defaultReceiverInfo = {
     orderId:null,
     receiverName:null,
@@ -429,97 +434,38 @@ import eRemark from './remark'
         }
       }
     },
-    filters: {
-      formatNull(value) {
-        if(value===undefined||value===null||value===''){
-          return '暂无';
-        }else{
-          return value;
-        }
-      },
-      formatLongText(value) {
-        if(value===undefined||value===null||value===''){
-          return '暂无';
-        }else if(value.length>8){
-          return value.substr(0, 8) + '...';
-        }else{
-          return value;
-        }
-      },
-      formatSourceType(value) {
-        if (value === 1) {
-          return '小程序';
-        } else {
-          return '公众号/H5';
-        }
-      },
-      formatShippingType(value){
-        if (value === 1) {
-          return '快递';
-        } else {
-          return '门店自提';
-        }
-      },
-      formatAddress(order) {
-        let str = order.receiverProvince;
-        if (order.receiverCity != null) {
-          str += "  " + order.receiverCity;
-        }
-        str += "  " + order.receiverRegion;
-        str += "  " + order.receiverDetailAddress;
-        return str;
-      },
-      formatStatus(value) {
-        if (value === 1) {
-          return '待发货';
-        } else if (value === 2) {
-          return '已发货';
-        } else if (value === 3) {
-          return '已完成';
-        } else if (value === 4) {
-          return '已关闭';
-        } else if (value === 5) {
-          return '无效订单';
-        } else {
-          return '待付款';
-        }
-      },
-      formatPayStatus(value) {
-        if (value === 0) {
-          return '未支付';
-        } else if(value===4){
-          return '已退款';
-        }else{
-          return '已支付';
-        }
-      },
-      formatDeliverStatus(value) {
-        if (value === 0||value === 1) {
-          return '未发货';
-        } else {
-          return '已发货';
-        }
-      },
-      formatProductAttr(value){
-        if(value==null){
-          return '';
-        }else{
-          let attr = JSON.parse(value);
-          let result='';
-          for(let i=0;i<attr.length;i++){
-            result+=attr[i].key;
-            result+=":";
-            result+=attr[i].value;
-            result+=";";
-          }
-          return result;
-        }
-      }
-    },
     mounted () {
       this.init();
     },
     methods: {
+      formatNull(value) {
+        if(value===undefined||value===null||value==='') return '暂无'
+        return value
+      },
+      formatLongText(value) {
+        if(value===undefined||value===null||value==='') return '暂无'
+        if(value.length>8) return value.substr(0, 8) + '...'
+        return value
+      },
+      formatSourceType(value) { return value === 1 ? '小程序' : '公众号/H5' },
+      formatShippingType(value) { return value === 1 ? '快递' : '门店自提' },
+      formatStatus(value) {
+        const map = {1:'待发货',2:'已发货',3:'已完成',4:'已关闭',5:'无效订单'}
+        return map[value] || '待付款'
+      },
+      formatPayStatus(value) {
+        if (value === 0) return '未支付'
+        if (value === 4) return '已退款'
+        return '已支付'
+      },
+      formatDeliverStatus(value) { return (value === 0||value === 1) ? '未发货' : '已发货' },
+      formatProductAttr(value) {
+        if(value==null) return ''
+        let attr = JSON.parse(value)
+        let result = ''
+        for(let i=0;i<attr.length;i++) result += attr[i].key + ':' + attr[i].value + ';'
+        return result
+      },
        refund(data) {
         this.isAdd = false
         const _this = this.$refs.form2
@@ -612,7 +558,6 @@ import eRemark from './remark'
           refundReason: data.refundReason,
           refundPrice: data.refundPrice,
           deliveryName: data.deliveryName,
-          deliverySn: data.deliverySn,
           deliveryType: data.deliveryType,
           deliveryId: data.deliveryId,
           gainIntegral: data.gainIntegral,
@@ -831,14 +776,14 @@ import eRemark from './remark'
         }
       },
       handleUpdateReceiverInfo(){
-        this.$confirm('是否要修改收货信息?', '提示', {
+        ElMessageBox.confirm('是否要修改收货信息?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           // updateReceiverInfo(this.receiverInfo).then(response=>{
           //   this.receiverDialogVisible=false;
-          //   this.$message({
+          //   ElMessage({
           //     type: 'success',
           //     message: '修改成功!'
           //   });
@@ -856,7 +801,7 @@ import eRemark from './remark'
         this.moneyInfo.status=this.order._status;
       },
       handleUpdateMoneyInfo(){
-        this.$confirm('是否要修改费用信息?', '提示', {
+        ElMessageBox.confirm('是否要修改费用信息?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -864,7 +809,7 @@ import eRemark from './remark'
           this.moneyDialogVisible=false;
           // updateMoneyInfo(this.moneyInfo).then(response=>{
           //   this.moneyDialogVisible=false;
-          //   this.$message({
+          //   ElMessage({
           //     type: 'success',
           //     message: '修改成功!'
           //   });
@@ -880,13 +825,13 @@ import eRemark from './remark'
         this.message.content=null;
       },
       handleSendMessage(){
-        this.$confirm('是否要发送站内信?', '提示', {
+        ElMessageBox.confirm('是否要发送站内信?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.messageDialogVisible=false;
-          this.$message({
+          ElMessage({
             type: 'success',
             message: '发送成功!'
           });
@@ -899,7 +844,7 @@ import eRemark from './remark'
       },
 
       // handleCloseOrder(){
-      //   this.$confirm('是否要关闭?', '提示', {
+      //   ElMessageBox.confirm('是否要关闭?', '提示', {
       //     confirmButtonText: '确定',
       //     cancelButtonText: '取消',
       //     type: 'warning'
@@ -909,7 +854,7 @@ import eRemark from './remark'
       //     params.append("note",this.closeInfo.note);
       //     closeOrder(params).then(response=>{
       //       this.closeDialogVisible=false;
-      //       this.$message({
+      //       ElMessage({
       //         type: 'success',
       //         message: '订单关闭成功!'
       //       });
@@ -926,7 +871,7 @@ import eRemark from './remark'
       },
       // 备注订单
       handleMarkOrder(){
-        this.$confirm('是否要备注订单?', '提示', {
+        ElMessageBox.confirm('是否要备注订单?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -937,7 +882,7 @@ import eRemark from './remark'
           params.append("status",this.order._status);
           // updateOrderNote(params).then(response=>{
           //   this.markOrderDialogVisible=false;
-          //   this.$message({
+          //   ElMessage({
           //     type: 'success',
           //     message: '订单备注成功!'
           //   });
@@ -948,7 +893,7 @@ import eRemark from './remark'
         });
       },
       handleDeleteOrder(){
-        this.$confirm('是否要进行该删除操作?', '提示', {
+        ElMessageBox.confirm('是否要进行该删除操作?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -956,7 +901,7 @@ import eRemark from './remark'
           let params = new URLSearchParams();
           params.append("ids",[this.id]);
           // deleteOrder(params).then(response=>{
-          //   this.$message({
+          //   ElMessage({
           //     message: '删除成功！',
           //     type: 'success',
           //     duration: 1000

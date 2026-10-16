@@ -8,9 +8,9 @@
       <el-tab-pane label="Icons">
         <div v-for="item of svgIcons" :key="item" @click="handleClipboard(generateIconCode(item),$event)">
           <el-tooltip placement="top">
-            <div slot="content">
+            <template #content>
               {{ generateIconCode(item) }}
-            </div>
+            </template>
             <div class="icon-item">
               <svg-icon :icon-class="item" class-name="disabled" />
               <span>{{ item }}</span>
@@ -18,14 +18,14 @@
           </el-tooltip>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="Element-UI Icons">
+      <el-tab-pane label="Element-Plus Icons">
         <div v-for="item of elementIcons" :key="item" @click="handleClipboard(generateElementIconCode(item),$event)">
           <el-tooltip placement="top">
-            <div slot="content">
+            <template #content>
               {{ generateElementIconCode(item) }}
-            </div>
+            </template>
             <div class="icon-item">
-              <i :class="'el-icon-' + item" />
+              <el-icon><component :is="item" /></el-icon>
               <span>{{ item }}</span>
             </div>
           </el-tooltip>
@@ -35,30 +35,21 @@
   </div>
 </template>
 
-<script>
-import clipboard from '@/utils/clipboard'
-import svgIcons from './svg-icons'
-import elementIcons from './element-icons'
+<script setup>
+import clipboard from '@/utils/clipboard.js'
+import svgIcons from './svg-icons.js'
+import elementIcons from './element-icons.js'
 
-export default {
-  name: 'Icons',
-  data() {
-    return {
-      svgIcons,
-      elementIcons
-    }
-  },
-  methods: {
-    generateIconCode(symbol) {
-      return `<svg-icon icon-class="${symbol}" />`
-    },
-    generateElementIconCode(symbol) {
-      return `<i class="el-icon-${symbol}" />`
-    },
-    handleClipboard(text, event) {
-      clipboard(text, event)
-    }
-  }
+const generateIconCode = (symbol) => {
+  return `<svg-icon icon-class="${symbol}" />`
+}
+
+const generateElementIconCode = (symbol) => {
+  return `<el-icon><${symbol} /></el-icon>`
+}
+
+const handleClipboard = (text, event) => {
+  clipboard(text, event)
 }
 </script>
 

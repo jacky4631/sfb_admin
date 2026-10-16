@@ -3,37 +3,35 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <el-input v-model="query.filter" clearable size="small" placeholder="全表模糊搜索" style="width: 200px;"
-                  class="filter-item" @keyup.enter.native="crud.toQuery"/>
+                  class="filter-item" @keyup.enter="crud.toQuery"/>
         <rrOperation :crud="crud"/>
       </div>
       <crudOperation>
-        <el-button
-            slot="left"
+        <template #left>
+          <el-button
+              class="filter-item"
+              type="danger"
+              size="small"
+              :loading="delLoading"
+              :disabled="crud.selections.length === 0"
+              @click="doDelete(crud.selections)"
+          >
+            强退
+          </el-button>
+          <el-button
             class="filter-item"
             type="danger"
-            icon="el-icon-delete"
-            size="mini"
+            size="small"
             :loading="delLoading"
-            :disabled="crud.selections.length === 0"
-            @click="doDelete(crud.selections)"
-        >
-          强退
-        </el-button>
-        <el-button
-          slot="left"
-          class="filter-item"
-          type="danger"
-          icon="el-icon-delete"
-          size="mini"
-          :loading="delLoading"
-          @click="doDeleteMonth()"
-        >
-          强退1月
-        </el-button>
+            @click="doDeleteMonth()"
+          >
+            强退1月
+          </el-button>
+        </template>
       </crudOperation>
     </div>
     <!--表格渲染-->
-    <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;"
+    <el-table ref="tableRef" v-loading="crud.loading" :data="crud.data" style="width: 100%;"
               @selection-change="crud.selectionChangeHandler">
       <el-table-column type="selection" width="55"/>
       <el-table-column v-if="columns.visible('userName')" prop="userName" label="用户名"/>
@@ -41,26 +39,27 @@
       <el-table-column v-if="columns.visible('ip')" prop="ip" label="登录IP"/>
       <el-table-column v-if="columns.visible('address')" :show-overflow-tooltip="true" prop="address" label="登录地点"/>
       <el-table-column v-if="columns.visible('loginTime')" prop="loginTime" label="登录时间">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ parseTime(scope.row.loginTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="100px" fixed="right">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-popover
-              :ref="scope.$index"
-              v-permission="['admin']"
+              :ref="(el) => setPopoverRef(scope.$index, el)"
               placement="top"
               width="180"
           >
             <p>确定强制退出该用户吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="$refs[scope.$index].doClose()">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="delMethod(scope.row, scope.$index)">
+              <el-button size="small" link @click="hidePopover(scope.$index)">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="delMethod(scope.row, scope.$index)">
                 确定
               </el-button>
             </div>
-            <el-button slot="reference" size="mini" type="text">强退</el-button>
+            <template #reference>
+              <el-button v-permission="['admin']" size="small" link>强退</el-button>
+            </template>
           </el-popover>
         </template>
       </el-table-column>
@@ -70,100 +69,96 @@
   </div>
 </template>
 
-<script>
-import {delM, delT} from '@/api/monitor/online'
-import CRUD, {presenter, header, crud} from '@crud/crud'
-import rrOperation from '@crud/RR.operation'
-import crudOperation from '@crud/CRUD.operation'
-import pagination from '@crud/Pagination'
+<script setup>
+import { ref, onMounted } from 'vue'
+import { ElMessageBox } from 'element-plus'
+import { delM, delT } from '@/api/monitor/online.js'
+import CRUD, { presenter, header } from '@/components/Crud/crud.js'
+import { parseTime } from '@/utils/index.js'
+import rrOperation from '@/components/Crud/RR.operation.vue'
+import crudOperation from '@/components/Crud/CRUD.operation.vue'
+import pagination from '@/components/Crud/Pagination.vue'
 
-// crud交由presenter持有
-const defaultCrud = CRUD({url: 'auth/online', title: '在线用户', query: {type: 1}})
-export default {
-  name: 'OnlineUser',
-  components: {pagination, crudOperation, rrOperation},
-  mixins: [presenter(defaultCrud), header(), crud()],
-  data() {
-    return {
-      delLoading: false,
-      permission: {}
-    }
-  },
-  created() {
-    this.crud.msg.del = '强退成功！'
-    this.crud.optShow = {
-      add: false,
-      edit: false,
-      del: false,
-      download: true
-    }
-  },
-  methods: {
-    // 获取数据前设置好接口地址
-    beforeInit() {
-      this.url = 'auth/online'
-      return true
-    },
-    doDelete(datas) {
-      this.$confirm(`确认强退选中的${datas.length}个用户?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.delMethod(datas)
-      }).catch(() => {
-      })
-    },
-    doDeleteMonth() {
-      this.$confirm(`确认强退一个月未登录的用户?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.delMonth()
-      }).catch(() => {
-      })
-    },
-    // 踢出用户
-    delMethod(data, index) {
-      const ids = []
+const delLoading = ref(false)
+const permission = ref({})
+const popoverRefs = {}
 
-      if (data instanceof Array) {
-        data.forEach(val => {
-          ids.push(val.userName + ":" + val.key)
-        })
-      } else {
-        ids.push(data.userName + ":" + data.key)
-      }
-      this.delLoading = true
-      delT(ids).then(() => {
-        this.delLoading = false
-        if (this.$refs[index]) {
-          this.$refs[index].doClose()
-        }
-        this.crud.dleChangePage(1)
-        this.crud.delSuccessNotify()
-        this.crud.toQuery()
-      }).catch(() => {
-        this.delLoading = false
-        if (this.$refs[index]) {
-          this.$refs[index].doClose()
-        }
-      })
-    },
+const defaultCrud = CRUD({ url: 'auth/online', title: '在线用户', query: { type: 1 } })
+const { crud, columns, tableRef, query } = presenter(defaultCrud)
 
-    // 踢出一个月未登录用户
-    delMonth() {
-      this.delLoading = true
-      delM().then(() => {
-        this.delLoading = false
-        this.crud.dleChangePage(1)
-        this.crud.delSuccessNotify()
-        this.crud.toQuery()
-      }).catch(() => {
-        this.delLoading = false
-      })
-    }
+const setPopoverRef = (index, el) => {
+  if (el) {
+    popoverRefs[index] = el
   }
+}
+
+const hidePopover = (index) => {
+  if (popoverRefs[index]) {
+    popoverRefs[index].hide()
+  }
+}
+
+onMounted(() => {
+  crud.msg.del = '强退成功！'
+  crud.optShow = {
+    add: false,
+    edit: false,
+    del: false,
+    download: true
+  }
+})
+
+const doDelete = (datas) => {
+  ElMessageBox.confirm(`确认强退选中的${datas.length}个用户?`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    delMethod(datas)
+  }).catch(() => {
+  })
+}
+
+const doDeleteMonth = () => {
+  ElMessageBox.confirm(`确认强退一个月未登录的用户?`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    delMonth()
+  }).catch(() => {
+  })
+}
+
+const delMethod = (data, index) => {
+  const ids = []
+  if (data instanceof Array) {
+    data.forEach(val => {
+      ids.push(val.userName + ":" + val.key)
+    })
+  } else {
+    ids.push(data.userName + ":" + data.key)
+  }
+  delLoading.value = true
+  delT(ids).then(() => {
+    delLoading.value = false
+    crud.dleChangePage(1)
+    crud.delSuccessNotify()
+    crud.toQuery()
+  }).catch(() => {
+    delLoading.value = false
+  })
+}
+
+const delMonth = () => {
+  delLoading.value = true
+  delM().then(() => {
+    delLoading.value = false
+    crud.dleChangePage(1)
+    crud.delSuccessNotify()
+    crud.toQuery()
+  }).catch(() => {
+    delLoading.value = false
+  })
 }
 </script>

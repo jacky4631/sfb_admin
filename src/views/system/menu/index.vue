@@ -4,15 +4,15 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.blurry" clearable size="small" placeholder="模糊搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" />
+        <el-input v-model="query.blurry" clearable size="small" placeholder="模糊搜索" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
         <el-date-picker
           v-model="query.createTime"
-          :default-time="['00:00:00','23:59:59']"
+          :default-time="[new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 23, 59, 59)]"
           type="daterange"
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
@@ -21,13 +21,13 @@
       <crudOperation :permission="permission" />
     </div>
     <!--表单渲染-->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="580px">
+    <el-dialog :model-value="crud.status.cu > 0" append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :title="crud.status.title" width="580px">
       <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="菜单类型" prop="type">
-          <el-radio-group v-model="form.type" size="mini" style="width: 178px">
-            <el-radio-button label="0">目录</el-radio-button>
-            <el-radio-button label="1">菜单</el-radio-button>
-            <el-radio-button label="2">按钮</el-radio-button>
+          <el-radio-group v-model="form.type" size="small" style="width: 178px">
+            <el-radio-button :value="0">目录</el-radio-button>
+            <el-radio-button :value="1">菜单</el-radio-button>
+            <el-radio-button :value="2">按钮</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item v-show="form.type.toString() !== '2'" label="菜单图标" prop="icon">
@@ -38,28 +38,32 @@
             @show="$refs['iconSelect'].reset()"
           >
             <IconSelect ref="iconSelect" @selected="selected" />
-            <el-input slot="reference" v-model="form.icon" style="width: 450px;" placeholder="点击选择图标" readonly>
-              <svg-icon v-if="form.icon" slot="prefix" :icon-class="form.icon" class="el-input__icon" style="height: 32px;width: 16px;" />
-              <i v-else slot="prefix" class="el-icon-search el-input__icon" />
-            </el-input>
+            <template #reference>
+              <el-input v-model="form.icon" style="width: 450px;" placeholder="点击选择图标" readonly>
+                <template #prefix>
+                  <svg-icon v-if="form.icon" :icon-class="form.icon" class="el-input__icon" style="height: 32px;width: 16px;" />
+                  <el-icon v-else class="el-input__icon"><Search /></el-icon>
+                </template>
+              </el-input>
+            </template>
           </el-popover>
         </el-form-item>
         <el-form-item v-show="form.type.toString() !== '2'" label="外链菜单" prop="iframe">
-          <el-radio-group v-model="form.iframe" size="mini">
-            <el-radio-button :label="true">是</el-radio-button>
-            <el-radio-button :label="false">否</el-radio-button>
+          <el-radio-group v-model="form.iframe" size="small">
+            <el-radio-button :value="true">是</el-radio-button>
+            <el-radio-button :value="false">否</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item v-show="form.type.toString() === '1'" label="菜单缓存" prop="cache">
-          <el-radio-group v-model="form.cache" size="mini">
-            <el-radio-button label="true">是</el-radio-button>
-            <el-radio-button label="false">否</el-radio-button>
+          <el-radio-group v-model="form.cache" size="small">
+            <el-radio-button :value="true">是</el-radio-button>
+            <el-radio-button :value="false">否</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item v-show="form.type.toString() !== '2'" label="菜单可见" prop="hidden">
-          <el-radio-group v-model="form.hidden" size="mini">
-            <el-radio-button label="false">是</el-radio-button>
-            <el-radio-button label="true">否</el-radio-button>
+          <el-radio-group v-model="form.hidden" size="small">
+            <el-radio-button :value="false">是</el-radio-button>
+            <el-radio-button :value="true">否</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item v-show="form.type.toString() !== '2'" label="菜单标题" prop="name">
@@ -84,25 +88,27 @@
           <el-input v-model="form.component" style="width: 178px;" placeholder="组件路径" />
         </el-form-item>
         <el-form-item label="上级类目" prop="pid">
-          <treeselect v-model="form.pid" :options="menus" style="width: 450px;" placeholder="选择上级类目" />
+          <el-tree-select v-model="form.pid" :data="menus" :props="{ children: 'children', label: 'label' }" node-key="id" check-strictly :render-after-expand="false" style="width: 450px;" placeholder="选择上级类目" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="crud.cancelCU">取消</el-button>
-        <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
-      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button link @click="crud.cancelCU">取消</el-button>
+          <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
+        </div>
+      </template>
     </el-dialog>
     <!--表格渲染-->
     <el-table ref="table" v-loading="crud.loading" :data="crud.data" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id" @select="crud.selectChange" @select-all="crud.selectAllChange" @selection-change="crud.selectionChangeHandler">
       <el-table-column type="selection" width="55" />
       <el-table-column v-if="columns.visible('name')" :show-overflow-tooltip="true" label="菜单名称" width="125px" prop="name" />
       <el-table-column v-if="columns.visible('icon')" prop="icon" label="图标" align="center" width="60px">
-        <template slot-scope="scope">
+        <template #default="scope">
           <svg-icon :icon-class="scope.row.icon" />
         </template>
       </el-table-column>
       <el-table-column v-if="columns.visible('sort')" prop="sort" align="center" label="排序">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.sort }}
         </template>
       </el-table-column>
@@ -110,30 +116,30 @@
       <el-table-column v-if="columns.visible('permission')" :show-overflow-tooltip="true" prop="permission" label="权限标识" />
       <el-table-column v-if="columns.visible('component')" :show-overflow-tooltip="true" prop="component" label="组件路径" />
       <el-table-column v-if="columns.visible('iframe')" prop="iframe" label="外链" width="75px">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="scope.row.iframe">是</span>
           <span v-else>否</span>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.visible('cache')" prop="cache" label="缓存" width="75px">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="scope.row.cache">是</span>
           <span v-else>否</span>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.visible('hidden')" prop="hidden" label="可见" width="75px">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="scope.row.hidden">否</span>
           <span v-else>是</span>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.visible('createTime')" prop="createTime" label="创建日期" width="135px">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-permission="['admin','menu:edit','menu:del']" label="操作" width="130px" align="center" fixed="right">
-        <template slot-scope="scope">
+      <el-table-column v-if="checkPermission(['admin','menu:edit','menu:del'])" label="操作" width="130px" align="center" fixed="right">
+        <template #default="scope">
           <udOperation
             :data="scope.row"
             :permission="permission"
@@ -146,21 +152,22 @@
 </template>
 
 <script>
-import crudMenu from '@/api/system/menu'
-import IconSelect from '@/components/IconSelect'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
-import rrOperation from '@crud/RR.operation'
-import crudOperation from '@crud/CRUD.operation'
-import udOperation from '@crud/UD.operation'
+import checkPermission from '@/utils/permission.js'
+import { Search } from '@element-plus/icons-vue'
+import crudMenu from '@/api/system/menu.js'
+import IconSelect from '@/components/IconSelect/index.vue'
+
+import CRUD, { presenter, header, form, crud } from '@/components/Crud/crud.js'
+import rrOperation from '@/components/Crud/RR.operation.vue'
+import crudOperation from '@/components/Crud/CRUD.operation.vue'
+import udOperation from '@/components/Crud/UD.operation.vue'
 
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '菜单', url: 'api/menus', crudMethod: { ...crudMenu }})
 const defaultForm = { id: null, name: null, sort: 999, path: null, component: null, componentName: null, iframe: false, roles: [], pid: 0, icon: null, cache: false, hidden: false, type: 0, permission: null }
 export default {
   name: 'Menu',
-  components: { Treeselect, IconSelect, crudOperation, rrOperation, udOperation },
+  components: { IconSelect, crudOperation, rrOperation, udOperation, Search },
   mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
   data() {
     return {
@@ -181,6 +188,18 @@ export default {
     }
   },
   methods: {
+    checkPermission,
+    // 列表按「排序」字段升序展示，树形结构的每一级子节点都递归排序
+    [CRUD.HOOK.afterRefresh]() {
+      this.sortBySort(this.crud.data)
+    },
+    sortBySort(list) {
+      if (!Array.isArray(list)) {
+        return
+      }
+      list.sort((a, b) => (a.sort || 0) - (b.sort || 0))
+      list.forEach(item => this.sortBySort(item.children))
+    },
     // 新增与编辑前做的操作
     [CRUD.HOOK.afterToCU](crud, form) {
       crudMenu.getMenusTree().then(res => {
@@ -188,6 +207,8 @@ export default {
         const menu = { id: 0, label: '顶级类目', children: [] }
         menu.children = res
         this.menus.push(menu)
+        // 上级类目下拉树与列表保持一致的排序规则
+        this.sortBySort(this.menus)
       })
     },
     // 选中图标
@@ -198,8 +219,8 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-  ::v-deep .el-input-number .el-input__inner {
+<style lang="scss" scoped>
+  :deep(.el-input-number .el-input__inner) {
     text-align: left;
   }
 </style>

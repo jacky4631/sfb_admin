@@ -6729,5 +6729,5 @@
     ], function( preset ) {
         return preset;
     });
-    return require('webuploader');
+    return require('public/UEditor/third-party/webuploader/webuploader.js');
 });

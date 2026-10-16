@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="isAdd ? '新增' : '编辑'" width="500px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '编辑'" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
 <!--      <el-form-item label="主体id">-->
 <!--        <el-input v-model="form.id"/>-->
@@ -17,17 +17,19 @@
 <!--        <el-input v-model="form.phone"/>-->
 <!--      </el-form-item>-->
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <template #footer><div class="dialog-footer">
       <!--<el-input v-model="form.groupName" />-->
-      <el-button type="text" @click="cancel">取消</el-button>
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
-import { add, edit } from '@/api/mwPayCompany'
-import picUpload from '@/components/pic-upload'
+import { ElNotification } from 'element-plus'
+import { add, edit } from '@/api/mwPayCompany.js'
+import picUpload from '@/components/pic-upload/index.vue'
 export default {
   components: { picUpload },
   props: {
@@ -63,7 +65,7 @@ export default {
     doAdd() {
       add(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '添加成功',
           type: 'success',
           duration: 2500
@@ -78,7 +80,7 @@ export default {
     doEdit() {
       edit(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '修改成功',
           type: 'success',
           duration: 2500

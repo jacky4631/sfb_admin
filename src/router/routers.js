@@ -1,23 +1,21 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Layout from '../layout/index'
-
-Vue.use(Router)
+// 使用动态导入避免与 store/permission 形成 ESM 循环依赖
+const Layout = () => import('@/layout/index.vue')
 
 export const constantRouterMap = [
-  { path: '/login',
+  {
+    path: '/login',
     meta: { title: '登录', noCache: true },
-    component: (resolve) => require(['@/views/login'], resolve),
+    component: () => import('@/views/login.vue'),
     hidden: true
   },
   {
     path: '/404',
-    component: (resolve) => require(['@/views/features/404'], resolve),
+    component: () => import('@/views/features/404.vue'),
     hidden: true
   },
   {
     path: '/401',
-    component: (resolve) => require(['@/views/features/401'], resolve),
+    component: () => import('@/views/features/401.vue'),
     hidden: true
   },
   {
@@ -27,7 +25,7 @@ export const constantRouterMap = [
     children: [
       {
         path: '/redirect/:path*',
-        component: (resolve) => require(['@/views/features/redirect'], resolve)
+        component: () => import('@/views/features/redirect.vue')
       }
     ]
   },
@@ -38,7 +36,7 @@ export const constantRouterMap = [
     children: [
       {
         path: 'dashboard',
-        component: (resolve) => require(['@/views/home'], resolve),
+        component: () => import('@/views/home.vue'),
         name: 'Dashboard',
         meta: { title: '首页', icon: 'index', affix: true, noCache: true }
       }
@@ -52,7 +50,7 @@ export const constantRouterMap = [
     children: [
       {
         path: 'center',
-        component: (resolve) => require(['@/views/system/user/center'], resolve),
+        component: () => import('@/views/system/user/center.vue'),
         name: '个人中心',
         meta: { title: '个人中心' }
       }
@@ -60,18 +58,14 @@ export const constantRouterMap = [
   },
   {
     path: '/mshop/materia/index',
-    name: `images`,
+    name: 'images',
     meta: {
       title: '上传图片',
       noCache: true
     },
-    component: (resolve) => require(['@/components/editorMaterial/index'], resolve),
+    component: () => import('@/components/editorMaterial/index.vue'),
     hidden: true
   }
 ]
 
-export default new Router({
-  mode: 'history',
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
+export default constantRouterMap

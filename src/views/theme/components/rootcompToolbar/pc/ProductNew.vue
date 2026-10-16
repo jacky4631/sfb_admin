@@ -5,17 +5,13 @@
     <div class="editorNewProduct">
         <h2>新品首发</h2>
         <ul class="editorList">
-            <draggable v-model="activeComponent.componentContent.product">
-            <li
-            class="item"
-            v-for="(item, index) in activeComponent.componentContent.product"
-            :key="index"
-            >
+            <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.product">
+            <template #item="{ element: item, index: index }"><li class="item">
             <DraggableSlot :obj="item" :index="index" @deleteIt="deleteIt">
                 <div class="addContent">
                     <ToolSingleImg
                     v-if="item.pic !== undefined && item.pic !== null"
-                    :imageUrl.sync="item.pic" />
+                    v-model:imageUrl="item.pic" />
                     <div class="titleBox">{{ item.title }}</div>
                     <el-input
                         placeholder="描述"
@@ -46,7 +42,8 @@
                 </div>
             </DraggableSlot>
             </li>
-            </draggable>
+            </template>
+</draggable>
             <div
             class="addImgBtn"
             @click="addImgText(activeComponent.componentContent.product.length)">
@@ -55,25 +52,26 @@
         </ul>
         <el-dialog
         title="提示"
-        :visible.sync="dialogVisible"
+        v-model="dialogVisible"
         width="30%"
         :before-close="deleteItem"
         >
             <span>点击确定删除此项</span>
-            <span slot="footer" class="dialog-footer">
+            <template #footer><span class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="dialogVisible = false"
                 >确 定</el-button
             >
-            </span>
+            </span></template>
         </el-dialog>
-        <el-dialog :visible.sync="dialogImageVisible">
+        <el-dialog v-model="dialogImageVisible">
             <img width="100%" :src="dialogImageUrl" alt="" />
         </el-dialog>
     </div>
 </template>
 
 <script>
+import { ElMessageBox } from 'element-plus'
 import Draggable from 'vuedraggable'
 import { toolMixin } from '@/mixins/tool.js'
 import ToolSingleImg from '@/views/theme/components/rootcompToolbar/toolModule/tool-single-img.vue'
@@ -103,7 +101,7 @@ export default {
       })
     },
     deleteItem (item, index) {
-        this.$confirm('确定删除此项？')
+        ElMessageBox.confirm('确定删除此项？')
         .then((_) => {
             this.activeComponent.componentContent.product.splice(index, 1)
         })

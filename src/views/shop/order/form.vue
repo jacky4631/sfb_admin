@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="isAdd ? '新增' : '去发货'" width="500px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '去发货'" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
       <el-form-item label="快递公司">
         <!--<el-input v-model="form.deliveryName" style="width: 370px;"/>-->
@@ -16,16 +16,18 @@
         <el-input v-model="form.deliveryId" style="width: 370px;" />
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="cancel">取消</el-button>
+    <template #footer><div class="dialog-footer">
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
+import { ElNotification } from 'element-plus'
 
-import { add, edit, get,updateDelivery } from '@/api/mwStoreOrder'
+import { add, edit, get,updateDelivery } from '@/api/mwStoreOrder.js'
 export default {
   props: {
     isAdd: {
@@ -66,7 +68,7 @@ export default {
     doAdd() {
       add(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '添加成功',
           type: 'success',
           duration: 2500
@@ -82,7 +84,7 @@ export default {
       if(this.form._status == 4){
         updateDelivery(this.form).then(res => {
           this.resetForm()
-          this.$notify({
+          ElNotification({
             title: '操作成功',
             type: 'success',
             duration: 2500
@@ -96,7 +98,7 @@ export default {
       }else{
         edit(this.form).then(res => {
           this.resetForm()
-          this.$notify({
+          ElNotification({
             title: '操作成功',
             type: 'success',
             duration: 2500

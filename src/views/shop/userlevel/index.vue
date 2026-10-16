@@ -7,11 +7,11 @@
         <el-button
           v-permission="['admin','MWSYSTEMUSERLEVEL_ALL','MWSYSTEMUSERLEVEL_CREATE']"
           class="filter-item"
-          size="mini"
+          size="small"
           type="primary"
-          icon="el-icon-plus"
+         
           @click="add"
-        >新增</el-button>
+        ><el-icon><Plus /></el-icon>新增</el-button>
       </div>
     </div>
     <!--表单组件-->
@@ -21,7 +21,7 @@
       <el-table-column prop="id" label="id" />
       <el-table-column prop="rechargeId" label="充值id 对应 财务管理-充值金额配置"  width="170px"/>
       <el-table-column prop="type" label="类型" >
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ parseType(scope.row.type) }}</span>
         </template>
       </el-table-column>
@@ -32,32 +32,31 @@
       <el-table-column prop="discountTwo" label="二级分佣比例（%）"  width="150px"/>
       <el-table-column prop="validDate" label="有效时间" />
       <el-table-column prop="isForever" label="是否永久">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.isForever === 1" style="cursor: pointer" :type="''">是</el-tag>
+        <template #default="scope">
+          <el-tag v-if="scope.row.isForever === 1" style="cursor: pointer" type="primary">是</el-tag>
           <el-tag v-else style="cursor: pointer" :type=" 'info' ">否</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="isShow" label="是否显示">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.isShow === 1" style="cursor: pointer" :type="''">是</el-tag>
+        <template #default="scope">
+          <el-tag v-if="scope.row.isShow === 1" style="cursor: pointer" type="primary">是</el-tag>
           <el-tag v-else style="cursor: pointer" :type=" 'info' ">否</el-tag>
         </template>
       </el-table-column>
       <el-table-column v-if="checkPermission(['admin','MWSYSTEMUSERLEVEL_ALL','MWSYSTEMUSERLEVEL_EDIT','MWSYSTEMUSERLEVEL_DELETE'])" label="操作" width="150px" align="center">
-        <template slot-scope="scope">
-          <el-button v-permission="['admin','MWSYSTEMUSERLEVEL_ALL','MWSYSTEMUSERLEVEL_EDIT']" size="mini" type="primary" icon="el-icon-edit" @click="edit(scope.row)" />
+        <template #default="scope">
+          <el-button v-permission="['admin','MWSYSTEMUSERLEVEL_ALL','MWSYSTEMUSERLEVEL_EDIT']" size="small" type="primary" @click="edit(scope.row)" ><el-icon><Edit /></el-icon></el-button>
           <el-popover
             :ref="scope.row.id"
-            v-permission="['admin','MWSYSTEMUSERLEVEL_ALL','MWSYSTEMUSERLEVEL_DELETE']"
             placement="top"
             width="180"
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+              <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini" />
+            <template #reference><el-button v-permission="['admin','MWSYSTEMUSERLEVEL_ALL','MWSYSTEMUSERLEVEL_DELETE']" type="danger" size="small" ><el-icon><Delete /></el-icon></el-button></template>
           </el-popover>
         </template>
       </el-table-column>
@@ -75,10 +74,11 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { del } from '@/api/mwSystemUserLevel'
-import eForm from './form'
+import { ElNotification } from 'element-plus'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { del } from '@/api/mwSystemUserLevel.js'
+import eForm from './form.vue'
 export default {
   components: { eForm },
   mixins: [initData],
@@ -118,17 +118,17 @@ export default {
       this.delLoading = true
       del(id).then(res => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         this.dleChangePage()
         this.init()
-        this.$notify({
+        ElNotification({
           title: '删除成功',
           type: 'success',
           duration: 2500
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         console.log(err.response.data.message)
       })
     },

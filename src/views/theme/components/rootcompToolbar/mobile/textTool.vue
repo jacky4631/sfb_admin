@@ -113,9 +113,9 @@
         </div>
         <div class="moreBox" v-show="activeComponent.componentContent.showMore">
           <div class="radio">
-            <el-radio v-model="activeComponent.componentContent.styleValue" label="1">样式一</el-radio>
-            <el-radio v-model="activeComponent.componentContent.styleValue" label="2">样式二</el-radio>
-            <el-radio v-model="activeComponent.componentContent.styleValue" label="3">样式三</el-radio>
+            <el-radio v-model="activeComponent.componentContent.styleValue" value="1">样式一</el-radio>
+            <el-radio v-model="activeComponent.componentContent.styleValue" value="2">样式二</el-radio>
+            <el-radio v-model="activeComponent.componentContent.styleValue" value="3">样式三</el-radio>
           </div>
           <div class="link">
             <label>链接</label>
@@ -329,11 +329,11 @@ export default {
   .block {
     height: 30px;
   }
-  >>> .el-color-picker__trigger {
+  :deep(.el-color-picker__trigger) {
     width: 45px;
     height: 26px;
   }
-  >>> .el-icon-arrow-down:before {
+  :deep(.el-icon-arrow-down:before) {
     display: none;
   }
 }

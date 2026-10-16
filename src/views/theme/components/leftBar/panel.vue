@@ -18,20 +18,8 @@
         <div class="itemBox" v-for="(item, index) of categoryList" :key="index">
           <h3>{{ item.title }}</h3>
           <div class="childList">
-            <draggable
-              class="dragArea list-group"
-              :list="item.classList"
-              :clone="cloneItem"
-              :group="{ name: 'pageEdit', pull: 'clone', put: false }"
-              :options="{ sort: false }"
-            >
-              <div
-                @mouseover="hoverItem(classItem)"
-                @mouseout="hoverItemOut"
-                class="childItem list-group-item"
-                v-for="(classItem, index) of item.classList"
-                :key="index"
-              >
+            <draggable :item-key="(item) => item" class="dragArea list-group" :list="item.classList" :clone="cloneItem" :group="{ name: 'pageEdit', pull: 'clone', put: false }" :sort="false">
+              <template #item="{ element: classItem, index: index }"><div @mouseover="hoverItem(classItem)" @mouseout="hoverItemOut" class="childItem list-group-item">
                 <div class="contentBox">
                   <img
                     :src="
@@ -45,7 +33,8 @@
                 </div>
                 <div class="cloneText">组件放置区域</div>
               </div>
-            </draggable>
+              </template>
+</draggable>
           </div>
         </div>
       </div>
@@ -56,15 +45,16 @@
       @click="sidebarShow = !sidebarShow"
       :class="{ on: sidebarShow }"
     >
-      <i class="el-icon-arrow-right iconfont icon-arrow-right"></i>
-      <i class="el-icon-arrow-left iconfont icon-arrow-left"></i>
+      <!-- 箭头由 el-icon 的 SVG 提供；类名避开 iconfont.css 的 .icon-arrow-*（其 :before 会叠加多余字形） -->
+      <el-icon class="toggle-arrow-right"><ArrowRight /></el-icon>
+      <el-icon class="toggle-arrow-left"><ArrowLeft /></el-icon>
     </div>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
-import { mapGetters } from 'vuex'
+import { useContainerStore } from '@/store/modules/container.js'
 // 默认配置文件
 import panelList from './panelList.js'
 export default {
@@ -92,9 +82,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'terminal'
-    ]),
+    terminal() {
+      return useContainerStore().terminal
+    },
     categoryList () {
       if (this.terminal === 3) {
         return panelList[0]
@@ -253,16 +243,16 @@ export default {
   cursor: pointer;
   z-index: 9;
 
-  .icon-arrow-left {
+  .toggle-arrow-left {
     display: none;
   }
 
   &.on {
-    .icon-arrow-left {
+    .toggle-arrow-left {
       display: block;
     }
 
-    .icon-arrow-right {
+    .toggle-arrow-right {
       display: none;
     }
   }

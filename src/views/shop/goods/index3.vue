@@ -3,19 +3,19 @@
     <!--工具栏-->
     <div class="head-container">
       <!-- 搜索 -->
-      <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" />
+      <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
       <el-select v-model="query.type" clearable placeholder="类型" class="filter-item" style="width: 130px">
         <el-option v-for="item in queryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
       </el-select>
-      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+      <el-button class="filter-item" size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>
       <!-- 新增 -->
       <el-button
         type="danger"
         class="filter-item"
-        size="mini"
-        icon="el-icon-refresh"
+        size="small"
+       
         @click="toQuery"
-      >刷新</el-button>
+      ><el-icon><Refresh /></el-icon>刷新</el-button>
     </div>
     <!--表单组件-->
     <eForm ref="form" :is-add="isAdd" />
@@ -23,7 +23,7 @@
     <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="id" label="商品id" />
       <el-table-column ref="table" prop="image" label="商品图片">
-        <template slot-scope="scope">
+        <template #default="scope">
           <a :href="scope.row.image" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.image" alt="点击打开" class="el-avatar"></a>
         </template>
       </el-table-column>
@@ -33,20 +33,19 @@
       <el-table-column prop="sales" label="销量" />
       <el-table-column prop="stock" label="库存" />
       <el-table-column v-if="checkPermission(['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT','MWSTOREPRODUCT_DELETE'])" label="操作" width="150px" align="center">
-        <template slot-scope="scope">
-          <el-button v-permission="['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT']" size="mini" type="primary" icon="el-icon-edit" @click="edit(scope.row)" />
+        <template #default="scope">
+          <el-button v-permission="['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT']" size="small" type="primary" @click="edit(scope.row)" ><el-icon><Edit /></el-icon></el-button>
           <el-popover
             :ref="scope.row.id"
-            v-permission="['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_DELETE']"
             placement="top"
             width="180"
           >
             <p>确定恢复本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+              <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini">恢复</el-button>
+            <template #reference><el-button v-permission="['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon>恢复</el-button></template>
           </el-popover>
         </template>
       </el-table-column>
@@ -64,10 +63,11 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { recovery, onsale } from '@/api/mwStoreProduct'
-import eForm from './form'
+import { ElNotification, ElMessage, ElMessageBox } from 'element-plus'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { recovery, onsale } from '@/api/mwStoreProduct.js'
+import eForm from './form.vue'
 export default {
   components: { eForm },
   mixins: [initData],
@@ -101,29 +101,29 @@ export default {
       this.delLoading = true
       recovery(id).then(res => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         this.dleChangePage()
         this.init()
-        this.$notify({
+        ElNotification({
           title: '恢复成功',
           type: 'success',
           duration: 2500
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         console.log(err.response.data.message)
       })
     },
     onSale(id, status) {
-      this.$confirm(`确定进行[${status ? '下架' : '上架'}]操作?`, '提示', {
+      ElMessageBox.confirm(`确定进行[${status ? '下架' : '上架'}]操作?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
           onsale(id, { status: status }).then(({ data }) => {
-            this.$message({
+            ElMessage({
               message: '操作成功',
               type: 'success',
               duration: 1000,

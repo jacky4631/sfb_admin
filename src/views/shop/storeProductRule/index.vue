@@ -10,19 +10,19 @@
         <el-table-column v-if="columns.visible('id')" prop="id" label="id" />
         <el-table-column v-if="columns.visible('ruleName')" prop="ruleName" label="规格名称" />
         <el-table-column v-if="columns.visible('ruleValue')" prop="ruleValue" label="规格值" >
-          <template slot-scope="scope">
+          <template #default="scope">
             <div v-for="(item, index) in scope.row.ruleValue">
               {{ item.value }} : {{ item.detail.join(',')}}
             </div>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('createTime')" prop="createTime" label="创建时间">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column v-permission="['admin','mwStoreProductRule:edit','mwStoreProductRule:del']" label="操作" width="150px" align="center">
-          <template slot-scope="scope">
+        <el-table-column v-if="checkPermission(['admin','mwStoreProductRule:edit','mwStoreProductRule:del'])" label="操作" width="150px" align="center">
+          <template #default="scope">
             <udOperation
               :data="scope.row"
               :permission="permission"
@@ -37,14 +37,15 @@
 </template>
 
 <script>
-import crudMwStoreProductRule from '@/api/storeProductRule'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
-import rrOperation from '@crud/RR.operation'
-import crudOperation from '@crud/CRUD.operation'
-import udOperation from '@crud/UD.operation'
-import pagination from '@crud/Pagination'
-import MaterialList from "@/components/material"
-import add from './form'
+import checkPermission from '@/utils/permission.js'
+import crudMwStoreProductRule from '@/api/storeProductRule.js'
+import CRUD, { presenter, header, form, crud } from '@/components/Crud/crud.js'
+import rrOperation from '@/components/Crud/RR.operation.vue'
+import crudOperation from '@/components/Crud/CRUD.operation.vue'
+import udOperation from '@/components/Crud/UD.operation.vue'
+import pagination from '@/components/Crud/Pagination.vue'
+import MaterialList from "@/components/material/index.vue"
+import add from './form.vue'
 
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: 'sku规则', url: 'api/mwStoreProductRule', sort: 'id,desc', crudMethod: { ...crudMwStoreProductRule }})
@@ -65,6 +66,7 @@ export default {
   watch: {
   },
   methods: {
+    checkPermission,
     // 获取数据前设置好接口地址
     [CRUD.HOOK.beforeRefresh]() {
       return true

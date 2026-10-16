@@ -83,7 +83,7 @@ div.alignment,#custom{margin-left: 23px;margin-left: 28px\9;}
     border: 3px solid #1094fa;
 }
 #imgManager li.selected .icon {
-    background-image: url(images/success.png);
+    background-image: url(UEditor/dialogs/background/images/success.png);
     background-position: 75px 75px;
 }
 #imgManager li.selected .icon:hover {

@@ -78,7 +78,7 @@ export default {
         margin-right: 15px;
     }
   }
-  >>>.el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover{
+  :deep(.el-dropdown-menu__item:focus), :deep(.el-dropdown-menu__item:not(.is-disabled):hover){
     background-color: #F6F6F6;
     color: #333333;
   }

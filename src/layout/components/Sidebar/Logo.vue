@@ -13,23 +13,22 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import Logo from '@/assets/images/logo.png'
-export default {
-  name: 'SidebarLogo',
-  props: {
-    collapse: {
-      type: Boolean,
-      required: true
-    }
-  },
-  data() {
-    return {
-      title: 'MSHOP-后台管理',
-      logo: Logo
-    }
+
+defineOptions({
+  name: 'SidebarLogo'
+})
+
+defineProps({
+  collapse: {
+    type: Boolean,
+    required: true
   }
-}
+})
+
+const title = '迈沃管理系统'
+const logo = Logo
 </script>
 
 <style lang="scss" scoped>

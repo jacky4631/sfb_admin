@@ -119,18 +119,18 @@ import categoryList from '@/views/theme/components/rootcompToolbar/mobile/catego
 import productList from '@/views/theme/components/rootcompToolbar/mobile/productList.vue'
 
 // pc 21.4月单商户改版
-import NavPersonal from '@/views/theme/components/rootcompToolbar/pc/NavPersonal'
-import NavType from '@/views/theme/components/rootcompToolbar/pc/NavType'
-import PcBanner from '@/views/theme/components/rootcompToolbar/pc/Banner'
-import PcFooter from '@/views/theme/components/rootcompToolbar/pc/Footer'
-import ProductNew from '@/views/theme/components/rootcompToolbar/pc/ProductNew'
-import ProductHot from '@/views/theme/components/rootcompToolbar/pc/ProductHot'
-import ProductSeckill from '@/views/theme/components/rootcompToolbar/pc/ProductSeckill'
-import ProductComb from '@/views/theme/components/rootcompToolbar/pc/ProductComb'
-import ProductDiscount from '@/views/theme/components/rootcompToolbar/pc/ProductDiscount'
-import ProductBargin from '@/views/theme/components/rootcompToolbar/pc/ProductBargin'
+import NavPersonal from '@/views/theme/components/rootcompToolbar/pc/NavPersonal.vue'
+import NavType from '@/views/theme/components/rootcompToolbar/pc/NavType.vue'
+import PcBanner from '@/views/theme/components/rootcompToolbar/pc/Banner.vue'
+import PcFooter from '@/views/theme/components/rootcompToolbar/pc/Footer.vue'
+import ProductNew from '@/views/theme/components/rootcompToolbar/pc/ProductNew.vue'
+import ProductHot from '@/views/theme/components/rootcompToolbar/pc/ProductHot.vue'
+import ProductSeckill from '@/views/theme/components/rootcompToolbar/pc/ProductSeckill.vue'
+import ProductComb from '@/views/theme/components/rootcompToolbar/pc/ProductComb.vue'
+import ProductDiscount from '@/views/theme/components/rootcompToolbar/pc/ProductDiscount.vue'
+import ProductBargin from '@/views/theme/components/rootcompToolbar/pc/ProductBargin.vue'
 
-import { mapGetters } from 'vuex'
+import { useContainerStore } from '@/store/modules/container.js'
 export default {
   components: {
     shopTop,
@@ -160,7 +160,9 @@ export default {
     ProductBargin
   },
   computed: {
-    ...mapGetters(['activeComponent'])
+    activeComponent() {
+      return useContainerStore().activeComponent
+    }
   }
 }
 </script>

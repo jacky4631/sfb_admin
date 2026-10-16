@@ -4,10 +4,10 @@
       <el-button
         type="danger"
         class="filter-item"
-        size="mini"
-        icon="el-icon-refresh"
+        size="small"
+       
         @click="toQuery"
-      >刷新</el-button>
+      ><el-icon><Refresh /></el-icon>刷新</el-button>
     </div>
     <!--表格渲染-->
     <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
@@ -20,9 +20,9 @@
       <el-table-column prop="product.storeName" label="商品名称" />
 
       <el-table-column prop="type" label="类型">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.type == 'collect'" :type="''">收藏</el-tag>
+            <el-tag v-if="scope.row.type == 'collect'" type="primary">收藏</el-tag>
             <el-tag v-else :type=" 'info' ">足迹</el-tag>
           </div>
         </template>
@@ -30,7 +30,7 @@
 
       <el-table-column prop="originalProductId" label="商品ID" />
       <el-table-column prop="createTime" label="添加时间">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import initData from '@/mixins/crud'
+import initData from '@/mixins/crud.js'
 export default {
   name: 'MwStoreProductRelation',
   mixins: [initData],

@@ -1,5 +1,5 @@
-import request from '@/utils/request'
-import { encrypt } from '@/utils/rsaEncrypt'
+import request from '@/utils/request.js'
+import { encrypt } from '@/utils/rsaEncrypt.js'
 import md5 from 'js-md5'
 
 export function add(data) {

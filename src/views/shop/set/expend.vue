@@ -7,19 +7,19 @@
         <el-button
           v-permission="['admin','EXPEND_ALL','EXPEND_CREATE']"
           class="filter-item"
-          size="mini"
+          size="small"
           type="primary"
-          icon="el-icon-plus"
+         
           @click="add"
-        >新增</el-button>
+        ><el-icon><Plus /></el-icon>新增</el-button>
       </div>
       <el-button
         type="danger"
         class="filter-item"
-        size="mini"
-        icon="el-icon-refresh"
+        size="small"
+       
         @click="toQuery"
-      >刷新</el-button>
+      ><el-icon><Refresh /></el-icon>刷新</el-button>
 
     </div>
     <!--表单组件-->
@@ -30,35 +30,34 @@
       <el-table-column prop="money" label="支出金额(元)" />
       <el-table-column prop="mark" label="备注" />
       <el-table-column prop="addTime" label="支出时间" :show-overflow-tooltip="true" width="200">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ parseTime(scope.row.addTime,'{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true" width="200">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="updateTime" label="修改时间" :show-overflow-tooltip="true" width="200">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column v-if="checkPermission(['admin','EXPEND_ALL','EXPEND_EDIT','EXPEND_DELETE'])" label="操作" width="150px" align="center">
-        <template slot-scope="scope">
-          <el-button v-permission="['admin','EXPEND_ALL','EXPEND_EDIT']" size="mini" type="primary" icon="el-icon-edit" @click="edit(scope.row)" />
+        <template #default="scope">
+          <el-button v-permission="['admin','EXPEND_ALL','EXPEND_EDIT']" size="small" type="primary" @click="edit(scope.row)" ><el-icon><Edit /></el-icon></el-button>
           <el-popover
             :ref="scope.row.id"
-            v-permission="['admin','EXPEND_ALL','EXPEND_DELETE']"
             placement="top"
             width="180"
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+              <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini" />
+            <template #reference><el-button v-permission="['admin','EXPEND_ALL','EXPEND_DELETE']" type="danger" size="small" ><el-icon><Delete /></el-icon></el-button></template>
           </el-popover>
         </template>
       </el-table-column>
@@ -76,10 +75,11 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { del } from '@/api/mwExpend'
-import eForm from './expendform'
+import { ElNotification } from 'element-plus'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { del } from '@/api/mwExpend.js'
+import eForm from './expendform.vue'
 export default {
   components: { eForm },
   mixins: [initData],
@@ -105,17 +105,17 @@ export default {
       this.delLoading = true
       del(id).then(res => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         this.dleChangePage()
         this.init()
-        this.$notify({
+        ElNotification({
           title: '删除成功',
           type: 'success',
           duration: 2500
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         console.log(err.response.data.message)
       })
     },

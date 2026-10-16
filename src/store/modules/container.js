@@ -1,20 +1,28 @@
-const container = {
-  state: {
-    terminal: 3, // 画布选择的设备
-    activeComponent: {}, // 选中模板数据
-    componentsData: [] // 模板组件数据
-  },
-  mutations: {
-    SET_TERMINAL: (state, terminal) => {
-      state.terminal = terminal
+import { defineStore } from 'pinia'
+
+export const useContainerStore = defineStore('container', {
+  state: () => ({
+    activeComponent: {},
+    componentsData: [],
+    terminal: 3
+  }),
+  actions: {
+    setActiveComponent(component) {
+      this.activeComponent = component
     },
-    SET_ACTIVECOMPONENT: (state, activeComponent) => {
-      state.activeComponent = activeComponent
+    setComponentsData(data) {
+      this.componentsData = data
     },
-    SET_COMPONENTSDATA: (state, componentsData) => {
-      state.componentsData = componentsData
+    addComponent(component) {
+      this.componentsData.push(component)
+    },
+    removeComponent(index) {
+      this.componentsData.splice(index, 1)
+    },
+    setTerminal(terminal) {
+      this.terminal = terminal
     }
   }
-}
+})
 
-export default container
+export default useContainerStore

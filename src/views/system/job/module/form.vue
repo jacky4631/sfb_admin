@@ -1,9 +1,9 @@
 <template>
   <el-dialog
+    :model-value="crud.status.cu > 0"
     append-to-body
     :close-on-click-modal="false"
     :before-close="crud.cancelCU"
-    :visible="crud.status.cu > 0"
     :title="crud.status.title"
     width="500px"
   >
@@ -44,7 +44,7 @@
           v-for="item in jobStatus"
           :key="item.id"
           v-model="form.enabled"
-          :label="item.value === 'true'"
+          :value="item.value === 'true'"
         >
           {{ item.label }}
         </el-radio>
@@ -54,40 +54,44 @@
         prop="dept.id"
         :rules="rules.dept"
       >
-        <treeselect
+        <el-tree-select
           v-model="form.dept.id"
-          :options="depts"
+          :data="depts"
+          :props="{ children: 'children', label: 'label' }"
+          node-key="id"
+          check-strictly
+          :render-after-expand="false"
           style="width: 370px"
           placeholder="选择部门"
         />
       </el-form-item>
     </el-form>
-    <div
-      slot="footer"
-      class="dialog-footer"
-    >
-      <el-button
-        type="text"
-        @click="crud.cancelCU"
+    <template #footer>
+      <div
+        class="dialog-footer"
       >
-        取消
-      </el-button>
-      <el-button
-        :loading="crud.cu === 2"
-        type="primary"
-        @click="crud.submitCU"
-      >
-        确认
-      </el-button>
-    </div>
+        <el-button
+          link
+          @click="crud.cancelCU"
+        >
+          取消
+        </el-button>
+        <el-button
+          :loading="crud.cu === 2"
+          type="primary"
+          @click="crud.submitCU"
+        >
+          确认
+        </el-button>
+      </div>
+    </template>
   </el-dialog>
 </template>
 
 <script>
-import CRUD, { form } from '@crud/crud'
-import { getDepts } from '@/api/system/dept'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import CRUD, { form } from '@/components/Crud/crud.js'
+import { getDepts } from '@/api/system/dept.js'
+import { ElNotification } from 'element-plus'
 
 const defaultForm = {
   id: null,
@@ -99,7 +103,7 @@ const defaultForm = {
   }
 }
 export default {
-  components: { Treeselect },
+  components: { },
   mixins: [form(defaultForm)],
   props: {
     jobStatus: {
@@ -130,7 +134,7 @@ export default {
     // 提交前的验证
     [CRUD.HOOK.afterValidateCU]() {
       if (!this.form.dept.id) {
-        this.$notify({
+        ElNotification({
           title: '所属部门不能为空',
           type: 'warning'
         })
@@ -142,8 +146,8 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-  ::v-deep .el-input-number .el-input__inner {
+<style lang="scss" scoped>
+  :deep(.el-input-number .el-input__inner) {
     text-align: left;
   }
 </style>

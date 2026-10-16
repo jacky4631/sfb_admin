@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import Config from '@/settings'
+import Config from '@/settings.js'
 
 const TokenKey = Config.TokenKey
 

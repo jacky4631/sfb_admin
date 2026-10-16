@@ -6,28 +6,27 @@
         v-permission="['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_EDIT']"
         type="danger"
         class="filter-item"
-        size="mini"
-        icon="el-icon-promotion"
+        size="small"
         :disabled="this.dataSelections.length === 0"
         @click="doExtract"
-      >批量提现</el-button>
+      ><el-icon><Promotion /></el-icon>批量提现</el-button>
       <!-- 搜索 -->
-      <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" @clear="toQuery" />
-      <el-input v-model="query.uid" clearable placeholder="输入uid" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" @clear="toQuery" />
+      <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" @clear="toQuery" />
+      <el-input v-model="query.uid" clearable placeholder="输入uid" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" @clear="toQuery" />
       <el-select v-model="query.status" clearable placeholder="审核状态" class="filter-item" style="width: 130px" @clear="toQuery">
         <el-option v-for="item in queryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
       </el-select>
-      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+      <el-button class="filter-item" size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>
       <!-- 新增 -->
       <el-button
         type="danger"
         class="filter-item"
-        size="mini"
-        icon="el-icon-refresh"
+        size="small"
+       
         @click="toQuery"
-      >刷新</el-button>
+      ><el-icon><Refresh /></el-icon>刷新</el-button>
 
-      <el-button class="filter-item" size="mini" type="warning" icon="el-icon-document" @click="config">提现配置</el-button>
+      <el-button class="filter-item" size="small" type="warning" @click="config"><el-icon><Document /></el-icon>提现配置</el-button>
 
     </div>
     <!--表单组件-->
@@ -44,7 +43,7 @@
       <el-table-column prop="balance" label="提现金额" />
       <el-table-column prop="extractType" label="提现方式" />
       <el-table-column prop="extractType" label="用户详情" style="width: 300px">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div v-if="scope.row.extractType=='weixin'">
             姓名:{{ scope.row.realName }}<br>
             微信号:{{ scope.row.wechat }}
@@ -61,35 +60,35 @@
       </el-table-column>
       <el-table-column prop="mark" label="备注" />
       <el-table-column prop="createTime" label="提现时间">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ formatTimeTwo(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="updateTime" label="到账时间">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="scope.row.status==1">{{ formatTimeTwo(scope.row.updateTime) }}</span>
           <span v-else>无</span>
         </template>
       </el-table-column>
       <el-table-column prop="status" label="审核状态" >
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-tag v-if="scope.row.status==1" style="cursor: pointer" :type="'success'">提现通过</el-tag>
           <el-tag v-else-if="scope.row.status==-1" style="cursor: pointer" :type=" 'danger' ">提现未通过</el-tag>
           <el-tag v-else style="cursor: pointer" :type="'warning'">未提现</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="status" label="失败原因">
-        <template slot-scope="scope">
+        <template #default="scope">
             失败原因：{{ scope.row.failMsg }}
             <br>
             失败时间：{{ formatTimeTwo(scope.row.failTime) }}
         </template>
       </el-table-column>
       <el-table-column v-if="checkPermission(['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_EDIT','MWUSEREXTRACT_DELETE'])" label="操作" width="150px" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button
             v-permission="['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_EDIT']"
-            size="mini"
+            size="small"
             type="primary"
             @click="edit(scope.row)"
           >操作</el-button>
@@ -100,10 +99,10 @@
           <!--width="180">-->
           <!--<p>确定删除本条数据吗？</p>-->
           <!--<div style="text-align: right; margin: 0">-->
-          <!--<el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>-->
-          <!--<el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>-->
+          <!--<el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>-->
+          <!--<el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>-->
           <!--</div>-->
-          <!--<el-button slot="reference" type="danger" icon="el-icon-delete" size="mini"/>-->
+          <!--<template #reference><el-button type="danger" size="small" /></template>-->
           <!--</el-popover>-->
         </template>
       </el-table-column>
@@ -121,12 +120,13 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { del,extracts,getExtractConfig } from '@/api/mwUserExtract'
-import eForm from './form'
-import configForm from './formconfig'
-import { formatTimeTwo } from '@/utils/index'
+import { ElNotification, ElMessageBox } from 'element-plus'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { del,extracts,getExtractConfig } from '@/api/mwUserExtract.js'
+import eForm from './form.vue'
+import configForm from './formconfig.vue'
+import { formatTimeTwo } from '@/utils/index.js'
 import md5 from 'js-md5';
 export default {
   components: { eForm, configForm},
@@ -173,17 +173,17 @@ export default {
       this.delLoading = true
       del(id).then(res => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         this.dleChangePage()
         this.init()
-        this.$notify({
+        ElNotification({
           title: '删除成功',
           type: 'success',
           duration: 2500
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         console.log(err.response.data.message)
       })
     },
@@ -220,7 +220,7 @@ export default {
       _this.dialog = true
     },
     doExtract() {
-      this.$confirm(`确认提现选中的${this.dataSelections.length}条记录?`, '提示', {
+      ElMessageBox.confirm(`确认提现选中的${this.dataSelections.length}条记录?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         showInput: false,
@@ -239,7 +239,7 @@ export default {
         this.dataSelections[i].status=1;
       }
       extracts({'extracts': this.dataSelections }).then(() => {
-        this.$notify({
+        ElNotification({
           title: '操作成功',
           type: 'success',
           duration: 2500

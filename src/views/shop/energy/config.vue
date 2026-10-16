@@ -105,11 +105,11 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { edit, get } from '@/api/mwUserEnergyConfig'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { edit, get } from '@/api/mwUserEnergyConfig.js'
 import picUpload from '@/components/pic-upload/index.vue'
-import { Message } from 'element-ui'
+import { ElMessage } from 'element-plus'
 export default {
   components: { picUpload },
   mixins: [initData],
@@ -232,7 +232,7 @@ export default {
     checkPermission,
     doSubmit() {
       edit(this.form).then(res => {
-        Message({ message: '设置成功', type: 'success' })
+        ElMessage.success('设置成功')
       }).catch(err => {
         // this.loading = false
         console.log(err.response.data.message)

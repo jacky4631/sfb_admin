@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="isAdd ? '新增' : '编辑'" width="500px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '编辑'" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
       <el-form-item label="支出金额(元)">
         <el-input v-model="form.money" style="width: 200px;" />
@@ -11,22 +11,24 @@
         <el-date-picker
           v-model="form.addTime"
           type="date"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           placeholder="选择日期时间"
         />
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <template #footer><div class="dialog-footer">
       <!--<el-input v-model="form.groupName" />-->
-      <el-button type="text" @click="cancel">取消</el-button>
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
-import { add, edit } from '@/api/mwExpend'
-import picUpload from '@/components/pic-upload'
+import { ElNotification } from 'element-plus'
+import { add, edit } from '@/api/mwExpend.js'
+import picUpload from '@/components/pic-upload/index.vue'
 export default {
   components: { picUpload },
   props: {
@@ -61,7 +63,7 @@ export default {
     doAdd() {
       add(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '添加成功',
           type: 'success',
           duration: 2500
@@ -76,7 +78,7 @@ export default {
     doEdit() {
       edit(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '修改成功',
           type: 'success',
           duration: 2500

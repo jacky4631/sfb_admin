@@ -3,24 +3,24 @@
     <!--工具栏-->
     <div class="head-container">
       <!-- 搜索 -->
-      <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" @clear="toQuery"/>
-      <el-input v-model="query.uid" clearable placeholder="输入用户uid" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" @clear="toQuery"/>
-      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+      <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" @clear="toQuery"/>
+      <el-input v-model="query.uid" clearable placeholder="输入用户uid" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" @clear="toQuery"/>
+      <el-button class="filter-item" size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>
       <!-- 新增 -->
       <el-button
         type="danger"
         class="filter-item"
-        size="mini"
-        icon="el-icon-refresh"
+        size="small"
+       
         @click="toQuery"
-      >刷新</el-button>
+      ><el-icon><Refresh /></el-icon>刷新</el-button>
 
-      <el-button class="filter-item" size="mini" type="warning" icon="el-icon-document" @click="editHbUnlockConfig">订单解锁配置</el-button>
+      <el-button class="filter-item" size="small" type="warning" @click="editHbUnlockConfig"><el-icon><Document /></el-icon>订单解锁配置</el-button>
 
 
-      <el-button class="filter-item" size="mini" type="warning" icon="el-icon-document" @click="editAppDataConfig">APP基础信息配置</el-button>
-      <el-button class="filter-item" size="mini" type="warning" icon="el-icon-document" @click="editAppShareConfig">APP分享图配置</el-button>
-      <el-button class="filter-item" size="mini" type="warning" icon="el-icon-document" @click="editAppLoginWhitelistConfig">APP登录白名单配置</el-button>
+      <el-button class="filter-item" size="small" type="warning" @click="editAppDataConfig"><el-icon><Document /></el-icon>APP基础信息配置</el-button>
+      <el-button class="filter-item" size="small" type="warning" @click="editAppShareConfig"><el-icon><Document /></el-icon>APP分享图配置</el-button>
+      <el-button class="filter-item" size="small" type="warning" @click="editAppLoginWhitelistConfig"><el-icon><Document /></el-icon>APP登录白名单配置</el-button>
 
     </div>
     <!--表单组件-->
@@ -45,7 +45,7 @@
       <el-table-column prop="nickname" label="用户昵称" width="150"/>
       <el-table-column prop="code" label="邀请码"  width="120"/>
       <el-table-column ref="table" prop="avatar" label="用户头像">
-        <template slot-scope="scope">
+        <template #default="scope">
           <a :href="scope.row.avatar" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.avatar" alt="点击打开" class="el-avatar"></a>
         </template>
       </el-table-column>
@@ -54,7 +54,7 @@
       <el-table-column prop="nowMoney" label="用户余额" />
       <el-table-column prop="spreadUid" label="推荐人" />
       <el-table-column label="淘店级别" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>
             <el-tag v-if="scope.row.level == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
             <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -62,12 +62,12 @@
         </template>
       </el-table-column>
       <el-table-column  prop="expired" label="淘店有效期" width="140">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ scope.row.expired }}</span>
         </template>
       </el-table-column>
       <el-table-column label="京店级别" align="center" width="140">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>
             <el-tag v-if="scope.row.levelJd == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
             <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -75,12 +75,12 @@
         </template>
       </el-table-column>
       <el-table-column  prop="expiredJd" label="京店有效期" width="140">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ scope.row.expiredJd }}</span>
         </template>
       </el-table-column>
       <el-table-column label="多店级别" align="center" width="140">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>
             <el-tag v-if="scope.row.levelPdd == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
             <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -88,12 +88,12 @@
         </template>
       </el-table-column>
       <el-table-column  prop="expiredPdd" label="多店有效期" width="140">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ scope.row.expiredPdd }}</span>
         </template>
       </el-table-column>
       <el-table-column label="抖店级别" align="center" width="140">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>
             <el-tag v-if="scope.row.levelDy == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
             <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -101,12 +101,12 @@
         </template>
       </el-table-column>
       <el-table-column  prop="expiredDy" label="抖店有效期" width="140">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ scope.row.expiredDy }}</span>
         </template>
       </el-table-column>
       <el-table-column label="唯店级别" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>
             <el-tag v-if="scope.row.levelVip == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
             <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -114,7 +114,7 @@
         </template>
       </el-table-column>
       <el-table-column  prop="expiredVip" label="唯店有效期" width="140">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ scope.row.expiredVip }}</span>
         </template>
       </el-table-column>
@@ -124,57 +124,57 @@
       <el-table-column prop="mark" label="备注" />
       <el-table-column prop="integral" label="用户积分" />
       <el-table-column label="支付宝授权" align="center" width="100" >
-        <template slot-scope="scope">
-            <el-tag v-if="scope.row.aliProfile != null" style="cursor: pointer" :type="''">是</el-tag>
+        <template #default="scope">
+            <el-tag v-if="scope.row.aliProfile != null" style="cursor: pointer" type="primary">是</el-tag>
             <el-tag v-else style="cursor: pointer" :type=" 'info' ">否</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column label="微信授权" align="center">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.wxProfile != null" style="cursor: pointer" :type="''">是</el-tag>
+        <template #default="scope">
+          <el-tag v-if="scope.row.wxProfile != null" style="cursor: pointer" type="primary">是</el-tag>
           <el-tag v-else style="cursor: pointer" :type=" 'info' ">否</el-tag>
         </template>
       </el-table-column>
       <el-table-column  prop="updateTime" label="最后登录" width="140">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ scope.row.updateTime }}</span>
         </template>
       </el-table-column>
       <el-table-column  prop="createTime" label="创建日期" width="140">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ scope.row.createTime }}</span>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div @click="onStatus(scope.row.uid,scope.row.status)">
-            <el-tag v-if="scope.row.status == 1" style="cursor: pointer" :type="''">正常</el-tag>
+            <el-tag v-if="scope.row.status == 1" style="cursor: pointer" type="primary">正常</el-tag>
             <el-tag v-else style="cursor: pointer" :type=" 'info' ">禁用</el-tag>
           </div>
         </template>
       </el-table-column>
       <el-table-column v-if="checkPermission(['admin','MWUSER_ALL','MWUSER_EDIT','MWUSER_DELETE'])" label="操作" width="315" align="center" fixed="right">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button
             v-permission="['admin','MWUSER_ALL','MWUSER_EDIT']"
-            size="mini"
+            size="small"
             type="danger"
             @click="editD(scope.row)"
           >查看下级</el-button>
           <el-button
             v-permission="['admin','MWUSER_ALL']"
-            size="mini"
+            size="small"
             type="danger"
             @click="getUserExtra(scope.row)"
           >更多信息</el-button>
-          <el-dropdown size="mini" split-button type="primary" trigger="click">
+          <el-dropdown size="small" split-button type="primary" trigger="click">
             操作
-            <el-dropdown-menu slot="dropdown">
+            <template #dropdown><el-dropdown-menu>
               <el-dropdown-item>
                 <el-button
                   v-permission="['admin','MWUSER_ALL','MWUSER_EDIT']"
-                  size="mini"
+                  size="small"
                   type="primary"
                   @click="edit(scope.row)"
                 >修改用户</el-button>
@@ -182,7 +182,7 @@
               <el-dropdown-item>
                 <el-button
                   v-permission="['admin','MWUSER_ALL','MWUSER_EDIT']"
-                  size="mini"
+                  size="small"
                   type="primary"
                   @click="editP(scope.row)"
                 >修改余额</el-button>
@@ -190,7 +190,7 @@
               <el-dropdown-item>
                 <el-button
                   v-permission="['admin','MWUSER_ALL','MWUSER_EDIT']"
-                  size="mini"
+                  size="small"
                   type="primary"
                   @click="editE(scope.row)"
                 >修改热度</el-button>
@@ -198,7 +198,7 @@
               <el-dropdown-item>
                 <el-button
                   v-permission="['admin','MWUSER_ALL','MWUSER_EDIT']"
-                  size="mini"
+                  size="small"
                   type="primary"
                   @click="deleteAli(scope.row)"
                 >清空支付宝授权</el-button>
@@ -206,7 +206,7 @@
               <el-dropdown-item>
                 <el-button
                   v-permission="['admin','MWUSER_ALL','MWUSER_EDIT']"
-                  size="mini"
+                  size="small"
                   type="primary"
                   @click="deleteWechat(scope.row)"
                 >清空微信授权</el-button>
@@ -214,7 +214,7 @@
               <el-dropdown-item>
                 <el-button
                   v-permission="['admin','MWUSER_ALL','MWUSER_EDIT']"
-                  size="mini"
+                  size="small"
                   type="primary"
                   @click="resetRefund(scope.row)"
                 >重置退款次数</el-button>
@@ -222,7 +222,7 @@
               <el-dropdown-item>
                 <el-button
                   v-permission="['admin','MWUSER_ALL','MWUSER_EDIT']"
-                  size="mini"
+                  size="small"
                   type="primary"
                   @click="bankBind(scope.row)"
                 >绑定银行卡</el-button>
@@ -230,13 +230,14 @@
               <el-dropdown-item>
                 <el-button
                   v-permission="['admin','MWUSER_ALL','MWUSER_EDIT']"
-                  size="mini"
+                  size="small"
                   type="primary"
                   @click="extract(scope.row)"
                 >提   现</el-button>
               </el-dropdown-item>
             </el-dropdown-menu>
-          </el-dropdown>
+          </template>
+</el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -253,25 +254,26 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { del, onStatus, getHbUnlockConfig } from '@/api/mwUser'
-import hbUnlockConfigForm from './formhbunlockconfig'
-import appDataConfigForm from './formappdataconfig'
-import appShareConfigForm from './formappshareconfig'
-import appLoginWhitelistConfigForm from './formapploginwhitelistconfig'
-import eForm from './form'
-import pForm from './formp'
-import energyForm from './forme'
-import iForm from './formi'
-import wForm from './formw'
-import rForm from './formr'
-import bankForm from './formBank'
+import { ElNotification, ElMessage, ElMessageBox } from 'element-plus'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { del, onStatus, getHbUnlockConfig } from '@/api/mwUser.js'
+import hbUnlockConfigForm from './formhbunlockconfig.vue'
+import appDataConfigForm from './formappdataconfig.vue'
+import appShareConfigForm from './formappshareconfig.vue'
+import appLoginWhitelistConfigForm from './formapploginwhitelistconfig.vue'
+import eForm from './form.vue'
+import pForm from './formp.vue'
+import energyForm from './forme.vue'
+import iForm from './formi.vue'
+import wForm from './formw.vue'
+import rForm from './formr.vue'
+import bankForm from './formBank.vue'
 import extractForm from './formExtract.vue'
-import detail from './detail'
-import userExtra from './userExtra'
-import { formatTime } from '@/utils/index'
-import {getAppDataConfig, getAppShareConfig, getAppLoginWhitelistConfig} from "../../../api/mwUser";
+import detail from './detail.vue'
+import userExtra from './userExtra.vue'
+import { formatTime } from '@/utils/index.js'
+import {getAppDataConfig, getAppShareConfig, getAppLoginWhitelistConfig} from "../../../api/mwUser.js";
 export default {
   name: 'Member',
   components: {eForm, pForm, energyForm, iForm, wForm, rForm, bankForm, extractForm, detail,
@@ -301,14 +303,14 @@ export default {
     formatTime,
     checkPermission,
     onStatus(id, status) {
-      this.$confirm(`确定进行[${status ? '禁用' : '开启'}]操作?`, '提示', {
+      ElMessageBox.confirm(`确定进行[${status ? '禁用' : '开启'}]操作?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
           onStatus(id, {status: status}).then(({data}) => {
-            this.$message({
+            ElMessage({
               message: '操作成功',
               type: 'success',
               duration: 1000,
@@ -341,17 +343,17 @@ export default {
       this.delLoading = true
       del(uid).then(res => {
         this.delLoading = false
-        this.$refs[uid].doClose()
+        this.$refs[uid].hide()
         this.dleChangePage()
         this.init()
-        this.$notify({
+        ElNotification({
           title: '删除成功',
           type: 'success',
           duration: 2500
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[uid].doClose()
+        this.$refs[uid].hide()
         console.log(err.response.data.message)
       })
     },

@@ -95,7 +95,6 @@ export function formatTime(time, option) {
 
 export function formatTimeTwo(time) {
   if (time == null) return '无'
-  // time = time * 1000
   const d = new Date(time)
   return (
     d.getFullYear() + '年' +
@@ -109,6 +108,7 @@ export function formatTimeTwo(time) {
     '分'
   )
 }
+
 export function formatTimeThree(time) {
   time = time * 1000
   const d = new Date(time)
@@ -124,6 +124,7 @@ export function formatTimeThree(time) {
     '分'
   )
 }
+
 /**
  * @param {string} url
  * @returns {Object}
@@ -148,7 +149,6 @@ export function getQueryObject(url) {
  * @returns {number} output value
  */
 export function byteLength(str) {
-  // returns the byte length of an utf8 string
   let s = str.length
   for (var i = str.length - 1; i >= 0; i--) {
     const code = str.charCodeAt(i)
@@ -283,15 +283,12 @@ export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result
 
   const later = function() {
-    // 据上一次触发时间间隔
     const last = +new Date() - timestamp
 
-    // 上次被包装函数被调用时间间隔 last 小于设定时间间隔 wait
     if (last < wait && last > 0) {
       timeout = setTimeout(later, wait - last)
     } else {
       timeout = null
-      // 如果设定为immediate===true，因为开始边界已经调用过了此处无需调用
       if (!immediate) {
         result = func.apply(context, args)
         if (!timeout) context = args = null
@@ -303,7 +300,6 @@ export function debounce(func, wait, immediate) {
     context = this
     timestamp = +new Date()
     const callNow = immediate && !timeout
-    // 如果延时不存在，重新设定延时
     if (!timeout) timeout = setTimeout(later, wait)
     if (callNow) {
       result = func.apply(context, args)
@@ -316,8 +312,6 @@ export function debounce(func, wait, immediate) {
 
 /**
  * This is just a simple version of deep copy
- * Has a lot of edge cases bug
- * If you want to use a perfect deep copy, use lodash's _.cloneDeep
  * @param {Object} source
  * @returns {Object}
  */
@@ -355,7 +349,7 @@ export function createUniqueString() {
 
 /**
  * Check if an element has a class
- * @param {HTMLElement} elm
+ * @param {HTMLElement} ele
  * @param {string} cls
  * @returns {boolean}
  */
@@ -365,7 +359,7 @@ export function hasClass(ele, cls) {
 
 /**
  * Add class to element
- * @param {HTMLElement} elm
+ * @param {HTMLElement} ele
  * @param {string} cls
  */
 export function addClass(ele, cls) {
@@ -374,7 +368,7 @@ export function addClass(ele, cls) {
 
 /**
  * Remove class from element
- * @param {HTMLElement} elm
+ * @param {HTMLElement} ele
  * @param {string} cls
  */
 export function removeClass(ele, cls) {
@@ -418,6 +412,7 @@ export function downloadFile(obj, name, suffix) {
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
+  window.URL.revokeObjectURL(url)
 }
 
 export function RandomNumber() {
@@ -431,4 +426,17 @@ export function RandomNumber() {
     randomStr += arr[index]
   }
   return randomStr
+}
+
+/**
+ * Resolve URL path (browser-compatible replacement for Node.js path.resolve)
+ * @param {string} basePath
+ * @param {string} routePath
+ * @returns {string}
+ */
+export function resolveUrlPath(basePath, routePath) {
+  if (!routePath) return basePath
+  if (routePath.charAt(0) === '/') return routePath
+  const base = basePath.endsWith('/') ? basePath : basePath + '/'
+  return base + routePath
 }

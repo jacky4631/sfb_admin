@@ -1,6 +1,6 @@
 <template>
   <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU"
-             :visible.sync="crud.status.cu > 0"
+             :model-value="crud.status.cu > 0"
              :title="crud.status.title" width="950px">
     <el-form ref="formData" :model="formData" class="attrFrom"  :rules="rules" label-width="92px" :inline="true">
       <el-row :gutter="24">
@@ -14,7 +14,7 @@
         <el-col :span="23" class="noForm" v-for="(item, index) in formData.ruleValue" :key="index">
           <el-form-item label=" ">
             <div class="acea-row row-middle"><span class="mr5">{{item.value}}</span>
-              <i class="el-icon-circle-close"  @click="handleRemove(index)"></i>
+              <el-icon style="cursor:pointer" @click="handleRemove(index)"><CircleClose /></el-icon>
             </div>
             <div class="rulesBox">
               <el-tag   class="mb5" style="margin: 2px 4px 2px 0;" closable
@@ -23,7 +23,9 @@
               </el-tag>
               <el-input placeholder="请输入属性名称" v-model="item.detail.attrsVal"
                         style="width: 170px">
-                <el-button slot="append" type="primary" @click="createAttr(item.detail.attrsVal,index)">添加</el-button>
+                <template #append>
+                  <el-button type="primary" @click="createAttr(item.detail.attrsVal,index)">添加</el-button>
+                </template>
               </el-input>
             </div>
           </el-form-item>
@@ -49,20 +51,22 @@
       </el-row>
       <el-button type="primary" icon="md-add" @click="addBtn" v-if="!isBtn" class="ml95 mt10">添加新规格</el-button>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="crud.cancelCU">取消</el-button>
+    <template #footer><div class="dialog-footer">
+      <el-button link @click="crud.cancelCU">取消</el-button>
       <el-button :loading="modal_loading" type="primary" @click="handleSubmit('formData')">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
-  import crudMwStoreProductRule from '@/api/storeProductRule'
-  import CRUD, {presenter, header, form, crud} from '@crud/crud'
-  import rrOperation from '@crud/RR.operation'
-  import crudOperation from '@crud/CRUD.operation'
-  import udOperation from '@crud/UD.operation'
-  import MaterialList from "@/components/material";
+import { ElMessage } from 'element-plus'
+  import crudMwStoreProductRule from '@/api/storeProductRule.js'
+  import CRUD, {presenter, header, form, crud} from '@/components/Crud/crud.js'
+  import rrOperation from '@/components/Crud/RR.operation.vue'
+  import crudOperation from '@/components/Crud/CRUD.operation.vue'
+  import udOperation from '@/components/Crud/UD.operation.vue'
+  import MaterialList from "@/components/material/index.vue";
 
   const defaultForm = {id: null, ruleName: null, ruleValue: null, createTime: null, updateTime: null, isDel: null}
   export default {
@@ -122,10 +126,10 @@
         this.$refs[name].validate((valid) => {
           if (valid) {
             if (!this.formData.ruleValue) {
-              return this.$message.warning('请至少添加一条商品规格！');
+              return ElMessage.warning('请至少添加一条商品规格！');
             }
             if (this.formData.ruleValue.length === 0) {
-              return this.$message.warning('请至少添加一条商品规格！');
+              return ElMessage.warning('请至少添加一条商品规格！');
             }
             this.modal_loading = true;
 
@@ -149,7 +153,7 @@
                 }, 600);
               }).catch(res => {
                 this.modal_loading = false;
-                this.$message({
+                ElMessage({
                   message:res.msg,
                   type: 'error'
                 });
@@ -199,7 +203,7 @@
           this.attrsVal = '';
           this.isBtn = false;
         } else {
-          return this.$message.warning('请添加规格名称！');
+          return ElMessage.warning('请添加规格名称！');
         }
       },
       // 添加属性
@@ -212,7 +216,7 @@
             return item
           }, [])
         } else {
-          return this.$message.warning('请添加属性！');
+          return ElMessage.warning('请添加属性！');
         }
       }
 

@@ -64,7 +64,7 @@
     height: 17px;
     margin-right: 3px;
     margin-left: 3px;
-    background-image: url(./images/alignicon.jpg);
+    background-image: url(images/alignicon.jpg);
 }
 .alignBar #alignIcon .none-align{
     background-position: 0 -18px;
@@ -240,7 +240,7 @@
     height: 172px;
     padding-top: 150px;
     text-align: center;
-    background: url(./images/image.png) center 70px no-repeat;
+    background: url(images/image.png) center 70px no-repeat;
     color: #cccccc;
     font-size: 18px;
     position: relative;
@@ -316,7 +316,7 @@
 #upload .filelist li {
     width: 113px;
     height: 113px;
-    background: url(./images/bg.png);
+    background: url(images/bg.png);
     text-align: center;
     margin: 9px 0 0 9px;
     *margin: 6px 0 0 6px;
@@ -364,7 +364,7 @@
     overflow: hidden;
     width: 0;
     height: 100%;
-    background: #1483d8 url(./images/progress.png) repeat-x;
+    background: #1483d8 url(images/progress.png) repeat-x;
 
     -webit-transition: width 200ms linear;
     -moz-transition: width 200ms linear;
@@ -455,14 +455,14 @@
     height: 40px;
     width: 100%;
     z-index: 200;
-    background: url(./images/success.png) no-repeat right bottom;
-    background: url(./images/success.gif) no-repeat right bottom \9;
+    background: url(images/success.png) no-repeat right bottom;
+    background: url(images/success.gif) no-repeat right bottom \9;
 }
 
 #upload .filelist li.filePickerBlock {
     width: 113px;
     height: 113px;
-    background: url(./images/image.png) no-repeat center 12px;
+    background: url(images/image.png) no-repeat center 12px;
     border: 1px solid #eeeeee;
     border-radius: 0;
 }
@@ -495,8 +495,8 @@
     float: right;
     text-indent: -9999px;
     overflow: hidden;
-    background: url(./images/icons.png) no-repeat;
-    background: url(./images/icons.gif) no-repeat \9;
+    background: url(images/icons.png) no-repeat;
+    background: url(images/icons.gif) no-repeat \9;
     margin: 5px 1px 1px;
     cursor: pointer;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -694,8 +694,8 @@
     border: 3px solid #1094fa;
 }
 #online li.selected .icon {
-    background-image: url(images/success.png);
-    background-image: url(images/success.gif)\9;
+    background-image: url(UEditor/dialogs/image/images/success.png);
+    background-image: url(UEditor/dialogs/image/images/success.gif)\9;
     background-position: 75px 75px;
 }
 #online li.selected .icon:hover {

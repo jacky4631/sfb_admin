@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="'APP登录白名单配置'" width="800px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="'APP登录白名单配置'" width="800px">
     <el-form size="small" label-width="80px">
 
       <el-form-item label="登录白名单手机号" label-width="200px" placeholder="英文逗号(,)分隔">
@@ -8,17 +8,19 @@
       </el-form-item>
 
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="cancel">取消</el-button>
+    <template #footer><div class="dialog-footer">
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="handleSubmit">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
-import { setAppLoginWhitelistConfig, getAppLoginWhitelistConfig } from '@/api/mwUser'
+import { ElNotification } from 'element-plus'
+import { setAppLoginWhitelistConfig, getAppLoginWhitelistConfig } from '@/api/mwUser.js'
 
-import MaterialList from '@/components/material'
+import MaterialList from '@/components/material/index.vue'
 export default {
   components: { MaterialList },
   data() {
@@ -45,7 +47,7 @@ export default {
     handleSubmit (name) {
       setAppLoginWhitelistConfig(this.whitelistStr).then(async res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '操作成功',
           type: 'success',
           duration: 2500

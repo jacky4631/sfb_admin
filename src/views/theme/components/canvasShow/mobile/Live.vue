@@ -163,22 +163,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:math';
 .live-el {
   background: #fff;
-  border-radius: 20/750 * 500px;
-  padding: 30/750 * 500px 20/750 * 500px 25/750 * 500px;
+  border-radius: math.div(20, 750) * 500px;
+  padding: math.div(30, 750) * 500px math.div(20, 750) * 500px math.div(25, 750) * 500px;
   .head {
     display: flex;
     justify-content: space-between;
     align-items: center;
     &-title {
-      font-size: 32/750 * 500px;
+      font-size: math.div(32, 750) * 500px;
       font-weight: bold;
       font-family: PingFang SC;
       color: rgba(51, 51, 51, 1);
     }
     &-more {
-      font-size: 26/750 * 500px;
+      font-size: math.div(26, 750) * 500px;
       font-family: PingFang SC;
       font-weight: 500;
       color: rgba(51, 51, 51, 1);
@@ -189,9 +190,9 @@ export default {
   .content-one {
     .content-one__item {
       position: relative;
-      height: 280/750 * 500px;
-      border-radius: 20/750 * 500px;
-      margin-top: 25/750 * 500px;
+      height: math.div(280, 750) * 500px;
+      border-radius: math.div(20, 750) * 500px;
+      margin-top: math.div(25, 750) * 500px;
       overflow: hidden;
       .item-cover {
         background-color: #eee;
@@ -200,33 +201,33 @@ export default {
       }
       .item-status {
         position: absolute;
-        top: 20/750 * 500px;
-        left: 10/750 * 500px;
-        height: 40/750 * 500px;
+        top: math.div(20, 750) * 500px;
+        left: math.div(10, 750) * 500px;
+        height: math.div(40, 750) * 500px;
         background: rgba(0, 0, 0, 0.4);
-        border-radius: 20/750 * 500px;
+        border-radius: math.div(20, 750) * 500px;
         display: flex;
         justify-content: center;
         align-items: center;
         .status-img {
-          width: 38/750 * 500px;
-          height: 38/750 * 500px;
+          width: math.div(38, 750) * 500px;
+          height: math.div(38, 750) * 500px;
         }
         .status-span {
-          font-size: 22/750 * 500px;
+          font-size: math.div(22, 750) * 500px;
           font-family: PingFang SC;
           font-weight: 500;
           color: rgba(255, 255, 255, 1);
-          padding: 0 10/750 * 500px;
+          padding: 0 math.div(10, 750) * 500px;
         }
       }
       .item-title {
-        width: 680/750 * 500px;
+        width: math.div(680, 750) * 500px;
         position: absolute;
         bottom: 0;
-        line-height: 60/750 * 500px;
-        padding: 0 20/750 * 500px;
-        font-size: 26/750 * 500px;
+        line-height: math.div(60, 750) * 500px;
+        padding: 0 math.div(20, 750) * 500px;
+        font-size: math.div(26, 750) * 500px;
         font-family: PingFang SC;
         font-weight: 500;
         color: rgba(255, 255, 255, 1);
@@ -234,10 +235,10 @@ export default {
       }
       .like-img {
         position: absolute;
-        bottom: 20/750 * 500px;
-        right: 10/750 * 500px;
-        width: 60/750 * 500px;
-        height: 130/750 * 500px;
+        bottom: math.div(20, 750) * 500px;
+        right: math.div(10, 750) * 500px;
+        width: math.div(60, 750) * 500px;
+        height: math.div(130, 750) * 500px;
       }
     }
   }
@@ -247,12 +248,12 @@ export default {
     // -moz-column-count: 2;
     // -webkit-column-count: 2;
     // column-count: 2;
-    // padding-top: 20/750*500px;
+    // padding-top: math.div(20, 750)*500px;
     display: flex;
     flex-wrap: wrap;
     &__item {
-      margin-right: 30/750 * 500px;
-      margin-top: 20/750 * 500px;
+      margin-right: math.div(30, 750) * 500px;
+      margin-top: math.div(20, 750) * 500px;
       &:nth-child(2n) {
         margin-right: 0;
       }

@@ -1,13 +1,16 @@
+import { useAppStore } from '../../../store/modules/app.ts'
+
 export default {
   computed: {
     device() {
-      return this.$store.state.app.device
+      return useAppStore().device
     }
   },
   mounted() {
-    // In order to fix the click on menu on the ios device will trigger the mouseleave bug
-    // https://github.com/PanJiaChen/vue-element-admin/issues/1135
     this.fixBugIniOS()
+  },
+  beforeUnmount() {
+    // cleanup if needed
   },
   methods: {
     fixBugIniOS() {

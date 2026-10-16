@@ -2,8 +2,8 @@
   <div class="app-container">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="150px">
       <el-form-item label="开启门店自提">
-        <el-radio v-model="form.store_self_mention" :label="1">开启</el-radio>
-        <el-radio v-model="form.store_self_mention" :label="2">关闭</el-radio>
+        <el-radio v-model="form.store_self_mention" :value="1">开启</el-radio>
+        <el-radio v-model="form.store_self_mention" :value="2">关闭</el-radio>
       </el-form-item>
       <el-form-item label="腾讯地图KEY">
         <el-input v-model="form.tengxun_map_key" style="width: 370px;" />
@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { del, add, get } from '@/api/mwSystemConfig'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { del, add, get } from '@/api/mwSystemConfig.js'
 
-import { Message } from 'element-ui'
+import { ElMessage } from 'element-plus'
 
 export default {
   mixins: [initData],
@@ -54,7 +54,7 @@ export default {
     checkPermission,
     doSubmit() {
       add(this.form).then(res => {
-        Message({ message: '设置成功', type: 'success' })
+        ElMessage.success('设置成功')
       }).catch(err => {
         // this.loading = false
         console.log(err.response.data.message)

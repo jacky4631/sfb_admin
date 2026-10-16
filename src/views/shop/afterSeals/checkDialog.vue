@@ -2,7 +2,7 @@
   <el-dialog
   class="afterSealsAdd"
   :close-on-click-modal="false"
-  :visible.sync="visible"
+  v-model="visible"
   width="800px">
     <div class="checkForm">
       <span>订单详情：</span>
@@ -46,9 +46,11 @@
             <el-image
             :src="item.productInfo.image"
             style="width: 100px; height: 100px">
-              <div slot="placeholder" class="image-slot">
-                加载中<b class="dot">...</b>
-              </div>
+              <template #placeholder>
+                <div class="image-slot">
+                  加载中<b class="dot">...</b>
+                </div>
+              </template>
             </el-image>
           </el-form-item>
           <el-form-item label="规格：">
@@ -83,14 +85,16 @@
         </el-form-item>
       </el-form>
     </div>
-    <div slot="footer" class="dialog-footer">
+    <template #footer><div class="dialog-footer">
       <el-button class="refuse" type="danger" v-if="isShow" :loading="loading" @click="submit(1)">拒绝</el-button>
       <el-button class="check" type="primary" v-if="isShow" :loading="loading" @click="submit(0)">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
+import { ElMessage } from 'element-plus'
 import {salesCheck} from '@/api/mwStoreAfterSales.js'
 export default {
   props: {
@@ -132,11 +136,11 @@ export default {
       this.form.approvalStatus = type // 0成功 1失败
       var res = await salesCheck(this.form)
       if (res) {
-        this.$message.success('审核成功')
+        ElMessage.success('审核成功')
         this.visible = false
         this.$emit('checkSuccess')
       } else {
-        this.$message.error(res.message || '审核失败！')
+        ElMessage.error(res.message || '审核失败！')
       }
       this.loading = false
     }
@@ -155,10 +159,10 @@ export default {
     margin: 25px 0;
   }
 }
-.afterSealsAdd ::v-deep.el-input.is-disabled .el-input__inner{
+.afterSealsAdd :deep(.el-input).is-disabled .el-input__inner{
   color: #333333;
 }
-.afterSealsAdd ::v-deep .dialog-footer{
+.afterSealsAdd :deep(.dialog-footer){
   display: flex;
   justify-content: space-around;
   .el-button{

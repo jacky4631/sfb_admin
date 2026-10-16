@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="form" :rules="rules" style="margin-top: 6px;" size="small" label-width="90px">
+    <el-form ref="formRef" :model="form" :rules="rules" style="margin-top: 6px;" size="small" label-width="90px">
       <el-form-item label="商品名称" prop="subject">
         <el-input v-model="form.subject" style="width: 35%" />
       </el-form-item>
@@ -9,76 +9,73 @@
         <span style="color: #C0C0C0;margin-left: 10px;">测试允许区间(0,5000]</span>
       </el-form-item>
       <el-form-item label="商品描述" prop="body">
-        <el-input v-model="form.body" style="width: 35%" rows="8" type="textarea" />
+        <el-input v-model="form.body" style="width: 35%" :rows="8" type="textarea" />
       </el-form-item>
       <el-form-item label="">
-        <el-button :loading="loading" size="medium" type="primary" @click="doSubmit">去支付</el-button>
+        <el-button :loading="loading" size="default" type="primary" @click="doSubmit">去支付</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
-<script>
-import { toAliPay } from '@/api/tools/alipay'
-export default {
-  data() {
-    return {
-      url: '',
-      // 新窗口的引用
-      newWin: null,
-      loading: false, form: { subject: '', totalAmount: '', body: '' },
-      rules: {
-        subject: [
-          { required: true, message: '商品名称不能为空', trigger: 'blur' }
-        ],
-        totalAmount: [
-          { required: true, message: '商品价格不能为空', trigger: 'blur' }
-        ],
-        body: [
-          { required: true, message: '商品描述不能为空', trigger: 'blur' }
-        ]
-      }
-    }
-  },
-  watch: {
-    url(newVal, oldVal) {
-      if (newVal && this.newWin) {
-        this.newWin.sessionStorage.clear()
-        this.newWin.location.href = newVal
-        // 重定向后把url和newWin重置
-        this.url = ''
-        this.newWin = null
-      }
-    }
-  },
-  methods: {
-    doSubmit() {
-      this.$refs['form'].validate((valid) => {
-        if (valid) {
-          this.loading = true
-          // 先打开一个空的新窗口，再请求
-          this.newWin = window.open()
-          let url = ''
-          if (/(Android)/i.test(navigator.userAgent)) { // 判断是否为Android手机
-            url = 'aliPay/toPayAsWeb'
-          } else if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) { // 判断是否为苹果手机
-            url = 'aliPay/toPayAsWeb'
-          } else {
-            url = 'aliPay/toPayAsPC'
-          }
-          toAliPay(url, this.form).then(res => {
-            this.loading = false
-            this.url = res
-          }).catch(err => {
-            this.loading = false
-            console.log(err.response.data.message)
-          })
-        } else {
-          return false
-        }
-      })
-    }
+<script setup>
+import { ref, reactive, watch } from 'vue'
+import { toAliPay } from '@/api/tools/alipay.js'
+
+const url = ref('')
+const newWin = ref(null)
+const loading = ref(false)
+const formRef = ref(null)
+const form = reactive({
+  subject: '',
+  totalAmount: '',
+  body: ''
+})
+const rules = {
+  subject: [
+    { required: true, message: '商品名称不能为空', trigger: 'blur' }
+  ],
+  totalAmount: [
+    { required: true, message: '商品价格不能为空', trigger: 'blur' }
+  ],
+  body: [
+    { required: true, message: '商品描述不能为空', trigger: 'blur' }
+  ]
+}
+
+watch(url, (newVal) => {
+  if (newVal && newWin.value) {
+    newWin.value.sessionStorage.clear()
+    newWin.value.location.href = newVal
+    url.value = ''
+    newWin.value = null
   }
+})
+
+const doSubmit = () => {
+  formRef.value.validate((valid) => {
+    if (valid) {
+      loading.value = true
+      newWin.value = window.open()
+      let urlPath = ''
+      if (/(Android)/i.test(navigator.userAgent)) {
+        urlPath = 'aliPay/toPayAsWeb'
+      } else if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+        urlPath = 'aliPay/toPayAsWeb'
+      } else {
+        urlPath = 'aliPay/toPayAsPC'
+      }
+      toAliPay(urlPath, form).then(res => {
+        loading.value = false
+        url.value = res
+      }).catch(err => {
+        loading.value = false
+        console.log(err.response.data.message)
+      })
+    } else {
+      return false
+    }
+  })
 }
 </script>
 

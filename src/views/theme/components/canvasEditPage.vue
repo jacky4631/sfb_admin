@@ -1,16 +1,7 @@
 <template>
   <div class="layout hom-layout">
-    <draggable
-      class="dragArea list-group"
-      :list="componentsData"
-      group="pageEdit"
-      @change="pageChange"
-    >
-      <div
-      class="list-group-item"
-      v-for="(item,index) in componentsData"
-      :key="index" :class="{'on':activeComponent == index}"
-      @click="selectComponent(item,index)">
+    <draggable :item-key="(item) => item" class="dragArea list-group" :list="componentsData" group="pageEdit" @change="pageChange">
+      <template #item="{ element: item, index: index }"><div class="list-group-item" :class="{'on':activeComponent == index}" @click="selectComponent(item,index)">
         <component
         :is="componentMap[terminal-3].get(item.type)"
         :componentContent="item.componentContent"
@@ -21,14 +12,16 @@
             </span>
         </div>
       </div>
-    </draggable>
+      </template>
+</draggable>
   </div>
 </template>
 
 <script>
+import { ElMessageBox } from 'element-plus'
   import draggable from 'vuedraggable'
   import componentMap from '@/views/theme/components/canvasShow/componentMap.js'
-  import { mapGetters, mapMutations } from 'vuex'
+  import { useContainerStore } from '@/store/modules/container.js'
   export default {
     name: 'canvasEditPage',
     components: {
@@ -47,15 +40,17 @@
       }
     },
     computed: {
-      ...mapGetters([
-        'componentsData'
-      ])
+      componentsData() {
+        return useContainerStore().componentsData
+      }
     },
     methods: {
-      ...mapMutations({
-        setActiveComponent: 'SET_ACTIVECOMPONENT',
-        setComponentsData: 'SET_COMPONENTSDATA'
-      }),
+      setActiveComponent(component) {
+        useContainerStore().setActiveComponent(component)
+      },
+      setComponentsData(data) {
+        useContainerStore().setComponentsData(data)
+      },
       pageChange (e) {
         if (e.added) {
           this.activeComponent = e.added.newIndex
@@ -74,7 +69,7 @@
         this.setActiveComponent(item)
       },
       delComponent (item, index) {
-        this.$confirm('确定删除吗？', '提示', {
+        ElMessageBox.confirm('确定删除吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -91,7 +86,7 @@
 <style lang="scss" scoped>
 .hom-layout{
   background-color: #fff;
-  >>> .sortable-chosen{
+  :deep(.sortable-chosen) {
     .contentBox {
       display: none;
     }

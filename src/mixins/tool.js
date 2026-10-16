@@ -1,38 +1,23 @@
-import { mapGetters, mapMutations } from 'vuex'
+import { computed } from 'vue'
+import { useContainerStore } from '@/store/modules/container.js'
 
 export const toolMixin = {
   computed: {
-    ...mapGetters([
-      'activeComponent',
-      'componentsData'
-    ])
+    activeComponent: () => useContainerStore().activeComponent,
+    componentsData: () => useContainerStore().componentsData
   },
   methods: {
-    ...mapMutations({
-      setComponentsData: 'SET_COMPONENTSDATA'
-    })
+    setComponentsData(data) {
+      useContainerStore().setComponentsData(data)
+    }
   }
-  // watch: {
-  //   'activeComponent.componentContent': {
-  //     handler(newVal, oldVal) {
-  //       console.log(newVal)
-  //       // localStorage.setItem('componentsData', JSON.stringify(this.componentsData))
-  //     },
-  //     deep: true
-  //   }
-  // }
 }
 
-/**
- * 删除类别中的空 Child
- * @param {className} class名称
- * @param {tagName} 标签名称
- */
 export function checkEmptyChild(arr) {
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i].childs.length === 0) {
+    if (arr[i].childs && arr[i].childs.length === 0) {
       arr[i].childs = ''
-    } else {
+    } else if (arr[i].childs && arr[i].childs.length > 0) {
       checkEmptyChild(arr[i].childs)
     }
   }

@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import componentMap from './componentMap'
-import { mapMutations } from 'vuex'
+import componentMap from './componentMap.js'
+import { useContainerStore } from '@/store/modules/container.js'
 import { getCanvasData, getProducts } from '@/api/canvasApi.js'
 export default {
   name: 'canvasPage',
@@ -32,15 +32,16 @@ export default {
     this.canvasGet()
   },
   methods: {
-    ...mapMutations({
-      setComponentsData: 'SET_COMPONENTSDATA'
-    }),
+    setComponentsData(data) {
+      useContainerStore().setComponentsData(data)
+    },
     // 读取画布
     async canvasGet () {
       const res = await getCanvasData({'terminal': this.terminal})
-      if (JSON.stringify(res.data) !== '{}') {
-        this.canvasId = res.data.canvasId
-        this.componentsData = JSON.parse(res.data.json)
+      // 后端 getCanvas 直接返回 StoreCanvas 扁平对象（无 data 包裹）；未保存过画布时为空 body，需判空
+      if (res && res.json) {
+        this.canvasId = res.canvasId
+        this.componentsData = JSON.parse(res.json)
         var componentsData = this.componentsData
         for (let i = 0; i < componentsData.length; i++) {
           if (componentsData[i].type === 'productList') {
@@ -51,7 +52,7 @@ export default {
                 classifyId: componentsData[i].componentContent.categoryId
               }
               getProducts(params).then(rres => {
-                componentsData[i].componentContent.imgTextData = rres.data.list
+                componentsData[i].componentContent.imgTextData = rres.list
               })
             }
           }

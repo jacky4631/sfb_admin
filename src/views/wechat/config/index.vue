@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="form" :rules="rules" size="small" label-width="150px">
+    <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="150px">
       <el-form-item label="公众号AppID">
         <el-input v-model="form.wechat_appid" style="width: 370px;" />
       </el-form-item>
@@ -39,7 +39,7 @@
         <el-input v-model="form.wechat_share_title" style="width: 370px;" />
       </el-form-item>
       <el-form-item label="微信分享简介">
-        <el-input v-model="form.wechat_share_synopsis" style="width: 370px;" rows="5" type="textarea" />
+        <el-input v-model="form.wechat_share_synopsis" style="width: 370px;" :rows="5" type="textarea" />
       </el-form-item>
       <el-form-item label="">
         <el-button type="primary" @click="doSubmit">提交</el-button>
@@ -50,87 +50,84 @@
   </div>
 </template>
 
-<script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { del, add, get } from '@/api/mwSystemConfig'
-import eForm from './form'
-import picUpload from '@/components/pic-upload'
-import { Message } from 'element-ui'
-import MaterialList from '@/components/material'
-export default {
-  components: { eForm, picUpload, MaterialList },
-  mixins: [initData],
-  data() {
-    return {
-      wechat_follow_imgArr:[],
-      imageArr: [],
-      delLoading: false,
-      form: {
-        wechat_name: '',
-        wechat_id: '',
-        wechat_sourceid: '',
-        wechat_appid: '',
-        wechat_appsecret: '',
-        wxapp_appId: '',
-        wxapp_secret: '',
-        wxapp_appId_jkj: '',
-        wxapp_secret_jkj: '',
-        wechat_token: '',
-        wechat_encode: '',
-        wechat_encodingaeskey: '',
-        wechat_share_img: '',
-        wechat_follow_img: '',
-        wechat_qrcode: '',
-        wechat_type: '',
-        wechat_share_title: '',
-        wechat_share_synopsis: '',
-        api: 'http://你的mshop-app端域名/api/wechat/serve',
-        wechat_avatar: ''
-      },
-      rules: {
-      }
-    }
-  },
-  watch: {
-    imageArr: function(val) {
-      if (val) {
-        this.form.wechat_share_img = val.join(',')
-      }
-    },wechat_follow_imgArr: function(val) {
-      if (val) {
-        this.form.wechat_follow_img = val.join(',')
-      }
-    }
-  },
-  created() {
-    get().then(rese => {
-      const that = this
-      rese.content.map(function(key, value) {
-        const keyName = key.menuName
-        const newValue = key.value
-        if(keyName in that.form){
-          that.form[keyName] = newValue
-        }
-      })
+<script setup>
+import { ref, reactive, watch, onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
+import { get, add } from '@/api/mwSystemConfig.js'
+import MaterialList from '@/components/material/index.vue'
 
-      this.imageArr = this.form.wechat_share_img.split(',')
-      this.wechat_follow_imgArr = this.form.wechat_follow_img.split(',')
-    })
-  },
-  methods: {
-    checkPermission,
-    doSubmit() {
-      add(this.form).then(res => {
-        Message({ message: '设置成功', type: 'success' })
-      }).catch(err => {
-        // this.loading = false
-        console.log(err.response.data.message)
-      })
-    }
+const formRef = ref(null)
+const wechat_follow_imgArr = ref([])
+const imageArr = ref([])
+const delLoading = ref(false)
 
+const form = reactive({
+  wechat_name: '',
+  wechat_id: '',
+  wechat_sourceid: '',
+  wechat_appid: '',
+  wechat_appsecret: '',
+  wxapp_appId: '',
+  wxapp_secret: '',
+  wxapp_appId_jkj: '',
+  wxapp_secret_jkj: '',
+  wechat_token: '',
+  wechat_encode: '',
+  wechat_encodingaeskey: '',
+  wechat_share_img: '',
+  wechat_follow_img: '',
+  wechat_qrcode: '',
+  wechat_type: '',
+  wechat_share_title: '',
+  wechat_share_synopsis: '',
+  api: 'http://你的mshop-app端域名/api/wechat/serve',
+  wechat_avatar: ''
+})
+
+const rules = {}
+
+watch(imageArr, (val) => {
+  if (val) {
+    form.wechat_share_img = val.join(',')
   }
+})
+
+watch(wechat_follow_imgArr, (val) => {
+  if (val) {
+    form.wechat_follow_img = val.join(',')
+  }
+})
+
+const initData = () => {
+  get().then(rese => {
+    rese.content.forEach(key => {
+      const keyName = key.menuName
+      const newValue = key.value
+      if (keyName in form) {
+        form[keyName] = newValue
+      }
+    })
+
+    imageArr.value = form.wechat_share_img ? form.wechat_share_img.split(',') : []
+    wechat_follow_imgArr.value = form.wechat_follow_img ? form.wechat_follow_img.split(',') : []
+  })
 }
+
+const checkPermission = () => {
+  // Permission check logic
+}
+
+const doSubmit = () => {
+  add(form).then(res => {
+    ElMessage({ message: '设置成功', type: 'success' })
+  }).catch(err => {
+    console.log(err.response?.data?.message)
+  })
+}
+
+onMounted(() => {
+  initData()
+})
 </script>
 
 <style scoped>

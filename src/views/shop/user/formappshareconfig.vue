@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="'APP分享图配置'" width="900px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="'APP分享图配置'" width="900px">
 
       <el-card :bordered="false">
         <el-form label-width="130px" >
@@ -11,17 +11,19 @@
 
         </el-form>
       </el-card>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="cancel">取消</el-button>
+    <template #footer><div class="dialog-footer">
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="handleSubmit">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
-import { setAppShareConfig, getAppShareConfig } from '@/api/mwUser'
+import { ElNotification, ElMessage } from 'element-plus'
+import { setAppShareConfig, getAppShareConfig } from '@/api/mwUser.js'
 
-import MaterialList from '@/components/material'
+import MaterialList from '@/components/material/index.vue'
 export default {
   components: { MaterialList },
   data() {
@@ -49,13 +51,13 @@ export default {
     // 提交
     handleSubmit (name) {
       if(this.slider_image.length ===0){
-        this.$message.warning("请添加图片信息！");
+        ElMessage.warning("请添加图片信息！");
         return;
       }
 
       setAppShareConfig(this.slider_image).then(async res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '操作成功',
           type: 'success',
           duration: 2500

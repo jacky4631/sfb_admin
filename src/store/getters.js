@@ -1,30 +1,23 @@
 const getters = {
-  // 画布
-  terminal: state => state.container.terminal,
-  activeComponent: state => state.container.activeComponent,
-  componentsData: state => state.container.componentsData,
-
-  deployUploadApi: state => state.api.deployUploadApi,
-  databaseUploadApi: state => state.api.databaseUploadApi,
-  size: state => state.app.size,
   sidebar: state => state.app.sidebar,
   device: state => state.app.device,
+  size: state => state.app.size,
   token: state => state.user.token,
+  avatar: state => state.user.avatar,
+  name: state => state.user.name,
+  email: state => state.user.email,
+  roles: state => state.user.roles,
+  permission_routes: state => state.permission.routers,
+  loadMenus: state => state.permission.loadMenus,
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
-  roles: state => state.user.roles,
-  user: state => state.user.user,
-  loadMenus: state => state.user.loadMenus,
-  permission_routers: state => state.permission.routers,
-  addRouters: state => state.permission.addRouters,
-  socketApi: state => state.api.socketApi,
-  imagesUploadApi: state => state.api.imagesUploadApi,
-  baseApi: state => state.api.baseApi,
-  fileUploadApi: state => state.api.fileUploadApi,
-  uploadApi: state => state.api.uploadApi,
-  updateAvatarApi: state => state.api.updateAvatarApi,
-  qiNiuUploadApi: state => state.api.qiNiuUploadApi,
-  sqlApi: state => state.api.sqlApi,
-  swaggerApi: state => state.api.swaggerApi
+  showSettings: state => state.settings.showSettings,
+  title: state => state.settings.title,
+  tagsView: state => state.settings.tagsView,
+  fixedHeader: state => state.settings.fixedHeader,
+  sidebarLogo: state => state.settings.sidebarLogo,
+  footerTxt: state => state.settings.footerTxt,
+  caseNumber: state => state.settings.caseNumber
 }
+
 export default getters

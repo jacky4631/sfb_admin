@@ -3,7 +3,7 @@
     <!--工具栏-->
     <div class="head-container">
       <!-- 搜索 -->
-      <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" />
+      <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
       <el-select v-model="query.type" clearable placeholder="搜索类型" class="filter-item" style="width: 130px">
         <el-option v-for="item in queryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
       </el-select>
@@ -13,25 +13,23 @@
                    :key="item.id"
                    :label="item.label"></el-option>
       </el-select>
-      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+      <el-button class="filter-item" size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>
       <!-- 新增 -->
       <div style="display: inline-block;margin: 0px 2px;">
         <el-button
           class="filter-item"
-          size="mini"
+          size="small"
           type="primary"
-          icon="el-icon-plus"
+         
           @click="toAddURL"
-        >
-            新增
-        </el-button>
+        ><el-icon><Plus /></el-icon>新增</el-button>
         <el-button
           type="danger"
           class="filter-item"
-          size="mini"
-          icon="el-icon-refresh"
+          size="small"
+         
           @click="toQuery"
-        >刷新</el-button>
+        ><el-icon><Refresh /></el-icon>刷新</el-button>
       </div>
     </div>
     <!--表单组件-->
@@ -39,7 +37,7 @@
     <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="id" label="商品id" />
       <el-table-column ref="table" prop="image" label="商品图片">
-        <template slot-scope="scope">
+        <template #default="scope">
           <a :href="scope.row.image" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.image" alt="点击打开" class="el-avatar"></a>
         </template>
       </el-table-column>
@@ -49,29 +47,27 @@
       <el-table-column prop="sales" label="销量" />
       <el-table-column prop="stock" label="库存" />
       <el-table-column label="商品类型" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-tag v-if="scope.row.isIntegral === 1" style="cursor: pointer" :type="'warning'">积分商品</el-tag>
           <el-tag v-else style="cursor: pointer" :type=" 'info' ">普通商品</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div @click="onSale(scope.row.id,scope.row.isShow)">
-            <el-tag v-if="scope.row.isShow === 1" style="cursor: pointer" :type="''">已上架</el-tag>
+            <el-tag v-if="scope.row.isShow === 1" style="cursor: pointer" type="primary">已上架</el-tag>
             <el-tag v-else style="cursor: pointer" :type=" 'info' ">已下架</el-tag>
           </div>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="265px" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button
-            size="mini"
+            size="small"
             type="primary"
-            icon="el-icon-edit"
+           
             @click="toUpdateURL(scope.row.id)"
-          >
-            编辑
-          </el-button>
+          ><el-icon><Edit /></el-icon>编辑</el-button>
           <el-popover
             :ref="scope.row.id"
             placement="top"
@@ -79,10 +75,10 @@
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+              <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+            <template #reference><el-button type="danger" size="small"><el-icon><Delete /></el-icon>删除</el-button></template>
           </el-popover>
         </template>
       </el-table-column>
@@ -100,13 +96,12 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { del, onsale } from '@/api/mwStoreProduct'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import Treeselect from '@riophae/vue-treeselect'
+import { ElNotification, ElMessage, ElMessageBox } from 'element-plus'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { del, onsale } from '@/api/mwStoreProduct.js'
 export default {
-  components: {  Treeselect },
+  components: { },
   mixins: [initData],
   data() {
     return {
@@ -162,29 +157,29 @@ export default {
       this.delLoading = true
       del(id).then(res => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         this.dleChangePage()
         this.init()
-        this.$notify({
+        ElNotification({
           title: '删除成功',
           type: 'success',
           duration: 2500
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         console.log(err.response.data.message)
       })
     },
     onSale(id, status) {
-      this.$confirm(`确定进行[${status ? '下架' : '上架'}]操作?`, '提示', {
+      ElMessageBox.confirm(`确定进行[${status ? '下架' : '上架'}]操作?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
           onsale(id, { status: status }).then(({ data }) => {
-            this.$message({
+            ElMessage({
               message: '操作成功',
               type: 'success',
               duration: 1000,

@@ -5,7 +5,7 @@
 
       <div class="drawer-item">
         <span>主题颜色</span>
-        <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
+        <ThemePicker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
       </div>
 
       <div class="drawer-item">
@@ -32,68 +32,71 @@
   </div>
 </template>
 
-<script>
-import ThemePicker from '@/components/ThemePicker'
+<script setup>
+import { computed } from 'vue'
+import ThemePicker from '@/components/ThemePicker/index.vue'
+import { useSettingsStore } from '@/store/modules/settings.js'
 
-export default {
-  components: { ThemePicker },
-  data() {
-    return {}
+defineOptions({
+  name: 'Settings',
+  components: { ThemePicker }
+})
+
+const settingsStore = useSettingsStore()
+
+const fixedHeader = computed({
+  get() {
+    return settingsStore.fixedHeader
   },
-  computed: {
-    fixedHeader: {
-      get() {
-        return this.$store.state.settings.fixedHeader
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'fixedHeader',
-          value: val
-        })
-      }
-    },
-    tagsView: {
-      get() {
-        return this.$store.state.settings.tagsView
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'tagsView',
-          value: val
-        })
-      }
-    },
-    sidebarLogo: {
-      get() {
-        return this.$store.state.settings.sidebarLogo
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'sidebarLogo',
-          value: val
-        })
-      }
-    },
-    uniqueOpened: {
-      get() {
-        return this.$store.state.settings.uniqueOpened
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'uniqueOpened',
-          value: val
-        })
-      }
-    }
-  },
-  methods: {
-    themeChange(val) {
-      this.$store.dispatch('settings/changeSetting', {
-        key: 'theme',
-        value: val
-      })
-    }
+  set(val) {
+    settingsStore.changeSetting({
+      key: 'fixedHeader',
+      value: val
+    })
   }
+})
+
+const tagsView = computed({
+  get() {
+    return settingsStore.tagsView
+  },
+  set(val) {
+    settingsStore.changeSetting({
+      key: 'tagsView',
+      value: val
+    })
+  }
+})
+
+const sidebarLogo = computed({
+  get() {
+    return settingsStore.sidebarLogo
+  },
+  set(val) {
+    settingsStore.changeSetting({
+      key: 'sidebarLogo',
+      value: val
+    })
+  }
+})
+
+const uniqueOpened = computed({
+  get() {
+    return settingsStore.uniqueOpened
+  },
+  set(val) {
+    settingsStore.changeSetting({
+      key: 'uniqueOpened',
+      value: val
+    })
+  }
+})
+
+const themeChange = (val) => {
+  settingsStore.changeSetting({
+    key: 'theme',
+    value: val
+  })
 }
 </script>
 

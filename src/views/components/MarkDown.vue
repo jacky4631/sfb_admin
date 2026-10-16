@@ -9,35 +9,26 @@
   </div>
 </template>
 
-<script>
-import { upload } from '@/utils/upload'
-import { mapGetters } from 'vuex'
-export default {
-  name: 'Markdown',
-  data() {
-    return {
-      height: document.documentElement.clientHeight - 200 + 'px'
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'imagesUploadApi'
-    ])
-  },
-  mounted() {
-    const that = this
-    window.onresize = function temp() {
-      that.height = document.documentElement.clientHeight - 200 + 'px'
-    }
-  },
-  methods: {
-    imgAdd(pos, $file) {
-      upload(this.imagesUploadApi, $file).then(data => {
-        this.$refs.md.$img2Url(pos, data.data.url)
-      })
-    }
-  }
+<script setup>
+import { ref, onMounted } from 'vue'
+import { upload } from '@/utils/upload.js'
+
+const md = ref(null)
+const baseUrl = import.meta.env.VITE_BASE_API
+const imagesUploadApi = baseUrl + '/api/pictures'
+const height = ref(document.documentElement.clientHeight - 200 + 'px')
+
+const imgAdd = (pos, $file) => {
+  upload(imagesUploadApi, $file).then(data => {
+    md.value.$img2Url(pos, data.data.url)
+  })
 }
+
+onMounted(() => {
+  window.onresize = () => {
+    height.value = document.documentElement.clientHeight - 200 + 'px'
+  }
+})
 </script>
 
 <style scoped>

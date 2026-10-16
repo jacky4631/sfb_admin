@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="isAdd ? '新增' : '发布优惠券'" width="500px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '发布优惠券'" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
       <el-form-item label="优惠券ID">
         <el-input v-model="form.cid" style="width: 300px;" :disabled="true" />
@@ -9,44 +9,43 @@
         <el-input v-model="form.cname" style="width: 300px;" :disabled="true" />
       </el-form-item>
       <el-form-item label="领取开启时间">
-        <template>
-          <el-date-picker
-            v-model="form.startTime"
-            type="datetime"
-            placeholder="选择日期时间"
-          />
-        </template>
+        <!-- Vue3 中无指令的裸 template 内容不会被渲染，须直接放控件 -->
+        <el-date-picker
+          v-model="form.startTime"
+          type="datetime"
+          placeholder="选择日期时间"
+        />
       </el-form-item>
       <el-form-item label="券领结束时间">
-        <template>
-          <el-date-picker
-            v-model="form.endTime"
-            type="datetime"
-            placeholder="选择日期时间"
-          />
-        </template>
+        <el-date-picker
+          v-model="form.endTime"
+          type="datetime"
+          placeholder="选择日期时间"
+        />
       </el-form-item>
       <el-form-item label="发布数量">
         <el-input v-model="form.totalCount" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="是否不限量">
-        <el-radio v-model="form.isPermanent" :label="1">不限量</el-radio>
-        <el-radio v-model="form.isPermanent" :label="0">限量</el-radio>
+        <el-radio v-model="form.isPermanent" :value="1">不限量</el-radio>
+        <el-radio v-model="form.isPermanent" :value="0">限量</el-radio>
       </el-form-item>
       <el-form-item label="状态">
-        <el-radio v-model="form.status" :label="1">开启</el-radio>
-        <el-radio v-model="form.status" :label="0">关闭</el-radio>
+        <el-radio v-model="form.status" :value="1">开启</el-radio>
+        <el-radio v-model="form.status" :value="0">关闭</el-radio>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="cancel">取消</el-button>
+    <template #footer><div class="dialog-footer">
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
+    </template>
   </el-dialog>
 </template>
 
 <script>
-import { add, edit } from '@/api/mwStoreCouponIssue'
+import { ElNotification } from 'element-plus'
+import { add, edit } from '@/api/mwStoreCouponIssue.js'
 export default {
   props: {
     isAdd: {
@@ -88,7 +87,7 @@ export default {
     doAdd() {
       add(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '添加成功',
           type: 'success',
           duration: 2500
@@ -103,7 +102,7 @@ export default {
     doEdit() {
       edit(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '修改成功',
           type: 'success',
           duration: 2500

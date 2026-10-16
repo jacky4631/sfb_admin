@@ -1,6 +1,6 @@
 <template>
   <el-dialog :close-on-click-modal="false"
-             :visible.sync="addressView"
+             v-model="addressView"
              append-to-body
              class="modal"
              title="选择城市" width="950px">
@@ -31,20 +31,22 @@
         </div>
       </el-col>
     </el-row>
-    <div slot="footer">
+    <template #footer><div>
       <el-button @click="close">取消</el-button>
       <el-button type="primary" @click="confirm">确定</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
-  import crudMwShippingTemplates from '@/api/mwShippingTemplates'
-  import CRUD, {presenter, header, form, crud} from '@crud/crud'
-  import rrOperation from '@crud/RR.operation'
-  import crudOperation from '@crud/CRUD.operation'
-  import udOperation from '@crud/UD.operation'
-  import MaterialList from "@/components/material";
+import { ElMessage } from 'element-plus'
+  import crudMwShippingTemplates from '@/api/mwShippingTemplates.js'
+  import CRUD, {presenter, header, form, crud} from '@/components/Crud/crud.js'
+  import rrOperation from '@/components/Crud/RR.operation.vue'
+  import crudOperation from '@/components/Crud/CRUD.operation.vue'
+  import udOperation from '@/components/Crud/UD.operation.vue'
+  import MaterialList from "@/components/material/index.vue";
   export default {
     name: 'city',
     props: {
@@ -86,14 +88,14 @@
       allCheckbox: function () {
         let that = this, checked = this.iSselect;
         that.cityList.forEach(function (item, key) {
-          that.$set(that.cityList[key], 'checked', checked);
+          that.cityList[key].checked = checked;
           if (checked) {
-            that.$set(that.cityList[key], 'count', that.cityList[key].children.length);
+            that.cityList[key].count = that.cityList[key].children.length;
           } else {
-            that.$set(that.cityList[key], 'count', 0);
+            that.cityList[key].count = 0;
           }
           that.cityList[key].children.forEach(function (val, k) {
-            that.$set(that.cityList[key].children[k], 'checked', checked);
+            that.cityList[key].children[k].checked = checked;
           })
         });
       },
@@ -101,11 +103,11 @@
       empty () {
         let that = this;
         that.cityList.forEach(function (item, key) {
-          that.$set(that.cityList[key], 'checked', false);
+          that.cityList[key].checked = false;
           that.cityList[key].children.forEach(function (val, k) {
-            that.$set(that.cityList[key].children[k], 'checked', false);
+            that.cityList[key].children[k].checked = false;
           });
-          that.$set(that.cityList[key], 'count', 0);
+          that.cityList[key].count = 0;
         });
         this.iSselect = false;
       },
@@ -116,15 +118,15 @@
       checkedClick: function (index) {
         let that = this;
         if (that.cityList[index].checked) {
-          that.$set(that.cityList[index], 'count', that.cityList[index].children.length);
+          that.cityList[index].count = that.cityList[index].children.length;
           that.cityList[index].children.forEach(function (item, key) {
-            that.$set(that.cityList[index].children[key], 'checked', true);
+            that.cityList[index].children[key].checked = true;
           });
         } else {
-          that.$set(that.cityList[index], 'count', 0);
-          that.$set(that.cityList[index], 'checked', false);
+          that.cityList[index].count = 0;
+          that.cityList[index].checked = false;
           that.cityList[index].children.forEach(function (item, key) {
-            that.$set(that.cityList[index].children[key], 'checked', false);
+            that.cityList[index].children[key].checked = false;
           });
           that.iSselect = false;
         }
@@ -143,8 +145,8 @@
             count++;
           }
         });
-        this.$set(this.cityList[index], 'count', count);
-        this.$set(this.cityList[index], 'checked', checked);
+        this.cityList[index].count = count;
+        this.cityList[index].checked = checked;
       },
       // 确定;
       confirm () {
@@ -176,7 +178,7 @@
         });
         console.log(selectList);
         if (selectList.length === 0) {
-          return this.$message({
+          return ElMessage({
             message:'至少选择一个省份或者城市',
             type: 'error'
           });

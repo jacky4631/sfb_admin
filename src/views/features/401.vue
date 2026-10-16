@@ -1,89 +1,115 @@
 <template>
-  <div class="errPage-container">
-    <el-button icon="arrow-left" class="pan-back-btn" @click="back">
-      返回
-    </el-button>
-    <el-row>
-      <el-col :span="12">
-        <h1 class="text-jumbo text-ginormous">
-          Oops!
-        </h1>
-        <h2>你没有权限去该页面</h2>
-        <h6>如有不满请联系你领导</h6>
-        <ul class="list-unstyled">
-          <li>或者你可以去:</li>
-          <li class="link-type">
-            <router-link to="/dashboard">
-              回首页
-            </router-link>
-          </li>
-        </ul>
-      </el-col>
-      <el-col :span="12">
-        <img :src="errGif" width="313" height="428" alt="Girl has dropped her ice cream.">
-      </el-col>
-    </el-row>
+  <div class="wscn-http404-container">
+    <div class="wscn-http404">
+      <div class="pic-404">
+        <img class="pic-404__parent" src="../../assets/images/404_cloud.png" alt="401">
+      </div>
+      <div class="bullshit">
+        <div class="bullshit__oops">401!</div>
+        <div class="bullshit__headline">抱歉，您没有访问权限</div>
+        <div class="bullshit__info">请联系管理员为您分配权限。</div>
+        <a href="/public" class="bullshit__return-home">返回首页</a>
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
-import errGif from '@/assets/401_images/401.gif'
-
-export default {
-  name: 'Page401',
-  data() {
-    return {
-      errGif: errGif + '?' + +new Date()
-    }
-  },
-  methods: {
-    back() {
-      if (this.$route.query.noGoBack) {
-        this.$router.push({ path: '/dashboard' })
-      } else {
-        this.$router.go(-1)
-      }
-    }
-  }
-}
+<script setup>
+defineOptions({
+  name: 'Page401'
+})
 </script>
 
 <style lang="scss" scoped>
-  .errPage-container {
-    width: 800px;
-    max-width: 100%;
-    margin: 100px auto;
-    .pan-back-btn {
-      background: #008489;
-      color: #fff;
-      border: none!important;
-    }
-    .pan-gif {
-      margin: 0 auto;
-      display: block;
-    }
-    .pan-img {
-      display: block;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .text-jumbo {
-      font-size: 60px;
-      font-weight: 700;
-      color: #484848;
-    }
-    .list-unstyled {
-      font-size: 14px;
-      li {
-        padding-bottom: 5px;
-      }
-      a {
-        color: #008489;
-        text-decoration: none;
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
+.wscn-http404-container {
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 40%;
+  left: 50%;
+}
+.wscn-http404 {
+  position: relative;
+  width: 1200px;
+  padding: 0 50px;
+  overflow: hidden;
+}
+.pic-404 {
+  position: relative;
+  float: left;
+  width: 600px;
+  overflow: hidden;
+  &__parent {
+    width: 100%;
   }
+}
+.bullshit {
+  position: relative;
+  float: left;
+  width: 300px;
+  padding: 30px 0;
+  overflow: hidden;
+  &__oops {
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 40px;
+    color: #1482f0;
+    opacity: 0;
+    margin-bottom: 20px;
+    animation-name: slideUp;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+  }
+  &__headline {
+    font-size: 20px;
+    line-height: 24px;
+    color: #222;
+    font-weight: bold;
+    opacity: 0;
+    margin-bottom: 10px;
+    animation-name: slideUp;
+    animation-duration: 0.5s;
+    animation-delay: 0.1s;
+    animation-fill-mode: forwards;
+  }
+  &__info {
+    font-size: 13px;
+    line-height: 21px;
+    color: grey;
+    opacity: 0;
+    margin-bottom: 30px;
+    animation-name: slideUp;
+    animation-duration: 0.5s;
+    animation-delay: 0.2s;
+    animation-fill-mode: forwards;
+  }
+  &__return-home {
+    display: block;
+    float: left;
+    width: 110px;
+    height: 36px;
+    background: #1482f0;
+    border-radius: 100px;
+    text-align: center;
+    color: #ffffff;
+    opacity: 0;
+    font-size: 14px;
+    line-height: 36px;
+    cursor: pointer;
+    animation-name: slideUp;
+    animation-duration: 0.5s;
+    animation-delay: 0.3s;
+    animation-fill-mode: forwards;
+    text-decoration: none;
+  }
+}
+@keyframes slideUp {
+  0% {
+    transform: translateY(60px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 </style>

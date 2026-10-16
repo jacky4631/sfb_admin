@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { ElMessageBox } from 'element-plus'
 export default {
     props: {
         obj: Object,
@@ -52,7 +53,7 @@ export default {
         },
         // 删除内容
         deleteItem (item, index) {
-            this.$confirm('确定删除此项？')
+            ElMessageBox.confirm('确定删除此项？')
             .then((_) => {
                 this.$emit('deleteIt', index)
             })

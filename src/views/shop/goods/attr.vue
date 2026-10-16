@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="title" width="900px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="title" width="900px">
     <el-form v-show="hidden == false" ref="form" :model="form" :inline="true" :rules="rules" label-width="80px">
       <el-form-item label="规则名称">
         <el-row :gutter="10">
@@ -17,8 +17,8 @@
             style="position: relative;margin-right: 6px"
           >
             <el-input v-model="item.value" style="width: 150px;" placeholder="设置名称" />
-            <el-button v-show="item.attrHidden == true" type="text" style="position: absolute;top:-6px;right:17px;margin-top:1px;border: none;font-size: 14px;font-weight:bold;line-height: 1.8" icon="el-icon-close" @click="handleRemove(index)" />
-            <el-button v-show="item.attrHidden == false" type="text" style="position: absolute;top:-6px;right:17px;margin-top:1px;border: none;font-size: 14px;font-weight:bold;line-height: 1.8" icon="el-icon-check" @click="attrHiddenBool(item)" />
+            <el-button v-show="item.attrHidden == true" link style="position: absolute;top:-6px;right:17px;margin-top:1px;border: none;font-size: 14px;font-weight:bold;line-height: 1.8" @click="handleRemove(index)" ><el-icon><Close /></el-icon></el-button>
+            <el-button v-show="item.attrHidden == false" link style="position: absolute;top:-6px;right:17px;margin-top:1px;border: none;font-size: 14px;font-weight:bold;line-height: 1.8" @click="attrHiddenBool(item)" ><el-icon><Check /></el-icon></el-button>
           </el-col>
           <el-col :span="5"><el-button type="primary" @click="handleAdd">添加新规则</el-button></el-col>
         </el-row>
@@ -103,16 +103,15 @@
 </template>
 
 <script>
-import { getCates } from '@/api/mwStoreCategory'
-import { add, edit, isFormatAttr, setAttr, clearAttr, getAttr } from '@/api/mwStoreProduct'
-import editor from '../../components/Editor'
-import picUploadTwo from '@/components/pic-upload-two'
-import mulpicUpload from '@/components/mul-pic-upload'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { Message } from 'element-ui'
+import { ElNotification, ElMessageBox } from 'element-plus'
+import { getCates } from '@/api/mwStoreCategory.js'
+import { add, edit, isFormatAttr, setAttr, clearAttr, getAttr } from '@/api/mwStoreProduct.js'
+import editor from '../../components/Editor.vue'
+import picUploadTwo from '@/components/pic-upload-two/index.vue'
+import mulpicUpload from '@/components/mul-pic-upload/index.vue'
+import { ElMessage } from 'element-plus'
 export default {
-  components: { editor, picUploadTwo, mulpicUpload, Treeselect },
+  components: { editor, picUploadTwo, mulpicUpload },
   props: {
     isAttr: {
       type: Boolean,
@@ -216,7 +215,7 @@ export default {
     doAdd() {
       add(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '添加成功',
           type: 'success',
           duration: 2500
@@ -231,7 +230,7 @@ export default {
     doEdit() {
       edit(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '修改成功',
           type: 'success',
           duration: 2500
@@ -286,11 +285,11 @@ export default {
       }
     },
     setAttrPic(index, pic) {
-      this.$set(this.attrs[index], 'pic', pic)
+      this.attrs[index].pic = pic
     },
     attrHiddenBool(item) {
       if (item.value == '') {
-        Message({ message: '请填写规则名称', type: 'error' })
+        ElMessage.error('请填写规则名称')
       } else {
         item.attrHidden = true
       }
@@ -312,10 +311,10 @@ export default {
       this.items.map(function(item) {
         if (!bool) return
         if (!item.value) {
-          Message({ message: '请填写规则名称', type: 'error' })
+          ElMessage.error('请填写规则名称')
           bool = false
         } else if (!item.detail.length) {
-          Message({ message: '请设置规则属性', type: 'error' })
+          ElMessage.error('请设置规则属性')
           bool = false
         }
       })
@@ -327,12 +326,12 @@ export default {
       item.detailValue = ''
     },
     handleRemove(index) {
-      if (this.items.length > 1) { this.items.splice(index, 1) } else { Message({ message: '请设置至少一个规则', type: 'error' }) }
+      if (this.items.length > 1) { this.items.splice(index, 1) } else { ElMessage.error('请设置至少一个规则') }
     },
     attrRemove(item, k) {
       console.log('item:')
       if (item.detail.length == 1) {
-        Message({ message: '请设置至少一个属性', type: 'error' })
+        ElMessage.error('请设置至少一个属性')
         return false
       }
       item.detail.splice(k, 1)
@@ -345,13 +344,13 @@ export default {
       this.attrs.map(function(attr) {
         if (!bool) return
         if (!Object.keys(attr.detail).length) {
-          Message({ message: '请选择至少一个属性', type: 'error' })
+          ElMessage.error('请选择至少一个属性')
           bool = false
         } else if (attr.price != parseFloat(attr.price) || attr.price < 0) {
-          Message({ message: '请输入正确的商品价格', type: 'error' })
+          ElMessage.error('请输入正确的商品价格')
           bool = false
         } else if (attr.sales != parseInt(attr.sales) || attr.sales < 0) {
-          Message({ message: '请输入正确的商品库存', type: 'error' })
+          ElMessage.error('请输入正确的商品库存')
           bool = false
         }
       })
@@ -381,7 +380,7 @@ export default {
       this.loading = false
       setAttr(this.form.id, { items: this.items, attrs: this.attrs }).then(res => {
         this.attrs = res
-        Message({ message: '操作成功', type: 'success' })
+        ElMessage.success('操作成功')
         this.$parent.init()
       }).catch(err => {
         this.loading = false
@@ -390,14 +389,14 @@ export default {
       this.dialog = false
     },
     clear() {
-      this.$confirm(`确定要清空属性数据'}]操作?`, '提示', {
+      ElMessageBox.confirm(`确定要清空属性数据'}]操作?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
           clearAttr(this.form.id).then(({ data }) => {
-            Message({ message: '操作成功', type: 'success' })
+            ElMessage.success('操作成功')
             // this.dialog = false
             this.getAttrs(this.form.id)
           })

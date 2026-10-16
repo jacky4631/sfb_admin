@@ -1,37 +1,34 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="isAdd ? '新增' : '开启砍价'" width="900px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '开启砍价'" width="900px">
     <el-form ref="form" :model="form" :rules="rules" :inline="true" size="small" label-width="140px">
       <el-col :span="24">
         <el-form-item label="选择商品：" prop="good">
-          <cgood v-model="form1.good" :disabled="true" ></cgood>
+          <cgood :value="form1.good" :disabled="true" ></cgood>
         </el-form-item>
       </el-col>
       <el-form-item label="砍价名称">
         <el-input v-model="form.title" style="width: 500px;" />
       </el-form-item>
       <el-form-item label="砍价简介">
-        <el-input v-model="form.info" style="width: 500px;" rows="5" type="textarea" />
+        <el-input v-model="form.info" style="width: 500px;" :rows="5" type="textarea" />
       </el-form-item>
       <el-form-item label="单位">
         <el-input v-model="form.unitName" style="width: 500px;" />
       </el-form-item>
       <el-form-item label="活动开始时间">
-        <template>
-          <el-date-picker
-            v-model="form.startTime"
-            type="datetime"
-            placeholder="选择日期时间"
-          />
-        </template>
+        <!-- Vue3 中无指令的裸 template 内容不会被渲染，须直接放控件 -->
+        <el-date-picker
+          v-model="form.startTime"
+          type="datetime"
+          placeholder="选择日期时间"
+        />
       </el-form-item>
       <el-form-item label="活动结束时间">
-        <template>
-          <el-date-picker
-            v-model="form.stopTime"
-            type="datetime"
-            placeholder="选择日期时间"
-          />
-        </template>
+        <el-date-picker
+          v-model="form.stopTime"
+          type="datetime"
+          placeholder="选择日期时间"
+        />
       </el-form-item>
       <el-form-item label="砍价产品主图片">
         <single-pic v-model="form.image" style="width: 500px" type="image" :num="1" :width="150" :height="150" />
@@ -64,8 +61,8 @@
         <el-input-number v-model="form.bargainNum" />
       </el-form-item>
       <el-form-item label="砍价状态">
-        <el-radio v-model="form.status" :label="1">开启</el-radio>
-        <el-radio v-model="form.status" :label="0" style="width: 110px;">关闭</el-radio>
+        <el-radio v-model="form.status" :value="1">开启</el-radio>
+        <el-radio v-model="form.status" :value="0" style="width: 110px;">关闭</el-radio>
       </el-form-item>
       <el-form-item label="成本价">
         <el-input-number v-model="form.cost" />
@@ -84,26 +81,30 @@
         </el-form-item>
       </el-col>
       <el-form-item label="砍价规则">
-        <editor v-model="form.rule" />
+        <editor v-model:value="form.rule" />
       </el-form-item>
       <el-form-item label="砍价详情">
-        <editor v-model="form.description" />
+        <editor v-model:value="form.description" />
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="cancel">取消</el-button>
-      <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
-    </div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button link @click="cancel">取消</el-button>
+        <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
+      </div>
+    </template>
   </el-dialog>
 </template>
 
 <script>
-import cgood from '@/views/components/good'
-import { add, edit } from '@/api/mwStoreBargain'
-import editor from '../../components/Editor'
-import MaterialList from '@/components/material'
-import singlePic from '@/components/singlematerial'
-import { getInfo } from '@/api/mwStoreProduct'
+import { ElMessage } from 'element-plus'
+import { ElNotification } from 'element-plus'
+import cgood from '@/views/components/good/index.vue'
+import { add, edit } from '@/api/mwStoreBargain.js'
+import editor from '../../components/Editor.vue'
+import MaterialList from '@/components/material/index.vue'
+import singlePic from '@/components/singlematerial/index.vue'
+import { getInfo } from '@/api/mwStoreProduct.js'
 export default {
   components: { editor, MaterialList,cgood,singlePic },
   props: {
@@ -226,7 +227,7 @@ export default {
 
       }).catch(res => {
         console.log('err:'+res)
-        return this.$message({
+        return ElMessage({
           message:res.msg,
           type: 'error'
         });
@@ -244,7 +245,7 @@ export default {
     doAdd() {
       add(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '添加成功',
           type: 'success',
           duration: 2500
@@ -259,7 +260,7 @@ export default {
     doEdit() {
       edit(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '修改成功',
           type: 'success',
           duration: 2500

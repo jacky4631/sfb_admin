@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="isAdd ? '新增' : '编辑'" width="500px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '编辑'" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
       <el-form-item label="标题">
         <el-input v-model="form.title" style="width: 370px;" />
@@ -15,18 +15,20 @@
         <MaterialList v-model="form.imageArr" style="width: 500px" type="image" :num="1" :width="150" :height="150" />
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <template #footer><div class="dialog-footer">
       <!--<el-input v-model="form.groupName" />-->
-      <el-button type="text" @click="cancel">取消</el-button>
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
-import { add, edit } from '@/api/mwSystemGroupData'
-import picUpload from '@/components/pic-upload'
-import MaterialList from '@/components/material'
+import { ElNotification } from 'element-plus'
+import { add, edit } from '@/api/mwSystemGroupData.js'
+import picUpload from '@/components/pic-upload/index.vue'
+import MaterialList from '@/components/material/index.vue'
 export default {
   components: { picUpload, MaterialList },
   props: {
@@ -73,7 +75,7 @@ export default {
     doAdd() {
       add(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '添加成功',
           type: 'success',
           duration: 2500
@@ -88,7 +90,7 @@ export default {
     doEdit() {
       edit(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '修改成功',
           type: 'success',
           duration: 2500

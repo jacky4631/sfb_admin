@@ -45,16 +45,16 @@
           <el-col :span="24">
             <el-form-item label="商品规格：" props="spec_type">
               <el-radio-group v-model="formValidate.spec_type"  @change="changeSpec">
-                <el-radio :label="0" class="radio">单规格</el-radio>
-                <el-radio :label="1">多规格{{formValidate.spec_typ}}</el-radio>
+                <el-radio :value="0" class="radio">单规格</el-radio>
+                <el-radio :value="1">多规格{{formValidate.spec_typ}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="开启积分兑换：" props="is_integral">
               <el-radio-group v-model="formValidate.is_integral"  @change="changeSpec">
-                <el-radio :label="0" class="radio">不开启</el-radio>
-                <el-radio :label="1">开启</el-radio>
+                <el-radio :value="0" class="radio">不开启</el-radio>
+                <el-radio :value="1">开启</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -74,13 +74,13 @@
               <el-form-item v-if="attrs.length!==0">
                 <div  v-for="(item, index) in attrs" :key="index">
                   <div class="acea-row row-middle"><span class="mr5">{{item.value}}</span>
-                    <i class="el-icon-circle-close"  @click="handleRemoveRole(index)"></i>
+                    <el-icon @click="handleRemoveRole(index)"><CircleClose /></el-icon>
                   </div>
                   <div class="rulesBox">
                     <el-tag type="dot" closable color="primary" v-for="(j, indexn) in item.detail" :key="indexn" :name="j" class="mr20" @close="handleRemove2(item.detail,indexn)">{{j}}</el-tag>
                     <el-input placeholder="请输入属性名称" v-model="item.detail.attrsVal"
                               style="width: 150px">
-                      <el-button slot="append" type="primary" @click="createAttr(item.detail.attrsVal,index)">添加</el-button>
+                      <template #append><el-button type="primary" @click="createAttr(item.detail.attrsVal,index)">添加</el-button></template>
                     </el-input>
                   </div>
                 </div>
@@ -117,7 +117,7 @@
                 <el-form-item label="商品属性：" class="labeltop">
                   <el-table :data="manyFormValidate" size="small" style="width: 90%;">
                     <el-table-column type="myindex" v-for="(item,index) in formValidate.header" :key="index" :label="item.title" :property="item.slot" align="center">
-                      <template slot-scope="scope">
+                      <template #default="scope">
                         <div v-if="scope.column.property == 'pic'" align="center">
                           <single-pic v-model="scope.row[scope.column.property]" type="image" :num="1" :width="60" :height="60" />
                         </div>
@@ -143,47 +143,47 @@
             <el-form-item >
               <el-table :data="oneFormValidate"  size="small" style="width: 90%;">
                 <el-table-column prop="pic" label="图片" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <single-pic v-model="scope.row.pic" type="image" :num="1" :width="60" :height="60" />
                   </template>
                 </el-table-column>
                 <el-table-column prop="price" label="售价" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.price"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="cost" label="成本价" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.cost"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="ot_price" label="原价" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.ot_price"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="stock" label="库存" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.stock" maxlength="7"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="bar_code" label="商品编号" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.bar_code"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="weight" label="重量（KG）" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.weight"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="volume" label="体积(m³)" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.volume"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="volume" label="所需兑换积分" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.integral"/>
                   </template>
                 </el-table-column>
@@ -204,7 +204,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="商品详情：">
-              <ueditor-wrap v-model="formValidate.description" :config="myConfig"  @beforeInit="addCustomDialog"  style="width: 90%;"></ueditor-wrap>
+              <VueUeditorWrap v-model="formValidate.description" :config="myConfig"  @beforeInit="addCustomDialog"  style="width: 90%;"></VueUeditorWrap>
             </el-form-item>
           </el-col>
         </el-row>
@@ -227,8 +227,8 @@
           <el-col :span="24">
             <el-form-item label="佣金设置：">
               <el-radio-group v-model="formValidate.is_sub">
-                <el-radio :label="1" class="radio">单独设置</el-radio>
-                <el-radio :label="0">默认设置</el-radio>
+                <el-radio :value="1" class="radio">单独设置</el-radio>
+                <el-radio :value="0">默认设置</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -237,11 +237,13 @@
             <el-form-item label="商品属性：" v-if="formValidate.spec_type === 0">
               <el-table :data="oneFormValidate"  size="small" style="width: 90%;">
                 <el-table-column prop="imageArr" label="图片" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-image :src="scope.row.pic" class="el-avatar">
-                      <div slot="error" class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                      </div>
+                      <template #error>
+                        <div class="image-slot">
+                          <el-icon><Picture /></el-icon>
+                        </div>
+                      </template>
                     </el-image>
                   </template>
                 </el-table-column>
@@ -253,12 +255,12 @@
                 <el-table-column prop="weight" label="重量（KG）" align="center" />
                 <el-table-column prop="volume" label="体积(m³" align="center" />
                 <el-table-column prop="volume" label="一级返佣" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.brokerage"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="volume" label="二级返佣" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.brokerage_two"/>
                   </template>
                 </el-table-column>
@@ -267,11 +269,13 @@
             <el-form-item label="商品属性：" v-if="formValidate.spec_type === 1 && manyFormValidate.length">
               <el-table :data="manyFormValidate" size="small" style="width: 90%;">
                 <el-table-column prop="imageArr" label="图片" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-image :src="scope.row.pic" :width="60" :height="60" >
-                      <div slot="error" class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                      </div>
+                      <template #error>
+                        <div class="image-slot">
+                          <el-icon><Picture /></el-icon>
+                        </div>
+                      </template>
                     </el-image>
                   </template>
                 </el-table-column>
@@ -285,12 +289,12 @@
                 <el-table-column prop="volume" label="体积(m³)" align="center" />
                 <el-table-column prop="integral" label="所需兑换积分" align="center" />
                 <el-table-column prop="volume" label="一级返佣" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.brokerage"/>
                   </template>
                 </el-table-column>
                 <el-table-column prop="volume" label="二级返佣" align="center">
-                  <template slot-scope="scope">
+                  <template #default="scope">
                     <el-input type="text" v-model="scope.row.brokerage_two"/>
                   </template>
                 </el-table-column>
@@ -300,40 +304,40 @@
           <el-col v-bind="grid">
             <el-form-item label="商品状态：">
               <el-radio-group v-model="formValidate.is_show" >
-                <el-radio :label="1" class="radio">上架</el-radio>
-                <el-radio :label="0">下架</el-radio>
+                <el-radio :value="1" class="radio">上架</el-radio>
+                <el-radio :value="0">下架</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col v-bind="grid">
             <el-form-item label="热卖单品：">
               <el-radio-group v-model="formValidate.is_hot" >
-                <el-radio :label="1" class="radio">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
+                <el-radio :value="1" class="radio">开启</el-radio>
+                <el-radio :value="0">关闭</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col v-bind="grid">
             <el-form-item label="猜你喜欢：">
               <el-radio-group v-model="formValidate.is_benefit" >
-                <el-radio :label="1" class="radio">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
+                <el-radio :value="1" class="radio">开启</el-radio>
+                <el-radio :value="0">关闭</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col v-bind="grid">
             <el-form-item label="精品推荐：">
               <el-radio-group v-model="formValidate.is_best" >
-                <el-radio :label="1" class="radio">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
+                <el-radio :value="1" class="radio">开启</el-radio>
+                <el-radio :value="0">关闭</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col v-bind="grid">
             <el-form-item label="首发新品：">
               <el-radio-group v-model="formValidate.is_new" >
-                <el-radio :label="1" class="radio">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
+                <el-radio :value="1" class="radio">开启</el-radio>
+                <el-radio :value="0">关闭</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -347,18 +351,17 @@
 </template>
 
 <script>
-import { getCates } from '@/api/mwStoreCategory'
-import { add, edit, getInfo, isFormatAttr } from '@/api/mwStoreProduct'
-import editor from '../../components/Editor'
-import picUpload from '@/components/pic-upload'
-import mulpicUpload from '@/components/mul-pic-upload'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import MaterialList from '@/components/material'
-import singlePic from '@/components/singlematerial'
-import UeditorWrap from 'vue-ueditor-wrap';
+import { ElMessage } from 'element-plus'
+import { getCates } from '@/api/mwStoreCategory.js'
+import { add, edit, getInfo, isFormatAttr } from '@/api/mwStoreProduct.js'
+import editor from '../../components/Editor.vue'
+import picUpload from '@/components/pic-upload/index.vue'
+import mulpicUpload from '@/components/mul-pic-upload/index.vue'
+import MaterialList from '@/components/material/index.vue'
+import singlePic from '@/components/singlematerial/index.vue'
+import { VueUeditorWrap } from 'vue-ueditor-wrap';
 export default {
-  components: { editor, picUpload, mulpicUpload, Treeselect, MaterialList, UeditorWrap, singlePic },
+  components: { editor, picUpload, mulpicUpload, MaterialList, VueUeditorWrap, singlePic },
   data() {
     return {
       spinShow: false,
@@ -551,7 +554,7 @@ export default {
       let that = this;
       that.createBnt = true;
       if (that.formValidate.selectRule.trim().length <= 0) {
-        return this.$message({
+        return ElMessage({
           message:'请选择属性',
           type: 'error'
         });
@@ -595,7 +598,7 @@ export default {
           this.oneFormBatch[0].pic = this.formValidate.image;
         }
       }).catch(res => {
-        // this.$message({
+        // ElMessage({
         //   message:res.msg,
         //   type: 'error'
         // });
@@ -638,7 +641,7 @@ export default {
         this.showIput = false;
         this.createBnt = true;
       } else {
-        this.$message.warning('请添加完整的规格！');
+        ElMessage.warning('请添加完整的规格！');
       }
     },
     // 添加属性
@@ -651,7 +654,7 @@ export default {
           return item
         }, [])
       } else {
-        this.$message.warning('请添加属性！');
+        ElMessage.warning('请添加属性！');
       }
     },
 
@@ -707,7 +710,7 @@ export default {
 
       }).catch(res => {
         console.log('err:'+res)
-        return this.$message({
+        return ElMessage({
           message:res.msg,
           type: 'error'
         });
@@ -728,10 +731,10 @@ export default {
             this.formValidate.attrs = this.manyFormValidate;
           }
           if(this.formValidate.spec_type === 1 && this.manyFormValidate.length===0){
-            return this.$message.warning('请点击生成规格！');
+            return ElMessage.warning('请点击生成规格！');
           }
           add(this.formValidate).then(async res => {
-            this.$message({
+            ElMessage({
               message:'操作成功',
               type: 'success'
             });
@@ -739,7 +742,7 @@ export default {
               this.$router.push({ path: '/shop/goods' });
             }, 500);
           }).catch(res => {
-            // this.$message({
+            // ElMessage({
             //   message:res.message,
             //   type: 'error'
             // });
@@ -748,7 +751,7 @@ export default {
           if(!this.formValidate.store_name || !this.formValidate.cate_id || !this.formValidate.keyword
             || !this.formValidate.unit_name || !this.formValidate.store_info
             || !this.formValidate.image || !this.formValidate.slider_image){
-            this.$message.warning("请填写完整商品信息！");
+            ElMessage.warning("请填写完整商品信息！");
           }
         }
       })
@@ -757,7 +760,7 @@ export default {
     // 表单验证
     validate (prop, status, error) {
       if (status === false) {
-        this.$message.warning(error);
+        ElMessage.warning(error);
       }
     },
     addCustomDialog () {

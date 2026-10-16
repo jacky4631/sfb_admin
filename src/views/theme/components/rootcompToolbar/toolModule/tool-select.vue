@@ -14,36 +14,36 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'tool-select',
-  data () {
-    return {
-      selsectValue: ''
-    }
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const props = defineProps({
+  title: {
+    type: String,
+    default: '标题'
   },
-  props: {
-    title: {
-      type: String,
-      default: '标题'
-    },
-    linkValue: {
-      type: String,
-      default: ''
-    },
-    options: {
-      type: Array,
-      default: () => []
-    }
+  linkValue: {
+    type: String,
+    default: ''
   },
-  mounted () {
-    this.selsectValue = this.linkValue // props 不能直接修改
-  },
-  methods: {
-    selectChanged (value) {
-      this.$emit('update:linkValue', value)
-    }
+  options: {
+    type: Array,
+    default: () => []
   }
+})
+
+defineOptions({ name: 'tool-select' })
+
+const emit = defineEmits(['update:linkValue'])
+
+const selsectValue = ref('')
+
+onMounted(() => {
+  selsectValue.value = props.linkValue
+})
+
+function selectChanged(value) {
+  emit('update:linkValue', value)
 }
 </script>
 

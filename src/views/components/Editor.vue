@@ -1,69 +1,59 @@
 <template>
   <div>
-    <div ref="editor" style="text-align:left;margin: 5px;width: 700px" />
+    <div ref="editorRef" style="text-align:left;margin: 5px;width: 700px" />
   </div>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script setup>
+import { ref, watch, onMounted, computed } from 'vue'
 import E from 'wangeditor'
-import { getToken } from '@/utils/auth'
-export default {
-  name: 'Editor',
-  model: {
-    prop: 'value',
-    event: 'change'
-  },
-  props: {
-    value: {
-      type: String,
-      default: ''
-    }
-  },
-  data() {
-    return {
-      headers: {
-        'Authorization': getToken()
-      },
-      info: null,
-      editor: null
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'uploadApi'
-    ])
-  },
-  watch: {
-    value: function(val) {
-      this.editor.txt.html(val)
-      // this.editor.txt.html(val)
-    }
-  },
-  mounted() {
-    this.editor = new E(this.$refs.editor)
-    this.editor.customConfig = this.editor.customConfig ? this.editor.customConfig : this.editor.config
-    this.editor.customConfig.uploadImgShowBase64 = true // 使用 base64 保存图片
-    // 不可修改
-    this.editor.customConfig.uploadImgHeaders = this.headers
-    // 自定义文件名，不可修改，修改后会上传失败
-    this.editor.customConfig.uploadFileName = 'file'
-    this.editor.customConfig.uploadImgServer = this.uploadApi // 上传图片到服务器
-    this.editor.customConfig.uploadImgHooks = {
-      customInsert: function(insertImg, result, editor) {
-        var url = result.link
-        insertImg(url)
-      }
-    }
-    this.editor.customConfig.onchange = (html) => {
-      this.info = html
-      this.$emit('change', this.info)
-      this.$emit('input', this.info)
-    }
-    this.editor.create()
-    this.editor.txt.html(this.value)
+import { getToken } from '@/utils/auth.js'
+
+const props = defineProps({
+  value: {
+    type: String,
+    default: ''
   }
+})
+
+const emit = defineEmits(['change', 'update:value'])
+
+const editor = ref(null)
+const editorRef = ref(null)
+const baseUrl = import.meta.env.VITE_BASE_API
+
+const uploadApi = computed(() => baseUrl + '/api/upload')
+
+const headers = {
+  'Authorization': getToken()
 }
+
+watch(() => props.value, (val) => {
+  if (editor.value) {
+    editor.value.txt.html(val)
+  }
+})
+
+onMounted(() => {
+  editor.value = new E(editorRef.value)
+  editor.value.customConfig = editor.value.customConfig ? editor.value.customConfig : editor.value.config
+  editor.value.customConfig.uploadImgShowBase64 = true
+  editor.value.customConfig.uploadImgHeaders = headers
+  editor.value.customConfig.uploadFileName = 'file'
+  editor.value.customConfig.uploadImgServer = uploadApi.value
+  editor.value.customConfig.uploadImgHooks = {
+    customInsert: function(insertImg, result, editor) {
+      var url = result.link
+      insertImg(url)
+    }
+  }
+  editor.value.customConfig.onchange = (html) => {
+    emit('change', html)
+    emit('update:value', html)
+  }
+  editor.value.create()
+  editor.value.txt.html(props.value)
+})
 </script>
 
 <style scoped>

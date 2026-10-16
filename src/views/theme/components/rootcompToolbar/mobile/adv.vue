@@ -5,11 +5,8 @@
       <div class="toolBox">
         <div class="modelTit">图片设置</div>
         <div class="imgListBox">
-          <draggable v-model="activeComponent.componentContent.adv">
-            <div
-              v-for="(item, index) in activeComponent.componentContent.detail.list"
-              :key="index"
-              class="item">
+          <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.adv">
+            <template #item="{ element: item, index: index }"><div class="item">
               <div class="listItemBox">
                 <div class="addImgTit" @click="openAddImg(item, index)">
                   <div class="titLeft">
@@ -26,7 +23,7 @@
                 <div class="addBox" v-show="imgCurrent === index">
                   <div class="addContent">
                     <tool-single-img
-                      :imageUrl.sync="item.image"
+                      v-model:imageUrl="item.image"
                       :tip="alignList[index]"></tool-single-img>
                     <div class="modelTit titleBox">跳转地址</div>
                     <el-input
@@ -47,28 +44,30 @@
                 </div>
               </div>
             </div>
-          </draggable>
+            </template>
+</draggable>
         </div>
       </div>
     </div>
     <el-dialog
       title="提示"
-      :visible.sync="dialogVisible"
+      v-model="dialogVisible"
       width="30%"
       :before-close="deleteItem">
       <span>点击确定删除此项</span>
-      <span slot="footer" class="dialog-footer">
+      <template #footer><span class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
+      </span></template>
     </el-dialog>
-    <el-dialog :visible.sync="dialogImageVisible">
+    <el-dialog v-model="dialogImageVisible">
       <img width="100%" :src="dialogImageUrl" alt="" />
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { ElMessageBox } from 'element-plus'
 import Draggable from 'vuedraggable'
 import { toolMixin } from '@/mixins/tool.js'
 import ToolSelectLink from '@/views/theme/components/rootcompToolbar/toolModule/tool-select-link.vue'
@@ -139,7 +138,7 @@ export default {
     },
     // 删除内容
     deleteItem(item, index) {
-      this.$confirm('确定删除此项？')
+      ElMessageBox.confirm('确定删除此项？')
         .then((_) => {
           this.activeComponent.componentContent.menus.splice(index, 1)
         })
@@ -154,7 +153,7 @@ export default {
     },
     // 删除标签
     deleteLabelItem(item, index) {
-      this.$confirm('确定删除此项？')
+      ElMessageBox.confirm('确定删除此项？')
         .then((_) => {
           this.activeComponent.componentContent.labelList.splice(index, 1)
         })
@@ -328,7 +327,7 @@ export default {
       font-weight: bold;
     }
   }
-  >>> .el-select {
+  :deep(.el-select) {
     width: 100%;
   }
   .addImgBtn {

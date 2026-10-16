@@ -1,32 +1,32 @@
-import { constantRouterMap } from '@/router/routers'
-import Layout from '@/layout/index'
+import { defineStore } from 'pinia'
+import { constantRouterMap } from '../../router/routers.js'
 
-const permission = {
-  state: {
+export const usePermissionStore = defineStore('permission', {
+  state: () => ({
     routers: constantRouterMap,
-    addRouters: []
-  },
-  mutations: {
-    SET_ROUTERS: (state, routers) => {
-      state.addRouters = routers
-      state.routers = constantRouterMap.concat(routers)
-    }
-  },
+    addRouters: [],
+    loadMenus: true
+  }),
   actions: {
-    GenerateRoutes({ commit }, asyncRouter) {
-      commit('SET_ROUTERS', asyncRouter)
+    GenerateRoutes(asyncRouter) {
+      return new Promise(resolve => {
+        this.addRouters = asyncRouter
+        this.routers = [...constantRouterMap, ...asyncRouter]
+        this.loadMenus = false
+        resolve()
+      })
     }
   }
-}
+})
 
-export const filterAsyncRouter = (routers) => { // 遍历后台传来的路由字符串，转换为组件对象
+export const filterAsyncRouter = (routers) => {
   return routers.filter(router => {
     if (router.component) {
-      if (router.component === 'Layout') { // Layout组件特殊处理
-        router.component = Layout
+      if (router.component === 'Layout') {
+        // 动态导入避免与 layout/index.vue 形成 ESM 循环依赖
+        router.component = () => import('../../layout/index.vue')
       } else {
-        const component = router.component
-        router.component = loadView(component)
+        router.component = loadView(router.component)
       }
     }
     if (router.children && router.children.length) {
@@ -36,8 +36,15 @@ export const filterAsyncRouter = (routers) => { // 遍历后台传来的路由�
   })
 }
 
+const viewModules = import.meta.glob('@/views/**/*.vue')
+
 export const loadView = (view) => {
-  return (resolve) => require([`@/views/${view}`], resolve)
+  const path = `/src/views/${view}.vue`
+  if (!viewModules[path]) {
+    console.error(`Cannot find view: ${path}`)
+    return () => import('../../views/features/404.vue')
+  }
+  return viewModules[path]
 }
 
-export default permission
+export default usePermissionStore

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" title="更多信息" width="1000px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" title="更多信息" width="1000px">
           <el-table
             :data="tableData"
             border
@@ -14,7 +14,7 @@
               prop="name"
               label="平台"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div>
                   <el-tag v-if="scope.row.name == 'sfb'" style="background-color: #85c577; color: white">苏分宝</el-tag>
                   <el-tag v-else  style="background-color: #B68567; color: white">{{scope.row.name}}</el-tag>
@@ -32,12 +32,12 @@
               width="120">
             </el-table-column>
             <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true" width="180">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <span>{{ parseTime(scope.row.createTime) }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="updateTime" label="修改时间" :show-overflow-tooltip="true" width="180">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <span>{{ parseTime(scope.row.updateTime) }}</span>
               </template>
             </el-table-column>
@@ -46,10 +46,10 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { formatTime } from '@/utils/index'
-import {getUserExtra} from "@/api/mwUser";
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { formatTime } from '@/utils/index.js'
+import {getUserExtra} from "@/api/mwUser.js";
 export default {
   name:'UserExtra',
   components: {},

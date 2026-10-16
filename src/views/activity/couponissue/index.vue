@@ -6,10 +6,9 @@
       <el-button
         type="danger"
         class="filter-item"
-        size="mini"
-        icon="el-icon-refresh"
+        size="small"
         @click="toQuery"
-      >刷新</el-button>
+      ><el-icon><Refresh /></el-icon>刷新</el-button>
     </div>
     <!--表单组件-->
     <eForm ref="form" :is-add="isAdd" />
@@ -17,49 +16,48 @@
     <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="id" label="id" />
       <el-table-column prop="ctype" label="优惠券类型">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.ctype === 1" style="cursor: pointer" :type="''">商品券</el-tag>
+            <el-tag v-if="scope.row.ctype === 1" style="cursor: pointer" type="primary">商品券</el-tag>
             <el-tag v-else :type=" 'info' ">普通券</el-tag>
           </div>
         </template>
       </el-table-column>
       <el-table-column prop="cname" label="优惠券名称" />
       <el-table-column label="领取日期" prop="startTime">
-        <template slot-scope="scope">
+        <template #default="scope">
           <p>{{ formatTimeTwo(scope.row.startTime) }}</p>
           <p>{{ formatTimeTwo(scope.row.endTime) }}</p>
         </template>
       </el-table-column>
       <el-table-column label="发布数量" prop="totalCount">
-        <template slot-scope="scope">
+        <template #default="scope">
           <p>发布:{{ scope.row.totalCount }}</p>
           <p>剩余:{{ scope.row.remainCount }}</p>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center" prop="status">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.status === 1" style="cursor: pointer" :type="''">开启</el-tag>
+            <el-tag v-if="scope.row.status === 1" style="cursor: pointer" type="primary">开启</el-tag>
             <el-tag v-else :type=" 'info' ">关闭</el-tag>
           </div>
         </template>
       </el-table-column>
       <el-table-column v-if="checkPermission(['admin','MWSTORECOUPONISSUE_ALL','MWSTORECOUPONISSUE_EDIT','MWSTORECOUPONISSUE_DELETE'])" label="操作" width="150px" align="center">
-        <template slot-scope="scope">
-          <el-button v-permission="['admin','MWSTORECOUPONISSUE_ALL','MWSTORECOUPONISSUE_EDIT']" size="mini" type="primary" icon="el-icon-edit" @click="edit(scope.row)" />
+        <template #default="scope">
+          <el-button v-permission="['admin','MWSTORECOUPONISSUE_ALL','MWSTORECOUPONISSUE_EDIT']" size="small" type="primary" @click="edit(scope.row)"><el-icon><Edit /></el-icon></el-button>
           <el-popover
             :ref="scope.row.id"
-            v-permission="['admin','MWSTORECOUPONISSUE_ALL','MWSTORECOUPONISSUE_DELETE']"
             placement="top"
             width="180"
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+              <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini" />
+            <template #reference><el-button v-permission="['admin','MWSTORECOUPONISSUE_ALL','MWSTORECOUPONISSUE_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon></el-button></template>
           </el-popover>
         </template>
       </el-table-column>
@@ -77,11 +75,12 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { del } from '@/api/mwStoreCouponIssue'
-import eForm from './formt'
-import { formatTimeTwo } from '@/utils/index'
+import { ElNotification } from 'element-plus'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { del } from '@/api/mwStoreCouponIssue.js'
+import eForm from './formt.vue'
+import { formatTimeTwo } from '@/utils/index.js'
 export default {
   components: { eForm },
   mixins: [initData],
@@ -108,17 +107,17 @@ export default {
       this.delLoading = true
       del(id).then(res => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         this.dleChangePage()
         this.init()
-        this.$notify({
+        ElNotification({
           title: '删除成功',
           type: 'success',
           duration: 2500
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         console.log(err.response.data.message)
       })
     },

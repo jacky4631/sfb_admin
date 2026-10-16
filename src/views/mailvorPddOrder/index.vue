@@ -4,33 +4,33 @@
 
       <el-tabs v-model="status" type="card" @tab-click="handleOrder">
         <el-tab-pane name="">
-          <span slot="label"><i class="el-icon-s-order"></i> 全部订单</span>
+          <template #label><el-icon><Tickets /></el-icon> 全部订单</template>
         </el-tab-pane>
         <el-tab-pane name="4">
-          <span slot="label"><i class="el-icon-bank-card"></i> 审核失败</span>
+          <template #label><el-icon><CreditCard /></el-icon> 审核失败</template>
         </el-tab-pane>
         <el-tab-pane name="3">
-          <span slot="label"><i class="el-icon-refrigerator"></i> 审核成功</span>
+          <template #label><el-icon><Refrigerator /></el-icon> 审核成功</template>
         </el-tab-pane>
         <el-tab-pane name="5">
-          <span slot="label"><i class="el-icon-truck"></i> 已经结算</span>
+          <template #label><el-icon><Van /></el-icon> 已经结算</template>
         </el-tab-pane>
         <el-tab-pane name="2">
-          <span slot="label"><i class="el-icon-document"></i> 确认收货</span>
+          <template #label><el-icon><Document /></el-icon> 确认收货</template>
         </el-tab-pane>
         <el-tab-pane name="-1">
-          <span slot="label"><i class="el-icon-refrigerator"></i> 未支付</span>
+          <template #label><el-icon><Refrigerator /></el-icon> 未支付</template>
         </el-tab-pane>
         <el-tab-pane name="1">
-          <span slot="label"><i class="el-icon-document"></i> 已成团</span>
+          <template #label><el-icon><Document /></el-icon> 已成团</template>
         </el-tab-pane>
       </el-tabs>
       <!--工具栏-->
       <div class="head-container">
 
         <!-- 搜索 -->
-        <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" />
-        <el-input v-model="query.uid" clearable placeholder="输入用户id" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" />
+        <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
+        <el-input v-model="query.uid" clearable placeholder="输入用户id" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
         <el-select v-model="innerType" clearable placeholder="订单类型" class="filter-item" style="width: 130px">
           <el-option v-for="item in queryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
         </el-select>
@@ -44,22 +44,22 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
-        <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+        <el-button class="filter-item" size="small" type="success" :icon="Search" @click="toQuery">搜索</el-button>
         <!-- 新增 -->
         <el-button
           type="danger"
           class="filter-item"
-          size="mini"
-          icon="el-icon-refresh"
+          size="small"
+          :icon="Refresh"
           @click="toQuery"
         >刷新</el-button>
       </div>
       <!--表单组件-->
-      <editOrder ref="form3" :is-add="isAdd" />
+      <editOrder ref="form3" :is-add="isAdd" @refresh="init" />
 
       <!--表格渲染-->
       <el-table ref="multipleTable" height="460" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
@@ -67,25 +67,25 @@
         <el-table-column prop="orderSn" label="订单编号" fixed width="185" :show-overflow-tooltip="true"/>
 
         <el-table-column prop="orderCreateTime" label="订单生成时间"  width="150" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderCreateTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderStatusDesc" label="订单状态" >
-          <template slot-scope="scope">
+          <template #default="scope">
             <el-tag v-if="scope.row.orderStatusDesc !== '审核失败'" :type="'success'">{{ scope.row.orderStatusDesc }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ scope.row.orderStatusDesc }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="bind" label="拆红包" width="120">
-          <template slot-scope="scope">
+          <template #default="scope">
             <el-tag v-if="scope.row.bind === 1" style="cursor: pointer" :type="'success'">{{ isBinding(scope.row.bind) }}</el-tag>
-            <el-tag v-else-if="scope.row.bind === 0" style="cursor: pointer" :type=" '' ">{{ isBinding(scope.row.bind) }}</el-tag>
+            <el-tag v-else-if="scope.row.bind === 0" style="cursor: pointer" type="primary">{{ isBinding(scope.row.bind) }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ isBinding(scope.row.bind) }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="promotionAmount" label="预估佣金">
-          <template slot-scope="scope">
+          <template #default="scope">
             {{ scope.row.promotionAmount/100 }}
           </template>
         </el-table-column>
@@ -95,7 +95,7 @@
         <el-table-column prop="priceCompareStatus" label="比价=1" />
         <el-table-column prop="goodsName" label="商品名称"  width="100" :show-overflow-tooltip="true"/>
         <el-table-column prop="orderAmount" label="支付金额" >
-          <template slot-scope="scope">
+          <template #default="scope">
             {{ scope.row.orderAmount/100 }}
           </template>
         </el-table-column>
@@ -103,7 +103,7 @@
         <el-table-column prop="orderStatus" label="订单状态" />
         <el-table-column prop="goodsId" label="商品ID"  width="150" :show-overflow-tooltip="true"/>
         <el-table-column prop="goodsPrice" label="单件价格" >
-          <template slot-scope="scope">
+          <template #default="scope">
             {{ scope.row.goodsPrice/100 }}
           </template>
         </el-table-column>
@@ -124,43 +124,43 @@
         <el-table-column prop="noSubsidyReason" label="非补贴原因" />
 
         <el-table-column prop="orderGroupSuccessTime" label="成团时间"  width="100" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderGroupSuccessTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderModifyAt" label="最后更新时间"  width="100" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderModifyAt) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderPayTime" label="支付时间"  width="100" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderPayTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderReceiveTime" label="确认收货时间"  width="100" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderReceiveTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderSettleTime" label="结算时间"  width="200" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderSettleTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="orderVerifyTime" label="审核时间"  width="200" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.orderVerifyTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="pId" label="推广位ID" />
         <el-table-column prop="platformDiscount" label="平台券元" >
-          <template slot-scope="scope">
+          <template #default="scope">
             {{ scope.row.platformDiscount/100 }}
           </template>
         </el-table-column>
         <el-table-column prop="promotionRate" label="佣金比例%" >
-          <template slot-scope="scope">
+          <template #default="scope">
             {{ scope.row.promotionRate/10 }}
           </template>
         </el-table-column>
@@ -180,44 +180,47 @@
         <el-table-column prop="type" label="下单场景类型" />
         <el-table-column prop="zsDuoId" label="招商多多客id" />
         <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="updateTime" label="修改时间" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.updateTime) }}</span>
           </template>
         </el-table-column>
 
         <el-table-column v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="200" align="center" fixed="right">
-          <template slot-scope="scope">
+          <template #default="scope">
             <el-button
               v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
-              size="mini"
+              size="small"
               type="primary"
-              @click="editOrder(scope.row)"
+              @click="handleEditOrder(scope.row)"
             >
               绑定用户</el-button>
-            <el-dropdown size="mini" split-button type="primary" trigger="click">
+            <el-dropdown size="small" split-button type="primary" trigger="click">
               操作
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item >
-                  <el-popover
-                    :ref="scope.row.orderSn"
-                    v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_DELETE']"
-                    placement="top"
-                    width="180"
-                  >
-                    <p>确定删除本条数据吗？</p>
-                    <div style="text-align: right; margin: 0">
-                      <el-button size="mini" type="text" @click="$refs[scope.row.orderSn].doClose()">取消</el-button>
-                      <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete([scope.row.orderSn])">确定</el-button>
-                    </div>
-                    <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini">删除</el-button>
-                  </el-popover>
-                </el-dropdown-item>
-              </el-dropdown-menu>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item >
+                    <el-popover
+                      :ref="el => popoverRefs[scope.row.orderSn] = el"
+                      placement="top"
+                      width="180"
+                    >
+                      <p>确定删除本条数据吗？</p>
+                      <div style="text-align: right; margin: 0">
+                        <el-button size="small" link @click="popoverRefs[scope.row.orderSn]?.hide()">取消</el-button>
+                        <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.orderSn])">确定</el-button>
+                      </div>
+                      <template #reference>
+                        <el-button v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_DELETE']" type="danger" :icon="Delete" size="small">删除</el-button>
+                      </template>
+                    </el-popover>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
             </el-dropdown>
 
           </template>
@@ -248,188 +251,242 @@
   </div>
 </template>
 
-<script>
-  import checkPermission from '@/utils/permission'
-  import initData from '@/mixins/crud'
-  import { del } from '@/api/mailvorPddOrder'
-  import editOrder from '../mailvorTbOrder/edit'
-  import { formatTime } from '@/utils/index'
-  import {pddOrderStatusParse, refundStatus, isCash, isBinding} from "@/utils/tk-order-parse";
+<script setup>
+import { Search, Refresh, Delete } from '@element-plus/icons-vue'
+import { ref, reactive, onMounted } from 'vue'
+import { ElNotification } from 'element-plus'
+import checkPermission from '@/utils/permission.js'
+import { initData, download } from '@/api/data.js'
+import { parseTime, downloadFile } from '@/utils/index.js'
+import { del } from '@/api/mailvorPddOrder.js'
+import editOrder from '../mailvorTbOrder/edit.vue'
+import { pddOrderStatusParse, refundStatus, isCash, isBinding } from "@/utils/tk-order-parse.js";
 
-  export default {
-    components: { editOrder },
-    mixins: [initData],
-    data() {
-      return {
-        delLoading: false,
-        status: '',
-        refundTag: '',
-        search: '',
-        orderType: '0',
-        innerType: '0',
-        bind: '',
-        orderCreateTime: '',
-        checkList: [],
-        printChecked: false,
-        batchHandle: '',
-        batchExport: '',
-        listContent: [],
-        queryTypeOptions: [
-          { key: '0', display_name: '用户订单' },
-          { key: '2', display_name: '热度订单' },
-        ],
-        bindOptions: [
-          { key: '0', display_name: '未拆' },
-          { key: '1', display_name: '已拆' },
-        ],
-        exportOptions: [
-          {value: '', label: '批量导出'},
-          {value: '0', label: '导出全部'},
-          {value: '1', label: '导出选中'},
-        ],
+const status = ref('')
+const refundTag = ref('')
+const search = ref('')
+const orderType = ref('0')
+const innerType = ref('0')
+const bind = ref('')
+const orderCreateTime = ref('')
+const checkList = ref([])
+const printChecked = ref(false)
+const batchHandle = ref('')
+const batchExport = ref('')
+const listContent = ref([])
 
-      }
-    },
-    created() {
-      this.$nextTick(() => {
-        this.init()
-      })
-    },
-    methods: {
-      pddOrderStatusParse,
-      refundStatus,
-      isCash,
-      isBinding,
-      formatTime,
-      checkPermission,
-      handleOrder(tab, event) {
-        this.status = tab.name
-        this.toQuery()
-      },
-      beforeInit() {
-        this.url = 'api/mailvorPddOrder'
-        const sort = 'order_create_time,desc'
-        this.params = {
-          page: this.page,
-          size: this.size,
-          sort: sort,
-          orderType: this.orderType,
-          orderCreateTime: this.orderCreateTime,
-          listContent: this.listContent,
-          innerType: this.innerType
+const delLoading = ref(false)
+const loading = ref(true)
+const data = ref([])
+const page = ref(0)
+const size = ref(10)
+const total = ref(0)
+const url = ref('')
+const params = ref({})
+const query = ref({})
+const isAdd = ref(false)
 
-        }
-        if(this.status != null && this.status != '' && this.status != 0) {
-          this.params.orderStatus = this.status;
-        }
-        if(this.refundTag != null && this.status != '') {
-          this.params.refundTag = this.refundTag;
-        }
+const multipleTable = ref(null)
+const form3 = ref(null)
+const popoverRefs = reactive({})
 
-        if(this.bind != null && this.bind != '') {
-          this.params.bind = this.bind;
-        }
-        const query = this.query
-        const type = query.type
-        const value = query.value
-        if (type && value) { this.params[type] = value }
-        return true
-      },
-      subDelete(id) {
-        this.delLoading = true
-        del(id).then(res => {
-          this.delLoading = false
-          this.$refs[id].doClose()
-          this.dleChangePage()
-          this.init()
-          this.$notify({
-            title: '删除成功',
-            type: 'success',
-            duration: 2500
-          })
-        }).catch(err => {
-          this.delLoading = false
-          this.$refs[id].doClose()
-          console.log(err.response.data.message)
-        })
-      },
-      add() {
-        this.isAdd = true
-        this.$refs.form.dialog = true
-      },
-      editOrder(data) {
-        this.isAdd = false
-        const _this = this.$refs.form3
-        _this.form = {
-          orderId: data.orderSn,
-          uid: data.uid,
-        }
-        _this.dialog = true
-      },
-      handleSelectionChange(val) {
-        this.checkList = val;
-        let orderPrice = 0, storeNum = 0, orderNum = 0, userNum = 0;
-        if(val.length !=0 ){
-          this.printChecked = true;
-          let user = [];
-          val.forEach((item,index)=>{
-            orderNum += 1;
-            orderPrice += item.totalPrice;
-            storeNum += item.totalNum;
-            user.push(item.userDTO.nickname);
-          })
-          user = Array.from(new Set(user));
+const queryTypeOptions = [
+  { key: '0', display_name: '用户订单' },
+  { key: '2', display_name: '热度订单' },
+]
+const bindOptions = [
+  { key: '0', display_name: '未拆' },
+  { key: '1', display_name: '已拆' },
+]
+const exportOptions = [
+  {value: '', label: '批量导出'},
+  {value: '0', label: '导出全部'},
+  {value: '1', label: '导出选中'},
+]
 
-        }else {
-          this.printChecked = false;
-        }
-      },
-      batchSelection(val){
-        let rows = this.data;
-        if (val) {
-          rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
-        } else {
-          this.$refs.multipleTable.clearSelection();
-        }
-      },
-      handleExportOption(val){
-        let list = this.checkList;
-        this.page = 0;
-        this.size = 10000;
-        switch (val) {
-          case "0":
-            this.listContent = "";
-            this.beforeInit();
-            this.downloadMethod();
-            break;
-          case "1":
-            if(list.length == 0){
-              this.$message({
-                message: '请选择订单',
-                type: 'warning'
-              });
-            }else {
-              this.listContent = [];
-              list.forEach((item) => {
-                this.listContent.push(item.orderId);
-              })
-              this.listContent = JSON.stringify(this.listContent);
-              this.beforeInit();
-              this.downloadMethod();
-            }
-            break;
-          default:
-            break;
-        }
-        this.batchExport = "";
-      },
-      checkboxT(row, rowIndex) {
-        return row.id !== 1
-      },
-    }
+onMounted(() => {
+  init()
+})
+
+async function init() {
+  if (!await beforeInit()) {
+    return
   }
+  loading.value = true
+  initData(url.value, getQueryParame()).then(res => {
+    total.value = res.totalElements
+    data.value = res.content
+    setTimeout(() => {
+      loading.value = false
+    }, 50)
+  }).catch(() => {
+    loading.value = false
+  })
+}
+
+function beforeInit() {
+  url.value = 'api/mailvorPddOrder'
+  const sort = 'order_create_time,desc'
+  params.value = {
+    page: page.value,
+    size: size.value,
+    sort: sort,
+    orderType: orderType.value,
+    orderCreateTime: orderCreateTime.value,
+    listContent: listContent.value,
+    innerType: innerType.value
+  }
+  if(status.value != null && status.value != '' && status.value != 0) {
+    params.value.orderStatus = status.value;
+  }
+  if(refundTag.value != null && status.value != '') {
+    params.value.refundTag = refundTag.value;
+  }
+
+  if(bind.value != null && bind.value != '') {
+    params.value.bind = bind.value;
+  }
+  const type = query.value.type
+  const value = query.value.value
+  if (type && value) { params.value[type] = value }
+  return Promise.resolve(true)
+}
+
+function getQueryParame() {
+  return {
+    page: page.value,
+    size: size.value,
+    sort: ['id,desc'],
+    ...query.value,
+    ...params.value
+  }
+}
+
+function handleOrder(tab) {
+  // Element Plus 的 tab-click 回调参数是 pane 上下文，name 在 paneName 上（Vue2 里才是 tab.name）
+  status.value = tab.paneName
+  toQuery()
+}
+
+function toQuery() {
+  page.value = 0
+  init()
+}
+
+function pageChange(e) {
+  page.value = e - 1
+  init()
+}
+
+function sizeChange(e) {
+  page.value = 0
+  size.value = e
+  init()
+}
+
+function dleChangePage(sizeVal) {
+  if (sizeVal === undefined) {
+    sizeVal = 1
+  }
+  if (data.value.length === sizeVal && page.value !== 0) {
+    page.value = page.value - 1
+  }
+}
+
+function subDelete(id) {
+  delLoading.value = true
+  del(id).then(() => {
+    delLoading.value = false
+    popoverRefs[id[0]]?.hide()
+    dleChangePage()
+    init()
+    ElNotification({
+      title: '删除成功',
+      type: 'success',
+      duration: 2500
+    })
+  }).catch(err => {
+    delLoading.value = false
+    popoverRefs[id[0]]?.hide()
+    console.log(err.response?.data?.message)
+  })
+}
+
+function handleEditOrder(rowData) {
+  isAdd.value = false
+  const _this = form3.value
+  if (_this) {
+    _this.form = {
+      orderId: rowData.orderSn,
+      uid: rowData.uid,
+    }
+    _this.dialog = true
+  }
+}
+
+function handleSelectionChange(val) {
+  checkList.value = val;
+  if(val.length != 0){
+    printChecked.value = true;
+  }else {
+    printChecked.value = false;
+  }
+}
+
+function batchSelection(val){
+  const rows = data.value;
+  if (val) {
+    rows.forEach(row => {
+      multipleTable.value?.toggleRowSelection(row);
+    });
+  } else {
+    multipleTable.value?.clearSelection();
+  }
+}
+
+function handleExportOption(val){
+  const list = checkList.value;
+  page.value = 0;
+  size.value = 10000;
+  switch (val) {
+    case "0":
+      listContent.value = "";
+      beforeInit();
+      downloadMethod();
+      break;
+    case "1":
+      if(list.length == 0){
+        ElNotification({
+          message: '请选择订单',
+          type: 'warning'
+        });
+      }else {
+        listContent.value = [];
+        list.forEach((item) => {
+          listContent.value.push(item.orderId);
+        })
+        listContent.value = JSON.stringify(listContent.value);
+        beforeInit();
+        downloadMethod();
+      }
+      break;
+    default:
+      break;
+  }
+  batchExport.value = "";
+}
+
+function checkboxT(row, rowIndex) {
+  return row.id !== 1
+}
+
+function downloadMethod() {
+  beforeInit()
+  download(url.value + '/download', params.value).then(result => {
+    downloadFile(result, '' + '数据', 'xlsx')
+  }).catch(() => {
+  })
+}
 </script>
 
 <style scoped lang="scss">

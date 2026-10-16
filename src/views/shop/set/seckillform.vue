@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog"
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog"
              :title="isAdd ? '新增' : '编辑'" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="150px">
       <el-form-item label="开启时间(整数小时)">
@@ -10,22 +10,24 @@
       </el-form-item>
       <el-form-item label="是否开启">
         <el-radio-group v-model="form.status">
-          <el-radio :label="1">开启</el-radio>
-          <el-radio :label="2">关闭</el-radio>
+          <el-radio :value="1">开启</el-radio>
+          <el-radio :value="2">关闭</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <template #footer><div class="dialog-footer">
       <!--<el-input v-model="form.groupName" />-->
-      <el-button type="text" @click="cancel">取消</el-button>
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
-import {add, edit} from '@/api/mwSystemGroupData'
-import picUpload from '@/components/pic-upload'
+import { ElNotification, ElMessage } from 'element-plus'
+import {add, edit} from '@/api/mwSystemGroupData.js'
+import picUpload from '@/components/pic-upload/index.vue'
 
 export default {
   components: {picUpload},
@@ -54,7 +56,7 @@ export default {
     },
     doSubmit() {
       if (parseInt(this.form.continued) + parseInt(this.form.time) > 24) {
-        return this.$message.error("开启+持续时间不能超过24小时")
+        return ElMessage.error("开启+持续时间不能超过24小时")
       }
       this.loading = true
       if (this.isAdd) {
@@ -64,7 +66,7 @@ export default {
     doAdd() {
       add(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '添加成功',
           type: 'success',
           duration: 2500
@@ -79,7 +81,7 @@ export default {
     doEdit() {
       edit(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '修改成功',
           type: 'success',
           duration: 2500

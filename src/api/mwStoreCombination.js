@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from '@/utils/request.js'
 
 export function add(data) {
   return request({
@@ -37,3 +37,7 @@ export function onsale(id, data) {
     data
   })
 }
+
+// 兼容别名
+export const onsaleCombination = onsale
+export const delCombination = del

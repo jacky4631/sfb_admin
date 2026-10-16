@@ -5,12 +5,8 @@
   <div class="editorNavType">
     <h2>专区导航</h2>
     <ul class="editorList">
-      <draggable v-model="activeComponent.componentContent.typeRoute">
-        <li
-        class="item"
-        v-for="(item, index) in activeComponent.componentContent.typeRoute"
-        :key="index"
-        >
+      <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.typeRoute">
+        <template #item="{ element: item, index: index }"><li class="item">
           <DraggableSlot :obj="item" :index="index" @deleteIt="deleteIt">
             <div class="addContent">
                 <!-- 文本编辑 -->
@@ -32,29 +28,31 @@
             </div>
           </DraggableSlot>
         </li>
-      </draggable>
+        </template>
+</draggable>
       <div class="addImgBtn" @click="addImgText">
         <span class="iconfont">&#xe64a;</span>添加图文
       </div>
     </ul>
     <el-dialog
     title="提示"
-    :visible.sync="dialogVisible"
+    v-model="dialogVisible"
     width="30%"
     :before-close="deleteItem"
     >
       <span>点击确定删除此项</span>
-      <span slot="footer" class="dialog-footer">
+      <template #footer><span class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false"
           >确 定</el-button
         >
-      </span>
+      </span></template>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { ElMessageBox } from 'element-plus'
 import Draggable from 'vuedraggable'
 import { toolMixin } from '@/mixins/tool.js'
 import DraggableSlot from '@/views/theme/components/rootcompToolbar/pc/components/draggableSlot.vue'
@@ -78,7 +76,7 @@ export default {
           })
       },
       deleteItem (item, index) {
-          this.$confirm('确定删除此项？')
+          ElMessageBox.confirm('确定删除此项？')
           .then((_) => {
               this.activeComponent.componentContent.typeRoute.splice(index, 1)
           })

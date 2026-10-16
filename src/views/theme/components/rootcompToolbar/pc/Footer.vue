@@ -5,17 +5,13 @@
   <div class="editorFooter">
     <h2>联系方式</h2>
     <ul class="editorList">
-      <draggable v-model="activeComponent.componentContent.publicList">
-        <li
-        class="item"
-        v-for="(item, index) in activeComponent.componentContent.publicList"
-        :key="index"
-        >
+      <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.publicList">
+        <template #item="{ element: item, index: index }"><li class="item">
           <DraggableSlot :obj="item" :index="index" @deleteIt="deleteIt">
             <div class="addContent">
               <ToolSingleImg
               v-if="item.pic !== undefined && item.pic !== null && item.pic !== ''"
-              :imageUrl.sync="item.pic" />
+              v-model:imageUrl="item.pic" />
               <div class="titleBox">{{ item.title }}</div>
               <el-input
                   placeholder="描述"
@@ -25,29 +21,31 @@
             </div>
           </DraggableSlot>
         </li>
-      </draggable>
+        </template>
+</draggable>
     </ul>
     <el-dialog
       title="提示"
-      :visible.sync="dialogVisible"
+      v-model="dialogVisible"
       width="30%"
       :before-close="deleteItem"
     >
       <span>点击确定删除此项</span>
-      <span slot="footer" class="dialog-footer">
+      <template #footer><span class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false"
           >确 定</el-button
         >
-      </span>
+      </span></template>
     </el-dialog>
-    <el-dialog :visible.sync="dialogImageVisible">
+    <el-dialog v-model="dialogImageVisible">
         <img width="100%" :src="dialogImageUrl" alt="" />
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { ElMessage, ElMessageBox } from 'element-plus'
 import Draggable from 'vuedraggable'
 import { toolMixin } from '@/mixins/tool.js'
 import ToolSingleImg from '@/views/theme/components/rootcompToolbar/toolModule/tool-single-img.vue'
@@ -74,14 +72,14 @@ export default {
           })
       },
       deleteItem (item, index) {
-          this.$confirm('确定删除此项？')
+          ElMessageBox.confirm('确定删除此项？')
           .then((_) => {
               this.activeComponent.componentContent.publicList.splice(index, 1)
           })
           .catch((_) => {})
       },
       deleteIt (index) {
-        this.$message.error('该模块无法删除')
+        ElMessage.error('该模块无法删除')
         // this.activeComponent.componentContent.publicList.splice(index, 1)
       }
     }

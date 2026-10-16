@@ -5,11 +5,8 @@
       <div class="toolBox">
         <div class="modelTit">内容设置</div>
         <div class="imgListBox">
-          <draggable v-model="activeComponent.componentContent.roll">
-            <div
-              v-for="(item, index) in activeComponent.componentContent.roll"
-              :key="index"
-              class="item">
+          <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.roll">
+            <template #item="{ element: item, index: index }"><div class="item">
               <div class="listItemBox">
                 <div class="addImgTit" @click="openAddImg(item, index)">
                   <div class="titLeft">
@@ -48,7 +45,7 @@
                       resize="none"
                       v-model="activeComponent.componentContent.roll[index].wxapp_url" />
                     <!-- <tool-select-link
-                      :linkObj.sync="item.linkObj"
+                      v-model:linkObj="item.linkObj"
                       title="小程序链接"
                     ></tool-select-link> -->
                   </div>
@@ -58,7 +55,8 @@
                 </div>
               </div>
             </div>
-          </draggable>
+            </template>
+</draggable>
         </div>
         <!-- <div class="addImgBtn" @click="addImgText">
           <span class="iconfont">&#xe64a;</span>添加图文
@@ -67,22 +65,23 @@
     </div>
     <el-dialog
       title="提示"
-      :visible.sync="dialogVisible"
+      v-model="dialogVisible"
       width="30%"
       :before-close="deleteItem" >
       <span>点击确定删除此项</span>
-      <span slot="footer" class="dialog-footer">
+      <template #footer><span class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
+      </span></template>
     </el-dialog>
-    <el-dialog :visible.sync="dialogImageVisible">
+    <el-dialog v-model="dialogImageVisible">
       <img width="100%" :src="dialogImageUrl" alt="" />
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { ElMessageBox } from 'element-plus'
 import Draggable from 'vuedraggable'
 import { toolMixin } from '@/mixins/tool.js'
 import ToolSelectLink from '@/views/theme/components/rootcompToolbar/toolModule/tool-select-link.vue'
@@ -152,7 +151,7 @@ export default {
     },
     // 删除内容
     deleteItem (item, index) {
-      this.$confirm('确定删除此项？')
+      ElMessageBox.confirm('确定删除此项？')
         .then((_) => {
           this.activeComponent.componentContent.roll.splice(index, 1)
         })
@@ -167,7 +166,7 @@ export default {
     },
     // 删除标签
     deleteLabelItem (item, index) {
-      this.$confirm('确定删除此项？')
+      ElMessageBox.confirm('确定删除此项？')
         .then((_) => {
           this.activeComponent.componentContent.labelList.splice(index, 1)
         })
@@ -341,7 +340,7 @@ export default {
       font-weight: bold;
     }
   }
-  >>> .el-select {
+  :deep(.el-select) {
     width: 100%;
   }
   .addImgBtn {

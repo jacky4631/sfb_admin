@@ -1,6 +1,6 @@
 <template>
   <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel"
-             :visible.sync="dialog" :title="isAdd ? '新增' : '编辑'" width="750px">
+             v-model="dialog" :title="isAdd ? '新增' : '编辑'" width="750px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
       <el-form-item label="通道名称">
         <el-input v-model="form.channelName" style="width: 40%"/>
@@ -45,8 +45,8 @@
         </el-select>
       </el-form-item>
       <el-form-item label="通道开关">
-        <el-radio v-model="form.status" :label="8">开</el-radio>
-        <el-radio v-model="form.status" :label="0" style="width: 200px;">关</el-radio>
+        <el-radio v-model="form.status" :value="8">开</el-radio>
+        <el-radio v-model="form.status" :value="0" style="width: 200px;">关</el-radio>
       </el-form-item>
 
       <el-form-item label="证书信息">
@@ -54,19 +54,21 @@
         <p style="color: red">证书信息不再展示，需要更新通过印笔复制json串保存</p>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <template #footer><div class="dialog-footer">
       <!--<el-input v-model="form.groupName" />-->
-      <el-button type="text" @click="cancel">取消</el-button>
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
-import { encrypt } from '@/utils/rsaEncrypt'
-import { add, edit } from '@/api/mwPaySet'
-import picUpload from '@/components/pic-upload'
-import {getChannelKeyOptions, getTypeOptions} from "@/utils/tk-order-parse";
+import { ElNotification } from 'element-plus'
+import { encrypt } from '@/utils/rsaEncrypt.js'
+import { add, edit } from '@/api/mwPaySet.js'
+import picUpload from '@/components/pic-upload/index.vue'
+import {getChannelKeyOptions, getTypeOptions} from "@/utils/tk-order-parse.js";
 export default {
   components: { picUpload },
   props: {
@@ -126,7 +128,7 @@ export default {
       this.form.certProfileE = encrypt(cert)
       add(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '添加成功',
           type: 'success',
           duration: 2500
@@ -150,7 +152,7 @@ export default {
       }
       edit(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '修改成功',
           type: 'success',
           duration: 2500

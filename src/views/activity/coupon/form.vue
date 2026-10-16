@@ -1,14 +1,14 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="isAdd ? '新增' : '编辑'" width="800px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '编辑'" width="800px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="140px">
       <el-form-item label="优惠券类型">
         <el-radio-group v-model="form.type" @change="couponsType">
-          <el-radio :label=0>通用券</el-radio>
-          <el-radio :label=1>商品券</el-radio>
+          <el-radio :value=0>通用券</el-radio>
+          <el-radio :value=1>商品券</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="选择商品" v-if="form.type == 1">
-        <cgood v-model="form.product" @selectGoods="getGoods"></cgood>
+        <cgood :value="form.product" @selectGoods="getGoods"></cgood>
       </el-form-item>
       <el-form-item label="优惠券名称">
         <el-input v-model="form.title" style="width: 300px;" />
@@ -26,20 +26,22 @@
         <el-input-number v-model="form.sort" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="状态">
-        <el-radio v-model="form.status" :label="1">开启</el-radio>
-        <el-radio v-model="form.status" :label="0">关闭</el-radio>
+        <el-radio v-model="form.status" :value="1">开启</el-radio>
+        <el-radio v-model="form.status" :value="0">关闭</el-radio>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="cancel">取消</el-button>
+    <template #footer><div class="dialog-footer">
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
+    </template>
   </el-dialog>
 </template>
 
 <script>
-import { add, edit } from '@/api/mwStoreCoupon'
-import cgood from '@/views/components/goods'
+import { ElNotification } from 'element-plus'
+import { add, edit } from '@/api/mwStoreCoupon.js'
+import cgood from '@/views/components/goods/index.vue'
 export default {
   components: { cgood },
   props: {
@@ -98,7 +100,7 @@ export default {
     doAdd() {
       add(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '添加成功',
           type: 'success',
           duration: 2500
@@ -113,7 +115,7 @@ export default {
     doEdit() {
       edit(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '修改成功',
           type: 'success',
           duration: 2500

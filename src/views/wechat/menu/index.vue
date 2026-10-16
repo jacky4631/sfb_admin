@@ -100,193 +100,143 @@
   </div>
 </template>
 
-<script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { del, add, get } from '@/api/mwWechatMenu'
-import eForm from './form'
-import { Message } from 'element-ui'
-export default {
-  components: { eForm },
-  mixins: [initData],
-  data() {
-    return {
-      delLoading: false,
-      menus: [],
-      checkedMenu: {
-        type: 'click',
-        name: ''
-      },
-      checkedMenuId: null,
-      parentMenuId: null
-    }
-  },
-  created() {
-    get().then(res => {
-      this.menus = JSON.parse(res.result)
-    })
-  },
-  methods: {
-    checkPermission,
-    beforeInit() {
-      this.url = 'api/mwWechatMenu'
-      const sort = 'key,desc'
-      this.params = { page: this.page, size: this.size, sort: sort }
-      return true
-    },
-    subDelete(key) {
-      this.delLoading = true
-      del(key).then(res => {
-        this.delLoading = false
-        this.$refs[key].doClose()
-        this.dleChangePage()
-        this.init()
-        this.$notify({
-          title: '删除成功',
-          type: 'success',
-          duration: 2500
-        })
-      }).catch(err => {
-        this.delLoading = false
-        this.$refs[key].doClose()
-        console.log(err.response.data.message)
-      })
-    },
-    add() {
-      this.isAdd = true
-      this.$refs.form.dialog = true
-    },
-    edit(data) {
-      this.isAdd = false
-      const _this = this.$refs.form
-      _this.form = {
-        key: data.key,
-        result: data.result,
-        addTime: data.addTime
-      }
-      _this.dialog = true
-    },
-    defaultMenusData: function() {
-      return {
-        type: 'click',
-        name: '',
-        subButtons: []
-      }
-    },
-    defaultChildData: function() {
-      return {
-        type: 'click',
-        name: ''
-      }
-    },
-    addMenu: function() {
-      if (!this.check()) return false
-      var data = this.defaultMenusData(); var id = this.menus.length
-      this.menus.push(data)
-      this.checkedMenu = data
-      this.checkedMenuId = id
-      this.parentMenuId = null
-    },
-    addChild: function(menu, index) {
-      if (!this.check()) return false
-      var data = this.defaultChildData(); var id = menu.subButtons.length
-      menu.subButtons.push(data)
-      this.checkedMenu = data
-      this.checkedMenuId = id
-      this.parentMenuId = index
-    },
-    delMenu: function() {
-      console.log(this.parentMenuId)
-      this.parentMenuId === null
-        ? this.menus.splice(this.checkedMenuId, 1) : this.menus[this.parentMenuId].subButtons.splice(this.checkedMenuId, 1)
-      this.parentMenuId = null
-      this.checkedMenu = {}
-      this.checkedMenuId = null
-    },
-    activeMenu: function(menu, index, pid) {
-      if (!this.check()) return false
-      pid === null
-        ? (this.checkedMenu = menu) : (this.checkedMenu = this.menus[pid].subButtons[index], this.parentMenuId = pid)
-      this.checkedMenuId = index
-    },
-    check: function() {
-      if (this.checkedMenuId === null) return true
-      if (!this.checkedMenu.name) {
-        // $eb.message('请输入按钮名称!');
-        this.$message({
-          message: '请输入按钮名称',
-          type: 'error',
-          duration: 1000,
-          onClose: () => {
-            // this.init()
-          }
-        })
-        return false
-      }
-      if (this.checkedMenu.type == 'click' && !this.checkedMenu.key) {
-        // $eb.message('请输入关键字!');
-        this.$message({
-          message: '请输入关键字',
-          type: 'error',
-          duration: 1000,
-          onClose: () => {
-            // this.init()
-          }
-        })
-        return false
-      }
-      if (this.checkedMenu.type == 'view' && !this.checkedMenu.url) {
-        this.$message({
-          message: '请输入跳转地址',
-          type: 'error',
-          duration: 1000,
-          onClose: () => {
-            // this.init()
-          }
-        })
+<script setup>
+import { ref, reactive, onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
+import { del, add, get } from '@/api/mwWechatMenu.js'
+import eForm from './form.vue'
 
-        return false
-      }
-      if (this.checkedMenu.type == 'miniprogram' &&
-        (!this.checkedMenu.appId ||
-          !this.checkedMenu.pagePath ||
-          !this.checkedMenu.url)) {
-        // $eb.message('请填写完整小程序配置!');
-        this.$message({
-          message: '请填写完整小程序配置',
-          type: 'error',
-          duration: 1000,
-          onClose: () => {
-            // this.init()
-          }
-        })
-        return false
-      }
-      return true
-    },
-    submit: function() {
-      // this.$message.error('错了哦，这是一条错误消息')
-      // return false;
-      if (!this.check()) return false
-      // console.log(this.menus.length)
-      if (!this.menus.length) {
-        this.$message({
-          message: '请添加菜单',
-          type: 'error',
-          duration: 1000
-        })
-        return false
-      }
-      add({ buttons: this.menus }).then(function(res) {
-        console.log(555)
-        Message({ message: '添加成功', type: 'success' })
-      }).catch(function(err) {
-        // $eb.message('error',err);
-        // this.$message.error('错了哦，这是一条错误消息');
-        // Message({message: "2222",type: 'error'})
-      })
-    }
+const delLoading = ref(false)
+const menus = ref([])
+const checkedMenu = reactive({
+  type: 'click',
+  name: ''
+})
+const checkedMenuId = ref(null)
+const parentMenuId = ref(null)
+
+onMounted(() => {
+  get().then(res => {
+    // 未发布过菜单时 result 为空，判空避免 JSON.parse(undefined) 崩溃
+    menus.value = (res && res.result) ? JSON.parse(res.result) : []
+  })
+})
+
+const defaultMenusData = () => {
+  return {
+    type: 'click',
+    name: '',
+    subButtons: []
   }
+}
+
+const defaultChildData = () => {
+  return {
+    type: 'click',
+    name: ''
+  }
+}
+
+const addMenu = () => {
+  if (!check()) return false
+  const data = defaultMenusData()
+  const id = menus.value.length
+  menus.value.push(data)
+  checkedMenu.value = data
+  checkedMenuId.value = id
+  parentMenuId.value = null
+}
+
+const addChild = (menu, index) => {
+  if (!check()) return false
+  const data = defaultChildData()
+  const id = menu.subButtons.length
+  menu.subButtons.push(data)
+  checkedMenu.value = data
+  checkedMenuId.value = id
+  parentMenuId.value = index
+}
+
+const delMenu = () => {
+  console.log(parentMenuId.value)
+  if (parentMenuId.value === null) {
+    menus.value.splice(checkedMenuId.value, 1)
+  } else {
+    menus.value[parentMenuId.value].subButtons.splice(checkedMenuId.value, 1)
+  }
+  parentMenuId.value = null
+  checkedMenu.value = {}
+  checkedMenuId.value = null
+}
+
+const activeMenu = (menu, index, pid) => {
+  if (!check()) return false
+  if (pid === null) {
+    checkedMenu.value = menu
+  } else {
+    checkedMenu.value = menus.value[pid].subButtons[index]
+    parentMenuId.value = pid
+  }
+  checkedMenuId.value = index
+}
+
+const check = () => {
+  if (checkedMenuId.value === null) return true
+  if (!checkedMenu.value.name) {
+    ElMessage({
+      message: '请输入按钮名称',
+      type: 'error',
+      duration: 1000
+    })
+    return false
+  }
+  if (checkedMenu.value.type == 'click' && !checkedMenu.value.key) {
+    ElMessage({
+      message: '请输入关键字',
+      type: 'error',
+      duration: 1000
+    })
+    return false
+  }
+  if (checkedMenu.value.type == 'view' && !checkedMenu.value.url) {
+    ElMessage({
+      message: '请输入跳转地址',
+      type: 'error',
+      duration: 1000
+    })
+
+    return false
+  }
+  if (checkedMenu.value.type == 'miniprogram' &&
+    (!checkedMenu.value.appId ||
+      !checkedMenu.value.pagePath ||
+      !checkedMenu.value.url)) {
+    ElMessage({
+      message: '请填写完整小程序配置',
+      type: 'error',
+      duration: 1000
+    })
+    return false
+  }
+  return true
+}
+
+const submit = () => {
+  if (!check()) return false
+  if (!menus.value.length) {
+    ElMessage({
+      message: '请添加菜单',
+      type: 'error',
+      duration: 1000
+    })
+    return false
+  }
+  add({ buttons: menus.value }).then(function(res) {
+    console.log(555)
+    ElMessage({ message: '添加成功', type: 'success' })
+  }).catch(function(err) {
+    // ElMessage.error('错了哦，这是一条错误消息');
+  })
 }
 </script>
 

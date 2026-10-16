@@ -76,42 +76,23 @@
   </div>
 </template>
 
-<script>
-import RadarChart from '@/components/Echarts/RadarChart'
-import HeatMap from '@/components/Echarts/HeatMap'
-import Gauge from '@/components/Echarts/Gauge'
-import Rich from '@/components/Echarts/Rich'
-import ThemeRiver from '@/components/Echarts/ThemeRiver'
-import Sunburst from '@/components/Echarts/Sunburst'
-import Graph from '@/components/Echarts/Graph'
-import Sankey from '@/components/Echarts/Sankey'
-import Scatter from '@/components/Echarts/Scatter'
-import Line3D from '@/components/Echarts/Line3D'
-import Category from '@/components/Echarts/Category'
-import Point from '@/components/Echarts/Point'
-import WordCloud from '@/components/Echarts/WordCloud'
-
-export default {
-  name: 'Echarts',
-  components: {
-    Point,
-    Category,
-    Graph,
-    HeatMap,
-    RadarChart,
-    Sunburst,
-    Gauge,
-    Rich,
-    ThemeRiver,
-    Sankey,
-    Line3D,
-    Scatter,
-    WordCloud
-  }
-}
+<script setup>
+import RadarChart from '@/components/Echarts/RadarChart.vue'
+import HeatMap from '@/components/Echarts/HeatMap.vue'
+import Gauge from '@/components/Echarts/Gauge.vue'
+import Rich from '@/components/Echarts/Rich.vue'
+import ThemeRiver from '@/components/Echarts/ThemeRiver.vue'
+import Sunburst from '@/components/Echarts/Sunburst.vue'
+import Graph from '@/components/Echarts/Graph.vue'
+import Sankey from '@/components/Echarts/Sankey.vue'
+import Scatter from '@/components/Echarts/Scatter.vue'
+import Line3D from '@/components/Echarts/Line3D.vue'
+import Category from '@/components/Echarts/Category.vue'
+import Point from '@/components/Echarts/Point.vue'
+import WordCloud from '@/components/Echarts/WordCloud.vue'
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
   .dashboard-editor-container {
     padding: 18px 22px 22px 22px;
     background-color: rgb(240, 242, 245);

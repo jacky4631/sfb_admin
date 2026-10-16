@@ -13,28 +13,23 @@
           :src="imageUrl"
           class="single-img__img"
         >
-        <i
-          v-else
-          class="el-icon-upload"
-        >
+        <div v-else class="el-upload-dragger">
+          <el-icon><Upload /></el-icon>
           <div class="el-upload__text"><em>选择图片</em></div>
           <div
             class="el-upload__tip"
-            slot="tip"
           >{{tip.label}}</div>
-        </i>
+        </div>
       </el-upload>
       <div
         class="overlay"
         v-if="imageUrl"
       >
-        <!-- <i class="iconfont icon-chakan" @click="showImage"></i>
-        <i class="iconfont icon-shanchu1" @click="delImage"></i> -->
       </div>
     </div>
     <el-dialog
       title="图片展示"
-      :visible.sync="dialogVisible"
+      v-model="dialogVisible"
     >
       <img
         width="100%"
@@ -45,48 +40,51 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'tool-single-img',
-  data () {
-    return {
-      dialogVisible: false,
-      dialogImageUrl: '',
-      fileUploadURL: ''
-    }
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const props = defineProps({
+  imageUrl: {
+    type: String,
+    default: ''
   },
-  props: {
-    imageUrl: {
-      type: String,
-      default: ''
-    },
-    tip: {
-      type: Object,
-      default:()=>({}),
-    }
-  },
-  mounted () {
-    this.fileUploadURL = process.env.VUE_APP_BASE_API + '/api/canvas/upload?name=demo&type=console'
-  },
-  methods: {
-    handleAvatarSuccess (res, file) {
-      this.$emit('update:imageUrl', res.link)
-    },
-    beforeAvatarUpload (file) {
-      const isLt1M = file.size / 1024 / 1024 < 1
-      if (!isLt1M) {
-        this.$message.error('上传图片大小不能超过 1MB!')
-      }
-      return isLt1M
-    },
-    showImage () {
-      this.dialogImageUrl = this.imageUrl
-      this.dialogVisible = true
-    },
-    delImage () {
-      this.$emit('update:imageUrl', '')
-    }
+  tip: {
+    type: Object,
+    default:()=>({}),
   }
+})
+
+defineOptions({ name: 'tool-single-img' })
+
+const emit = defineEmits(['update:imageUrl'])
+
+const dialogVisible = ref(false)
+const dialogImageUrl = ref('')
+const fileUploadURL = ref('')
+
+onMounted(() => {
+  fileUploadURL.value = import.meta.env.VITE_BASE_API + '/api/canvas/upload?name=demo&type=console'
+})
+
+function handleAvatarSuccess(res, file) {
+  emit('update:imageUrl', res.link)
+}
+
+function beforeAvatarUpload(file) {
+  const isLt1M = file.size / 1024 / 1024 < 1
+  if (!isLt1M) {
+    ElMessage.error('上传图片大小不能超过 1MB!')
+  }
+  return isLt1M
+}
+
+function showImage() {
+  dialogImageUrl.value = props.imageUrl
+  dialogVisible.value = true
+}
+
+function delImage() {
+  emit('update:imageUrl', '')
 }
 </script>
 
@@ -94,10 +92,10 @@ export default {
 .single-img {
   &__box {
     position: relative;
-    >>> .el-upload {
+    :deep(.el-upload) {
       width: 100%;
     }
-    >>> .el-upload-dragger {
+    :deep(.el-upload-dragger) {
       width: 100%;
       .el-upload__text {
         line-height: 40px;

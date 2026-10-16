@@ -1,22 +1,27 @@
-@import 'variables';
-@import 'mixin';
-@import 'transition';
-@import 'element-ui';
-@import 'sidebar';
-@import 'btn';
-@import 'eladmin';
-@import "mshop";
+@use 'variables' as *;
+@use 'mixin' as *;
+@use 'transition' as *;
+@use 'sidebar' as *;
+@use 'btn' as *;
+@use 'eladmin' as *;
+@use 'mshop.css' as *;
+// Keep shared component fixes migrated from Element UI, updated for Element Plus selectors.
+@use 'element-ui' as *;
+// Element Plus 尺寸档位兼容层（把 EP 的 small 档重映射回 Element UI 的度量）
+@use 'element-plus-compat' as *;
 
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-family: var(--el-font-family);
+  color: var(--el-text-color-primary);
+  background: var(--app-content-bg-color);
 }
 
 label {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 html {
@@ -112,18 +117,24 @@ aside {
   -moz-osx-font-smoothing: grayscale;
 
   a {
-    color: #337ab7;
+    color: var(--el-color-primary);
     cursor: pointer;
 
     &:hover {
-      color: rgb(32, 160, 255);
+      color: var(--el-color-primary);
     }
   }
 }
 
 //main-container全局样式
 .app-container {
-  padding: 20px 20px 45px 20px;
+  padding: var(--app-content-padding) var(--app-content-padding) 45px;
+  background-color: var(--app-container-bg-color);
+  border-radius: var(--el-border-radius-base);
+}
+
+.main-container {
+  background: var(--app-content-bg-color);
 }
 
 .components-container {
@@ -165,11 +176,11 @@ aside {
 
 .link-type,
 .link-type:focus {
-  color: #337ab7;
+  color: var(--el-color-primary);
   cursor: pointer;
 
   &:hover {
-    color: rgb(32, 160, 255);
+    color: var(--el-color-primary);
   }
 }
 

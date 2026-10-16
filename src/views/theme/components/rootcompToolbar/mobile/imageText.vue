@@ -2,9 +2,9 @@
   <div class="imageTextTool">
     <h3 class="toolTit">图文</h3>
     <div class="toolBox">
-      <tool-single-img :imageUrl.sync='activeComponent.componentContent.imageUrl'></tool-single-img>
-      <tool-select-link :linkObj.sync='activeComponent.componentContent.linkObj' title="图片链接"></tool-select-link>
-      <tool-select :linkValue.sync='activeComponent.componentContent.positionValue' title="PC图片位置" :options="positionOpt"></tool-select>
+      <tool-single-img v-model:imageUrl='activeComponent.componentContent.imageUrl'></tool-single-img>
+      <tool-select-link v-model:linkObj='activeComponent.componentContent.linkObj' title="图片链接"></tool-select-link>
+      <tool-select v-model:linkValue='activeComponent.componentContent.positionValue' title="PC图片位置" :options="positionOpt"></tool-select>
       <div class="textTit">文本设置</div>
       <div class="itemBox">
         <label>标题</label>
@@ -12,92 +12,56 @@
       </div>
       <div class="itemBox">
         <label>正文</label>
-        <quill-editor
-          v-model="activeComponent.componentContent.content"
+        <QuillEditor
+          v-model:content="activeComponent.componentContent.content"
           ref="myQuillEditor"
           :options="editorOption"
           @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
-          @change="onEditorChange($event)">
-        </quill-editor>
+          @text-change="onEditorChange($event)">
+        </QuillEditor>
       </div>
     </div>
-    <el-dialog :visible.sync="dialogVisible">
+    <el-dialog v-model="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
   </div>
 </template>
 
-<script>
-import { quillEditor } from 'vue-quill-editor'
+<script setup>
+import { ref } from 'vue'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { toolMixin } from '@/mixins/tool.js'
 import ToolSelectLink from '@/views/theme/components/rootcompToolbar/toolModule/tool-select-link.vue'
 import ToolSingleImg from '@/views/theme/components/rootcompToolbar/toolModule/tool-single-img.vue'
 import ToolSelect from '@/views/theme/components/rootcompToolbar/toolModule/tool-select.vue'
-export default {
-  name: 'videoTool',
-  mixins: [toolMixin],
-  components: {
-    ToolSelectLink,
-    ToolSelect,
-    ToolSingleImg,
-    quillEditor
+
+defineOptions({ name: 'imageText' })
+
+// Using toolMixin - in Vue 3, mixins are still supported but composables are preferred
+// The mixin provides activeComponent, onEditorBlur, onEditorFocus, onEditorChange
+const { activeComponent, onEditorBlur, onEditorFocus, onEditorChange } = toolMixin
+
+const dialogVisible = ref(false)
+const dialogImageUrl = ref('')
+const positionOpt = ref([
+  {
+    value: 'left',
+    label: '左图右文'
   },
-  data () {
-    return {
-      // imageUrl: '',
-      // title: '', // 标题内容
-      // linkValue: '',
-      // positionValue: '',
-      // content: null,
-      dialogVisible: false,
-      dialogImageUrl: '',
-      linkOptions: [
-        {
-          value: '/index',
-          label: '首页'
-        },
-        {
-          value: '/list',
-          label: '列表页'
-        },
-        {
-          value: '/detail',
-          label: '详情页'
-        },
-        {
-          value: '/about',
-          label: '关于我们'
-        }
-      ],
-      positionOpt: [
-        {
-          value: 'left',
-          label: '左图右文'
-        },
-        {
-          value: 'right',
-          label: '右图左文'
-        }
-        // {
-        //   value: 'top',
-        //   label: '上图下文'
-        // },
-        // {
-        //   value: 'bottom',
-        //   label: '下图上文'
-        // }
-      ],
-      editorOption: {
-        placeholder: '请输入',
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'link'] // toggled buttons
-          ]
-        }
-      }
-    }
+  {
+    value: 'right',
+    label: '右图左文'
   }
-}
+])
+const editorOption = ref({
+  placeholder: '请输入',
+  modules: {
+    toolbar: [
+      ['bold', 'italic', 'link']
+    ]
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -129,7 +93,7 @@ export default {
         line-height: 40px;
       }
       margin-bottom: 15px;
-      >>> .el-select {
+      :deep(.el-select) {
         display: block;
       }
     }
@@ -159,17 +123,17 @@ export default {
 
     }
   }
-  >>> .ql-container {
+  :deep(.ql-container) {
     height: 150px;
   }
-  >>> .avatar-uploader .el-upload {
+  :deep(.avatar-uploader .el-upload) {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
   }
-  >>> .avatar-uploader-icon {
+  :deep(.avatar-uploader-icon) {
     font-size: 28px;
     color: #8c939d;
     width: 178px;
@@ -177,15 +141,15 @@ export default {
     line-height: 178px;
     text-align: center;
   }
-  >>> .el-upload__tip {
+  :deep(.el-upload__tip) {
     height: auto;
     margin-top: 0;
     line-height: normal;
   }
-  >>> .el-upload {
+  :deep(.el-upload) {
     width: 100%;
   }
-  >>> .el-upload-dragger {
+  :deep(.el-upload-dragger) {
     width: 100%;
     position: relative;
     .avatar{
@@ -200,23 +164,23 @@ export default {
       left: 0;
     }
   }
-  >>> .ql-snow .ql-tooltip{
+  :deep(.ql-snow .ql-tooltip){
     z-index: 8;
     left: 5px!important;
   }
-  >>> .ql-snow .ql-tooltip::before{
+  :deep(.ql-snow .ql-tooltip::before){
     content: '链接';
   }
-  >>> .ql-snow .ql-tooltip a.ql-action::after{
+  :deep(.ql-snow .ql-tooltip a.ql-action::after){
     content: '编辑';
   }
-  >>> .ql-snow .ql-tooltip a.ql-remove::before{
+  :deep(.ql-snow .ql-tooltip a.ql-remove::before){
     content: '移除';
   }
-  >>> .ql-snow .ql-tooltip[data-mode=link]::before{
+  :deep(.ql-snow .ql-tooltip[data-mode=link]::before){
     content: '链接';
   }
-  >>> .ql-snow .ql-tooltip.ql-editing a.ql-action::after{
+  :deep(.ql-snow .ql-tooltip.ql-editing a.ql-action::after){
     content: '确定';
   }
 }

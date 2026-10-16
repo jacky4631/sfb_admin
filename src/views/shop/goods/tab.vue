@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import onSale from '@/views/shop/goods/index'
-import unonSale from '@/views/shop/goods/index2'
+import onSale from '@/views/shop/goods/index.vue'
+import unonSale from '@/views/shop/goods/index2.vue'
 import '@/assets/styles/description.scss'
 export default {
   name: 'Tab',

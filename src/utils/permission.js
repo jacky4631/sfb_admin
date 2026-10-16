@@ -1,13 +1,12 @@
-import store from '@/store'
+import { useUserStore } from '@/store/modules/user.ts'
 
 /**
  * @param {Array} value
  * @returns {Boolean}
- * @example see @/views/permission/directive.vue
  */
 export default function checkPermission(value) {
   if (value && value instanceof Array && value.length > 0) {
-    const roles = store.getters && store.getters.roles
+    const roles = useUserStore().roles
     const permissionRoles = value
 
     const hasPermission = roles.some(role => {

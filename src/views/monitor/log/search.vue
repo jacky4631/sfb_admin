@@ -15,7 +15,7 @@
       range-separator=":"
       size="small"
       class="date-item"
-      value-format="yyyy-MM-dd HH:mm:ss"
+      value-format="YYYY-MM-DD HH:mm:ss"
       start-placeholder="开始日期"
       end-placeholder="结束日期"
     />
@@ -25,11 +25,12 @@
   </div>
 </template>
 
-<script>
-import { header } from '@crud/crud'
-import rrOperation from '@crud/RR.operation'
-export default {
+<script setup>
+import { header } from '@/components/Crud/crud.js'
+import rrOperation from '@/components/Crud/RR.operation.vue'
+
+defineOptions({
   components: { rrOperation },
   mixins: [header()]
-}
+})
 </script>

@@ -2,7 +2,7 @@
   <div class="afterSealsContainer">
     <!-- 搜索栏 -->
     <div class="titleSearch">
-      <el-input v-model="query.orderCode" clearable placeholder="输入搜索订单号" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" />
+      <el-input v-model="query.orderCode" clearable placeholder="输入搜索订单号" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
       <el-date-picker
         v-model="searchTime"
         :default-time="['00:00:00','23:59:59']"
@@ -10,7 +10,7 @@
         range-separator=":"
         size="small"
         class="date-item"
-        value-format="yyyy-MM-dd HH:mm:ss"
+        value-format="YYYY-MM-DD HH:mm:ss"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
       />
@@ -45,12 +45,12 @@
         :label="item.name"
         :value="item.key" />
       </el-select>
-      <el-button size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+      <el-button size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>
       <el-button
-      size="mini"
+      size="small"
       type="warning"
-      icon="el-icon-refresh-left"
-      @click="resetSearch">重置</el-button>
+     
+      @click="resetSearch"><el-icon><RefreshLeft /></el-icon>重置</el-button>
     </div>
     <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
     <!-- <crudOperation :permission="permission" /> -->
@@ -68,7 +68,7 @@
       <el-table-column prop="orderCode" label="订单号" />
       <el-table-column prop="refundAmount" label="退款金额" width="100px"/>
       <el-table-column prop="serviceType" label="服务类型" >
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="scope.row.serviceType === 0">仅退款</span>
           <span v-if="scope.row.serviceType === 1">退货退款</span>
         </template>
@@ -76,12 +76,12 @@
       <el-table-column prop="reasons" label="申请原因" />
       <el-table-column prop="explains" label="说明" />
       <el-table-column prop="createTime" label="申请时间" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="state" label="状态" width="100px" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="scope.row.state === 0" :style="'color: #E6A23C'">等待审核</span>
           <span v-if="scope.row.state === 1" :style="'color: #409EFF'">等待用户发货</span>
           <span v-if="scope.row.state === 2" :style="'color: #F56C6C'">用户已发货</span>
@@ -89,7 +89,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="salesState" label="售后状态" width="100px" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="scope.row.salesState === 0" :style="'color: rgb(64, 158, 255)'">正常</span>
           <span v-if="scope.row.salesState === 1" :style="'color: #409EFF'">用户已取消</span>
           <span v-if="scope.row.salesState === 2" :style="'color: #F56C6C'">已拒绝用户</span>
@@ -97,15 +97,15 @@
       </el-table-column>
       <el-table-column
       v-permission="['admin','mwStoreAfterSales:edit','mwStoreAfterSales:del']" label="操作" width="150px" align="center">
-        <template slot-scope="scope">
-          <el-button type="text" @click="checkItem(scope.row, 0)">订单详情</el-button>
+        <template #default="scope">
+          <el-button link @click="checkItem(scope.row, 0)">订单详情</el-button>
           <el-button
-          size="mini"
+          size="small"
           type="success"
           v-if="scope.row.state === 0 && scope.row.salesState === 0"
           @click="checkItem(scope.row, 1)">审核</el-button>
           <el-button
-            size="mini"
+            size="small"
             type="danger"
             v-if="scope.row.state === 2"
             @click="rebackVisible = true;
@@ -129,22 +129,24 @@
       <!-- 退款 -->
       <el-dialog
         title="退款"
-        :visible.sync="rebackVisible"
+        v-model="rebackVisible"
         width="400px">
         <span>
           是否给订单号：<b :style="'color: #409EFF'">{{ this.rebackQuery.orderCode }}</b> 确认退款？
         </span>
-        <span slot="footer" class="dialog-footer">
+        <template #footer><span class="dialog-footer">
           <el-button @click="rebackVisible = false">取 消</el-button>
           <el-button type="primary" @click="rebackItem">确 定</el-button>
         </span>
+    </template>
       </el-dialog>
   </div>
 </template>
 
 <script>
-import initData from '@/mixins/crud'
-import {rebackMoney} from '@/api/mwStoreAfterSales'
+import { ElMessage } from 'element-plus'
+import initData from '@/mixins/crud.js'
+import {rebackMoney} from '@/api/mwStoreAfterSales.js'
 import CheckDialog from './checkDialog.vue'
 export default {
   name: 'MwStoreAfterSales',
@@ -230,11 +232,11 @@ export default {
     async rebackItem() {
       var res = await rebackMoney(this.rebackQuery)
       if (res) {
-        this.$message.success('提交退款成功！')
+        ElMessage.success('提交退款成功！')
         this.rebackVisible = false
         this.toQuery()
       } else {
-        this.$message.error(res.message || '提交退款失败！')
+        ElMessage.error(res.message || '提交退款失败！')
       }
     }
   }

@@ -6,23 +6,21 @@
         <el-button
           v-permission="['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_SELECT']"
           class="filter-item"
-          size="mini"
+          size="small"
           type="primary"
-          icon="el-icon-plus"
           @click="add"
-        >新增</el-button>
+        ><el-icon><Plus /></el-icon>新增</el-button>
         <!-- 搜索 -->
-        <el-input v-model="query.uid" clearable placeholder="输入uid" style="width: 150px;" class="filter-item" @keyup.enter.native="toQuery" />
+        <el-input v-model="query.uid" clearable placeholder="输入uid" style="width: 150px;" class="filter-item" @keyup.enter="toQuery" />
 
-        <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+        <el-button class="filter-item" size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>
         <!-- 新增 -->
         <el-button
           type="danger"
           class="filter-item"
-          size="mini"
-          icon="el-icon-refresh"
+          size="small"
           @click="toQuery"
-        >刷新</el-button>
+        ><el-icon><Refresh /></el-icon>刷新</el-button>
       </div>
       <eForm ref="form" :is-add="isAdd" />
       <!--表格渲染-->
@@ -31,36 +29,36 @@
         <el-table-column prop="uid" label="uid"/>
 
         <el-table-column prop="createTime" label="创建时间" width="135">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="updateTime" label="修改时间" width="135">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.updateTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column v-if="checkPermission(['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_EDIT','MWUSEREXTRACT_DELETE'])" label="操作" width="200" align="center" fixed="right">
-          <template slot-scope="scope">
-            <el-dropdown size="mini" split-button type="primary" trigger="click">
+          <template #default="scope">
+            <el-dropdown size="small" split-button type="primary" trigger="click">
               操作
-              <el-dropdown-menu slot="dropdown">
+              <template #dropdown><el-dropdown-menu>
                 <el-dropdown-item >
                   <el-popover
                     :ref="scope.row.uid"
-                    v-permission="['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_DELETE']"
                     placement="top"
                     width="180"
                   >
                     <p>确定删除本条数据吗？</p>
                     <div style="text-align: right; margin: 0">
-                      <el-button size="mini" type="text" @click="$refs[scope.row.uid].doClose()">取消</el-button>
-                      <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete([scope.row.uid])">确定</el-button>
+                      <el-button size="small" link @click="$refs[scope.row.uid].hide()">取消</el-button>
+                      <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.uid])">确定</el-button>
                     </div>
-                    <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+                    <template #reference><el-button v-permission="['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon>删除</el-button></template>
                   </el-popover>
                 </el-dropdown-item>
               </el-dropdown-menu>
+            </template>
             </el-dropdown>
 
           </template>
@@ -92,12 +90,13 @@
 </template>
 
 <script>
-  import checkPermission from '@/utils/permission'
-  import initData from '@/mixins/crud'
-  import { formatTime } from '@/utils'
-  import eForm from './formInvalidExtract'
-  import {delScale} from "@/api/mwUserEnergy";
-  import {delInvalidExtract} from "@/api/mwUserExtract";
+import { ElNotification, ElMessage } from 'element-plus'
+  import checkPermission from '@/utils/permission.js'
+  import initData from '@/mixins/crud.js'
+  import { formatTime } from '@/utils/index.js'
+  import eForm from './formInvalidExtract.vue'
+  import {delScale} from "@/api/mwUserEnergy.js";
+  import {delInvalidExtract} from "@/api/mwUserExtract.js";
 
   export default {
     components: { eForm},
@@ -153,17 +152,17 @@
         this.delLoading = true
         delInvalidExtract(id).then(res => {
           this.delLoading = false
-          this.$refs[id].doClose()
+          this.$refs[id].hide()
           this.dleChangePage()
           this.init()
-          this.$notify({
+          ElNotification({
             title: '删除成功',
             type: 'success',
             duration: 2500
           })
         }).catch(err => {
           this.delLoading = false
-          this.$refs[id].doClose()
+          this.$refs[id].hide()
           console.log(err.response.data.message)
         })
       },
@@ -211,7 +210,7 @@
             break;
           case "1":
             if(list.length == 0){
-              this.$message({
+              ElMessage({
                 message: '请选择订单',
                 type: 'warning'
               });

@@ -3,10 +3,10 @@
   <div class="selectMode">
     <div>添加优惠券</div>
     <el-radio-group class="modeRight" v-model="modeValue" @change="modeChange">
-      <el-radio label="1">手动添加</el-radio>
+      <el-radio value="1">手动添加</el-radio>
       <div class="mode2">
-        <el-radio label="2">自动获取</el-radio>
-        <el-tooltip class="item" effect="dark" content="系统自动获取仅设置为“公开领取”的店铺优惠券，新创建的券排在前面" placement="bottom">
+        <el-radio value="2">自动获取</el-radio>
+        <el-tooltip class="item" effect="dark" content="系统自动获取仅设置为&quot;公开领取&quot;的店铺优惠券，新创建的券排在前面" placement="bottom">
         <span class="iconfont">&#xe60a;</span>
         </el-tooltip>
       </div>
@@ -17,45 +17,46 @@
       <i class="iconfont">&#xe685;</i><span>添加优惠券</span>
     </div>
   </div>
-  <el-dialog title="选择优惠券" :visible.sync="couponDialogVisible" width="1000">
+  <el-dialog title="选择优惠券" v-model="couponDialogVisible" width="1000">
     <coupon-select ref="couponSelect"></coupon-select>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="couponDialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="couponChanged">确 定</el-button>
-    </span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="couponDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="couponChanged">确 定</el-button>
+      </span>
+    </template>
   </el-dialog>
 </div>
 </template>
 
-<script>
-  import CouponSelect from '@/views/theme/components/rootcompToolbar/toolModule/coupon-select.vue'
-  export default {
-    name: 'tool-coupon',
-    components: { CouponSelect },
-    data () {
-      return {
-        modeValue: '1', // 添加优惠券方式
-        couponBtnVisible: true,
-        selectedCoupon: [],
-        couponDialogVisible: false
-      }
-    },
-    methods: {
-      // 添加优惠券
-      addCoupon () {
-        this.couponDialogVisible = true
-        this.$refs.couponSelect.multipleSelection = []
-      },
-      couponChanged () {
-        this.selectedCoupon = this.$refs.couponSelect.multipleSelection
-        this.couponDialogVisible = false
-        console.log(this.selectedCoupon)
-      },
-      modeChange (val) {
-        this.couponBtnVisible = val === '1'
-      }
-    }
-  }
+<script setup>
+import { ref } from 'vue'
+import CouponSelect from '@/views/theme/components/rootcompToolbar/toolModule/coupon-select.vue'
+
+defineOptions({ name: 'tool-coupon' })
+
+const modeValue = ref('1')
+const couponBtnVisible = ref(true)
+const selectedCoupon = ref([])
+const couponDialogVisible = ref(false)
+
+const couponSelect = ref(null)
+
+// 添加优惠券
+function addCoupon() {
+  couponDialogVisible.value = true
+  couponSelect.value.multipleSelection = []
+}
+
+function couponChanged() {
+  selectedCoupon.value = couponSelect.value.multipleSelection
+  couponDialogVisible.value = false
+  console.log(selectedCoupon.value)
+}
+
+function modeChange(val) {
+  couponBtnVisible.value = val === '1'
+}
 </script>
 
 <style lang="scss" scoped>
@@ -72,10 +73,10 @@
       cursor: pointer;
     }
   }
-  >>> .el-radio {
+  :deep(.el-radio) {
     margin-right: 0;
   }
-  >>> .el-radio__label {
+  :deep(.el-radio__label) {
     padding-left: 5px;
   }
   .mode2 {

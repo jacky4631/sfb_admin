@@ -6,25 +6,30 @@
   </el-tabs>
 </template>
 
-<script>
-import Java from '@/components/JavaEdit/index'
-import { generator } from '@/api/generator/generator'
-export default {
-  name: 'Preview',
-  components: { Java },
-  data() {
-    return {
-      data: null, height: '', activeName: 'Entity'
-    }
-  },
-  created() {
-    this.height = document.documentElement.clientHeight - 180 + 'px'
-    const tableName = this.$route.params.tableName
-    generator(tableName, 1).then(data => {
-      this.data = data
-    }).catch(() => {
-      this.$router.go(-1)
-    })
-  }
-}
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import Java from '@/components/JavaEdit/index.vue'
+import { generator } from '@/api/generator/generator.js'
+
+defineOptions({
+  name: 'Preview'
+})
+
+const route = useRoute()
+const router = useRouter()
+
+const data = ref(null)
+const height = ref('')
+const activeName = ref('Entity')
+
+onMounted(() => {
+  height.value = document.documentElement.clientHeight - 180 + 'px'
+  const tableName = route.params.tableName
+  generator(tableName, 1).then(resData => {
+    data.value = resData
+  }).catch(() => {
+    router.go(-1)
+  })
+})
 </script>

@@ -3,23 +3,24 @@
     <div class="head-container">
       <Search />
       <crudOperation>
-        <el-button
-          slot="left"
-          class="filter-item"
-          type="danger"
-          icon="el-icon-delete"
-          size="mini"
-          :loading="crud.delAllLoading"
-          @click="confirmDelAll()"
-        >
-          清空
-        </el-button>
+        <template #left>
+          <el-button
+            class="filter-item"
+            type="danger"
+            :icon="Delete"
+            size="small"
+            :loading="crud.delAllLoading"
+            @click="confirmDelAll()"
+          >
+            清空
+          </el-button>
+        </template>
       </crudOperation>
     </div>
     <!--表格渲染-->
     <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
       <el-table-column type="expand">
-        <template slot-scope="props">
+        <template #default="props">
           <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="请求方法">
               <span>{{ props.row.method }}</span>
@@ -36,14 +37,14 @@
       <el-table-column v-if="columns.visible('description')" prop="description" label="描述" />
       <el-table-column v-if="columns.visible('browser')" prop="browser" label="浏览器" />
       <el-table-column v-if="columns.visible('time')" prop="time" label="请求耗时" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-tag v-if="scope.row.time <= 300">{{ scope.row.time }}ms</el-tag>
           <el-tag v-else-if="scope.row.time <= 1000" type="warning">{{ scope.row.time }}ms</el-tag>
           <el-tag v-else type="danger">{{ scope.row.time }}ms</el-tag>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.visible('createTime')" prop="createTime" label="创建日期" width="180px">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
@@ -53,48 +54,47 @@
   </div>
 </template>
 
-<script>
-import Search from './search'
-import { delAllInfo } from '@/api/monitor/log'
-import CRUD, { presenter } from '@crud/crud'
-import crudOperation from '@crud/CRUD.operation'
-import pagination from '@crud/Pagination'
+<script setup>
+import { Delete } from '@element-plus/icons-vue'
+import { ref, onMounted } from 'vue'
+import { ElMessageBox } from 'element-plus'
+import Search from './search.vue'
+import { delAllInfo } from '@/api/monitor/log.js'
+import CRUD, { presenter } from '@/components/Crud/crud.js'
+import { parseTime } from '@/utils/index.js'
+import crudOperation from '@/components/Crud/CRUD.operation.vue'
+import pagination from '@/components/Crud/Pagination.vue'
 
-// crud交由presenter持有
 const defaultCrud = CRUD({ title: '日志', url: 'api/logs' })
-export default {
-  name: 'Log',
-  components: { Search, crudOperation, pagination },
-  mixins: [presenter(defaultCrud)],
-  created() {
-    this.crud.optShow = {
-      add: false,
-      edit: false,
-      del: false,
-      download: true
-    }
-  },
-  methods: {
-    confirmDelAll() {
-      this.$confirm(`确认清空所有操作日志吗?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.crud.delAllLoading = true
-        delAllInfo().then(res => {
-          this.crud.delAllLoading = false
-          this.crud.dleChangePage(1)
-          this.crud.delSuccessNotify()
-          this.crud.toQuery()
-        }).catch(err => {
-          this.crud.delAllLoading = false
-          console.log(err.response.data.message)
-        })
-      }).catch(() => {
-      })
-    }
+const { crud, columns } = presenter(defaultCrud)
+
+onMounted(() => {
+  crud.optShow = {
+    add: false,
+    edit: false,
+    del: false,
+    download: true
   }
+})
+
+const confirmDelAll = () => {
+  ElMessageBox.confirm(`确认清空所有操作日志吗?`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    crud.delAllLoading = true
+    delAllInfo().then(res => {
+      crud.delAllLoading = false
+      crud.dleChangePage(1)
+      crud.delSuccessNotify()
+      crud.toQuery()
+    }).catch(err => {
+      crud.delAllLoading = false
+      console.log(err.response.data.message)
+    })
+  }).catch(() => {
+  })
 }
 </script>
 

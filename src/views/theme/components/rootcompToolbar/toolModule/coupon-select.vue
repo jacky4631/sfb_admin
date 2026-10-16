@@ -36,72 +36,65 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue'
 import { getProducts } from '@/api/canvasApi.js'
-export default {
-  name: 'coupon-select',
-  data () {
-    return {
-      tableRadio: '',
-      formData: {
-        keyword: '',
-        status: '',
-        categoryId: ''
-      },
-      currentPage: 1,
-      total: 0,
-      pageSize: 10,
-      multipleSelection: [],
-      tableData: [{
-        id: 100,
-        name: '测试'
-      }]
-    }
-  },
-  mounted () {
-    // this.getTableData()
-  },
-  methods: {
-    // 获取产品信息
-    getTableData () {
-      let params = {
-        page: this.currentPage,
-        pageSize: this.pageSize
-      }
-      if (this.formData.keyword) {
-        params.search = this.formData.keyword
-      }
-      if (this.formData.status) {
-        params.shelveState = this.formData.status
-      }
-      let nodesObj = this.$refs['cascader'].getCheckedNodes()
-      if (nodesObj && nodesObj.length !== 0) {
-        params.classifyId = nodesObj[0].value
-      }
-      getProducts(params).then(res => {
-        this.tableData = res.data.list
-        this.total = res.data.total
-      })
-    },
-    // 搜索
-    onSubmit () {
-      this.getTableData()
-    },
-    // 每页条数改变
-    handleSizeChange (val) {
-      this.pageSize = val
-      this.getTableData()
-    },
-    // 当前页改变
-    handleCurrentChange (val) {
-      this.currentPage = val
-      this.getTableData()
-    },
-    // 多选改变
-    handleSelectionChange (val) {
-      this.multipleSelection = val
-    }
+
+defineOptions({ name: 'coupon-select' })
+
+const tableRadio = ref('')
+const formData = ref({
+  keyword: '',
+  status: '',
+  categoryId: ''
+})
+const currentPage = ref(1)
+const total = ref(0)
+const pageSize = ref(10)
+const multipleSelection = ref([])
+const tableData = ref([{
+  id: 100,
+  name: '测试'
+}])
+
+// 获取产品信息
+function getTableData() {
+  const params = {
+    page: currentPage.value,
+    pageSize: pageSize.value
   }
+  if (formData.value.keyword) {
+    params.search = formData.value.keyword
+  }
+  if (formData.value.status) {
+    params.shelveState = formData.value.status
+  }
+  getProducts(params).then(res => {
+    tableData.value = res.data.list
+    total.value = res.data.total
+  })
+}
+
+// 搜索
+function onSubmit() {
+  getTableData()
+}
+
+// 每页条数改变
+function handleSizeChange(val) {
+  pageSize.value = val
+  getTableData()
+}
+
+// 当前页改变
+function handleCurrentChange(val) {
+  currentPage.value = val
+  getTableData()
+}
+
+// 多选改变
+function handleSelectionChange(val) {
+  multipleSelection.value = val
 }
 </script>
 

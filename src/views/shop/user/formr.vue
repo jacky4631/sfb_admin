@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="'重置退款次数'" width="500px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="'重置退款次数'" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
       <el-form-item label="uid">
         <el-input v-model="form.uid" :disabled="true" style="width: 370px;" />
@@ -11,15 +11,17 @@
         <el-input v-model="form.phone" :disabled="true" style="width: 370px;" />
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="cancel">取消</el-button>
+    <template #footer><div class="dialog-footer">
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
-import { resetRefund } from '@/api/mwUser'
+import { ElNotification } from 'element-plus'
+import { resetRefund } from '@/api/mwUser.js'
 import md5 from 'js-md5';
 export default {
   props: {
@@ -52,7 +54,7 @@ export default {
     resetRefund() {
       resetRefund(this.form.uid, this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '修改成功',
           type: 'success',
           duration: 2500

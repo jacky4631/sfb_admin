@@ -23,18 +23,12 @@
   </el-tabs>
 </template>
 
-<script>
-import Config from './config'
-import Send from './send'
-export default {
-  name: 'Email',
-  components: { Config, Send },
-  data() {
-    return {
-      activeName: 'second'
-    }
-  }
-}
+<script setup>
+import { ref } from 'vue'
+import Config from './config.vue'
+import Send from './send.vue'
+
+const activeName = ref('second')
 </script>
 
 <style scoped>

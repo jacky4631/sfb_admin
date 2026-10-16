@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="'APP基础信息配置'" width="900px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="'APP基础信息配置'" width="900px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
 
       <el-form-item label="好单库cms的cid*" label-width="200px">
@@ -18,13 +18,13 @@
       </el-form-item>
 
       <el-form-item :hide-required-asterisk="true" label="登录跳过邀请码*" label-width="200px">
-        <el-radio v-model="form.skipCode" :label="`1`">跳过</el-radio>
-        <el-radio v-model="form.skipCode" :label="`0`">强制</el-radio>
+        <el-radio v-model="form.skipCode" :value="`1`">跳过</el-radio>
+        <el-radio v-model="form.skipCode" :value="`0`">强制</el-radio>
       </el-form-item>
 
       <el-form-item :hide-required-asterisk="true" label="分销级别*" label-width="200px">
-        <el-radio v-model="form.spreadLevel" :label="2">2级</el-radio>
-        <el-radio v-model="form.spreadLevel" :label="3">3级</el-radio>
+        <el-radio v-model="form.spreadLevel" :value="2">2级</el-radio>
+        <el-radio v-model="form.spreadLevel" :value="3">3级</el-radio>
       </el-form-item>
       <el-form-item label="支付宝红包id" label-width="200px">
         <el-input v-model="form.alired" style="width: 470px;" />
@@ -55,15 +55,17 @@
       </el-form-item>
 
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="cancel">取消</el-button>
+    <template #footer><div class="dialog-footer">
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
-  </el-dialog>
+  </template>
+</el-dialog>
 </template>
 
 <script>
-import { setAppDataConfig } from '@/api/mwUser'
+import { ElNotification } from 'element-plus'
+import { setAppDataConfig } from '@/api/mwUser.js'
 export default {
   props: {
   },
@@ -107,7 +109,7 @@ export default {
     doEdit() {
       setAppDataConfig(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '操作成功',
           type: 'success',
           duration: 2500

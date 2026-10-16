@@ -7,11 +7,10 @@
         <el-button
           v-permission="['admin','MWSTORECOUPONISSUEUSER_ALL','MWSTORECOUPONISSUEUSER_CREATE']"
           class="filter-item"
-          size="mini"
+          size="small"
           type="primary"
-          icon="el-icon-plus"
           @click="add"
-        >新增</el-button>
+        ><el-icon><Plus /></el-icon>新增</el-button>
       </div>
     </div>
     <!--表单组件-->
@@ -23,20 +22,19 @@
       <el-table-column prop="issueCouponId" label="优惠券前台领取ID" />
       <el-table-column prop="addTime" label="领取时间" />
       <el-table-column v-if="checkPermission(['admin','MWSTORECOUPONISSUEUSER_ALL','MWSTORECOUPONISSUEUSER_EDIT','MWSTORECOUPONISSUEUSER_DELETE'])" label="操作" width="150px" align="center">
-        <template slot-scope="scope">
-          <el-button v-permission="['admin','MWSTORECOUPONISSUEUSER_ALL','MWSTORECOUPONISSUEUSER_EDIT']" size="mini" type="primary" icon="el-icon-edit" @click="edit(scope.row)" />
+        <template #default="scope">
+          <el-button v-permission="['admin','MWSTORECOUPONISSUEUSER_ALL','MWSTORECOUPONISSUEUSER_EDIT']" size="small" type="primary" @click="edit(scope.row)"><el-icon><Edit /></el-icon></el-button>
           <el-popover
             :ref="scope.row.id"
-            v-permission="['admin','MWSTORECOUPONISSUEUSER_ALL','MWSTORECOUPONISSUEUSER_DELETE']"
             placement="top"
             width="180"
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+              <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini" />
+            <template #reference><el-button v-permission="['admin','MWSTORECOUPONISSUEUSER_ALL','MWSTORECOUPONISSUEUSER_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon></el-button></template>
           </el-popover>
         </template>
       </el-table-column>
@@ -54,10 +52,11 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { del } from '@/api/mwStoreCouponIssueUser'
-import eForm from './form'
+import { ElNotification } from 'element-plus'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { del } from '@/api/mwStoreCouponIssueUser.js'
+import eForm from './form.vue'
 export default {
   components: { eForm },
   mixins: [initData],
@@ -83,17 +82,17 @@ export default {
       this.delLoading = true
       del(id).then(res => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         this.dleChangePage()
         this.init()
-        this.$notify({
+        ElNotification({
           title: '删除成功',
           type: 'success',
           duration: 2500
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         console.log(err.response.data.message)
       })
     },

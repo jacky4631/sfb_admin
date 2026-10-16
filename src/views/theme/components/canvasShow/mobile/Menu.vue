@@ -23,10 +23,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:math';
 .menu-tab-box {
   display: grid;
   grid-template-columns: repeat(4, 25%);
-  grid-template-rows: repeat(2, 170/750 * 500px);
+  grid-template-rows: repeat(2, math.div(170, 750) * 500px);
   text-align: center;
   .tab-list {
     display: flex;
@@ -35,9 +36,9 @@ export default {
     justify-content: center;
   }
   .tab-img {
-    border-radius: 26/750 * 500px;
-    margin-bottom: 10/750 * 500px;
-    width: 96/750 * 500px;
+    border-radius: math.div(26, 750) * 500px;
+    margin-bottom: math.div(10, 750) * 500px;
+    width: math.div(96, 750) * 500px;
     img {
       width: 100%;
       height: auto;

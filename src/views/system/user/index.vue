@@ -9,10 +9,13 @@
             clearable
             size="small"
             placeholder="输入部门名称搜索"
-            prefix-icon="el-icon-search"
             class="filter-item"
             @input="getDeptDatas"
-          />
+          >
+            <template #prefix>
+              <el-icon><Search /></el-icon>
+            </template>
+          </el-input>
         </div>
         <el-tree
           :data="deptDatas"
@@ -35,16 +38,16 @@
               placeholder="输入名称或者邮箱搜索"
               style="width: 200px;"
               class="filter-item"
-              @keyup.enter.native="crud.toQuery"
+              @keyup.enter="crud.toQuery"
             />
             <el-date-picker
               v-model="query.createTime"
-              :default-time="['00:00:00','23:59:59']"
+              :default-time="[new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 23, 59, 59)]"
               type="daterange"
               range-separator=":"
               size="small"
               class="date-item"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              value-format="YYYY-MM-DD HH:mm:ss"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
             />
@@ -69,77 +72,103 @@
           <crudOperation show="" :permission="permission" />
         </div>
         <!--表单渲染-->
-        <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="570px">
-          <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="66px">
-            <el-form-item label="用户名" prop="username">
-              <el-input v-model="form.username" />
-            </el-form-item>
-            <el-form-item label="电话" prop="phone">
-              <el-input v-model.number="form.phone" />
-            </el-form-item>
-            <el-form-item label="昵称" prop="nickName">
-              <el-input v-model="form.nickName" />
-            </el-form-item>
-            <el-form-item label="邮箱" prop="email">
-              <el-input v-model="form.email" />
-            </el-form-item>
-            <el-form-item label="部门" prop="dept.id">
-              <treeselect
-                v-model="form.dept.id"
-                :options="depts"
-                style="width: 178px"
-                placeholder="选择部门"
-                @select="selectFun"
-              />
-            </el-form-item>
-            <el-form-item label="岗位" prop="job.id">
-              <el-select v-model="form.job.id" style="width: 178px" placeholder="请先选择岗位">
-                <el-option
-                  v-for="(item, index) in jobs"
-                  :key="item.name + index"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="性别">
-              <el-radio-group v-model="form.sex" style="width: 178px">
-                <el-radio label="男">男</el-radio>
-                <el-radio label="女">女</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="状态">
-              <el-radio-group v-model="form.enabled" :disabled="form.id === user.id">
-                <el-radio
-                  v-for="item in dict.user_status"
-                  :key="item.id"
-                  :label="item.value"
-                >{{ item.label }}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item style="margin-bottom: 0;" label="角色" prop="roles">
-              <el-select
-                v-model="form.roles"
-                style="width: 437px"
-                multiple
-                placeholder="请选择角色"
-                @remove-tag="deleteTag"
-                @change="changeRole"
-              >
-                <el-option
-                  v-for="item in roles"
-                  :key="item.name"
-                  :disabled="level !== 1 && item.level <= level"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
+        <el-dialog :model-value="crud.status.cu > 0" append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :title="crud.status.title" width="640px">
+          <el-form ref="form" :model="form" :rules="rules" size="small" label-width="66px">
+            <el-row :gutter="16">
+              <el-col :span="12">
+                <el-form-item label="用户名" prop="username">
+                  <el-input v-model="form.username" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="电话" prop="phone">
+                  <el-input v-model.number="form.phone" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="昵称" prop="nickName">
+                  <el-input v-model="form.nickName" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="邮箱" prop="email">
+                  <el-input v-model="form.email" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="部门" prop="dept.id">
+                  <el-tree-select
+                    v-model="form.dept.id"
+                    :data="depts"
+                    :props="{ children: 'children', label: 'name' }"
+                    node-key="id"
+                    check-strictly
+                    :render-after-expand="false"
+                    placeholder="选择部门"
+                    style="width: 100%"
+                    @node-click="selectFun"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="岗位" prop="job.id">
+                  <el-select v-model="form.job.id" placeholder="请选择岗位" style="width: 100%">
+                    <el-option
+                      v-for="(item, index) in jobs"
+                      :key="item.name + index"
+                      :label="item.name"
+                      :value="item.id"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="性别">
+                  <el-radio-group v-model="form.sex">
+                    <el-radio value="男">男</el-radio>
+                    <el-radio value="女">女</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="状态">
+                  <el-radio-group v-model="form.enabled" :disabled="form.id === user.id">
+                    <el-radio
+                      v-for="item in dict.user_status"
+                      :key="item.id"
+                      :value="item.value"
+                    >{{ item.label }}</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item style="margin-bottom: 0;" label="角色" prop="roles">
+                  <el-select
+                    v-model="form.roles"
+                    style="width: 100%"
+                    multiple
+                    placeholder="请选择角色"
+                    @remove-tag="deleteTag"
+                    @change="changeRole"
+                  >
+                    <el-option
+                      v-for="item in roles"
+                      :key="item.name"
+                      :disabled="level !== 1 && item.level <= level"
+                      :label="item.name"
+                      :value="item.id"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
           </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button type="text" @click="crud.cancelCU">取消</el-button>
-            <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
-          </div>
+          <template #footer>
+            <div class="dialog-footer">
+              <el-button link @click="crud.cancelCU">取消</el-button>
+              <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
+            </div>
+          </template>
         </el-dialog>
         <!--表格渲染-->
         <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
@@ -150,12 +179,12 @@
           <el-table-column v-if="columns.visible('phone')" :show-overflow-tooltip="true" prop="phone" width="100" label="电话" />
           <el-table-column v-if="columns.visible('email')" :show-overflow-tooltip="true" width="125" prop="email" label="邮箱" />
           <el-table-column v-if="columns.visible('dept')" :show-overflow-tooltip="true" width="110" prop="dept" label="部门 / 岗位">
-            <template slot-scope="scope">
+            <template #default="scope">
               <div>{{ scope.row.dept.name }} / {{ scope.row.job.name }}</div>
             </template>
           </el-table-column>
           <el-table-column v-if="columns.visible('enabled')" label="状态" align="center" prop="enabled">
-            <template slot-scope="scope">
+            <template #default="scope">
               <el-switch
                 v-model="scope.row.enabled"
                 :disabled="user.id === scope.row.id"
@@ -166,7 +195,7 @@
             </template>
           </el-table-column>
           <el-table-column v-if="columns.visible('createTime')" :show-overflow-tooltip="true" prop="createTime" width="140" label="创建日期">
-            <template slot-scope="scope">
+            <template #default="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
           </el-table-column>
@@ -177,7 +206,7 @@
             align="center"
             fixed="right"
           >
-            <template slot-scope="scope">
+            <template #default="scope">
               <udOperation
                 :data="scope.row"
                 :permission="permission"
@@ -194,19 +223,19 @@
 </template>
 
 <script>
-import crudUser from '@/api/system/user'
-import { isvalidPhone } from '@/utils/validate'
-import { getDepts } from '@/api/system/dept'
-import { getAll, getLevel } from '@/api/system/role'
-import { getAllJob } from '@/api/system/job'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
-import rrOperation from '@crud/RR.operation'
-import crudOperation from '@crud/CRUD.operation'
-import udOperation from '@crud/UD.operation'
-import pagination from '@crud/Pagination'
-import Treeselect from '@riophae/vue-treeselect'
-import { mapGetters } from 'vuex'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import { Search } from '@element-plus/icons-vue'
+import { ElMessageBox, ElMessage } from 'element-plus'
+import crudUser from '@/api/system/user.js'
+import { isvalidPhone } from '@/utils/validate.js'
+import { getDepts } from '@/api/system/dept.js'
+import { getAll, getLevel } from '@/api/system/role.js'
+import { getAllJob } from '@/api/system/job.js'
+import CRUD, { presenter, header, form, crud } from '@/components/Crud/crud.js'
+import rrOperation from '@/components/Crud/RR.operation.vue'
+import crudOperation from '@/components/Crud/CRUD.operation.vue'
+import udOperation from '@/components/Crud/UD.operation.vue'
+import pagination from '@/components/Crud/Pagination.vue'
+import { useUserStore } from '@/store/modules/user.ts'
 
 let userRoles = []
 // crud交由presenter持有
@@ -214,11 +243,12 @@ const defaultCrud = CRUD({ title: '用户', url: 'api/users', crudMethod: { ...c
 const defaultForm = { username: null, nickName: null, sex: '男', email: null, enabled: 'false', roles: [], job: { id: null }, dept: { id: null }, phone: null}
 export default {
   name: 'User',
-  components: { Treeselect, crudOperation, rrOperation, udOperation, pagination },
+  components: { crudOperation, rrOperation, udOperation, pagination, Search },
   mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
   // 数据字典
   dicts: ['user_status'],
   data() {
+    const userStore = useUserStore()
     // 自定义验证
     const validPhone = (rule, value, callback) => {
       if (!value) {
@@ -230,6 +260,7 @@ export default {
       }
     }
     return {
+      user: userStore.user,
       height: document.documentElement.clientHeight - 180 + 'px;',
       deptName: '', depts: [], deptDatas: [], jobs: [], level: 3, roles: [],
       defaultProps: { children: 'children', label: 'name' },
@@ -258,16 +289,18 @@ export default {
         roles: [
           { required: true, message: '请选择角色', trigger: 'blur' },
         ],
+        // 后端强校验字段，前端同步必填；el-form 按 prop 路径取规则，嵌套字段用 'a.b' 形式作键
+        'dept.id': [
+          { required: true, message: '请选择部门', trigger: ['change', 'blur'] }
+        ],
+        'job.id': [
+          { required: true, message: '请选择岗位', trigger: ['change', 'blur'] }
+        ],
         phone: [
           { required: true, trigger: 'blur', validator: validPhone }
         ]
       }
     }
-  },
-  computed: {
-    ...mapGetters([
-      'user'
-    ])
   },
   created() {
     this.$nextTick(() => {
@@ -339,19 +372,19 @@ export default {
     // 提交前做的操作
     [CRUD.HOOK.afterValidateCU](crud) {
       if (!crud.form.dept.id) {
-        this.$message({
+        ElMessage({
           message: '部门不能为空',
           type: 'warning'
         })
         return false
       } else if (!crud.form.job.id) {
-        this.$message({
+        ElMessage({
           message: '岗位不能为空',
           type: 'warning'
         })
         return false
       } else if (this.roles.length === 0) {
-        this.$message({
+        ElMessage({
           message: '角色不能为空',
           type: 'warning'
         })
@@ -386,7 +419,7 @@ export default {
     },
     // 改变状态
     changeEnabled(data, val) {
-      this.$confirm('此操作将 "' + this.dict.label.user_status[val] + '" ' + data.username + ', 是否继续？', '提示', {
+      ElMessageBox.confirm('此操作将 "' + this.dict.label.user_status[val] + '" ' + data.username + ', 是否继续？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -413,8 +446,8 @@ export default {
       }).catch(() => { })
     },
     // 点击部门搜索对应的岗位
-    selectFun(node, instanceId) {
-      this.getJobs(node.id)
+    selectFun(data) {
+      this.getJobs(data.id)
       this.form.job.id = null
     },
     // 获取权限级别

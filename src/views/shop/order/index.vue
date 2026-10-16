@@ -4,35 +4,35 @@
 
       <el-tabs v-model="status" type="card" @tab-click="handleOrder">
         <el-tab-pane name="-9">
-          <span slot="label"><i class="el-icon-s-order"></i> 全部订单</span>
+          <template #label><el-icon><List /></el-icon> 全部订单</template>
         </el-tab-pane>
         <el-tab-pane name="0">
-          <span slot="label"><i class="el-icon-bank-card"></i> 未支付</span>
+          <template #label><el-icon><Wallet /></el-icon> 未支付</template>
         </el-tab-pane>
         <el-tab-pane name="1">
-          <span slot="label"><i class="el-icon-refrigerator"></i> 未发货</span>
+          <template #label><el-icon><Refrigerator /></el-icon> 未发货</template>
         </el-tab-pane>
         <el-tab-pane name="2">
-          <span slot="label"><i class="el-icon-truck"></i> 待收货</span>
+          <template #label><el-icon><Van /></el-icon> 待收货</template>
         </el-tab-pane>
         <el-tab-pane name="3">
-          <span slot="label"><i class="el-icon-document"></i> 待评价</span>
+          <template #label><el-icon><Document /></el-icon> 待评价</template>
         </el-tab-pane>
         <el-tab-pane name="4">
-          <span slot="label"><i class="el-icon-circle-check"></i> 交易完成</span>
+          <template #label><el-icon><CircleCheck /></el-icon> 交易完成</template>
         </el-tab-pane>
         <el-tab-pane name="-1">
-          <span slot="label"><i class="el-icon-back"></i> 退款中</span>
+          <template #label><el-icon><Back /></el-icon> 退款中</template>
         </el-tab-pane>
         <el-tab-pane name="-2">
-          <span slot="label"><i class="el-icon-finished"></i> 已退款</span>
+          <template #label><el-icon><Finished /></el-icon> 已退款</template>
         </el-tab-pane>
       </el-tabs>
       <!--工具栏-->
       <div class="head-container">
 
         <!-- 搜索 -->
-        <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" />
+        <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
         <el-select v-model="query.type" clearable placeholder="类型" class="filter-item" style="width: 130px">
           <el-option v-for="item in queryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
         </el-select>
@@ -51,19 +51,19 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
-        <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+        <el-button class="filter-item" size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>
         <!-- 新增 -->
         <el-button
           type="danger"
           class="filter-item"
-          size="mini"
-          icon="el-icon-refresh"
+          size="small"
+         
           @click="toQuery"
-        >刷新</el-button>
+        ><el-icon><Refresh /></el-icon>刷新</el-button>
       </div>
       <!--表单组件-->
       <eForm ref="form" :is-add="isAdd" />
@@ -85,18 +85,18 @@
       <el-table ref="multipleTable" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
         <el-table-column prop="orderId" width="140" label="订单号">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ scope.row.orderId }}</span>
             <p>{{ scope.row.pinkName }}</p>
           </template>
         </el-table-column>
         <el-table-column prop="realName" label="用户昵称" >
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ scope.row.userDTO.nickname }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="cartInfoList" width="300" label="商品信息">
-          <template slot-scope="scope">
+          <template #default="scope">
             <!-- <div v-for="(item,index) in scope.row.cartInfoList"
             :key="index"
             v-if="item.cartInfoMap.productInfo.attrInfo">
@@ -137,35 +137,34 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="payPrice" label="实际支付" />
-        <el-table-column prop="payIntegral" label="消费积分" />
+        <el-table-column prop="payIntegral" label="实际支付(积分)" />
         <el-table-column prop="payTypeName" label="支付状态" />
         <el-table-column prop="statusName" label="订单状态">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span v-html="scope.row.statusName"></span>
           </template>
         </el-table-column>
         <el-table-column prop="addTime" width="160" label="创建时间">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ formatTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="200" align="center" fixed="right">
-          <template slot-scope="scope">
+          <template #default="scope">
             <el-button
               v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
-              size="mini"
+              size="small"
               type="primary"
               @click="toDetailURL(scope.row.id)"
             >
               订单详情</el-button>
-            <el-dropdown size="mini" split-button type="primary" trigger="click">
+            <el-dropdown size="small" split-button type="primary" trigger="click">
               操作
-              <el-dropdown-menu slot="dropdown">
+              <template #dropdown><el-dropdown-menu>
                 <el-dropdown-item>
                   <el-button
                     v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
-                    size="mini"
+                    size="small"
                     type="success"
                     @click="remark(scope.row)"
                   >
@@ -175,7 +174,7 @@
                   <el-button
                     v-if="scope.row._status == 2"
                     v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
-                    size="mini"
+                    size="small"
                     type="primary"
                     @click="edit(scope.row)"
                   >
@@ -183,7 +182,7 @@
                   <el-button
                     v-if="scope.row._status == 4"
                     v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
-                    size="mini"
+                    size="small"
                     type="primary"
                     @click="edit(scope.row)"
                   >
@@ -193,7 +192,7 @@
                   <el-button
                     v-if="scope.row._status == 3"
                     v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
-                    size="mini"
+                    size="small"
                     type="primary"
                     @click="refund(scope.row)"
                   >
@@ -202,7 +201,7 @@
                 <el-dropdown-item v-if="scope.row._status == 1">
                   <el-button
                     v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
-                    size="mini"
+                    size="small"
                     type="primary"
                     @click="editOrder(scope.row)"
                   >
@@ -211,20 +210,20 @@
                 <el-dropdown-item v-if="scope.row._status == 1">
                   <el-popover
                     :ref="scope.row.id"
-                    v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_DELETE']"
                     placement="top"
                     width="180"
                   >
                     <p>确定删除本条数据吗？</p>
                     <div style="text-align: right; margin: 0">
-                      <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
-                      <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+                      <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
+                      <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
                     </div>
-                    <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+                    <template #reference><el-button v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon>删除</el-button></template>
                   </el-popover>
                 </el-dropdown-item>
               </el-dropdown-menu>
-            </el-dropdown>
+            </template>
+</el-dropdown>
 
           </template>
         </el-table-column>
@@ -264,17 +263,18 @@
 </template>
 
 <script>
-  import checkPermission from '@/utils/permission'
-  import initData from '@/mixins/crud'
-  import { del } from '@/api/mwStoreOrder'
-  import eForm from './form'
-  import eDetail from './detail1'
-  import eRefund from './refund'
-  import editOrder from './edit'
-  import eRemark from './remark'
-  import ePrint from './print'
-  import { formatTime } from '@/utils/index'
-  import { gett } from '@/api/visits'
+import { ElNotification, ElMessage } from 'element-plus'
+  import checkPermission from '@/utils/permission.js'
+  import initData from '@/mixins/crud.js'
+  import { del } from '@/api/mwStoreOrder.js'
+  import eForm from './form.vue'
+  import eDetail from './detail1.vue'
+  import eRefund from './refund.vue'
+  import editOrder from './edit.vue'
+  import eRemark from './remark.vue'
+  import ePrint from './print.vue'
+  import { formatTime } from '@/utils/index.js'
+  import { gett } from '@/api/visits.js'
 
   export default {
     components: { eForm, eDetail, eRefund, editOrder, eRemark, ePrint },
@@ -344,7 +344,8 @@
       formatTime,
       checkPermission,
       handleOrder(tab, event) {
-        this.status = tab.name
+        // Element Plus 的 tab-click 回调参数是 pane 上下文，name 在 paneName 上（Vue2 里才是 tab.name）
+        this.status = tab.paneName
         this.toQuery()
       },
       beforeInit() {
@@ -369,17 +370,17 @@
         this.delLoading = true
         del(id).then(res => {
           this.delLoading = false
-          this.$refs[id].doClose()
+          this.$refs[id].hide()
           this.dleChangePage()
           this.init()
-          this.$notify({
+          ElNotification({
             title: '删除成功',
             type: 'success',
             duration: 2500
           })
         }).catch(err => {
           this.delLoading = false
-          this.$refs[id].doClose()
+          this.$refs[id].hide()
           console.log(err.response.data.message)
         })
       },
@@ -451,6 +452,7 @@
         this.isAdd = false
         const _this = this.$refs.form3
         _this.form = {
+          payIntegral: data.payIntegral,
           id: data.id,
           orderId: data.orderId,
           uid: data.uid,
@@ -625,6 +627,7 @@
         this.isAdd = false
         const _this = this.$refs.form1
         _this.form = {
+          payIntegral: data.payIntegral,
           id: data.id,
           orderId: data.orderId,
           payTypeName: data.payTypeName,
@@ -759,7 +762,7 @@
             break;
           case "1":
             if(list.length == 0){
-              this.$message({
+              ElMessage({
                 message: '请选择订单',
                 type: 'warning'
               });
@@ -781,7 +784,7 @@
       getPrintList(){
         let list = this.checkList;
         if(list.length == 0){
-          this.$message({
+          ElMessage({
             message: '请选择订单',
             type: 'warning'
           });

@@ -9,10 +9,7 @@
         >
           <div class="labelList">
             <div class="imgListBox">
-              <draggable >
-                <div
-                  class="item"
-                >
+              <div class="item">
                   <div class="listItemBox">
                     <div class="addLabelBox" >
                       <div class="itemBox">
@@ -25,7 +22,7 @@
                     </div>
                   </div>
                 </div>
-              </draggable>
+              </div>
             </div>
           </div>
           <div class="addImgBtn" @click="addLabel">
@@ -33,29 +30,28 @@
           </div>
         </div>
       </div>
-    </div>
     <el-dialog
       title="提示"
-      :visible.sync="dialogVisible"
+      v-model="dialogVisible"
       width="30%"
       :before-close="deleteItem"
     >
       <span>点击确定删除此项</span>
-      <span slot="footer" class="dialog-footer">
+      <template #footer><span class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false"
           >确 定</el-button
         >
-      </span>
+      </span></template>
     </el-dialog>
-    <el-dialog :visible.sync="dialogImageVisible">
+    <el-dialog v-model="dialogImageVisible">
       <img width="100%" :src="dialogImageUrl" alt="" />
     </el-dialog>
   </div>
 </template>
 
 <script>
-import Draggable from 'vuedraggable'
+import { ElMessageBox } from 'element-plus'
 import { toolMixin } from '@/mixins/tool.js'
 import ToolSelectLink from '@/views/theme/components/rootcompToolbar/toolModule/tool-select-link.vue'
 import ToolSelectCategory from '@/views/theme/components/rootcompToolbar/toolModule/tool-select-category.vue'
@@ -67,7 +63,6 @@ export default {
     ToolSingleImg,
     ToolSelectCategory,
     ToolSelectLink,
-    Draggable
   },
   data () {
     return {
@@ -123,7 +118,7 @@ export default {
     },
     // 删除内容
     deleteItem (item, index) {
-      this.$confirm('确定删除此项？')
+      ElMessageBox.confirm('确定删除此项？')
         .then((_) => {
           this.activeComponent.componentContent.bannerData.splice(index, 1)
         })
@@ -138,7 +133,7 @@ export default {
     },
     // 删除标签
     deleteLabelItem (item, index) {
-      this.$confirm('确定删除此项？')
+      ElMessageBox.confirm('确定删除此项？')
         .then((_) => {
           this.activeComponent.componentContent.labelList.splice(index, 1)
         })
@@ -311,7 +306,7 @@ export default {
       font-weight: bold;
     }
   }
-  >>> .el-select {
+  :deep(.el-select) {
     width: 100%;
   }
   .addImgBtn {

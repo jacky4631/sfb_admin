@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :visible.sync="dialog" :close-on-click-modal="false" title="七牛云配置" append-to-body width="580px">
-    <el-form ref="form" :model="form" :rules="rules" style="margin-top: 6px;" size="small" label-width="110px">
+  <el-dialog v-model="dialog" :close-on-click-modal="false" title="七牛云配置" append-to-body width="580px">
+    <el-form ref="formRef" :model="form" :rules="rules" style="margin-top: 6px;" size="small" label-width="110px">
       <el-form-item label="Access Key" prop="accessKey">
         <el-input v-model="form.accessKey" style="width: 95%" placeholder="accessKey，在安全中心，秘钥管理中查看" />
       </el-form-item>
@@ -24,78 +24,80 @@
         </el-select>
       </el-form-item>
       <el-form-item label="空间类型" prop="host">
-        <el-radio v-model="form.type" label="公开">公开</el-radio>
-        <el-radio v-model="form.type" label="私有">私有</el-radio>
+        <el-radio v-model="form.type" value="公开">公开</el-radio>
+        <el-radio v-model="form.type" value="私有">私有</el-radio>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="dialog = false">取消</el-button>
-      <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
-    </div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button link @click="dialog = false">取消</el-button>
+        <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
+      </div>
+    </template>
   </el-dialog>
 </template>
 
-<script>
-import { get, update } from '@/api/tools/qiniu'
-export default {
-  data() {
-    return {
-      zones: ['华东', '华北', '华南', '北美', '东南亚'], dialog: false,
-      loading: false,
-      form: { accessKey: '', secretKey: '', bucket: '', host: '', zone: '', type: '' },
-      rules: {
-        accessKey: [
-          { required: true, message: '请输入accessKey', trigger: 'blur' }
-        ],
-        secretKey: [
-          { required: true, message: '请输入secretKey', trigger: 'blur' }
-        ],
-        bucket: [
-          { required: true, message: '请输入空间名称', trigger: 'blur' }
-        ],
-        host: [
-          { required: true, message: '请输入外链域名', trigger: 'blur' }
-        ],
-        type: [
-          { required: true, message: '空间类型不能为空', trigger: 'blur' }
-        ]
-      }
+<script setup>
+import { ref, reactive } from 'vue'
+import { ElMessage } from 'element-plus'
+import { get, update } from '@/api/tools/qiniu.js'
+
+const dialog = ref(false)
+const loading = ref(false)
+const formRef = ref(null)
+const zones = ['华东', '华北', '华南', '北美', '东南亚']
+const form = reactive({
+  accessKey: '',
+  secretKey: '',
+  bucket: '',
+  host: '',
+  zone: '',
+  type: ''
+})
+const rules = {
+  accessKey: [
+    { required: true, message: '请输入accessKey', trigger: 'blur' }
+  ],
+  secretKey: [
+    { required: true, message: '请输入secretKey', trigger: 'blur' }
+  ],
+  bucket: [
+    { required: true, message: '请输入空间名称', trigger: 'blur' }
+  ],
+  host: [
+    { required: true, message: '请输入外链域名', trigger: 'blur' }
+  ],
+  type: [
+    { required: true, message: '空间类型不能为空', trigger: 'blur' }
+  ]
+}
+
+const init = () => {
+  get().then(res => {
+    if (res) {
+      Object.assign(form, res)
     }
-  },
-  methods: {
-    init() {
-      get().then(res => {
-        if(res){
-          this.form = res
-        }
+  })
+}
+
+const doSubmit = () => {
+  formRef.value.validate((valid) => {
+    if (valid) {
+      loading.value = true
+      update(form).then(res => {
+        ElMessage.success('修改成功')
+        dialog.value = false
+        loading.value = false
+      }).catch(err => {
+        loading.value = false
+        console.log(err.response.data.message)
       })
-    },
-    doSubmit() {
-      this.$refs['form'].validate((valid) => {
-        if (valid) {
-          this.loading = true
-          update(this.form).then(res => {
-            this.$notify({
-              title: '修改成功',
-              type: 'success',
-              duration: 2500
-            })
-            this.$parent.crud.toQuery()
-            this.loading = false
-            this.dialog = false
-          }).catch(err => {
-            this.loading = false
-            console.log(err.response.data.message)
-          })
-        } else {
-          return false
-        }
-      })
+    } else {
+      return false
     }
-  }
+  })
 }
 </script>
 
 <style scoped>
-
 </style>

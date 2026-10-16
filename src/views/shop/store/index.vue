@@ -5,7 +5,7 @@
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :model-value="crud.status.cu > 0" :title="crud.status.title" width="500px">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
           <el-form-item label="门店名称" prop="name">
             <el-input v-model="form.name" style="width: 370px;" />
@@ -54,16 +54,17 @@
           </el-form-item>
           <el-form-item label="是否显示" prop="isShow">
             <el-radio-group v-model="form.isShow" style="width: 178px">
-              <el-radio :label="1">显示</el-radio>
-              <el-radio :label="0">隐藏</el-radio>
+              <el-radio :value="1">显示</el-radio>
+              <el-radio :value="0">隐藏</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="text" @click="crud.cancelCU">取消</el-button>
+        <template #footer><div class="dialog-footer">
+          <el-button link @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
-      </el-dialog>
+      </template>
+</el-dialog>
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
@@ -72,22 +73,22 @@
         <el-table-column v-if="columns.visible('phone')" prop="phone" label="门店电话" />
         <el-table-column v-if="columns.visible('address')" prop="address" label="地址" />
         <el-table-column v-if="columns.visible('image')" prop="image" label="门店logo" >
-          <template slot-scope="scope">
+          <template #default="scope">
             <a :href="scope.row.image" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.image" alt="点击打开" class="el-avatar"></a>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('validTime')" prop="validTime" label="核销有效日期" />
         <el-table-column v-if="columns.visible('dayTime')" prop="dayTime" label="营业时间" />
         <el-table-column v-if="columns.visible('isShow')" prop="isShow" label="是否显示" >
-          <template slot-scope="scope">
+          <template #default="scope">
             <div>
-              <el-tag v-if="scope.row.isShow === 1" :type="''">显示</el-tag>
+              <el-tag v-if="scope.row.isShow === 1" type="primary">显示</el-tag>
               <el-tag v-else :type=" 'info' ">隐藏</el-tag>
             </div>
           </template>
         </el-table-column>
-        <el-table-column v-permission="['admin','mwSystemStore:edit','mwSystemStore:del']" label="操作" width="150px" align="center">
-          <template slot-scope="scope">
+        <el-table-column v-if="checkPermission(['admin','mwSystemStore:edit','mwSystemStore:del'])" label="操作" width="150px" align="center">
+          <template #default="scope">
             <udOperation
               :data="scope.row"
               :permission="permission"
@@ -102,14 +103,15 @@
 </template>
 
 <script>
-  import crudMwSystemStore from '@/api/mwSystemStore'
-  import CRUD, { presenter, header, form, crud } from '@crud/crud'
-  import rrOperation from '@crud/RR.operation'
-  import crudOperation from '@crud/CRUD.operation'
-  import udOperation from '@crud/UD.operation'
-  import pagination from '@crud/Pagination'
-  import MaterialList from '@/components/material'
-  import { parseTime } from '@/utils/index'
+import checkPermission from '@/utils/permission.js'
+  import crudMwSystemStore from '@/api/mwSystemStore.js'
+  import CRUD, { presenter, header, form, crud } from '@/components/Crud/crud.js'
+  import rrOperation from '@/components/Crud/RR.operation.vue'
+  import crudOperation from '@/components/Crud/CRUD.operation.vue'
+  import udOperation from '@/components/Crud/UD.operation.vue'
+  import pagination from '@/components/Crud/Pagination.vue'
+  import MaterialList from '@/components/material/index.vue'
+  import { parseTime } from '@/utils/index.js'
 
   // crud交由presenter持有
   const defaultCrud = CRUD({ title: '门店', url: 'api/mwSystemStore', sort: 'id,desc', crudMethod: { ...crudMwSystemStore }})
@@ -152,6 +154,7 @@
         }
     },
     methods: {
+    checkPermission,
       // 获取数据前设置好接口地址
       [CRUD.HOOK.beforeRefresh]() {
         return true

@@ -5,13 +5,8 @@
     <div class="editorNavPersonal">
       <!-- <h2>个人中心</h2>
       <ul class="editorList">
-        <draggable v-model="activeComponent.componentContent.txtRoute">
-          <li
-          class="item"
-          v-for="(item, index) in activeComponent.componentContent
-          .txtRoute"
-          :key="index"
-          >
+        <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.txtRoute">
+          <template #item="{ element: item, index: index }"><li class="item">
             <DraggableSlot :obj="item" :index="index" @deleteIt="deleteIt">
               <div class="addContent">
                 <div class="titleBox">{{ '测试' }}</div>
@@ -30,7 +25,8 @@
               </div>
             </DraggableSlot>
           </li>
-        </draggable>
+          </template>
+</draggable>
         <div class="addImgBtn" @click="addImgText">
           <span class="iconfont">&#xe64a;</span>添加图文
         </div>
@@ -38,22 +34,23 @@
 
       <el-dialog
         title="提示"
-        :visible.sync="dialogVisible"
+        v-model="dialogVisible"
         width="30%"
         :before-close="deleteItem"
       >
         <span>点击确定删除此项</span>
-        <span slot="footer" class="dialog-footer">
+        <template #footer><span class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="dialogVisible = false"
             >确 定</el-button
           >
-        </span>
+        </span></template>
       </el-dialog> -->
     </div>
 </template>
 
 <script>
+import { ElMessageBox } from 'element-plus'
 import DraggableSlot from '@/views/theme/components/rootcompToolbar/pc/components/draggableSlot.vue'
 import Draggable from 'vuedraggable'
 import { toolMixin } from '@/mixins/tool.js'
@@ -86,7 +83,7 @@ export default {
         })
     },
     deleteItem (item, index) {
-        this.$confirm('确定删除此项？')
+        ElMessageBox.confirm('确定删除此项？')
         .then((_) => {
             this.activeComponent.componentContent.txtRoute.splice(index, 1)
         })

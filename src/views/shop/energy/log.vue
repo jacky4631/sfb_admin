@@ -5,8 +5,8 @@
       <div class="head-container">
 
         <!-- 搜索 -->
-        <el-input v-model="query.uid" clearable placeholder="输入用户uid" style="width: 150px;" class="filter-item" @keyup.enter.native="toQuery" />
-        <el-input v-model="query.oid" clearable placeholder="输入用户oid" style="width: 150px;" class="filter-item" @keyup.enter.native="toQuery" />
+        <el-input v-model="query.uid" clearable placeholder="输入用户uid" style="width: 150px;" class="filter-item" @keyup.enter="toQuery" />
+        <el-input v-model="query.oid" clearable placeholder="输入用户oid" style="width: 150px;" class="filter-item" @keyup.enter="toQuery" />
         <el-select v-model="platform" clearable placeholder="平台" class="filter-item" style="width: 130px">
           <el-option v-for="item in platformOptions" :key="item.key" :label="item.display_name" :value="item.key" />
         </el-select>
@@ -20,19 +20,19 @@
           range-separator=":"
           size="small"
           class="date-item"
-          value-format="yyyy-MM-dd HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         />
-        <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+        <el-button class="filter-item" size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>
         <!-- 新增 -->
         <el-button
           type="danger"
           class="filter-item"
-          size="mini"
-          icon="el-icon-refresh"
+          size="small"
+         
           @click="toQuery"
-        >刷新</el-button>
+        ><el-icon><Refresh /></el-icon>刷新</el-button>
       </div>
 
       <!--表格渲染-->
@@ -41,19 +41,19 @@
         <el-table-column prop="uid" label="用户id"/>
         <el-table-column prop="oid" label="用户oid"/>
         <el-table-column prop="energy" label="热度">
-          <template slot-scope="scope">
+          <template #default="scope">
             <div v-if="scope.row.type === 1">+{{ scope.row.energy }}</div>
             <div v-else >-{{ scope.row.energy }}</div>
           </template>
         </el-table-column>
         <el-table-column prop="platform" label="平台"/>
         <el-table-column prop="createTime" label="创建时间" width="135">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="updateTime" label="修改时间" width="135">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.updateTime) }}</span>
           </template>
         </el-table-column>
@@ -85,9 +85,10 @@
 </template>
 
 <script>
-  import checkPermission from '@/utils/permission'
-  import initData from '@/mixins/crud'
-  import { formatTime } from '@/utils'
+import { ElMessage } from 'element-plus'
+  import checkPermission from '@/utils/permission.js'
+  import initData from '@/mixins/crud.js'
+  import { formatTime } from '@/utils/index.js'
 
   export default {
     components: { },
@@ -204,7 +205,7 @@
             break;
           case "1":
             if(list.length == 0){
-              this.$message({
+              ElMessage({
                 message: '请选择订单',
                 type: 'warning'
               });

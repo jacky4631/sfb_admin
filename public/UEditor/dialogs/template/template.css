@@ -8,7 +8,7 @@
 .clear{clear: both;}
 .top{height:26px;line-height: 26px;padding: 5px;}
 .bottom{height:320px;width:100%;margin: 0 auto;}
-.transparent{ background: url("images/bg.gif") repeat;}
+.transparent{ background: url("UEditor/dialogs/template/images/bg.gif") repeat;}
 .bottom table tr td{border:1px dashed #ccc;}
 #colorPicker{width: 17px;height: 17px;border: 1px solid #CCC;display: inline-block;border-radius: 3px;box-shadow: 2px 2px 5px #D3D6DA;}
 .border_style1{padding:2px;border: 1px solid #ccc;border-radius: 5px;box-shadow:2px 2px 5px #d3d6da;}

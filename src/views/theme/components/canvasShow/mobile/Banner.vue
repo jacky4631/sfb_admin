@@ -37,7 +37,7 @@ export default {
     &.el-carousel--horizontal {
       height: 234px;
     }
-    >>> .el-carousel__container {
+    :deep(.el-carousel__container) {
       height: 234px;
       .el-carousel__item {
         height: auto;

@@ -18,7 +18,7 @@
         <div class="block">
           <el-slider
             :show-input-controls=false
-            input-size="mini"
+            input-size="small"
             v-model="activeComponent.componentContent.imgClearance"
             show-input></el-slider>
         </div>
@@ -28,7 +28,7 @@
         <div class="block">
           <el-slider
             :show-input-controls=false
-            input-size="mini"
+            input-size="small"
             v-model="activeComponent.componentContent.pageSpacing"
             show-input></el-slider>
         </div>
@@ -129,13 +129,13 @@
                     :src="activeComponent.componentContent.imgData[activeComponent.componentContent.imgBoxActive].src" >
                   <div class="tips"
                     v-if="activeComponent.componentContent.imgData[activeComponent.componentContent.imgBoxActive].src" >更换图片</div>
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
                   <span>添加图片</span>
                 </el-upload>
               </div>
               <div class="addLink">
                 <tool-select-link
-                  :linkObj.sync='activeComponent.componentContent.imgData[activeComponent.componentContent.imgBoxActive].linkObj'
+                  v-model:linkObj='activeComponent.componentContent.imgData[activeComponent.componentContent.imgBoxActive].linkObj'
                   title="链接"></tool-select-link>
               </div>
             </div>
@@ -587,24 +587,24 @@ export default {
       .block {
         flex: 1;
       }
-      >>> .el-slider__input {
+      :deep(.el-slider__input) {
         width: 50px;
       }
-      >>> .el-slider__runway {
+      :deep(.el-slider__runway) {
         height: 4px;
         margin: 18px 65px 18px 0;
       }
-      >>> .el-slider__bar {
+      :deep(.el-slider__bar) {
         height: 4px;
       }
-      >>> .el-slider__button-wrapper {
+      :deep(.el-slider__button-wrapper) {
         top: -17px;
       }
-      >>> .el-slider__button {
+      :deep(.el-slider__button) {
         width: 12px;
         height: 12px;
       }
-      >>> .el-input-number.is-without-controls .el-input__inner {
+      :deep(.el-input-number.is-without-controls .el-input__inner) {
         padding: 10px;
       }
     }
@@ -783,7 +783,7 @@ export default {
           width: 60px;
           height: 60px;
           margin-right: 10px;
-          >>> .el-upload-dragger {
+          :deep(.el-upload-dragger) {
             width: 60px;
             height: 60px;
             text-align: center;
@@ -794,7 +794,7 @@ export default {
             i {
               margin-top: 10px;
             }
-            .el-icon-plus:before {
+            .avatar-uploader-icon {
               color: $mainColor;
             }
             span {
@@ -807,7 +807,7 @@ export default {
           }
         }
         .addLink {
-          >>> .link-select{
+          :deep(.link-select) {
             display: flex;
             margin-bottom: 0;
             line-height: 60px;
@@ -819,22 +819,24 @@ export default {
                 line-height: 60px;
               }
             }
-            &__select{
+            :deep(.link-select__select){
               flex: 1;
-              .el-input__inner {
+              .el-select__wrapper {
                 border: none;
                 background: none;
+                box-shadow: none;
+                padding: 0;
                 font-size: 12px;
+              }
+              .el-select__placeholder,
+              .el-select__selected-item {
                 color: $mainColor;
               }
-              .el-input__inner::placeholder {
-                color: $mainColor;
-              }
-              .el-icon-arrow-up:before {
+              .el-select__caret {
                 color: $mainColor;
               }
             }
-            &__confirm{
+            :deep(.link-select__confirm){
               position: absolute;
               bottom: 0;
               left: 0;

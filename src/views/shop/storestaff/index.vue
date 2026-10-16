@@ -4,7 +4,7 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <el-select v-model="query.type" clearable placeholder="类型" class="filter-item" style="width: 130px">
           <el-option v-for="item in queryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
         </el-select>
@@ -13,10 +13,11 @@
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :model-value="crud.status.cu > 0" :title="crud.status.title" width="500px">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
           <el-form-item label="商城用户" prop="uid">
-            <cuser v-model="form.user"></cuser>
+            <!-- Vue3 组件 v-model 绑定的是 modelValue，而 cuser 的 prop 是 value，须显式 :value 传参 -->
+            <cuser :value="form.user"></cuser>
           </el-form-item>
           <el-form-item label="所属门店" prop="storeId">
             <el-select v-model="form.storeId" style="width: 178px" placeholder="请先选择门店">
@@ -36,43 +37,44 @@
           </el-form-item>
           <el-form-item label="核销开关" prop="verifyStatus">
             <el-radio-group v-model="form.verifyStatus" style="width: 178px">
-              <el-radio :label="1">开启</el-radio>
-              <el-radio :label="0">关闭</el-radio>
+              <el-radio :value="1">开启</el-radio>
+              <el-radio :value="0">关闭</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="text" @click="crud.cancelCU">取消</el-button>
+        <template #footer><div class="dialog-footer">
+          <el-button link @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
-      </el-dialog>
+      </template>
+</el-dialog>
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
         <el-table-column v-if="columns.visible('id')" prop="id" label="id" width="55" />
         <el-table-column v-if="columns.visible('nickname')" prop="nickname" label="微信昵称" />
         <el-table-column v-if="columns.visible('avatar')" prop="avatar" label="店员头像" >
-          <template slot-scope="scope">
+          <template #default="scope">
             <a :href="scope.row.avatar" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.avatar" alt="点击打开" class="el-avatar"></a>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('staffName')" prop="staffName" label="店员名称" />
         <el-table-column v-if="columns.visible('storeName')" prop="storeName" label="所属门店" />
         <el-table-column v-if="columns.visible('verifyStatus')" prop="verifyStatus" label="核销开关" >
-          <template slot-scope="scope">
+          <template #default="scope">
             <div>
-              <el-tag v-if="scope.row.verifyStatus === 1" :type="''">开启</el-tag>
+              <el-tag v-if="scope.row.verifyStatus === 1" type="primary">开启</el-tag>
               <el-tag v-else :type=" 'info' ">关闭</el-tag>
             </div>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('createTime')" prop="createTime" label="添加时间" >
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ formatTimeTwo(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column v-permission="['admin','mwSystemStoreStaff:edit','mwSystemStoreStaff:del']" label="操作" width="150px" align="center">
-          <template slot-scope="scope">
+        <el-table-column v-if="checkPermission(['admin','mwSystemStoreStaff:edit','mwSystemStoreStaff:del'])" label="操作" width="150px" align="center">
+          <template #default="scope">
             <udOperation
               :data="scope.row"
               :permission="permission"
@@ -87,18 +89,19 @@
 </template>
 
 <script>
-import crudmwSystemStoreStaff from '@/api/mwSystemStoreStaff'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
-import rrOperation from '@crud/RR.operation'
-import crudOperation from '@crud/CRUD.operation'
-import udOperation from '@crud/UD.operation'
-import pagination from '@crud/Pagination'
-import cuser from '@/views/components/user'
-import crudMwSystemStore from '@/api/mwSystemStore'
-import { formatTimeTwo } from '@/utils/index'
+import checkPermission from '@/utils/permission.js'
+import crudmwSystemStoreStaff from '@/api/mwSystemStoreStaff.js'
+import CRUD, { presenter, header, form, crud } from '@/components/Crud/crud.js'
+import rrOperation from '@/components/Crud/RR.operation.vue'
+import crudOperation from '@/components/Crud/CRUD.operation.vue'
+import udOperation from '@/components/Crud/UD.operation.vue'
+import pagination from '@/components/Crud/Pagination.vue'
+import cuser from '@/views/components/user/index.vue'
+import crudMwSystemStore from '@/api/mwSystemStore.js'
+import { formatTimeTwo } from '@/utils/index.js'
 
 // crud交由presenter持有
-const defaultCrud = CRUD({ title: '门店店员', url: 'api/mwSystemStoreStaff', sort: 'id,desc', crudMethod: { ...crudMwSystemStoreStaff }})
+const defaultCrud = CRUD({ title: '门店店员', url: 'api/mwSystemStoreStaff', sort: 'id,desc', crudMethod: { ...crudmwSystemStoreStaff }})
 const defaultForm = { user: {uid: null,nickname: null,avatar: null}, id: null, uid: null, avatar: null, storeId: null, staffName: null, phone: null, verifyStatus: 1, status: null, addTime: null, nickname: null, storeName: null }
 export default {
   name: 'MwSystemStoreStaff',
@@ -142,6 +145,7 @@ export default {
     }
   },
   methods: {
+    checkPermission,
     formatTimeTwo,
     // 获取数据前设置好接口地址
     [CRUD.HOOK.beforeRefresh]() {

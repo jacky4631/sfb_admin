@@ -33,10 +33,11 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { ElMessage } from 'element-plus'
+import { useContainerStore } from '@/store/modules/container.js'
 import LeftBar from '../components/leftBar/panel.vue'
 import ToolPanel from '@/views/theme/components/rootcompToolbar/toolPanel.vue'
-import CereshopLayout from '../components/canvasEditPage'
+import CereshopLayout from '../components/canvasEditPage.vue'
 import {
   getCanvasData,
   getProducts,
@@ -76,16 +77,23 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['terminal', 'componentsData'])
+    terminal() {
+      return useContainerStore().terminal
+    },
+    componentsData() {
+      return useContainerStore().componentsData
+    }
   },
   mounted () {
     this.canvasGet()
   },
   methods: {
-    ...mapMutations({
-      setTerminal: 'SET_TERMINAL',
-      setComponentsData: 'SET_COMPONENTSDATA'
-    }),
+    setTerminal(id) {
+      useContainerStore().setTerminal(id)
+    },
+    setComponentsData(data) {
+      useContainerStore().setComponentsData(data)
+    },
     toggleDevice (id) {
       this.setTerminal(id)
       this.canvasGet()
@@ -108,7 +116,7 @@ export default {
         canvasId: this.canvasId || ''
       }).then(res => {
         if (res) {
-          this.$message.success('保存成功！')
+          ElMessage.success('保存成功！')
         }
       })
     },
@@ -116,7 +124,8 @@ export default {
     async canvasGet () {
       // var res = await getCanvasData({'terminal': 3})
       var res = await getCanvasData({'terminal': this.terminal})
-      if (JSON.stringify(res) !== '{}') {
+      // 后端未保存过画布时返回空记录（无 json 字段），需判空避免 JSON.parse(undefined)
+      if (res && res.json) {
         this.canvasId = res.canvasId
         var componentsData = JSON.parse(res.json)
         for (let i = 0; i < componentsData.length; i++) {

@@ -3,7 +3,7 @@
     <!--工具栏-->
     <div class="head-container">
       <!-- 搜索 -->
-      <el-input v-model="search" clearable placeholder="输入用户uid或者平台" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery" />
+      <el-input v-model="search" clearable placeholder="输入用户uid或者平台" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
       <el-select v-model="type" clearable placeholder="订单类型" class="filter-item" style="width: 130px">
         <el-option v-for="item in typeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
       </el-select>
@@ -14,19 +14,19 @@
         range-separator=":"
         size="small"
         class="date-item"
-        value-format="yyyy-MM-dd HH:mm:ss"
+        value-format="YYYY-MM-DD HH:mm:ss"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
       />
-      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+      <el-button class="filter-item" size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>
       <!-- 新增 -->
       <el-button
         type="danger"
         class="filter-item"
-        size="mini"
-        icon="el-icon-refresh"
+        size="small"
+       
         @click="toQuery"
-      >刷新</el-button>
+      ><el-icon><Refresh /></el-icon>刷新</el-button>
 
 
     </div>
@@ -38,7 +38,7 @@
       <el-table-column prop="count" label="订单数量"/>
       <el-table-column prop="energy" label="用户当前热度"/>
       <el-table-column prop="platform" label="平台">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="scope.row.platform == 'jd'">京东</span>
           <span v-else-if="scope.row.platform == 'pdd'">拼多多</span>
           <span v-else-if="scope.row.platform == 'dy'">抖音</span>
@@ -47,13 +47,13 @@
         </template>
       </el-table-column>
       <el-table-column prop="type" label="类型">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="scope.row.type == 0">赠送</span>
           <span v-else>推广</span>
         </template>
       </el-table-column>
       <el-table-column :show-overflow-tooltip="true" prop="addTime" label="创建日期">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ scope.row.createTime }}</span>
         </template>
       </el-table-column>
@@ -71,9 +71,9 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { formatTime } from '@/utils/index'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { formatTime } from '@/utils/index.js'
 export default {
   mixins: [initData],
   data() {

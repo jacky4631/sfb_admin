@@ -7,11 +7,10 @@
         <el-button
           v-permission="['admin','MWSTORECOUPON_ALL','MWSTORECOUPON_CREATE']"
           class="filter-item"
-          size="mini"
+          size="small"
           type="primary"
-          icon="el-icon-plus"
           @click="add"
-        >新增</el-button>
+        ><el-icon><Plus /></el-icon>新增</el-button>
       </div>
     </div>
     <!--表单组件-->
@@ -22,9 +21,9 @@
       <!--<el-table-column prop="id" label="ID"/>-->
       <el-table-column prop="title" label="优惠券名称" />
       <el-table-column prop="type" label="优惠券类型">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.type === 1" style="cursor: pointer" :type="''">商品券</el-tag>
+            <el-tag v-if="scope.row.type === 1" style="cursor: pointer" type="primary">商品券</el-tag>
             <el-tag v-else :type=" 'info' ">普通券</el-tag>
           </div>
         </template>
@@ -32,62 +31,61 @@
       <el-table-column prop="couponPrice" label="优惠券面值" />
       <el-table-column prop="useMinPrice" label="优惠券最低消费" />
       <el-table-column label="优惠券有效期限">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ scope.row.couponTime }}天</span>
         </template>
       </el-table-column>
       <el-table-column prop="sort" label="排序" width="100" />
       <el-table-column label="状态" width="100" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.status === 1" style="cursor: pointer" :type="''">开启</el-tag>
+            <el-tag v-if="scope.row.status === 1" style="cursor: pointer" type="primary">开启</el-tag>
             <el-tag v-else :type=" 'info' ">关闭</el-tag>
           </div>
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="140">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ scope.row.createTime }}</span>
         </template>
       </el-table-column>
       <el-table-column v-if="checkPermission(['admin','MWSTORECOUPON_ALL','MWSTORECOUPON_EDIT','MWSTORECOUPON_DELETE'])" width="200" label="操作" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button
             v-permission="['admin','MWSTORECOUPON_ALL','MWSTORECOUPON_EDIT']"
-            size="mini"
+            size="small"
             type="primary"
             @click="edit2(scope.row)"
           >
             发布
           </el-button>
-          <el-dropdown size="mini" split-button type="primary" trigger="click">
+          <el-dropdown size="small" split-button type="primary" trigger="click">
             操作
-            <el-dropdown-menu slot="dropdown">
+            <template #dropdown><el-dropdown-menu>
               <el-dropdown-item>
                 <el-button
                   v-permission="['admin','MWSTORECOUPON_ALL','MWSTORECOUPON_EDIT']"
-                  size="mini"
+                  size="small"
                   type="primary"
-                  icon="el-icon-edit"
                   @click="edit(scope.row)"
-                >编辑</el-button>
+                ><el-icon><Edit /></el-icon>编辑</el-button>
               </el-dropdown-item>
               <el-dropdown-item>
                 <el-popover
                   :ref="scope.row.id"
-                  v-permission="['admin','MWSTORECOUPON_ALL','MWSTORECOUPON_DELETE']"
                   placement="top"
                   width="180"
                 >
                   <p>确定删除本条数据吗？</p>
                   <div style="text-align: right; margin: 0">
-                    <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
-                    <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+                    <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
+                    <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
                   </div>
-                  <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+                  <template #reference><el-button v-permission="['admin','MWSTORECOUPON_ALL','MWSTORECOUPON_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon>删除</el-button></template>
                 </el-popover>
               </el-dropdown-item>
             </el-dropdown-menu>
+            </template>
           </el-dropdown>
         </template>
       </el-table-column>
@@ -105,12 +103,13 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import { del } from '@/api/mwStoreCoupon'
-import eForm from './form'
-import eIForm from '../couponissue/form'
-import { formatTime } from '@/utils/index'
+import { ElNotification } from 'element-plus'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import { del } from '@/api/mwStoreCoupon.js'
+import eForm from './form.vue'
+import eIForm from '../couponissue/form.vue'
+import { formatTime } from '@/utils/index.js'
 export default {
   components: { eForm, eIForm },
   mixins: [initData],
@@ -137,17 +136,17 @@ export default {
       this.delLoading = true
       del(id).then(res => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         this.dleChangePage()
         this.init()
-        this.$notify({
+        ElNotification({
           title: '删除成功',
           type: 'success',
           duration: 2500
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[id].doClose()
+        this.$refs[id].hide()
         console.log(err.response.data.message)
       })
     },

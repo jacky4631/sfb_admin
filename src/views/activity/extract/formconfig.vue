@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="'提现配置'" width="700px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="'提现配置'" width="700px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
       <el-form-item label="最低提现金额" label-width="200px">
         <el-input-number v-model="form.minPrice" style="width: 370px;" />元
@@ -26,35 +26,37 @@
         <el-input v-model="form.extractFeeDesc" style="width: 370px;" />
       </el-form-item>
       <el-form-item label="自动提现" label-width="200px">
-        <el-radio v-model="form.auto" :label="1">开启</el-radio>
-        <el-radio v-model="form.auto" :label="2">关闭</el-radio>
+        <el-radio v-model="form.auto" :value="1">开启</el-radio>
+        <el-radio v-model="form.auto" :value="2">关闭</el-radio>
       </el-form-item>
       <el-form-item label="微信提现" label-width="200px">
-        <el-radio v-model="form.weixin" :label="1">开启</el-radio>
-        <el-radio v-model="form.weixin" :label="0">关闭</el-radio>
+        <el-radio v-model="form.weixin" :value="1">开启</el-radio>
+        <el-radio v-model="form.weixin" :value="0">关闭</el-radio>
       </el-form-item>
 
       <el-form-item label="支付宝提现" label-width="200px">
-        <el-radio v-model="form.alipay" :label="1">开启</el-radio>
-        <el-radio v-model="form.alipay" :label="0">关闭</el-radio>
+        <el-radio v-model="form.alipay" :value="1">开启</el-radio>
+        <el-radio v-model="form.alipay" :value="0">关闭</el-radio>
       </el-form-item>
 
       <el-form-item label="银行卡提现" label-width="200px">
-        <el-radio v-model="form.bank" :label="1">开启</el-radio>
-        <el-radio v-model="form.bank" :label="0">关闭</el-radio>
+        <el-radio v-model="form.bank" :value="1">开启</el-radio>
+        <el-radio v-model="form.bank" :value="0">关闭</el-radio>
         <p style="color: red">银行卡需要对接银盛支付，app端已经实现银盛绑卡</p>
       </el-form-item>
 
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="cancel">取消</el-button>
+    <template #footer><div class="dialog-footer">
+      <el-button link @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>
     </div>
+    </template>
   </el-dialog>
 </template>
 
 <script>
-import { editExtractConfig } from '@/api/mwUserExtract'
+import { ElNotification } from 'element-plus'
+import { editExtractConfig } from '@/api/mwUserExtract.js'
 export default {
   props: {
     isAdd: {
@@ -95,7 +97,7 @@ export default {
     doEdit() {
       editExtractConfig(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '操作成功',
           type: 'success',
           duration: 2500

@@ -19,8 +19,8 @@
       </div>
       <div class="textTit">添加类别</div>
       <div class="categoryListBox">
-        <draggable v-model="activeComponent.componentContent.categoryData">
-          <div v-for="(item, index) in activeComponent.componentContent.categoryData" :key="index" class="item">
+        <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.categoryData">
+          <template #item="{ element: item, index: index }"><div class="item">
             <div class="listItemBox">
               <div class="addImgTit" @click="openAddCategory(item, index)">
                 <div class="titLeft">
@@ -48,23 +48,24 @@
               </div>
             </div>
           </div>
-        </draggable>
+          </template>
+</draggable>
       </div>
     </div>
     <div class="addImgBtn" v-show="activeComponent.componentContent.categoryData.length < 6" @click="addCategory"><span class="iconfont">&#xe64a;</span>添加类别</div>
     <div class="addImgBtn" v-show="activeComponent.componentContent.categoryData.length === 6"><span class="iconfont">&#xe608;</span>最多只能添加6个</div>
     <el-dialog
       title="提示"
-      :visible.sync="dialogVisible"
+      v-model="dialogVisible"
       width="30%"
       :before-close="deleteItem">
       <span>点击确定删除此项</span>
-      <span slot="footer" class="dialog-footer">
+      <template #footer><span class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-  </span>
+  </span></template>
     </el-dialog>
-    <el-dialog title="选择类别" :visible.sync="dialogCategory" width="480px">
+    <el-dialog title="选择类别" v-model="dialogCategory" width="480px">
       <div class="classList">
         <div class="classTit">
           <span>类别名称</span>
@@ -83,6 +84,7 @@
 </template>
 
 <script>
+import { ElMessageBox } from 'element-plus'
 import Draggable from 'vuedraggable'
 import { toolMixin } from '@/mixins/tool.js'
 export default {
@@ -169,7 +171,7 @@ export default {
     },
     // 删除内容
     deleteItem (item, index) {
-      this.$confirm('确定删除此项？')
+      ElMessageBox.confirm('确定删除此项？')
         .then(_ => {
           this.activeComponent.componentContent.categoryData.splice(index, 1)
         })
@@ -237,7 +239,7 @@ export default {
       margin-bottom: 15px;
     }
   }
-  >>> .ql-container {
+  :deep(.ql-container) {
     height: 200px;
   }
   .categoryListBox {
@@ -417,7 +419,7 @@ export default {
       }
     }
   }
-  >>> .el-dialog__body {
+  :deep(.el-dialog__body) {
     padding: 0;
     .addSelectItem {
       width: 100%;
@@ -437,10 +439,10 @@ export default {
     }
   }
 }
->>> .el-dialog {
+:deep(.el-dialog) {
   border-radius: 4px;
 }
->>> .el-select {
+:deep(.el-select) {
   width: 100%;
 }
 </style>

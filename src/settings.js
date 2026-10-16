@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   /**
    * @description 网站标题
    */

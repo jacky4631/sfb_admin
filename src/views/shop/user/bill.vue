@@ -3,9 +3,9 @@
     <!--工具栏-->
     <div class="head-container">
       <!-- 搜索 -->
-      <el-input v-model="uid" clearable placeholder="输入左边uid" style="width: 150px;" class="filter-item" @keyup.enter.native="toQuery" />
-      <el-input v-model="origUid" clearable placeholder="输入全部uid" style="width: 150px;" class="filter-item" @keyup.enter.native="toQuery" />
-      <el-input v-model="mark" clearable placeholder="输入描述" style="width: 250px;" class="filter-item" @keyup.enter.native="toQuery" />
+      <el-input v-model="uid" clearable placeholder="输入左边uid" style="width: 150px;" class="filter-item" @keyup.enter="toQuery" />
+      <el-input v-model="origUid" clearable placeholder="输入全部uid" style="width: 150px;" class="filter-item" @keyup.enter="toQuery" />
+      <el-input v-model="mark" clearable placeholder="输入描述" style="width: 250px;" class="filter-item" @keyup.enter="toQuery" />
       <el-select v-model="category" clearable placeholder="明细种类" class="filter-item" style="width: 130px">
         <el-option
           v-for="item in categoryOptions"
@@ -35,7 +35,7 @@
         v-model="startTime"
         type="date"
         placeholder="开始日期"
-        value-format="yyyy-MM-dd"
+        value-format="YYYY-MM-DD"
         style="width: 180px">
       </el-date-picker>
       <el-date-picker
@@ -43,18 +43,18 @@
         v-model="endTime"
         type="date"
         placeholder="结束日期"
-        value-format="yyyy-MM-dd"
+        value-format="YYYY-MM-DD"
         style="width: 180px">
       </el-date-picker>
-      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+      <el-button class="filter-item" size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>
       <!-- 新增 -->
       <el-button
         type="danger"
         class="filter-item"
-        size="mini"
-        icon="el-icon-refresh"
+        size="small"
+       
         @click="toQuery"
-      >刷新</el-button>
+      ><el-icon><Refresh /></el-icon>刷新</el-button>
 
 
     </div>
@@ -67,14 +67,14 @@
       <el-table-column prop="origUid" label="原用户id" />
       <el-table-column prop="mark" label="描述" width="400"/>
       <el-table-column prop="category" label="明细种类">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="scope.row.category == 'now_money'">余额</span>
           <span v-else-if="scope.row.category == 'integral'">积分</span>
           <span v-else>未知</span>
         </template>
       </el-table-column>
       <el-table-column prop="number" label="明细数字">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="scope.row.pm == 1">+</span>
           <span v-else>-</span>
           <span>{{ scope.row.number }}</span>
@@ -83,7 +83,7 @@
       <el-table-column prop="balance" label="余额"/>
       <el-table-column prop="platform" label="平台"/>
       <el-table-column prop="unlockStatus" label="解锁状态">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span style="color: grey" v-if="scope.row.unlockStatus == 2">已失效</span>
           <span style="color: red" v-else-if="scope.row.unlockStatus == 1">未解锁</span>
           <span style="color: limegreen" v-else>已解锁</span>
@@ -106,12 +106,13 @@
 </template>
 
 <script>
-import checkPermission from '@/utils/permission'
-import initData from '@/mixins/crud'
-import {del, onStatus} from '@/api/mwUser'
-import eForm from './form'
-import pForm from './formp'
-import {formatTime} from '@/utils/index'
+import { ElNotification, ElMessage, ElMessageBox } from 'element-plus'
+import checkPermission from '@/utils/permission.js'
+import initData from '@/mixins/crud.js'
+import {del, onStatus} from '@/api/mwUser.js'
+import eForm from './form.vue'
+import pForm from './formp.vue'
+import {formatTime} from '@/utils/index.js'
 
 export default {
   name:'Bill',
@@ -162,14 +163,14 @@ export default {
     formatTime,
     checkPermission,
     onStatus(id, status) {
-      this.$confirm(`确定进行[${status ? '禁用' : '开启'}]操作?`, '提示', {
+      ElMessageBox.confirm(`确定进行[${status ? '禁用' : '开启'}]操作?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
           onStatus(id, { status: status }).then(({ data }) => {
-            this.$message({
+            ElMessage({
               message: '操作成功',
               type: 'success',
               duration: 1000,
@@ -209,17 +210,17 @@ export default {
       this.delLoading = true
       del(uid).then(res => {
         this.delLoading = false
-        this.$refs[uid].doClose()
+        this.$refs[uid].hide()
         this.dleChangePage()
         this.init()
-        this.$notify({
+        ElNotification({
           title: '删除成功',
           type: 'success',
           duration: 2500
         })
       }).catch(err => {
         this.delLoading = false
-        this.$refs[uid].doClose()
+        this.$refs[uid].hide()
         console.log(err.response.data.message)
       })
     },

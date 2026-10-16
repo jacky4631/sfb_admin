@@ -1,21 +1,23 @@
-import store from '@/store'
+import { useUserStore } from '../../store/modules/user.ts'
 
 export default {
-  inserted(el, binding, vnode) {
+  mounted(el, binding, vnode) {
     const { value } = binding
-    const roles = store.getters && store.getters.roles
-    if (value && value instanceof Array && value.length > 0) {
-      const permissionRoles = value
+    const roles = useUserStore().roles
+    if (!value || !(value instanceof Array) || value.length === 0) {
+      // 没有传入权限要求时，不做权限检查，直接显示
+      return
+    }
+    const permissionRoles = value
 
-      const hasPermission = roles.some(role => {
-        return permissionRoles.includes(role)
-      })
+    const hasPermission = roles.some(role => {
+      return permissionRoles.includes(role)
+    })
 
-      if (!hasPermission) {
-        el.parentNode && el.parentNode.removeChild(el)
-      }
-    } else {
-      throw new Error(`使用方式： v-permission="['admin','editor']"`)
+    if (!hasPermission) {
+      // 隐藏而非移除 DOM：直接移除会破坏 el-popover/el-tooltip 的 #reference 节点，
+      // 导致 ElPopper 报 [ElOnlyChild] no valid child node found
+      el.style.display = 'none'
     }
   }
 }

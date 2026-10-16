@@ -11,26 +11,26 @@
         <el-table-column v-if="columns.visible('id')" prop="id" label="模板ID" />
         <el-table-column v-if="columns.visible('name')" prop="name" label="模板名称" />
         <el-table-column v-if="columns.visible('type')" prop="type" label="计费方式">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span v-if="scope.row.type == 1">按件数</span>
             <span v-else-if="scope.row.type == 2">按重量</span>
             <span v-else>按体积</span>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('appoint')" prop="appoint" label="指定包邮开关">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span v-if="scope.row.appoint == 1">开启</span>
             <span v-else>关闭</span>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('createTime')" prop="createTime" label="添加时间">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('sort')" prop="sort" label="排序" />
-        <el-table-column v-permission="['admin','mwShippingTemplates:edit','mwShippingTemplates:del']" label="操作" width="150px" align="center">
-          <template slot-scope="scope">
+        <el-table-column v-if="checkPermission(['admin','mwShippingTemplates:edit','mwShippingTemplates:del'])" label="操作" width="150px" align="center">
+          <template #default="scope">
             <udOperation
               :data="scope.row"
               :permission="permission"
@@ -45,14 +45,15 @@
 </template>
 
 <script>
-import crudMwShippingTemplates from '@/api/mwShippingTemplates'
-import CRUD, { presenter, header, form, crud } from '@crud/crud'
-import rrOperation from '@crud/RR.operation'
-import crudOperation from '@crud/CRUD.operation'
-import udOperation from '@crud/UD.operation'
-import pagination from '@crud/Pagination'
-import MaterialList from "@/components/material";
-import add from './form'
+import checkPermission from '@/utils/permission.js'
+import crudMwShippingTemplates from '@/api/mwShippingTemplates.js'
+import CRUD, { presenter, header, form, crud } from '@/components/Crud/crud.js'
+import rrOperation from '@/components/Crud/RR.operation.vue'
+import crudOperation from '@/components/Crud/CRUD.operation.vue'
+import udOperation from '@/components/Crud/UD.operation.vue'
+import pagination from '@/components/Crud/Pagination.vue'
+import MaterialList from "@/components/material/index.vue";
+import add from './form.vue'
 
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '运费模板', url: 'api/mwShippingTemplates', sort: 'id,desc', crudMethod: { ...crudMwShippingTemplates }})
@@ -75,6 +76,7 @@ export default {
   watch: {
   },
   methods: {
+    checkPermission,
     // 获取数据前设置好接口地址
     [CRUD.HOOK.beforeRefresh]() {
       return true

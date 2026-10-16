@@ -10,17 +10,17 @@
       <el-table-column type="selection" width="55" />
       <el-table-column v-if="columns.visible('name')" prop="name" label="名称" />
       <el-table-column v-if="columns.visible('dept')" prop="dept" label="所属部门">
-        <template slot-scope="scope">
+        <template #default="scope">
           <div>{{ scope.row.deptSuperiorName ? scope.row.deptSuperiorName + ' / ' : '' }}{{ scope.row.dept.name }}</div>
         </template>
       </el-table-column>
       <el-table-column v-if="columns.visible('sort')" prop="sort" label="排序">
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ scope.row.sort }}
         </template>
       </el-table-column>
       <el-table-column v-if="columns.visible('status')" prop="status" label="状态" align="center">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-switch
             v-model="scope.row.enabled"
             active-color="#409EFF"
@@ -30,7 +30,7 @@
         </template>
       </el-table-column>
       <el-table-column v-if="columns.visible('createTime')" prop="createTime" label="创建日期">
-        <template slot-scope="scope">
+        <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
@@ -42,7 +42,7 @@
         align="center"
         fixed="right"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           <udOperation
             :data="scope.row"
             :permission="permission"
@@ -58,13 +58,14 @@
 </template>
 
 <script>
-import crudJob from '@/api/system/job'
-import eHeader from './module/header'
-import eForm from './module/form'
-import CRUD, { presenter } from '@crud/crud'
-import crudOperation from '@crud/CRUD.operation'
-import pagination from '@crud/Pagination'
-import udOperation from '@crud/UD.operation'
+import { ElMessageBox } from 'element-plus'
+import crudJob from '@/api/system/job.js'
+import eHeader from './module/header.vue'
+import eForm from './module/form.vue'
+import CRUD, { presenter } from '@/components/Crud/crud.js'
+import crudOperation from '@/components/Crud/CRUD.operation.vue'
+import pagination from '@/components/Crud/Pagination.vue'
+import udOperation from '@/components/Crud/UD.operation.vue'
 
 // crud交由presenter持有
 const crud = CRUD({
@@ -92,7 +93,7 @@ export default {
   methods: {
     // 改变状态
     changeEnabled(data, val) {
-      this.$confirm('此操作将 "' + this.dict.label.job_status[val] + '" ' + data.name + '岗位, 是否继续？', '提示', {
+      ElMessageBox.confirm('此操作将 "' + this.dict.label.job_status[val] + '" ' + data.name + '岗位, 是否继续？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -111,8 +112,8 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-  ::v-deep .el-input-number .el-input__inner {
+<style lang="scss" scoped>
+  :deep(.el-input-number .el-input__inner) {
     text-align: left;
   }
 </style>

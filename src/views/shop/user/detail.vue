@@ -1,9 +1,9 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" title="查看分销下级" width="1400px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" title="查看分销下级" width="1400px">
     <el-card>
-      <div slot="header">
+      <template #header>
         <span>{{ form.nickname }}的下级</span>
-      </div>
+      </template>
       <el-tabs type="border-card" @tab-click="handleClick" v-model="activeName">
         <el-tab-pane label="一级" name="first">
           <el-table
@@ -19,7 +19,7 @@
               prop="avatar"
               label="头像"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <a :href="scope.row.avatar" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.avatar" alt="点击打开" class="el-avatar"></a>
               </template>
             </el-table-column>
@@ -37,7 +37,7 @@
               prop="level"
               label="淘店"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div>
                   <el-tag v-if="scope.row.level == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
                   <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -49,7 +49,7 @@
               prop="levelJd"
               label="京店"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div>
                   <el-tag v-if="scope.row.levelJd == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
                   <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -60,7 +60,7 @@
               prop="levelPdd"
               label="多店"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div>
                   <el-tag v-if="scope.row.levelPdd == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
                   <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -71,7 +71,7 @@
               prop="levelDy"
               label="抖店"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div>
                   <el-tag v-if="scope.row.levelDy == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
                   <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -82,7 +82,7 @@
               prop="levelVip"
               label="唯店"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div>
                   <el-tag v-if="scope.row.levelVip == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
                   <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -110,7 +110,7 @@
               prop="avatar"
               label="头像"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <a :href="scope.row.avatar" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.avatar" alt="点击打开" class="el-avatar"></a>
               </template>
             </el-table-column>
@@ -128,7 +128,7 @@
               prop="level"
               label="淘店"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div>
                   <el-tag v-if="scope.row.level == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
                   <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -140,7 +140,7 @@
               prop="levelJd"
               label="京店"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div>
                   <el-tag v-if="scope.row.levelJd == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
                   <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -151,7 +151,7 @@
               prop="levelPdd"
               label="多店"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div>
                   <el-tag v-if="scope.row.levelPdd == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
                   <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -162,7 +162,7 @@
               prop="levelDy"
               label="抖店"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div>
                   <el-tag v-if="scope.row.levelDy == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
                   <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -173,7 +173,7 @@
               prop="levelVip"
               label="唯店"
               width="80">
-              <template slot-scope="scope">
+              <template #default="scope">
                 <div>
                   <el-tag v-if="scope.row.levelVip == 5" style="background-color: #8A77C5; color: white">店主</el-tag>
                   <el-tag v-else  style="background-color: #B68567; color: white">普通</el-tag>
@@ -193,8 +193,8 @@
 </template>
 
 <script>
-import { add, edit, getSpread } from '@/api/mwUser'
-import { parseTime } from '@/utils/index'
+import { add, edit, getSpread } from '@/api/mwUser.js'
+import { parseTime } from '@/utils/index.js'
 export default {
   props: {
     // isAdd: {

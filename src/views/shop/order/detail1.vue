@@ -1,11 +1,11 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="isAdd ? '新增' : '订单详情'" width="700px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '订单详情'" width="700px">
     <el-card>
-      <div slot="header">
+      <template #header>
         <span>进度信息</span>
-      </div>
+      </template>
       <el-steps
-        v-if="form.refundStatus===0"
+        v-if="orderStatus && form.refundStatus===0"
         :active="orderStatus.size"
         align-center
         process-status="process"
@@ -16,31 +16,31 @@
         <el-step title="待评价" :description="orderStatus.orderVerific"></el-step>
         <el-step title="已完成" :description="orderStatus.checkOrderOver"></el-step>
       </el-steps>
-      <el-steps v-else :active="form.refundStatus+1" align-center process-status="process" finish-status="success">
+      <el-steps v-else-if="orderStatus" :active="form.refundStatus+1" align-center process-status="process" finish-status="success">
         <el-step title="用户下单" :description="orderStatus.cacheKeyCreateOrder"></el-step>
         <el-step title="用户申请退款" :description="orderStatus.applyRefund"></el-step>
         <el-step title="退款申请通过" :description="orderStatus.refundOrderSuccess"></el-step>
       </el-steps>
     </el-card>
     <el-card>
-      <div slot="header">
+      <template #header>
         <span>收货信息</span>
-      </div>
+      </template>
       <div class="text item">用户昵称:{{ form.nickname }}</div>
       <div class="text item">收货人: {{ form.realName }}</div>
       <div class="text item">联系电话: {{ form.userPhone }}</div>
       <div class="text item">收货地址: {{ form.userAddress }}</div>
     </el-card>
     <el-card>
-      <div slot="header">
+      <template #header>
         <span>订单信息</span>
-      </div>
+      </template>
       <el-row :gutter="24">
         <el-col :span="12">
           <div class="text item">订单编号: {{ form.orderId }}</div>
           <div class="text item">商品总数: {{ form.totalNum }}</div>
           <div class="text item">支付邮费: {{ form.totalPostage }}</div>
-          <div class="text item">实际支付: {{ form.payPrice }}</div>
+          <div class="text item">实际支付(积分): {{ form.payIntegral }}</div>
           <div class="text item">支付方式: {{ form.payTypeName }}</div>
         </el-col>
         <el-col :span="12">
@@ -53,9 +53,9 @@
       </el-row>
     </el-card>
     <el-card v-if="form.storeId == 0">
-      <div slot="header">
+      <template #header>
         <span>物流信息</span>
-      </div>
+      </template>
       <div class="text item">快递公司:{{ form.deliveryName }}</div>
       <div class="text item">快递单号:{{ form.deliveryId }}</div>
 
@@ -78,18 +78,19 @@
       </div>
     </el-card>
     <el-card>
-      <div slot="header">
+      <template #header>
         <span>备注信息</span>
-      </div>
+      </template>
       <div class="text item">{{ form.remark }}</div>
     </el-card>
   </el-dialog>
 </template>
 
 <script>
+import { ElNotification } from 'element-plus'
 import { add, edit, express,
-  getNowOrderStatus } from '@/api/mwStoreOrder'
-import {formatTimeTwo, parseTime} from '@/utils/index'
+  getNowOrderStatus } from '@/api/mwStoreOrder.js'
+import {formatTimeTwo, parseTime} from '@/utils/index.js'
 export default {
   props: {
     isAdd: {
@@ -199,7 +200,7 @@ export default {
     doAdd() {
       add(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '添加成功',
           type: 'success',
           duration: 2500
@@ -214,7 +215,7 @@ export default {
     doEdit() {
       edit(this.form).then(res => {
         this.resetForm()
-        this.$notify({
+        ElNotification({
           title: '修改成功',
           type: 'success',
           duration: 2500

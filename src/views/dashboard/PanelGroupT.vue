@@ -4,7 +4,7 @@
         <el-col v-bind="grid" class="ivu-mb">
           <el-card :bordered="false">
             <router-link :to="{ path: '/shop/cate' }">
-              <i class="el-icon-goods" style="color: #69c0ff" />
+              <el-icon style="color: #69c0ff"><Goods /></el-icon>
               <p>商品管理</p>
             </router-link>
           </el-card>
@@ -12,7 +12,7 @@
         <el-col v-bind="grid" class="ivu-mb">
           <el-card :bordered="false">
             <router-link :to="{ path: '/member/member' }">
-              <i class="el-icon-user" style="color: #95de64" />
+              <el-icon style="color: #95de64"><User /></el-icon>
               <p>会员管理</p>
             </router-link>
           </el-card>
@@ -20,7 +20,7 @@
         <el-col v-bind="grid" class="ivu-mb">
           <el-card :bordered="false">
             <router-link :to="{ path: '/order/mailvorTbOrder' }">
-              <i class="el-icon-s-order" style="color: #ff9c6e" />
+              <el-icon style="color: #ff9c6e"><Tickets /></el-icon>
               <p>订单管理</p>
             </router-link>
           </el-card>
@@ -28,7 +28,7 @@
         <el-col v-bind="grid" class="ivu-mb">
           <el-card :bordered="false">
             <router-link :to="{ path: '/sys-tools/timing' }">
-              <i class="el-icon-s-ticket" style="color: #b37feb" />
+              <el-icon style="color: #b37feb"><Tickets /></el-icon>
               <p>定时任务</p>
             </router-link>
           </el-card>
@@ -36,7 +36,7 @@
         <el-col v-bind="grid" class="ivu-mb">
           <el-card :bordered="false">
             <router-link :to="{ path: '/member/bill' }">
-              <i class="el-icon-postcard" style="color: #ffd666" />
+              <el-icon style="color: #ffd666"><Postcard /></el-icon>
               <p>用户账单</p>
             </router-link>
           </el-card>
@@ -44,7 +44,7 @@
         <el-col v-bind="grid" class="ivu-mb">
           <el-card :bordered="false">
             <router-link :to="{ path: '/promoter/promoterconfig' }">
-              <i class="el-icon-notebook-1" style="color: #5cdbd3" />
+              <el-icon style="color: #5cdbd3"><Notebook /></el-icon>
               <p>分销管理</p>
             </router-link>
           </el-card>
@@ -52,7 +52,7 @@
         <el-col v-bind="grid" class="ivu-mb">
           <el-card :bordered="false">
             <router-link :to="{ path: '/price/extract' }">
-              <i class="el-icon-s-finance" style="color: #ff85c0" />
+              <el-icon style="color: #ff85c0"><Money /></el-icon>
               <p>财务管理</p>
             </router-link>
           </el-card>
@@ -60,7 +60,7 @@
         <el-col v-bind="grid" class="ivu-mb">
           <el-card :bordered="false">
             <router-link :to="{ path: '/system/user' }">
-              <i class="el-icon-office-building" style="color: #ffc069" />
+              <el-icon style="color: #ffc069"><OfficeBuilding /></el-icon>
               <p>系统管理</p>
             </router-link>
           </el-card>
@@ -68,40 +68,46 @@
       </el-row>
     </div>
 </template>
-<script>
-import CountTo from 'vue-count-to'
-import { gett } from '@/api/visits'
-export default {
-  components: {
-    CountTo
-  },
-  data() {
-    return {
-      count: { todayPrice: 0, todayCount: 0, proPrice: 0, proCount: 0,
-        monthPrice: 0, monthCount: 0, lastWeekCount: 0, lastWeekPrice: 0 },
-        grid: {
-        xl: 3,
-        lg: 3,
-        md: 6,
-        sm: 8,
-        xs: 8,
-      },
-    }
-  },
-  mounted() {
-    gett().then(res => {
-      this.count.todayPrice = res.todayPrice
-      this.count.todayCount = res.todayCount
-      this.count.proCount = res.proCount
-      this.count.proPrice = res.proPrice
+<script setup>
+import { onMounted, reactive } from 'vue'
+import { gett } from '@/api/visits.js'
 
-      this.count.monthPrice = res.monthPrice
-      this.count.monthCount = res.monthCount
-      this.count.lastWeekCount = res.lastWeekCount
-      this.count.lastWeekPrice = res.lastWeekPrice
-    })
-  }
+defineOptions({
+  name: 'PanelGroupT'
+})
+
+const count = reactive({
+  todayPrice: 0,
+  todayCount: 0,
+  proPrice: 0,
+  proCount: 0,
+  monthPrice: 0,
+  monthCount: 0,
+  lastWeekCount: 0,
+  lastWeekPrice: 0
+})
+
+const grid = {
+  xl: 3,
+  lg: 3,
+  md: 6,
+  sm: 8,
+  xs: 8
 }
+
+onMounted(() => {
+  gett().then(res => {
+    count.todayPrice = res.todayPrice
+    count.todayCount = res.todayCount
+    count.proCount = res.proCount
+    count.proPrice = res.proPrice
+
+    count.monthPrice = res.monthPrice
+    count.monthCount = res.monthCount
+    count.lastWeekCount = res.lastWeekCount
+    count.lastWeekPrice = res.lastWeekPrice
+  })
+})
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
