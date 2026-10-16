@@ -63,24 +63,27 @@
       <el-table-column prop="realName" label="用户姓名" />
       <el-table-column prop="cartInfoList" width="300" label="商品信息">
         <template #default="scope">
-          <div v-for="(item,index) in scope.row.cartInfoList" v-if="item.cartInfoMap.productInfo.attrInfo">
-            <span>
-              <img
+          <!-- Vue3 中 v-if 优先级高于 v-for，同元素混用会拿不到 item；须用 template 承载 v-for -->
+          <template v-for="(item,index) in scope.row.cartInfoList" :key="index">
+            <div v-if="item.cartInfoMap && item.cartInfoMap.productInfo && item.cartInfoMap.productInfo.attrInfo">
+              <span>
+                <img
+                  style="width: 30px;height: 30px;margin:0;cursor: pointer;"
+                  :src="item.cartInfoMap.productInfo.attrInfo.image"
+                >
+              </span>
+              <span>{{ item.cartInfoMap.productInfo.storeName }}&nbsp;{{ item.cartInfoMap.productInfo.attrInfo.sku }}</span>
+              <span> | ￥{{ item.cartInfoMap.truePrice }}×{{ item.cartInfoMap.cartNum }}</span>
+            </div>
+            <div v-else>
+              <span><img
                 style="width: 30px;height: 30px;margin:0;cursor: pointer;"
-                :src="item.cartInfoMap.productInfo.attrInfo.image"
-              >
-            </span>
-            <span>{{ item.cartInfoMap.productInfo.storeName }}&nbsp;{{ item.cartInfoMap.productInfo.attrInfo.sku }}</span>
-            <span> | ￥{{ item.cartInfoMap.truePrice }}×{{ item.cartInfoMap.cartNum }}</span>
-          </div>
-          <div v-else>
-            <span><img
-              style="width: 30px;height: 30px;margin:0;cursor: pointer;"
-              :src="item.cartInfoMap.productInfo.image"
-            ></span>
-            <span>{{ item.cartInfoMap.productInfo.storeName }}</span>
-            <span> | ￥{{ item.cartInfoMap.truePrice }}×{{ item.cartInfoMap.cartNum }}</span>
-          </div>
+                :src="item.cartInfoMap.productInfo.image"
+              ></span>
+              <span>{{ item.cartInfoMap.productInfo.storeName }}</span>
+              <span> | ￥{{ item.cartInfoMap.truePrice }}×{{ item.cartInfoMap.cartNum }}</span>
+            </div>
+          </template>
         </template>
       </el-table-column>
       <el-table-column prop="payIntegral" label="实际支付(积分)" />

@@ -31,10 +31,13 @@
                       <div class="vn-picture" :style="{backgroundImage: 'url('+dataGroup.news[0].image+')'}" />
                       <div class="first-title">{{ dataGroup.news[0].title }}</div>
                     </div>
-                    <div v-for="(newinfos,index) in dataGroup.news" v-if="index>0" class="con-item-list clearfix">
-                      <div class="list-tit-info fl">{{ newinfos.title }}</div>
-                      <div class="list-pic fr" :style="{backgroundImage: 'url('+newinfos.image+')'}" />
-                    </div>
+                    <!-- Vue3 中 v-if 优先级高于 v-for，同元素混用拿不到 index；须用 template 承载 v-for -->
+                    <template v-for="(newinfos,index) in dataGroup.news" :key="index">
+                      <div v-if="index>0" class="con-item-list clearfix">
+                        <div class="list-tit-info fl">{{ newinfos.title }}</div>
+                        <div class="list-pic fr" :style="{backgroundImage: 'url('+newinfos.image+')'}" />
+                      </div>
+                    </template>
                   </div>
                 </div>
 
