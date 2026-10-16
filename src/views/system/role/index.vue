@@ -22,7 +22,7 @@
     </div>
     <!-- 表单渲染 -->
     <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :model-value="crud.status.cu > 0" :title="crud.status.title" width="520px">
-      <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
+      <el-form ref="formRef" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="form.name" style="width: 145px;" />
         </el-form-item>
@@ -152,6 +152,10 @@ defineOptions({ name: 'Role' })
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '角色', url: 'api/roles', sort: 'level,asc', crudMethod: { ...crudRoles }})
 const defaultForm = { id: null, name: null, depts: [], remark: null, dataScope: '全部', level: 3, permission: null }
+
+defaultCrud.defaultForm = defaultForm
+defaultCrud.resetForm()
+const formRef = ref(null)
 
 const defaultProps = ref({ children: 'children', label: 'label' })
 const dateScopes = ref(['全部', '本级', '自定义'])
@@ -328,19 +332,19 @@ function checkboxT(row, rowIndex) {
 
 
 // 编辑前
-crud.HOOK.beforeToEdit = (form) => {
+crud.HOOK[CRUD.HOOK.beforeToEdit] = (_crud, form) => {
   if (form.dataScope === '自定义') {
     getDeptsData()
   }
   const deptsArr = []
-  form.depts.forEach(function(dept, index) {
+  ;(form.depts || []).forEach(function(dept, index) {
     deptsArr.push(dept.id)
   })
   form.depts = deptsArr
 }
 
 // 提交前做的操作
-crud.HOOK.afterValidateCU = (crudRef) => {
+crud.HOOK[CRUD.HOOK.afterValidateCU] = (crudRef) => {
   if (crudRef.form.dataScope === '自定义' && crudRef.form.depts.length === 0) {
     ElMessage({
       message: '自定义数据权限不能为空',
@@ -360,11 +364,11 @@ crud.HOOK.afterValidateCU = (crudRef) => {
   return true
 }
 
-crud.HOOK.afterAddError = (crudRef) => {
+crud.HOOK[CRUD.HOOK.afterAddError] = (crudRef) => {
   afterErrorMethod(crudRef)
 }
 
-crud.HOOK.afterEditError = (crudRef) => {
+crud.HOOK[CRUD.HOOK.afterEditError] = (crudRef) => {
   afterErrorMethod(crudRef)
 }
 

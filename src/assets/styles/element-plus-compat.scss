@@ -37,6 +37,18 @@
   font-size: 13px;
 }
 
+// 数字输入框也使用 32px 高度；EP small 的右侧按钮原本固定为 11px，
+// 输入框增高后会在上下按钮之间留下空隙，改为各占内部高度的一半。
+.el-input-number.el-input-number--small {
+  line-height: 30px;
+}
+
+.el-input-number.el-input-number--small.is-controls-right .el-input-number__increase,
+.el-input-number.el-input-number--small.is-controls-right .el-input-number__decrease {
+  height: calc(50% - 1px);
+  line-height: 15px;
+}
+
 // 下拉框：EP 的 select small 档是硬编码 24px（不走 --el-component-size-small），
 // 上面的变量重映射覆盖不到它，这里单独对齐回 EU small 档度量，
 // 否则同一行筛选栏里下拉框会比输入框、按钮、日期选择器矮一截、字号也小一号

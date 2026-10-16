@@ -425,7 +425,7 @@ function CRUD(options) {
   // 记录初始默认的查询参数
   crud.defaultQuery = JSON.parse(JSON.stringify(data.query))
   // 将 HOOK 常量附加到实例上，供 callVmHook 访问
-  crud.HOOK = CRUD.HOOK
+  crud.HOOK = { ...CRUD.HOOK }
   // 移除 Object.freeze，Vue 3 reactive 需要可变对象
   return crud
 }
