@@ -33,8 +33,13 @@ export default {
       loading: false,
     }
   },
-  mounted () {
-    this.getInfo();
+  watch: {
+    // 组件常驻不销毁，每次打开重新拉取配置，避免关闭后数据丢失
+    dialog(val) {
+      if (val) {
+        this.getInfo()
+      }
+    }
   },
   methods: {
     // 详情
@@ -75,8 +80,8 @@ export default {
 
     resetForm() {
       this.dialog = false
-      this.$refs['form'].resetFields()
-      this.slider_image = []
+      // 模板里没有 ref="form"，用可选链防止报错；不清空 slider_image，下次打开由 getInfo 重新拉取
+      this.$refs['form']?.resetFields()
     }
   }
 }

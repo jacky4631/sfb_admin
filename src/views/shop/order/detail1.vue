@@ -251,7 +251,8 @@ export default {
     },
     resetForm() {
       this.dialog = false
-      this.$refs['form'].resetFields()
+      // 模板里没有 ref="form"，$refs['form'] 为 undefined，用可选链防止报错（表单数据在下方手动重置）
+      this.$refs['form']?.resetFields()
       this.form = {
         id: '',
         orderId: '',

@@ -1,8 +1,8 @@
 <template>
-  <div class="app-container" style="position: relative; height: calc(100vh - 117px);">
-    <div class="container">
+  <div class="app-container order-page">
+    <div class="container order-content">
 
-      <el-tabs v-model="status" type="card" @tab-click="handleOrder">
+      <el-tabs v-model="status" type="card" class="order-tabs" @tab-click="handleOrder">
         <el-tab-pane name="-9">
           <template #label><el-icon><List /></el-icon> 全部订单</template>
         </el-tab-pane>
@@ -29,7 +29,7 @@
         </el-tab-pane>
       </el-tabs>
       <!--工具栏-->
-      <div class="head-container">
+      <div class="head-container order-filters">
 
         <!-- 搜索 -->
         <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
@@ -74,7 +74,7 @@
       <ePrint ref="form5" :is-add="isAdd" :print-list="checkList" :to-query="toQuery"/>
 
       <!--订单数据统计-->
-      <div class="order-caculate">
+      <div class="order-caculate order-summary">
         <a class="caculate-title">订单数 : <span class="caculate-num">{{caculateInfo.orderNum}}</span></a>
         <a class="caculate-title">商品数 : <span class="caculate-num">{{caculateInfo.storeNum}}</span></a>
         <a class="caculate-title">订单金额 : <span class="caculate-num">{{caculateInfo.orderPrice}}</span></a>
@@ -82,9 +82,9 @@
       </div>
 
       <!--表格渲染-->
-      <el-table ref="multipleTable" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" height="100%" class="order-table" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
-        <el-table-column prop="orderId" width="140" label="订单号">
+        <el-table-column prop="orderId" width="160" label="订单号">
           <template #default="scope">
             <span>{{ scope.row.orderId }}</span>
             <p>{{ scope.row.pinkName }}</p>
@@ -867,4 +867,25 @@ import { ElNotification, ElMessage } from 'element-plus'
       padding: 4px 0;
     }
   }
+
+  .order-page { display:flex; flex-direction:column; gap:10px; height:calc(100vh - 117px); box-sizing:border-box; padding:12px; background:#f4f6f9; }
+  .order-page .order-content { position:static; display:flex; flex:1; flex-direction:column; gap:10px; width:100%; height:auto; min-height:0; overflow:hidden; }
+  .order-page :deep(.order-tabs), .order-page .order-filters, .order-page .order-summary, .order-page :deep(.order-table) { background:#fff; border:1px solid #e8edf4; border-radius:10px; box-shadow:0 2px 8px rgba(31,45,61,.04); }
+  .order-page :deep(.order-tabs) { flex:none; margin:0; padding:0 12px; }
+  .order-page :deep(.order-tabs .el-tabs__header) { margin:0; border-bottom:0; }
+  .order-page :deep(.order-tabs .el-tabs__nav) { border:0; }
+  .order-page :deep(.order-tabs .el-tabs__item) { height:42px; border:0; color:#667085; }
+  .order-page :deep(.order-tabs .el-tabs__item.is-active) { color:#409eff; font-weight:600; }
+  .order-page :deep(.order-tabs .el-tabs__content) { display:none; }
+  .order-page .order-filters { display:flex; flex:none; flex-wrap:wrap; align-items:center; gap:8px; margin:0; padding:10px; }
+  .order-page .order-filters :deep(.filter-item), .order-page .order-filters :deep(.date-item) { margin:0; }
+  .order-page .order-summary { flex:none; padding:10px 14px; margin:0; border-top:1px solid #e8edf4; color:#667085; }
+  .order-page .order-summary .caculate-title { margin-right:32px; }
+  .order-page .order-summary .caculate-num { color:#303133; font-size:18px; font-weight:600; }
+  .order-page :deep(.order-table) { flex:1; min-height:380px; overflow:hidden; padding:4px 12px 12px; box-sizing:border-box; }
+  .order-page :deep(.order-table .el-table__inner-wrapper::before) { display:none; }
+  .order-page :deep(.order-table th.el-table__cell) { height:40px; background:#f7f9fc; color:#667085; font-weight:600; }
+  .order-page :deep(.order-table td.el-table__cell) { padding:4px 0; }
+  .order-page .footer-contains { position:static; flex:none; min-height:48px; border:1px solid #e8edf4; border-radius:10px; background:#fff; box-shadow:0 2px 8px rgba(31,45,61,.04); }
+  @media (max-width:768px) { .order-page{height:auto;min-height:calc(100vh - 117px);padding:10px}.order-page .order-content{overflow:visible}.order-page :deep(.order-table){min-height:420px}.order-page .footer-contains{flex-wrap:wrap;gap:8px;padding:10px} }
 </style>
