@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container">
-    <div class="head-container">
+  <div class="app-container finance-page">
+    <div class="head-container finance-filters">
       <el-button
         type="danger"
         class="filter-item"
@@ -10,7 +10,7 @@
       ><el-icon><Refresh /></el-icon>刷新</el-button>
     </div>
     <!--表格渲染-->
-    <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
+    <el-table class="finance-table" v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column type="selection" width="55" />
       <el-table-column prop="id" label="id" />
       <el-table-column prop="uid" label="用户ID" />
@@ -36,7 +36,7 @@
       </el-table-column>
     </el-table>
     <!--分页组件-->
-    <el-pagination
+    <el-pagination class="finance-pagination"
       :total="total"
       :current-page="page + 1"
       style="margin-top: 8px;"

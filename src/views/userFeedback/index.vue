@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
+    <div class="head-container finance-filters">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
         <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
@@ -12,6 +12,7 @@
       </div>
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
+    </div>
       <!--表单组件-->
       <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" v-model="dialogVisible" :title="crud.status.title" width="500px">
         <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="80px">
@@ -30,7 +31,7 @@
         </template>
       </el-dialog>
       <!--表格渲染-->
-      <el-table ref="tableRef" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+      <el-table ref="tableRef" class="finance-table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
         <el-table-column v-if="columns.visible('id')" prop="id" label="id" />
         <el-table-column v-if="columns.visible('uid')" prop="uid" label="用户id" />
@@ -55,8 +56,7 @@
         </el-table-column>
       </el-table>
       <!--分页组件-->
-      <pagination />
-    </div>
+      <pagination class="finance-pagination" />
   </div>
 </template>
 
