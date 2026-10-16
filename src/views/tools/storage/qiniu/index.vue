@@ -3,7 +3,7 @@
     <!--表单组件-->
     <eForm ref="formRef" />
     <!-- 工具栏 -->
-    <div class="head-container finance-filters">
+    <div class="head-container finance-filters crud-toolbar">
       <div v-if="crud.props.searchToggle" class="tool-search">
         <!-- 搜索 -->
         <el-input v-model="query.key" clearable size="small" placeholder="输入文件名称搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />

@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <!--工具栏-->
-    <div class="head-container">
-      <div v-if="crud.props.searchToggle">
+    <div class="head-container crud-toolbar">
+      <div class="tool-search" v-if="crud.props.searchToggle">
         <!--搜索-->
         <el-input v-model="query.filename" clearable size="small" placeholder="输入文件名" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <el-date-picker

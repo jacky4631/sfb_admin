@@ -28,7 +28,7 @@
       <!--用户数据-->
       <el-col class="system-list" :xs="24" :sm="18" :md="20" :lg="20" :xl="20">
         <!--工具栏-->
-        <div class="head-container finance-filters">
+        <div class="head-container finance-filters crud-toolbar">
           <div v-if="crud.props.searchToggle" class="tool-search">
             <!-- 搜索 -->
             <el-input

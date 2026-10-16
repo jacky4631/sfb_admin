@@ -1,7 +1,7 @@
 <template>
   <div class="app-container finance-page system-page">
     <!--工具栏-->
-    <div class="head-container finance-filters">
+    <div class="head-container finance-filters crud-toolbar">
       <eHeader :dict="dict" :permission="permission" />
       <crudOperation :permission="permission" />
     </div>

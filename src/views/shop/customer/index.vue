@@ -1,8 +1,8 @@
 <template>
   <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container finance-filters">
-      <div v-if="crud.props.searchToggle" class="customer-search">
+    <div class="head-container finance-filters crud-toolbar">
+      <div v-if="crud.props.searchToggle" class="customer-search tool-search">
         <!-- 搜索 -->
         <el-input
           v-model="query.nickName"

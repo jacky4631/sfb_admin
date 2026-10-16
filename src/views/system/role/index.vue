@@ -1,7 +1,7 @@
 <template>
   <div class="app-container finance-page system-page role-page role-drawer-page">
     <!--工具栏-->
-    <div class="head-container finance-filters">
+    <div class="head-container finance-filters crud-toolbar">
       <div v-if="crud.props.searchToggle" class="tool-search">
         <!-- 搜索 -->
         <el-input v-model="query.blurry" size="small" clearable placeholder="输入名称或者描述搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />

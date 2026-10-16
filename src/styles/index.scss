@@ -392,29 +392,62 @@ body {
   }
 }
 
-/* Separate system filters from bulk actions and keep utility buttons at right. */
-.app-container.system-page .finance-filters > .tool-search,
-.app-container.system-page .finance-filters > .crud-opts {
-  flex: 0 0 100%;
+/* CRUD pages share two toolbar rows: filters, then actions and utilities. */
+.head-container.crud-toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.head-container.crud-toolbar > .tool-search,
+.head-container.crud-toolbar > .crud-opts {
+  flex: none;
   width: 100%;
   min-width: 0;
 }
 
-.app-container.system-page .finance-filters > .crud-opts {
+.head-container.crud-toolbar .tool-search {
+  display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.head-container.crud-toolbar .tool-search .date-item {
+  flex: none;
+  width: 350px;
+  max-width: 100%;
+  margin: 0;
+}
+
+.head-container.crud-toolbar .filter-item {
+  margin: 0;
+}
+
+.head-container.crud-toolbar > .crud-opts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
   padding: 0;
 }
 
-.system-page .crud-opts-left {
+.crud-toolbar .crud-opts-left {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
   min-width: 0;
 }
 
-.system-page .crud-opts-left .el-button + .el-button {
+.crud-toolbar .crud-opts-left .el-button + .el-button {
   margin-left: 0;
+}
+
+.crud-toolbar .crud-opts-right {
+  flex: none;
+  margin-left: auto;
 }
 
 /* A short role list should end at its pagination, beside a scrollable menu tree. */

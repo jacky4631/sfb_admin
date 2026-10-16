@@ -1,7 +1,7 @@
 <template>
   <div class="app-container finance-page">
-    <div class="head-container finance-filters">
-      <Search />
+    <div class="head-container finance-filters crud-toolbar">
+      <Search class="tool-search" />
       <crudOperation>
         <template #left>
           <el-button

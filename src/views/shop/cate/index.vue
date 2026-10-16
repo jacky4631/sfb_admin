@@ -1,8 +1,8 @@
 <template>
   <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container finance-filters">
-      <div v-if="crud.props.searchToggle">
+    <div class="head-container finance-filters crud-toolbar">
+      <div class="tool-search" v-if="crud.props.searchToggle">
         <!-- 搜索 -->
         <el-input v-model="query.cateName" clearable size="small" placeholder="输入分类名称搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <rrOperation :crud="crud" />

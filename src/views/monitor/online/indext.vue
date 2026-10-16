@@ -1,7 +1,7 @@
 <template>
   <div class="app-container finance-page">
-    <div class="head-container finance-filters">
-      <div v-if="crud.props.searchToggle">
+    <div class="head-container finance-filters crud-toolbar">
+      <div class="tool-search" v-if="crud.props.searchToggle">
         <el-input v-model="query.filter" clearable size="small" placeholder="全表模糊搜索" style="width: 200px;"
                   class="filter-item" @keyup.enter="crud.toQuery"/>
         <rrOperation :crud="crud"/>
