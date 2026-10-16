@@ -1,10 +1,10 @@
 <template>
-  <div class="app-container finance-page wechat-editor-page">
+  <div class="app-container finance-page wechat-editor-page wechat-menu-page">
     <div class="finance-settings wechat-reply-wrapper wechat-menu">
-      <div class="ibox-content clearfix">
-        <el-row :gutter="20">
-          <el-col :xs="24" :lg="10" :xl="8">
-            <div class="view-wrapper col-sm-4">
+      <div class="menu-workspace">
+        <div class="menu-preview-panel">
+          <h3 class="menu-panel-title">菜单预览</h3>
+          <div class="view-wrapper col-sm-4">
               <div class="mobile-header">公众号</div>
               <section class="view-body">
                 <div class="time-wrapper"><span class="time">9:36</span></div>
@@ -26,89 +26,61 @@
                 </ul>
               </div>
             </div>
-          </el-col>
-          <el-col :xs="24" :lg="14" :xl="16">
-            <div v-show="checkedMenuId !== null" class="control-wrapper menu-control col-sm-8">
-              <section>
-                <div class="control-main">
-                  <h3 class="popover-title">菜单名称 <a class="fr" href="javascript:void(0);" @click="delMenu">删除</a></h3>
-                  <p class="tips-txt">已添加子菜单，仅可设置菜单名称。</p>
-                  <div class="menu-content control-body">
-                    <form action="">
-                      <div class="form-group clearfix">
-                        <label for="" class="el-form-item__label" style="width: 80px;">菜单名称</label>
-                        <div class="col-sm-9 group-item">
-                          <input v-model="checkedMenu.name" type="text" placeholder="菜单名称" style="width: 370px;" class="el-input__inner">
-                        </div>
-                      </div>
-                      <div class="form-group clearfix">
-                        <label class="el-form-item__label" style="width: 80px;" for="">规则状态</label>
-                        <div class="group-item col-sm-9">
-                          <select id="" v-model="checkedMenu.type" style="width: 370px;" class="el-input__inner" name="">
-                            <option value="click">关键字</option>
-                            <option value="view">跳转网页</option>
-                            <option value="miniprogram">小程序</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="menu-control-box">
-                        <!-- 关键字 -->
-                        <div class="keywords item" :class="{show:checkedMenu.type=='click'}">
-                          <span class="el-form-item__label">关键字</span>
-                          <input v-model="checkedMenu.key" type="text" placeholder="请输入关键字" class="form-control">
-
-                        </div>
-                        <!-- 跳转地址 -->
-                        <div class="url item" :class="{show:checkedMenu.type=='view'}">
-                          <span class="el-form-item__label">跳转地址</span>
-                          <input v-model="checkedMenu.url" type="text" placeholder="请输入跳转地址" class="form-control">
-                          <p class="text-left" />
-                        </div>
-                        <!-- 小程序 -->
-                        <div class="wrchat-app item" :class="{show:checkedMenu.type=='miniprogram'}">
-                          <div class="list">
-                            <span class="el-form-item__label">appId</span>
-                            <input v-model="checkedMenu.appId" class="form-control" type="text">
-                          </div>
-                          <div class="list">
-                            <span class="el-form-item__label">备用网页url</span>
-                            <input v-model="checkedMenu.url" class="form-control" type="text">
-                          </div>
-                          <div class="list">
-                            <span class="el-form-item__label">小程序路径</span>
-                            <input v-model="checkedMenu.pagePath" class="form-control" type="text">
-                          </div>
-                        </div>
-                        <!-- 多客服 -->
-                        <div class="service item">
-                          <p>回复内容</p>
-                          <textarea cols="60" rows="10" />
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </section>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-      <div class="ibox-content submit">
-        <el-button type="primary" @click="submit">保存发布</el-button>
+          <p class="menu-preview-tip">点击菜单编辑，点击「+」添加菜单</p>
+        </div>
+        <div class="menu-editor-panel">
+          <div class="menu-editor-heading">
+            <h3 class="menu-panel-title">菜单设置</h3>
+            <el-button v-if="checkedMenuId !== null" type="danger" link @click="delMenu">删除菜单</el-button>
+          </div>
+          <div class="menu-editor-body">
+            <el-empty v-if="checkedMenuId === null" :image-size="80" description="选择左侧菜单开始编辑，也可以点击「+」添加菜单" />
+            <el-form v-else :model="checkedMenu" label-width="90px" size="small" @submit.prevent>
+              <el-form-item label="菜单名称">
+                <el-input v-model="checkedMenu.name" placeholder="请输入菜单名称" />
+              </el-form-item>
+              <el-alert v-if="checkedMenu.subButtons?.length" title="该菜单包含子菜单，仅需设置菜单名称。" type="info" :closable="false" show-icon />
+              <template v-else>
+                <el-form-item label="菜单类型">
+                  <el-select v-model="checkedMenu.type" style="width: 100%">
+                    <el-option label="关键字" value="click" />
+                    <el-option label="跳转网页" value="view" />
+                    <el-option label="小程序" value="miniprogram" />
+                  </el-select>
+                </el-form-item>
+                <el-form-item v-if="checkedMenu.type === 'click'" label="关键字">
+                  <el-input v-model="checkedMenu.key" placeholder="请输入关键字" />
+                </el-form-item>
+                <el-form-item v-if="checkedMenu.type === 'view'" label="跳转地址">
+                  <el-input v-model="checkedMenu.url" placeholder="请输入跳转地址" />
+                </el-form-item>
+                <template v-if="checkedMenu.type === 'miniprogram'">
+                  <el-form-item label="AppID"><el-input v-model="checkedMenu.appId" placeholder="请输入小程序 AppID" /></el-form-item>
+                  <el-form-item label="备用网页"><el-input v-model="checkedMenu.url" placeholder="请输入备用网页地址" /></el-form-item>
+                  <el-form-item label="小程序路径"><el-input v-model="checkedMenu.pagePath" placeholder="请输入小程序路径" /></el-form-item>
+                </template>
+              </template>
+            </el-form>
+          </div>
+          <div class="menu-editor-footer">
+            <span>编辑完成后保存发布至公众号</span>
+            <el-button type="primary" @click="submit">保存发布</el-button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { del, add, get } from '@/api/mwWechatMenu.js'
 import eForm from './form.vue'
 
 const delLoading = ref(false)
 const menus = ref([])
-const checkedMenu = reactive({
+const checkedMenu = ref({
   type: 'click',
   name: ''
 })
@@ -118,7 +90,7 @@ const parentMenuId = ref(null)
 onMounted(() => {
   get().then(res => {
     // 未发布过菜单时 result 为空，判空避免 JSON.parse(undefined) 崩溃
-    menus.value = (res && res.result) ? JSON.parse(res.result) : []
+    menus.value = ((res && res.result) ? JSON.parse(res.result) : []).map(menu => ({ ...menu, subButtons: menu.subButtons || [] }))
   })
 })
 
@@ -173,6 +145,7 @@ const activeMenu = (menu, index, pid) => {
   if (!check()) return false
   if (pid === null) {
     checkedMenu.value = menu
+    parentMenuId.value = null
   } else {
     checkedMenu.value = menus.value[pid].subButtons[index]
     parentMenuId.value = pid
@@ -190,6 +163,7 @@ const check = () => {
     })
     return false
   }
+  if (checkedMenu.value.subButtons?.length) return true
   if (checkedMenu.value.type == 'click' && !checkedMenu.value.key) {
     ElMessage({
       message: '请输入关键字',
@@ -333,7 +307,7 @@ const submit = () => {
     font-size: 12 ox
   }
 
-  .wechat-reply-wrapper .ibox-content .view-wrapper {
+  .menu-preview-panel .view-wrapper {
     position: relative;
     width: 317px;
     background-image: url(../../../assets/wechat/mobile_head.png);
@@ -342,7 +316,7 @@ const submit = () => {
     background-color: #f5f5f5;
   }
 
-  .wechat-reply-wrapper .ibox-content .view-wrapper .mobile-header {
+  .menu-preview-panel .view-wrapper .mobile-header {
     position: relative;
     left: 0;
     top: 36px;
@@ -352,7 +326,7 @@ const submit = () => {
     font-size: 16px;
   }
 
-  .wechat-reply-wrapper .ibox-content .view-wrapper .view-body {
+  .menu-preview-panel .view-wrapper .view-body {
     margin-top: 65px;
     background-color: #f5f5f5;
     height: 500px;
@@ -652,10 +626,44 @@ const submit = () => {
 }
 
 @media (max-width: 1199px) {
-  .wechat-editor-page .wechat-reply-wrapper .ibox-content .view-wrapper {
+  .wechat-editor-page .menu-preview-panel .view-wrapper {
     margin: 0 auto 24px;
     max-width: 100%;
   }
+}
+
+
+/* Keep preview, editor, and publish action together on wide screens. */
+.menu-workspace {
+  display: grid;
+  grid-template-columns: 317px minmax(0, 560px);
+  align-items: start;
+  gap: 28px;
+  width: 100%;
+  max-width: 905px;
+  margin: 0 auto;
+}
+.menu-panel-title { margin: 0; font-size: 15px; font-weight: 600; line-height: 24px; }
+.menu-preview-panel > .menu-panel-title { margin-bottom: 16px; }
+.menu-preview-tip { margin: 22px 0 0; color: #909399; font-size: 13px; text-align: center; }
+.menu-editor-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 630px;
+  overflow: hidden;
+  border: 1px solid #e8edf4;
+  border-radius: 10px;
+  background: #fff;
+}
+.menu-editor-heading { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid #e8edf4; background: #f7f9fc; }
+.menu-editor-body { flex: 1; padding: 24px 20px; }
+.menu-editor-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-top: 1px solid #e8edf4; }
+.menu-editor-footer > span { color: #909399; font-size: 13px; }
+@media (max-width: 1000px) {
+  .menu-workspace { grid-template-columns: minmax(0, 1fr); max-width: 560px; }
+  .menu-preview-panel > .menu-panel-title { text-align: center; }
+  .menu-editor-panel { min-height: 400px; }
 }
 
 </style>
