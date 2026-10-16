@@ -79,7 +79,7 @@
         <el-table-column prop="itemStatus" label="订单状态" >
           <template #default="scope">
             <el-tag v-if="scope.row.itemStatus === 0" style="cursor: pointer" :type="'success'">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
-            <el-tag v-else-if="scope.row.itemStatus === 1" style="cursor: pointer" :type=" '' ">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
+            <el-tag v-else-if="scope.row.itemStatus === 1" style="cursor: pointer" type="primary">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemStatus === 2" style="cursor: pointer" :type="'warning'">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemStatus === 3" style="cursor: pointer" :type=" 'warning' ">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemStatus === 5" style="cursor: pointer" :type=" 'warning' ">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
@@ -88,7 +88,7 @@
         <el-table-column prop="itemBizStatus" label="聚合状态" >
           <template #default="scope">
             <el-tag v-if="scope.row.itemBizStatus === 1" style="cursor: pointer" :type="'success'">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
-            <el-tag v-else-if="scope.row.itemBizStatus === 3" style="cursor: pointer" :type=" '' ">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
+            <el-tag v-else-if="scope.row.itemBizStatus === 3" style="cursor: pointer" type="primary">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemBizStatus === 3" style="cursor: pointer" :type="'warning'">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemBizStatus === 99" style="cursor: pointer" :type=" 'warning' ">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemBizStatus === 99" style="cursor: pointer" :type=" 'warning' ">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
@@ -98,7 +98,7 @@
         <el-table-column prop="bind" label="拆红包" width="120">
           <template #default="scope">
             <el-tag v-if="scope.row.bind === 1" style="cursor: pointer" :type="'success'">{{ isBinding(scope.row.bind) }}</el-tag>
-            <el-tag v-else-if="scope.row.bind === 0" style="cursor: pointer" :type=" '' ">{{ isBinding(scope.row.bind) }}</el-tag>
+            <el-tag v-else-if="scope.row.bind === 0" style="cursor: pointer" type="primary">{{ isBinding(scope.row.bind) }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ isBinding(scope.row.bind) }}</el-tag>
           </template>
         </el-table-column>
@@ -153,7 +153,7 @@
         <el-table-column prop="eventType" label="异常事件类型" >
           <template #default="scope">
             <el-tag v-if="scope.row.eventType === 1" style="cursor: pointer" :type="'success'">退款</el-tag>
-            <el-tag v-else-if="scope.row.eventType === 2" style="cursor: pointer" :type=" '' ">风控</el-tag>
+            <el-tag v-else-if="scope.row.eventType === 2" style="cursor: pointer" type="primary">风控</el-tag>
             <el-tag v-else-if="scope.row.eventType === 4" style="cursor: pointer" :type="'warning'">负项调整</el-tag>
           </template>
         </el-table-column>

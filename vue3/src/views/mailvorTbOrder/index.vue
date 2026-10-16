@@ -76,7 +76,7 @@
         <el-table-column prop="tkStatus" label="订单状态" >
           <template #default="scope">
             <el-tag v-if="scope.row.tkStatus === 3" style="cursor: pointer" :type="'success'">{{ tbOrderStatusParse(scope.row.tkStatus) }}</el-tag>
-            <el-tag v-else-if="scope.row.tkStatus === 12" style="cursor: pointer" :type=" '' ">{{ tbOrderStatusParse(scope.row.tkStatus) }}</el-tag>
+            <el-tag v-else-if="scope.row.tkStatus === 12" style="cursor: pointer" type="primary">{{ tbOrderStatusParse(scope.row.tkStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.tkStatus === 13" style="cursor: pointer" :type="'warning'">{{ tbOrderStatusParse(scope.row.tkStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.tkStatus === 14" style="cursor: pointer" :type=" 'warning' ">{{ tbOrderStatusParse(scope.row.tkStatus) }}</el-tag>
           </template>
@@ -84,7 +84,7 @@
         <el-table-column prop="bind" label="拆红包" width="120">
           <template #default="scope">
             <el-tag v-if="scope.row.bind === 1" style="cursor: pointer" :type="'success'">{{ isBinding(scope.row.bind) }}</el-tag>
-            <el-tag v-else-if="scope.row.bind === 0" style="cursor: pointer" :type=" '' ">{{ isBinding(scope.row.bind) }}</el-tag>
+            <el-tag v-else-if="scope.row.bind === 0" style="cursor: pointer" type="primary">{{ isBinding(scope.row.bind) }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ isBinding(scope.row.bind) }}</el-tag>
           </template>
         </el-table-column>

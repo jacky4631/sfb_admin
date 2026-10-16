@@ -184,7 +184,7 @@
             <template #default="scope">
               <div>
                 <el-tag v-if="scope.row.closeReplay === 1" type="primary">关闭</el-tag>
-                <el-tag v-else :type=" '' ">开启</el-tag>
+                <el-tag v-else type="primary">开启</el-tag>
               </div>
             </template>
         </el-table-column>

@@ -80,7 +80,7 @@
         <el-table-column prop="bind" label="拆红包" width="120">
           <template #default="scope">
             <el-tag v-if="scope.row.bind === 1" style="cursor: pointer" :type="'success'">{{ isBinding(scope.row.bind) }}</el-tag>
-            <el-tag v-else-if="scope.row.bind === 0" style="cursor: pointer" :type=" '' ">{{ isBinding(scope.row.bind) }}</el-tag>
+            <el-tag v-else-if="scope.row.bind === 0" style="cursor: pointer" type="primary">{{ isBinding(scope.row.bind) }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ isBinding(scope.row.bind) }}</el-tag>
           </template>
         </el-table-column>
