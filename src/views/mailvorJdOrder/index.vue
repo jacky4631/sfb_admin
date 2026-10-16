@@ -90,7 +90,7 @@
             <span>{{ parseTime(scope.row.finishTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="payMonth" label="结算时间" />
+        <el-table-column prop="payMonth" label="结算时间" width="100"/>
         <el-table-column prop="modifyTime" label="更新时间" :show-overflow-tooltip="true" width="155">
           <template #default="scope">
             <span>{{ parseTime(scope.row.modifyTime) }}</span>
@@ -118,7 +118,6 @@
         <el-table-column prop="cid3" label="三级类目id" />
         <el-table-column prop="subUnionId" label="子渠道" />
         <el-table-column prop="unionTag" label="联盟标签" :show-overflow-tooltip="true" />
-        <el-table-column prop="popId" label="商家ID" />
         <el-table-column prop="ext1" label="扩展字段" />
         <el-table-column prop="createTime" label="创建时间" :show-overflow-tooltip="true">
           <template #default="scope">

@@ -84,7 +84,7 @@
       <!--表格渲染-->
       <el-table ref="multipleTable" height="100%" class="order-table" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
-        <el-table-column prop="orderId" width="160" label="订单号">
+        <el-table-column prop="orderId" width="180" label="订单号">
           <template #default="scope">
             <span>{{ scope.row.orderId }}</span>
             <p>{{ scope.row.pinkName }}</p>

@@ -90,7 +90,7 @@
         <el-table-column prop="totalCost" label="订单金额" />
         <el-table-column prop="detailList[0].goodsName" label="商品名称" :show-overflow-tooltip="true" width="155"/>
         <el-table-column prop="statParam" label="自定参数" />
-        <el-table-column prop="appKey" label="appKey" />
+        <el-table-column prop="appKey" label="appKey" width="100"/>
         <el-table-column prop="detailList[0].goodsId" label="商品id" :show-overflow-tooltip="true" width="155"/>
         <el-table-column prop="channelTag" label="渠道标识"   :show-overflow-tooltip="true" width="155"/>
         <el-table-column prop="commissionEnterTime" label="入账时间"   :show-overflow-tooltip="true" width="155">

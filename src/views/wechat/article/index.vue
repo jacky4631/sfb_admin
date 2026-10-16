@@ -77,6 +77,7 @@
     <!--分页组件-->
     <el-pagination
       class="finance-pagination"
+      :page-size="size"
       :total="total"
       :current-page="page + 1"
       style="margin-top: 8px;"
@@ -88,11 +89,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { ElNotification } from 'element-plus'
+import { ref, onMounted, onActivated } from 'vue'
+import { ElNotification, ElMessage } from 'element-plus'
 import checkPermission from '@/utils/permission.js'
 import { del, publish } from '@/api/mwArticle.js'
-import eForm from './form.vue'
+import { initData } from '@/api/data.js'
 import { formatTime } from '@/utils/index.js'
 import * as Icons from '@element-plus/icons-vue'
 
@@ -103,24 +104,32 @@ const page = ref(0)
 const size = ref(10)
 const total = ref(0)
 const data = ref([])
-const url = ref('')
-const params = ref({})
 const tableRef = ref(null)
 
-const init = () => {
+let requestVersion = 0
+const init = async () => {
+  const version = ++requestVersion
   loading.value = true
-  // Simulate fetching data - replace with actual API call
-  loading.value = false
+  try {
+    const result = await initData('api/mwArticle', { page: page.value, size: size.value, sort: 'id,desc' })
+    if (version !== requestVersion) return
+    data.value = result.content
+    total.value = result.totalElements
+  } catch (err) {
+    if (version === requestVersion) ElMessage.error(err.response?.data?.message || '图文列表加载失败，请重试')
+  } finally {
+    if (version === requestVersion) loading.value = false
+  }
 }
 
-const beforeInit = () => {
-  url.value = 'api/mwArticle'
-  const sort = 'id,desc'
-  params.value = { page: page.value, size: size.value, sort: sort }
-  return true
-}
-
-onMounted(() => {
+onMounted(init)
+let firstActivation = true
+onActivated(() => {
+  if (firstActivation) {
+    firstActivation = false
+    return
+  }
+  page.value = 0
   init()
 })
 
@@ -145,7 +154,6 @@ const subPublish = (id) => {
   delLoading.value = true
   publish(id).then(res => {
     delLoading.value = false
-    dleChangePage()
     init()
     ElNotification({
       title: '发布成功',
@@ -160,16 +168,17 @@ const subPublish = (id) => {
 
 const sizeChange = (val) => {
   size.value = val
+  page.value = 0
   init()
 }
 
 const pageChange = (val) => {
-  page.value = val
+  page.value = val - 1
   init()
 }
 
 const dleChangePage = () => {
-  if (total.value % size.value === 0) {
+  if (data.value.length === 1 && page.value > 0) {
     page.value = Math.max(0, page.value - 1)
   }
 }

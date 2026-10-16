@@ -61,7 +61,7 @@
       <!--表格渲染-->
       <el-table ref="multipleTable" height="100%" class="order-table" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column :selectable="checkboxT" type="selection" width="50" />
-        <el-table-column prop="tradeParentId" fixed label="订单编号" width="155">
+        <el-table-column prop="tradeParentId" fixed label="订单编号" width="180">
           <template #default="scope">
             <div :style="{ color: scope.row.refundTag ==1 ? 'red' : 'black' }">
               {{ scope.row.tradeParentId }}
