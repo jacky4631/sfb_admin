@@ -37,8 +37,6 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 
-import './permission'
-
 const setupAll = async () => {
   const app = createApp(App)
 

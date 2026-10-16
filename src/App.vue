@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useAppStore } from '@/store/modules/app'
+import { useAppStore } from '@/store/modules/app.ts'
 import { useDesign } from '@/hooks/web/useDesign'
 
 defineOptions({

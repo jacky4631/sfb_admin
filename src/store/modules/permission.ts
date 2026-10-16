@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { constantRouterMap } from '@/router/routers.js'
-import Layout from '@/layout/index.vue'
 
 interface PermissionState {
   routers: any[]
@@ -30,7 +29,8 @@ export const filterAsyncRouter = (routers: any[]) => {
   return routers.filter(router => {
     if (router.component) {
       if (router.component === 'Layout') {
-        router.component = Layout
+        // 动态导入避免与 layout/index.vue 形成 ESM 循环依赖（layout → Sidebar → permission → layout）
+        router.component = () => import('@/layout/index.vue')
       } else {
         router.component = loadView(router.component)
       }

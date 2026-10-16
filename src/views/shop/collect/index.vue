@@ -43,6 +43,8 @@
     <el-pagination class="finance-pagination"
       :total="total"
       :current-page="page + 1"
+      :page-size="size"
+      :page-sizes="[10, 20, 30, 50, 100]"
       style="margin-top: 8px;"
       layout="total, prev, pager, next, sizes"
       @size-change="sizeChange"

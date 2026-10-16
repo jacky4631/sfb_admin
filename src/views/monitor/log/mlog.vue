@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container">
-    <div class="head-container">
+  <div class="app-container finance-page">
+    <div class="head-container finance-filters">
       <el-button
         type="danger"
         class="filter-item"
@@ -10,7 +10,7 @@
       >刷新</el-button>
     </div>
     <!--表格渲染-->
-    <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
+    <el-table class="finance-table" v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="nickname" label="用户名" />
       <el-table-column prop="requestIp" label="IP" />
       <el-table-column prop="address" label="地址来源" />
@@ -22,9 +22,11 @@
       </el-table-column>
     </el-table>
     <!--分页组件-->
-    <el-pagination
+    <el-pagination class="finance-pagination"
       :total="total"
       :current-page="page + 1"
+      :page-size="size"
+      :page-sizes="[10, 20, 30, 50, 100]"
       style="margin-top: 8px;"
       layout="total, prev, pager, next, sizes"
       @size-change="sizeChange"
@@ -42,7 +44,7 @@ import { parseTime } from '@/utils/index.js'
 const data = ref([])
 const total = ref(0)
 const page = ref(0)
-const size = ref(0)
+const size = ref(10)
 const loading = ref(false)
 const query = ref({})
 
