@@ -15,7 +15,9 @@ export default {
     })
 
     if (!hasPermission) {
-      el.parentNode && el.parentNode.removeChild(el)
+      // 隐藏而非移除 DOM：直接移除会破坏 el-popover/el-tooltip 的 #reference 节点，
+      // 导致 ElPopper 报 [ElOnlyChild] no valid child node found
+      el.style.display = 'none'
     }
   }
 }

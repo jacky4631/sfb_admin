@@ -23,6 +23,7 @@ import router from '@/router'
 
 // 指令
 import { setupAuth } from '@/directives'
+import { highlightjs } from '@/directives/highlightjs'
 
 // 数据字典（页面 dicts 选项的全局 mixin）
 import dict from '@/components/Dict'
@@ -59,6 +60,9 @@ const setupAll = async () => {
 
   // v-permission 指令
   app.use(permission)
+
+  // v-highlightjs 指令（代码高亮）
+  app.directive('highlightjs', highlightjs)
 
   await router.isReady()
 

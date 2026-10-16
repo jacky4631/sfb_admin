@@ -143,8 +143,10 @@ const toLastView = (visitedViews, view) => {
 
 const openMenu = (tag_, e) => {
   const menuMinWidth = 105
-  const offsetLeft = e.currentTarget.getBoundingClientRect().left
-  const offsetWidth = e.currentTarget.offsetWidth
+  // 弹窗相对于 #tags-view-container 绝对定位，必须使用容器的坐标，而不是被点击 tab 的坐标
+  const containerRect = document.getElementById('tags-view-container').getBoundingClientRect()
+  const offsetLeft = containerRect.left
+  const offsetWidth = containerRect.width
   const maxLeft = offsetWidth - menuMinWidth
   let left_ = e.clientX - offsetLeft + 15
 

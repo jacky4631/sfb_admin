@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive } from 'vue'
+import { computed, onMounted, reactive, markRaw } from 'vue'
 import { UserFilled, ShoppingCart, Money, Coin } from '@element-plus/icons-vue'
 import StatCard from './StatCard.vue'
 import { trendPercent, formatAmount, formatInteger } from './statFormat'
@@ -43,7 +43,7 @@ const cards = computed(() => {
   return [
     {
       title: '会员总数',
-      icon: UserFilled,
+      icon: markRaw(UserFilled),
       color: '#40c9c6',
       value: s.userCount,
       unit: '人',
@@ -60,7 +60,7 @@ const cards = computed(() => {
     },
     {
       title: '今日订单数',
-      icon: ShoppingCart,
+      icon: markRaw(ShoppingCart),
       color: '#36a3f7',
       value: s.todayCount,
       unit: '单',
@@ -78,7 +78,7 @@ const cards = computed(() => {
     },
     {
       title: '今日成交额',
-      icon: Money,
+      icon: markRaw(Money),
       color: '#f4516c',
       value: s.todayPrice,
       unit: '元',
@@ -98,7 +98,7 @@ const cards = computed(() => {
     },
     {
       title: '今日预估佣金',
-      icon: Coin,
+      icon: markRaw(Coin),
       color: '#34bfa3',
       value: s.todayFee,
       unit: '元',
