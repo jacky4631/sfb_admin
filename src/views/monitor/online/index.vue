@@ -34,7 +34,7 @@
           <span>{{ parseTime(scope.row.loginTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100px" fixed="right">
+      <el-table-column class-name="table-action-column" label="操作" width="100px" fixed="right">
         <template #default="scope">
           <el-popover
             :ref="(el) => setPopoverRef(scope.$index, el)"
@@ -47,7 +47,7 @@
               <el-button :loading="delLoading" type="primary" size="small" @click="delMethod(scope.row.key, scope.$index)">确定</el-button>
             </div>
             <template #reference>
-              <el-button v-permission="['admin']" size="small" link>强退</el-button>
+              <el-button type="danger" class="table-text-action" v-permission="['admin']" size="small" link>强退</el-button>
             </template>
           </el-popover>
         </template>

@@ -85,11 +85,11 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="checkPermission(['admin','timing:edit','timing:del'])" label="操作" width="180px" align="center" fixed="right">
+      <el-table-column class-name="table-action-column" v-if="checkPermission(['admin','timing:edit','timing:del'])" label="操作" width="180px" align="center" fixed="right">
         <template #default="scope">
-          <el-button v-permission="['admin','timing:edit']" size="small" style="margin-right: 3px;" link @click="crud.toEdit(scope.row)">编辑</el-button>
-          <el-button v-permission="['admin','timing:edit']" style="margin-left: -2px" link size="small" @click="execute(scope.row.id)">执行</el-button>
-          <el-button v-permission="['admin','timing:edit']" style="margin-left: 3px" link size="small" @click="updateStatus(scope.row.id,scope.row.isPause ? '恢复' : '暂停')">
+          <el-button type="primary" class="table-text-action" v-permission="['admin','timing:edit']" size="small"  link @click="crud.toEdit(scope.row)">编辑</el-button>
+          <el-button type="primary" class="table-text-action" v-permission="['admin','timing:edit']"  link size="small" @click="execute(scope.row.id)">执行</el-button>
+          <el-button :type="scope.row.isPause ? 'primary' : 'warning'" class="table-text-action" v-permission="['admin','timing:edit']"  link size="small" @click="updateStatus(scope.row.id,scope.row.isPause ? '恢复' : '暂停')">
             {{ scope.row.isPause ? '恢复' : '暂停' }}
           </el-button>
           <el-popover
@@ -103,7 +103,7 @@
               <el-button :loading="delLoading" type="primary" size="small" @click="delMethod(scope.row.id)">确定</el-button>
             </div>
             <template #reference>
-              <el-button v-permission="['admin','timing:del']" link size="small">删除</el-button>
+              <el-button type="danger" class="table-text-action" v-permission="['admin','timing:del']" link size="small">删除</el-button>
             </template>
           </el-popover>
         </template>

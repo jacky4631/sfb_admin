@@ -41,20 +41,20 @@
           <span>{{ scope.row.createTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="160px" align="center" fixed="right">
+      <el-table-column class-name="table-action-column" label="操作" width="160px" align="center" fixed="right">
         <template #default="scope">
-          <el-button size="small" style="margin-right: 2px" link>
+          <el-button type="primary" class="table-text-action" size="small"  link>
             <router-link :to="'/sys-tools/generator/preview/' + scope.row.tableName">
               预览
             </router-link>
           </el-button>
-          <el-button size="small" style="margin-left: -1px;margin-right: 2px" link @click="toDownload(scope.row.tableName)">下载</el-button>
-          <el-button size="small" style="margin-left: -1px;margin-right: 2px" link>
+          <el-button type="primary" class="table-text-action" size="small"  link @click="toDownload(scope.row.tableName)">下载</el-button>
+          <el-button type="primary" class="table-text-action" size="small"  link>
             <router-link :to="'/sys-tools/generator/config/' + scope.row.tableName">
               配置
             </router-link>
           </el-button>
-          <el-button link style="margin-left: -1px" size="small" @click="toGen(scope.row.tableName)">生成</el-button>
+          <el-button type="primary" class="table-text-action" link  size="small" @click="toGen(scope.row.tableName)">生成</el-button>
         </template>
       </el-table-column>
     </el-table>

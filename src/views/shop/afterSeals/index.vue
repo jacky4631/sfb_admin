@@ -95,10 +95,10 @@
           <span v-if="scope.row.salesState === 2" :style="'color: #F56C6C'">已拒绝用户</span>
         </template>
       </el-table-column>
-      <el-table-column
+      <el-table-column class-name="table-action-column"
       v-permission="['admin','mwStoreAfterSales:edit','mwStoreAfterSales:del']" label="操作" width="150px" align="center">
         <template #default="scope">
-          <el-button link @click="checkItem(scope.row, 0)">订单详情</el-button>
+          <el-button type="primary" class="table-text-action" link @click="checkItem(scope.row, 0)">订单详情</el-button>
           <el-button
           size="small"
           type="success"

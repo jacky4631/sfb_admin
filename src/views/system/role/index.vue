@@ -75,7 +75,7 @@
                 <span>{{ parseTime(scope.row.createTime) }}</span>
               </template>
             </el-table-column>
-            <el-table-column v-if="checkPermission(['admin','roles:edit','roles:del'])" label="操作" width="240px" align="center" fixed="right">
+            <el-table-column class-name="table-action-column" v-if="checkPermission(['admin','roles:edit','roles:del'])" label="操作" width="240px" align="center" fixed="right">
               <template #default="scope">
                 <div class="role-row-actions">
                   <udOperation
@@ -85,7 +85,7 @@
                     :permission="permission"
                   >
                     <template #between>
-                      <el-button v-permission="['admin','roles:edit']" type="primary" link size="small"
+                      <el-button class="table-text-action" v-permission="['admin','roles:edit']" type="primary" link size="small"
                         @click="openPermissions(scope.row)">菜单权限</el-button>
                     </template>
                   </udOperation>

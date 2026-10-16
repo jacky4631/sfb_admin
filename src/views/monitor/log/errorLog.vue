@@ -41,9 +41,9 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="异常详情" width="100px">
+      <el-table-column class-name="table-action-column" label="异常详情" width="100px">
         <template #default="scope">
-          <el-button size="small" link @click="info(scope.row.id)">查看详情</el-button>
+          <el-button type="primary" class="table-text-action" size="small" link @click="info(scope.row.id)">查看详情</el-button>
         </template>
       </el-table-column>
     </el-table>
