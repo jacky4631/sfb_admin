@@ -16,8 +16,29 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: var(--el-font-family);
+  font-size: 14px;
   color: var(--el-text-color-primary);
   background: var(--app-content-bg-color);
+}
+
+// Keep content typography at the same readable baseline as TSQ Admin while
+// preserving the compact control heights used by the migrated Vue 3 screens.
+.app-main {
+  font-size: 14px;
+}
+
+.app-main .el-button.el-button--small {
+  font-size: 14px;
+}
+
+.app-main .el-input.el-input--small,
+.app-main .el-select--small .el-select__wrapper.el-select__wrapper,
+.app-main .el-pagination.el-pagination {
+  font-size: 14px;
+}
+
+.app-main .el-tag.el-tag--small {
+  font-size: 14px;
 }
 
 label {
