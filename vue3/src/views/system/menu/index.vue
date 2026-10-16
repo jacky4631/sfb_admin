@@ -25,9 +25,9 @@
       <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="菜单类型" prop="type">
           <el-radio-group v-model="form.type" size="small" style="width: 178px">
-            <el-radio-button value="0">目录</el-radio-button>
-            <el-radio-button value="1">菜单</el-radio-button>
-            <el-radio-button value="2">按钮</el-radio-button>
+            <el-radio-button :value="0">目录</el-radio-button>
+            <el-radio-button :value="1">菜单</el-radio-button>
+            <el-radio-button :value="2">按钮</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item v-show="form.type.toString() !== '2'" label="菜单图标" prop="icon">
@@ -56,14 +56,14 @@
         </el-form-item>
         <el-form-item v-show="form.type.toString() === '1'" label="菜单缓存" prop="cache">
           <el-radio-group v-model="form.cache" size="small">
-            <el-radio-button value="true">是</el-radio-button>
-            <el-radio-button value="false">否</el-radio-button>
+            <el-radio-button :value="true">是</el-radio-button>
+            <el-radio-button :value="false">否</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item v-show="form.type.toString() !== '2'" label="菜单可见" prop="hidden">
           <el-radio-group v-model="form.hidden" size="small">
-            <el-radio-button value="false">是</el-radio-button>
-            <el-radio-button value="true">否</el-radio-button>
+            <el-radio-button :value="false">是</el-radio-button>
+            <el-radio-button :value="true">否</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item v-show="form.type.toString() !== '2'" label="菜单标题" prop="name">
