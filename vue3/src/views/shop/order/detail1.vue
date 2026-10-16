@@ -40,7 +40,7 @@
           <div class="text item">订单编号: {{ form.orderId }}</div>
           <div class="text item">商品总数: {{ form.totalNum }}</div>
           <div class="text item">支付邮费: {{ form.totalPostage }}</div>
-          <div class="text item">实际支付: {{ form.payPrice }}</div>
+          <div class="text item">实际支付(积分): {{ form.payIntegral }}</div>
           <div class="text item">支付方式: {{ form.payTypeName }}</div>
         </el-col>
         <el-col :span="12">

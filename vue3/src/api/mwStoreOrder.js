@@ -55,6 +55,16 @@ export function editOrder(data) {
   })
 }
 
+// 积分订单“修改实际支付”专用接口：只传 orderId + payIntegral，
+// 走后端 editOrderPrice 落库到 pay_integral（不再复用淘客绑单用的 /mwStoreOrder/edit）
+export function editOrderPrice(data) {
+  return request({
+    url: 'api/mwStoreOrder/editOrderPrice',
+    method: 'post',
+    data
+  })
+}
+
 export function remark(data) {
   return request({
     url: 'api/mwStoreOrder/remark',

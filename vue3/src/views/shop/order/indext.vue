@@ -83,7 +83,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="payPrice" label="实际支付" />
+      <el-table-column prop="payIntegral" label="实际支付(积分)" />
       <el-table-column prop="payTypeName" label="支付状态" />
       <el-table-column prop="statusName" label="订单状态">
         <template #default="scope">
@@ -327,6 +327,7 @@ export default {
       this.isAdd = false
       const _this = this.$refs.form3
       _this.form = {
+        payIntegral: data.payIntegral,
         id: data.id,
         orderId: data.orderId,
         uid: data.uid,
@@ -501,6 +502,7 @@ export default {
       this.isAdd = false
       const _this = this.$refs.form1
       _this.form = {
+        payIntegral: data.payIntegral,
         id: data.id,
         orderId: data.orderId,
         payTypeName: data.payTypeName,

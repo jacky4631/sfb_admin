@@ -16,7 +16,8 @@
       <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :model-value="crud.status.cu > 0" :title="crud.status.title" width="500px">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
           <el-form-item label="商城用户" prop="uid">
-            <cuser v-model="form.user"></cuser>
+            <!-- Vue3 组件 v-model 绑定的是 modelValue，而 cuser 的 prop 是 value，须显式 :value 传参 -->
+            <cuser :value="form.user"></cuser>
           </el-form-item>
           <el-form-item label="所属门店" prop="storeId">
             <el-select v-model="form.storeId" style="width: 178px" placeholder="请先选择门店">

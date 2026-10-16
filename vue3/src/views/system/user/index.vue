@@ -72,76 +72,96 @@
           <crudOperation show="" :permission="permission" />
         </div>
         <!--表单渲染-->
-        <el-dialog :model-value="crud.status.cu > 0" append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :title="crud.status.title" width="570px">
-          <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="66px">
-            <el-form-item label="用户名" prop="username">
-              <el-input v-model="form.username" />
-            </el-form-item>
-            <el-form-item label="电话" prop="phone">
-              <el-input v-model.number="form.phone" />
-            </el-form-item>
-            <el-form-item label="昵称" prop="nickName">
-              <el-input v-model="form.nickName" />
-            </el-form-item>
-            <el-form-item label="邮箱" prop="email">
-              <el-input v-model="form.email" />
-            </el-form-item>
-            <el-form-item label="部门" prop="dept.id">
-              <el-tree-select
-                v-model="form.dept.id"
-                :data="depts"
-                :props="{ children: 'children', label: 'name' }"
-                node-key="id"
-                check-strictly
-                :render-after-expand="false"
-                style="width: 178px"
-                placeholder="选择部门"
-                @node-click="selectFun"
-              />
-            </el-form-item>
-            <el-form-item label="岗位" prop="job.id">
-              <el-select v-model="form.job.id" style="width: 178px" placeholder="请先选择岗位">
-                <el-option
-                  v-for="(item, index) in jobs"
-                  :key="item.name + index"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="性别">
-              <el-radio-group v-model="form.sex" style="width: 178px">
-                <el-radio value="男">男</el-radio>
-                <el-radio value="女">女</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="状态">
-              <el-radio-group v-model="form.enabled" :disabled="form.id === user.id">
-                <el-radio
-                  v-for="item in dict.user_status"
-                  :key="item.id"
-                  :value="item.value"
-                >{{ item.label }}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item style="margin-bottom: 0;" label="角色" prop="roles">
-              <el-select
-                v-model="form.roles"
-                style="width: 437px"
-                multiple
-                placeholder="请选择角色"
-                @remove-tag="deleteTag"
-                @change="changeRole"
-              >
-                <el-option
-                  v-for="item in roles"
-                  :key="item.name"
-                  :disabled="level !== 1 && item.level <= level"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
+        <el-dialog :model-value="crud.status.cu > 0" append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :title="crud.status.title" width="640px">
+          <el-form ref="form" :model="form" :rules="rules" size="small" label-width="66px">
+            <el-row :gutter="16">
+              <el-col :span="12">
+                <el-form-item label="用户名" prop="username">
+                  <el-input v-model="form.username" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="电话" prop="phone">
+                  <el-input v-model.number="form.phone" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="昵称" prop="nickName">
+                  <el-input v-model="form.nickName" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="邮箱" prop="email">
+                  <el-input v-model="form.email" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="部门" prop="dept.id">
+                  <el-tree-select
+                    v-model="form.dept.id"
+                    :data="depts"
+                    :props="{ children: 'children', label: 'name' }"
+                    node-key="id"
+                    check-strictly
+                    :render-after-expand="false"
+                    placeholder="选择部门"
+                    style="width: 100%"
+                    @node-click="selectFun"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="岗位" prop="job.id">
+                  <el-select v-model="form.job.id" placeholder="请选择岗位" style="width: 100%">
+                    <el-option
+                      v-for="(item, index) in jobs"
+                      :key="item.name + index"
+                      :label="item.name"
+                      :value="item.id"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="性别">
+                  <el-radio-group v-model="form.sex">
+                    <el-radio value="男">男</el-radio>
+                    <el-radio value="女">女</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="状态">
+                  <el-radio-group v-model="form.enabled" :disabled="form.id === user.id">
+                    <el-radio
+                      v-for="item in dict.user_status"
+                      :key="item.id"
+                      :value="item.value"
+                    >{{ item.label }}</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item style="margin-bottom: 0;" label="角色" prop="roles">
+                  <el-select
+                    v-model="form.roles"
+                    style="width: 100%"
+                    multiple
+                    placeholder="请选择角色"
+                    @remove-tag="deleteTag"
+                    @change="changeRole"
+                  >
+                    <el-option
+                      v-for="item in roles"
+                      :key="item.name"
+                      :disabled="level !== 1 && item.level <= level"
+                      :label="item.name"
+                      :value="item.id"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
           </el-form>
           <template #footer>
             <div class="dialog-footer">
@@ -268,6 +288,13 @@ export default {
         ],
         roles: [
           { required: true, message: '请选择角色', trigger: 'blur' },
+        ],
+        // 后端强校验字段，前端同步必填；el-form 按 prop 路径取规则，嵌套字段用 'a.b' 形式作键
+        'dept.id': [
+          { required: true, message: '请选择部门', trigger: ['change', 'blur'] }
+        ],
+        'job.id': [
+          { required: true, message: '请选择岗位', trigger: ['change', 'blur'] }
         ],
         phone: [
           { required: true, trigger: 'blur', validator: validPhone }
