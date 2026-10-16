@@ -112,10 +112,21 @@
 
       .el-tooltip {
         padding: 0 !important;
+      }
 
-        .svg-icon {
-          margin-left: 20px;
-        }
+      // EP 的 el-menu-item 内容不再包 el-tooltip，且 AppLink 隔了一层 <a>，
+      // 用后代选择器直接命中图标，保证折叠时图标居中
+      .svg-icon {
+        margin-left: 20px;
+      }
+
+      // 折叠时隐藏单链接菜单项的标题文字
+      span {
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        visibility: hidden;
+        display: inline-block;
       }
     }
 
@@ -145,17 +156,6 @@
             visibility: hidden;
             display: inline-block;
           }
-        }
-      }
-
-      // 单链接菜单项（如首页）折叠时同样隐藏标题文字
-      .el-menu-item {
-        & > span {
-          height: 0;
-          width: 0;
-          overflow: hidden;
-          visibility: hidden;
-          display: inline-block;
         }
       }
     }
