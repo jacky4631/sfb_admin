@@ -113,13 +113,13 @@ watch(() => route.path, () => {
   top: 0;
   right: 0;
   z-index: 9;
-  width: calc(100% - 205px);
+  width: calc(100% - 200px);
   transition: width 0.28s;
   padding: 0;
 }
 
 .hideSidebar .fixed-header {
-  width: calc(100% - 54px);
+  width: calc(100% - 64px);
 }
 
 .mobile .fixed-header {

@@ -65,6 +65,15 @@
       width: 100% !important;
     }
 
+    .el-menu-item.is-active {
+      color: #fff !important;
+      background-color: var(--el-color-primary) !important;
+    }
+
+    .el-sub-menu.is-active > .el-sub-menu__title {
+      color: #fff !important;
+    }
+
     // menu hover
     .submenu-title-noDropdown,
     .el-submenu__title {
@@ -90,11 +99,11 @@
 
   .hideSidebar {
     .sidebar-container {
-      width: 54px !important;
+      width: 64px !important;
     }
 
     .main-container {
-      margin-left: 54px;
+      margin-left: 64px;
     }
 
     .submenu-title-noDropdown {

@@ -212,9 +212,9 @@ onMounted(() => {
         margin-right: 15px;
       }
       &.active {
-        background-color: rgb(64, 158, 255);
+        background-color: var(--el-color-primary);
         color: #fff;
-        border-color: rgb(64, 158, 255);
+        border-color: var(--el-color-primary);
         &::before {
           content: '';
           background: #fff;

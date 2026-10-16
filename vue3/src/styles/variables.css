@@ -7,7 +7,7 @@
   --el-color-info: #909399;
 
   --el-bg-color: #ffffff;
-  --el-bg-color-page: #f2f3f5;
+  --el-bg-color-page: #f5f7f9;
   --el-text-color-primary: #303133;
   --el-text-color-regular: #606266;
   --el-text-color-secondary: #909399;
@@ -22,6 +22,16 @@
   --el-fill-color-light: #f5f7fa;
   --el-fill-color-lighter: #fafafa;
   --el-fill-color-blank: #ffffff;
+
+  /* TSQ Admin aligned shell colors */
+  --app-content-bg-color: #f5f7f9;
+  --app-content-padding: 20px;
+  --left-menu-bg-color: #001529;
+  --left-menu-bg-light-color: #0f2438;
+  --left-menu-text-color: #bfcbd9;
+  --left-menu-text-active-color: #ffffff;
+  --top-header-bg-color: #ffffff;
+  --top-header-hover-color: #f6f6f6;
 
   --el-mask-color: rgba(255, 255, 255, 0.7);
   --el-mask-color-dark: rgba(0, 0, 0, 0.7);
