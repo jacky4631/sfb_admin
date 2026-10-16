@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container finance-page system-page role-page">
+  <div class="app-container finance-page system-page role-page role-drawer-page">
     <!--工具栏-->
     <div class="head-container finance-filters">
       <div v-if="crud.props.searchToggle" class="tool-search">
@@ -63,7 +63,7 @@
           <template #header>
             <span class="role-span">角色列表</span>
           </template>
-          <el-table class="finance-table" size="small" ref="table" v-loading="crud.loading" highlight-current-row style="width: 100%;" :data="crud.data" @selection-change="crud.selectionChangeHandler" @current-change="handleCurrentChange">
+          <el-table class="finance-table" size="small" ref="table" v-loading="crud.loading" style="width: 100%;" :data="crud.data" @selection-change="crud.selectionChangeHandler">
             <el-table-column :selectable="checkboxT" type="selection" width="55" />
             <el-table-column v-if="columns.visible('name')" prop="name" label="名称" />
             <el-table-column v-if="columns.visible('dataScope')" prop="dataScope" label="数据权限" />
@@ -75,13 +75,21 @@
                 <span>{{ parseTime(scope.row.createTime) }}</span>
               </template>
             </el-table-column>
-            <el-table-column v-if="checkPermission(['admin','roles:edit','roles:del'])" label="操作" width="130px" align="center" fixed="right">
+            <el-table-column v-if="checkPermission(['admin','roles:edit','roles:del'])" label="操作" width="240px" align="center" fixed="right">
               <template #default="scope">
-                <udOperation
-                  v-if="scope.row.level >= level"
-                  :data="scope.row"
-                  :permission="permission"
-                />
+                <div class="role-row-actions">
+                  <udOperation
+                    text-actions
+                    v-if="scope.row.level >= level"
+                    :data="scope.row"
+                    :permission="permission"
+                  >
+                    <template #between>
+                      <el-button v-permission="['admin','roles:edit']" type="primary" link size="small"
+                        @click="openPermissions(scope.row)">菜单权限</el-button>
+                    </template>
+                  </udOperation>
+                </div>
               </template>
             </el-table-column>
           </el-table>
@@ -89,42 +97,46 @@
           <pagination class="finance-pagination" />
         </el-card>
       </el-col>
-      <!-- 菜单授权 -->
-      <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="7">
-        <el-card class="box-card system-card" shadow="never">
-          <template #header>
-            <el-tooltip class="item" effect="dark" content="选择指定角色分配菜单" placement="top">
-              <span class="role-span">菜单分配</span>
-            </el-tooltip>
-            <el-button
-              v-permission="['admin','roles:edit']"
-              :disabled="!showButton"
-              :loading="menuLoading"
-              :icon="Check"
-              size="small"
-              style="float: right; padding: 6px 9px"
-              type="primary"
-              @click="saveMenu"
-            >保存</el-button>
-          </template>
-          <el-tree
-            ref="menu"
-            :data="menus"
-            :default-checked-keys="menuIds"
-            :props="defaultProps"
-            show-checkbox
-            node-key="id"
-          />
-        </el-card>
-      </el-col>
     </el-row>
+    <el-drawer v-model="permissionDrawer" append-to-body size="min(640px, 100vw)"
+      :before-close="beforePermissionClose" @opened="applyMenuSelection" class="role-permission-drawer">
+      <template #header>
+        <div>
+          <strong>分配权限 · {{ activeRole?.name }}</strong>
+          <div class="permission-subtitle">角色标识：{{ activeRole?.permission }}</div>
+        </div>
+      </template>
+      <div v-loading="permissionLoading" class="permission-editor">
+        <div class="permission-tools">
+          <el-input v-model="menuSearch" clearable placeholder="搜索菜单名称" :prefix-icon="Search" />
+          <div class="permission-tool-actions">
+            <el-checkbox v-model="onlySelected">仅看已选</el-checkbox>
+            <el-button link type="primary" @click="toggleExpanded">{{ expanded ? '收起全部' : '展开全部' }}</el-button>
+          </div>
+        </div>
+        <el-tree ref="menu" :data="menus" :props="defaultProps" show-checkbox node-key="id"
+          :filter-node-method="filterMenu" :check-on-click-node="false"
+          :empty-text="permissionLoading ? '正在加载权限…' : '暂无菜单'"
+          @check="onMenuCheck" />
+      </div>
+      <template #footer>
+        <div class="permission-footer">
+          <span>{{ permissionDirty ? '有未保存的修改' : '勾选角色可访问的菜单和操作' }}</span>
+          <div>
+            <el-button :disabled="menuLoading" @click="beforePermissionClose(() => permissionDrawer = false)">取消</el-button>
+            <el-button type="primary" :loading="menuLoading" :disabled="permissionLoading || !permissionReady || !permissionDirty" @click="saveMenu">保存权限</el-button>
+          </div>
+        </div>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
 <script setup>
-import { Check } from '@element-plus/icons-vue'
+import { Search } from '@element-plus/icons-vue'
 import checkPermission from '@/utils/permission.js'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick, watch } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import crudRoles from '@/api/system/role.js'
 import { getDepts } from '@/api/system/dept.js'
 import { getMenusTree } from '@/api/system/menu.js'
@@ -145,7 +157,15 @@ const defaultProps = ref({ children: 'children', label: 'label' })
 const dateScopes = ref(['全部', '本级', '自定义'])
 const currentId = ref(0)
 const menuLoading = ref(false)
-const showButton = ref(false)
+const permissionDrawer = ref(false)
+const permissionLoading = ref(false)
+const permissionReady = ref(false)
+const activeRole = ref(null)
+const permissionDirty = ref(false)
+const menuSearch = ref('')
+const onlySelected = ref(false)
+const expanded = ref(false)
+let savedSelection = ''
 const menus = ref([])
 const menuIds = ref([])
 const depts = ref([])
@@ -170,60 +190,109 @@ const { crud, columns, query, form } = presenter(defaultCrud)
 const menu = ref(null)
 
 onMounted(() => {
-  getMenus()
   crudRoles.getLevel().then(data => {
     level.value = data.level
     console.log(level.value)
   })
 })
 
-function getMenus() {
-  getMenusTree().then(res => {
-    menus.value = res
-  })
+function selectionSignature() {
+  return JSON.stringify([...(menu.value?.getCheckedKeys() || [])].map(String).sort())
 }
 
-// 触发单选
-function handleCurrentChange(val) {
-  if (val) {
-    // 清空菜单的选中
-    menu.value.setCheckedKeys([])
-    // 保存当前的角色id
-    currentId.value = val.id
-    showButton.value = level.value <= val.level
-    // 初始化
-    menuIds.value = []
-    // 菜单数据需要特殊处理
-    val.menus.forEach(function(data, index) {
-       if(data.pid!=0){
-        menuIds.value.push(data.id)
-      }
+async function openPermissions(row) {
+  activeRole.value = { ...row }
+  currentId.value = row.id
+  menuSearch.value = ''
+  onlySelected.value = false
+  expanded.value = false
+  permissionDirty.value = false
+  permissionReady.value = false
+  permissionLoading.value = true
+  menus.value = []
+  menuIds.value = []
+  permissionDrawer.value = true
+  try {
+    const [tree, role] = await Promise.all([getMenusTree(), crudRoles.get(row.id)])
+    // Ignore an old request if its drawer has already closed or changed roles.
+    if (!permissionDrawer.value || currentId.value !== row.id) return
+    activeRole.value = role
+    menus.value = tree
+    const assigned = new Set((role.menus || []).map(item => String(item.id)))
+    // Parent IDs are also stored for half-checked nodes; don't cascade them
+    // into siblings that this role has never been granted.
+    const collect = nodes => nodes.flatMap(node => {
+      if (node.children?.length) return collect(node.children)
+      return assigned.has(String(node.id)) ? [node.id] : []
     })
+    menuIds.value = collect(tree)
+    await nextTick()
+    applyMenuSelection()
+    permissionReady.value = true
+  } catch (err) {
+    if (permissionDrawer.value && currentId.value === row.id) {
+      ElMessage.error('权限加载失败，请关闭后重试')
+    }
+  } finally {
+    if (currentId.value === row.id) permissionLoading.value = false
   }
 }
 
-// 保存菜单
-function saveMenu() {
+function applyMenuSelection() {
+  if (!menu.value || permissionDirty.value) return
+  menu.value.setCheckedKeys(menuIds.value)
+  savedSelection = selectionSignature()
+}
+
+function filterMenu(value, data, node) {
+  const matches = String(data.label || '').toLowerCase().includes(menuSearch.value.trim().toLowerCase())
+  return matches && (!onlySelected.value || node.checked || node.indeterminate)
+}
+
+watch([menuSearch, onlySelected], () => menu.value?.filter(menuSearch.value))
+
+function onMenuCheck() {
+  permissionDirty.value = selectionSignature() !== savedSelection
+  if (onlySelected.value) menu.value?.filter(menuSearch.value)
+}
+
+function toggleExpanded() {
+  expanded.value = !expanded.value
+  const visit = nodes => nodes.forEach(item => {
+    const node = menu.value?.getNode(item.id)
+    if (node) node.expanded = expanded.value
+    if (item.children) visit(item.children)
+  })
+  visit(menus.value)
+}
+
+async function beforePermissionClose(done) {
+  if (menuLoading.value) return
+  if (permissionDirty.value) {
+    try {
+      await ElMessageBox.confirm('权限修改尚未保存，确定放弃修改并关闭吗？', '未保存的修改', {
+        confirmButtonText: '放弃修改', cancelButtonText: '继续编辑', type: 'warning'
+      })
+    } catch { return }
+  }
+  done()
+}
+
+async function saveMenu() {
+  if (!permissionReady.value || menuLoading.value) return
   menuLoading.value = true
-  const role = { id: currentId.value, menus: [] }
-  // 得到半选的父节点数据，保存起来
-  menu.value.getHalfCheckedNodes().forEach(function(data, index) {
-    const menuItem = { id: data.id }
-    role.menus.push(menuItem)
-  })
-  // 得到已选中的 key 值
-  menu.value.getCheckedKeys().forEach(function(data, index) {
-    const menuItem = { id: data }
-    role.menus.push(menuItem)
-  })
-  crudRoles.editMenu(role).then(res => {
-    crud.notify('保存成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
-    menuLoading.value = false
+  const ids = new Set([...menu.value.getHalfCheckedKeys(), ...menu.value.getCheckedKeys()])
+  try {
+    await crudRoles.editMenu({ id: currentId.value, menus: [...ids].map(id => ({ id })) })
+    permissionDirty.value = false
+    permissionDrawer.value = false
+    crud.notify('权限保存成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
     update()
-  }).catch(err => {
+  } catch (err) {
+    ElMessage.error(err.response?.data?.message || '权限保存失败，请重试')
+  } finally {
     menuLoading.value = false
-    console.log(err.response.data.message)
-  })
+  }
 }
 
 // 无刷新更新 表格数据
@@ -256,9 +325,7 @@ function checkboxT(row, rowIndex) {
   return row.level >= level.value
 }
 
-crud.HOOK.afterRefresh = () => {
-  menu.value.setCheckedKeys([])
-}
+
 
 // 编辑前
 crud.HOOK.beforeToEdit = (form) => {
@@ -321,4 +388,36 @@ function afterErrorMethod(crudRef) {
   :deep(.el-input-number .el-input__inner) {
     text-align: left;
   }
+</style>
+
+<style scoped>
+.role-drawer-page > .system-grid { grid-template-columns: minmax(0, 1fr); }
+.permission-editor { min-height: 240px; }
+.permission-tools { position: sticky; top: 0; z-index: 1; padding-bottom: 12px; background: #fff; }
+.permission-tool-actions, .permission-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.permission-subtitle { margin-top: 8px; color: #909399; font-size: 13px; }
+.permission-footer { flex-wrap: wrap; }
+.permission-footer > span { color: #909399; font-size: 13px; }
+</style>
+
+<style scoped>
+.role-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.role-row-actions > :deep(div) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.role-row-actions :deep(.el-button.is-link) {
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
 </style>

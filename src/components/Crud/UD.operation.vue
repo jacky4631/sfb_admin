@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-button v-permission="permission.edit" :disabled="disabledEdit" size="small" type="primary" :icon="Edit" @click="crud.toEdit(data)" />
+    <el-button v-permission="permission.edit" :disabled="disabledEdit" size="small" type="primary" :icon="textActions ? undefined : Edit" :link="textActions" @click="crud.toEdit(data)">{{ textActions ? '编辑' : '' }}</el-button>
+    <slot name="between" />
     <el-popover ref="popoverRef" :visible="pop" placement="top" width="180" trigger="click">
       <p>{{ msg }}</p>
       <div style="text-align: right; margin: 0">
@@ -8,7 +9,7 @@
         <el-button :loading="crud.dataStatus[data.id]?.delete === 2" type="primary" size="small" @click="doDelete">确定</el-button>
       </div>
       <template #reference>
-        <el-button v-permission="permission.del" :disabled="disabledDle" type="danger" :icon="Delete" size="small" @click.stop="toDelete" />
+        <el-button v-permission="permission.del" :disabled="disabledDle" type="danger" :icon="textActions ? undefined : Delete" :link="textActions" size="small" @click.stop="toDelete">{{ textActions ? '删除' : '' }}</el-button>
       </template>
     </el-popover>
   </div>
@@ -23,6 +24,7 @@ defineOptions({
 })
 
 const props = defineProps({
+  textActions: { type: Boolean, default: false },
   data: {
     type: Object,
     required: true
