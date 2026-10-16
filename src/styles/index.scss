@@ -84,3 +84,125 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+
+/* Finance list pages share the compact card layout used by order management. */
+.app-container.finance-page {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100% !important;
+  max-width: none !important;
+  height: calc(100vh - 117px);
+  min-height: 420px;
+  padding: 12px;
+  overflow: hidden;
+  background: #f4f6f9;
+}
+
+.app-container.finance-page > .finance-content {
+  position: static !important;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.app-container.finance-page .finance-filters,
+.app-container.finance-page .finance-table,
+.app-container.finance-page .finance-pagination,
+.app-container.finance-page .finance-footer {
+  border: 1px solid #e8edf4;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(31, 45, 61, 0.04);
+}
+
+.app-container.finance-page .finance-filters {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 10px;
+}
+
+.app-container.finance-page .finance-filters .filter-item {
+  margin: 0;
+}
+
+.app-container.finance-page .finance-table {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  padding: 4px 12px 12px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.app-container.finance-page .finance-table .el-table__inner-wrapper::before {
+  display: none;
+}
+
+.app-container.finance-page .finance-table th.el-table__cell {
+  height: 40px;
+  color: #667085;
+  font-weight: 600;
+  background: #f7f9fc;
+}
+
+.app-container.finance-page .finance-table td.el-table__cell {
+  padding: 4px 0;
+}
+
+.app-container.finance-page .finance-pagination {
+  display: flex;
+  flex: none;
+  justify-content: flex-end;
+  margin: 0 !important;
+  padding: 8px 12px;
+}
+
+.app-container.finance-page .finance-footer {
+  position: static !important;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  width: 100% !important;
+  min-height: 52px;
+  padding: 6px 12px;
+  z-index: auto;
+}
+
+.app-container.finance-page .finance-footer .el-pagination {
+  margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .app-container.finance-page {
+    height: auto;
+    min-height: calc(100vh - 117px);
+    overflow: visible;
+    padding: 10px;
+  }
+
+  .app-container.finance-page > .finance-content {
+    overflow: visible;
+  }
+
+  .app-container.finance-page .finance-table {
+    min-height: 420px;
+  }
+
+  .app-container.finance-page .finance-footer {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}

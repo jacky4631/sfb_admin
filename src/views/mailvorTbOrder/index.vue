@@ -73,7 +73,7 @@
             <span>{{ parseTime(scope.row.tkCreateTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="tkStatus" label="订单状态" >
+        <el-table-column prop="tkStatus" label="订单状态" width="90">
           <template #default="scope">
             <el-tag v-if="scope.row.tkStatus === 3" style="cursor: pointer" :type="'success'">{{ tbOrderStatusParse(scope.row.tkStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.tkStatus === 12" style="cursor: pointer" type="primary">{{ tbOrderStatusParse(scope.row.tkStatus) }}</el-tag>

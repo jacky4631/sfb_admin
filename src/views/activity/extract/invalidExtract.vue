@@ -1,8 +1,8 @@
 <template>
-  <div class="app-container" style="position: relative; height: calc(100vh - 117px);">
-    <div class="container">
+  <div class="app-container finance-page">
+    <div class="container finance-content">
       <!--工具栏-->
-      <div class="head-container">
+      <div class="head-container finance-filters">
         <el-button
           v-permission="['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_SELECT']"
           class="filter-item"
@@ -24,7 +24,7 @@
       </div>
       <eForm ref="form" :is-add="isAdd" />
       <!--表格渲染-->
-      <el-table ref="multipleTable" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" class="finance-table" v-loading="loading" :data="data" size="small" style="width: 100%;" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="50" />
         <el-table-column prop="uid" label="uid"/>
 
@@ -65,7 +65,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-footer class="footer-contains">
+    <el-footer class="footer-contains finance-footer">
       <div class="footer-search">
         <el-checkbox v-model="printChecked" @change="batchSelection" style="margin-right: 20px;"></el-checkbox>
         <el-select v-model="batchExport" @change="handleExportOption" clearable placeholder="批量导出" class="filter-item" style="width: 130px">

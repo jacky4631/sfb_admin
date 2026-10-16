@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
+    <div class="head-container finance-filters">
         <!-- 搜索 -->
         <el-input v-model="query.blurry" clearable placeholder="输入昵称或订单号" style="width: 200px;" class="filter-item"
                   @keyup.enter="toQuery" @clear="toQuery"/>
@@ -21,10 +21,11 @@
          
           @click="toQuery"
         ><el-icon><Refresh /></el-icon>刷新</el-button>
+    </div>
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <!--表单组件-->
       <!--表格渲染-->
-      <el-table ref="table" v-loading="loading" :data="data" size="small" style="width: 100%;">
+      <el-table ref="table" class="finance-table" v-loading="loading" :data="data" size="small" style="width: 100%;">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="id" label="id" width="75px" />
         <el-table-column prop="nickname" label="昵称" width="100px" />
@@ -71,7 +72,7 @@
         </el-table-column>
       </el-table>
       <!--分页组件-->
-      <el-pagination
+      <el-pagination class="finance-pagination"
         :total="total"
         :current-page="page + 1"
         style="margin-top: 8px;"
@@ -79,7 +80,6 @@
         @size-change="sizeChange"
         @current-change="pageChange"
       />
-    </div>
   </div>
 </template>
 

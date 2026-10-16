@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
+    <div class="head-container finance-filters">
       <el-button
         v-permission="['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_EDIT']"
         type="danger"
@@ -33,7 +33,7 @@
     <eForm ref="form" :is-add="isAdd" />
     <configForm ref="formcofnig" :is-add="isAdd" />
     <!--表格渲染-->
-    <el-table ref="table" v-loading="loading" :data="data" size="small" style="width: 100%;"
+    <el-table ref="table" class="finance-table" v-loading="loading" :data="data" size="small" style="width: 100%;"
               @selection-change="selectionChangeHandler">
       <el-table-column type="selection" width="55" :selectable="checkboxT"/>
       <el-table-column prop="id" label="id" />
@@ -108,7 +108,7 @@
       </el-table-column>
     </el-table>
     <!--分页组件-->
-    <el-pagination
+    <el-pagination class="finance-pagination"
       :total="total"
       :current-page="page + 1"
       style="margin-top: 8px;"

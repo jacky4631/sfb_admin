@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
+    <div class="head-container finance-filters">
       <!-- 搜索 -->
       <el-input v-model="uid" clearable placeholder="输入左边uid" style="width: 150px;" class="filter-item" @keyup.enter="toQuery" />
       <el-input v-model="origUid" clearable placeholder="输入全部uid" style="width: 150px;" class="filter-item" @keyup.enter="toQuery" />
@@ -62,7 +62,7 @@
     <eForm ref="form" :is-add="isAdd" />
     <pForm ref="formp" :is-add="isAdd" />
     <!--表格渲染-->
-    <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
+    <el-table class="finance-table" v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="uid" label="用户id" />
       <el-table-column prop="origUid" label="原用户id" />
       <el-table-column prop="mark" label="描述" width="400"/>
@@ -94,7 +94,7 @@
       <el-table-column prop="updateTime" label="更新时间" />
     </el-table>
     <!--分页组件-->
-    <el-pagination
+    <el-pagination class="finance-pagination"
       :total="total"
       :current-page="page + 1"
       style="margin-top: 8px;"

@@ -59,7 +59,7 @@
             <span>{{ parseTime(scope.row.orderTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="validCode" label="订单状态" >
+        <el-table-column prop="validCode" label="订单状态" width="90">
           <template #default="scope">
             <el-tag v-if="scope.row.validCode === 16" style="cursor: pointer" :type="'success'">{{ jdOrderStatusParse(scope.row.validCode) }}</el-tag>
             <el-tag v-else-if="scope.row.validCode === 17" style="cursor: pointer" type="primary">{{ jdOrderStatusParse(scope.row.validCode) }}</el-tag>

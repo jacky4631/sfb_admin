@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
+    <div class="head-container finance-filters">
       <!-- 搜索 -->
       <el-input v-model="nickname" clearable placeholder="输入用户昵称" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
       <el-button class="filter-item" size="small" type="success" @click="toQuery"><el-icon><Search /></el-icon>搜索</el-button>
@@ -20,7 +20,7 @@
     <eForm ref="form" :is-add="isAdd" />
     <pForm ref="formp" :is-add="isAdd" />
     <!--表格渲染-->
-    <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
+    <el-table class="finance-table" v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="nickname" label="用户昵称" />
       <el-table-column prop="uid" label="uid" />
       <el-table-column prop="mark" label="账单标题3" width="370"/>
@@ -45,7 +45,7 @@
       </el-table-column>
     </el-table>
     <!--分页组件-->
-    <el-pagination
+    <el-pagination class="finance-pagination"
       :total="total"
       :current-page="page + 1"
       style="margin-top: 8px;"

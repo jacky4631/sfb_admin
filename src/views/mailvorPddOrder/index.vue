@@ -71,7 +71,7 @@
             <span>{{ parseTime(scope.row.orderCreateTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="orderStatusDesc" label="订单状态" >
+        <el-table-column prop="orderStatusDesc" label="订单状态" width="90" >
           <template #default="scope">
             <el-tag v-if="scope.row.orderStatusDesc !== '审核失败'" :type="'success'">{{ scope.row.orderStatusDesc }}</el-tag>
             <el-tag v-else style="cursor: pointer" :type="'warning'">{{ scope.row.orderStatusDesc }}</el-tag>

@@ -85,7 +85,7 @@
             <el-tag v-else-if="scope.row.itemStatus === 5" style="cursor: pointer" :type=" 'warning' ">{{ mtItemStatusParse(scope.row.itemStatus) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="itemBizStatus" label="聚合状态" >
+        <el-table-column prop="itemBizStatus" label="聚合状态" width="90">
           <template #default="scope">
             <el-tag v-if="scope.row.itemBizStatus === 1" style="cursor: pointer" :type="'success'">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
             <el-tag v-else-if="scope.row.itemBizStatus === 3" style="cursor: pointer" type="primary">{{ mtItemBizStatusParse(scope.row.itemBizStatus) }}</el-tag>
