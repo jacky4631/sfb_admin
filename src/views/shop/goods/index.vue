@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
+    <div class="head-container finance-filters">
       <!-- 搜索 -->
       <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
       <el-select v-model="query.type" clearable placeholder="搜索类型" class="filter-item" style="width: 130px">
@@ -34,14 +34,14 @@
     </div>
     <!--表单组件-->
     <!--表格渲染-->
-    <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
+    <el-table class="finance-table" v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="id" label="商品id" />
       <el-table-column ref="table" prop="image" label="商品图片">
         <template #default="scope">
           <a :href="scope.row.image" style="color: rgb(64, 158, 255)" target="_blank"><img :src="scope.row.image" alt="点击打开" class="el-avatar"></a>
         </template>
       </el-table-column>
-      <el-table-column prop="storeName" label="商品名称" />
+      <el-table-column prop="storeName" label="商品名称" width="300"/>
       <el-table-column prop="storeCategory.cateName" label="分类名称" />
       <el-table-column prop="price" label="商品价格" />
       <el-table-column prop="sales" label="销量" />
@@ -85,6 +85,7 @@
     </el-table>
     <!--分页组件-->
     <el-pagination
+      class="finance-pagination"
       :total="total"
       :current-page="page + 1"
       style="margin-top: 8px;"

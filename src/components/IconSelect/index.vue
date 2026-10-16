@@ -7,9 +7,8 @@
       </template>
     </el-input>
     <div class="icon-list">
-      <div v-for="(item, index) in iconList" :key="index" @click="selectedIcon(item)">
+      <div v-for="(item, index) in iconList" :key="index" :title="item" @click="selectedIcon(item)">
         <svg-icon :icon-class="item" style="height: 30px;width: 16px;" />
-        <span>{{ item }}</span>
       </div>
     </div>
   </div>
@@ -61,12 +60,7 @@ const reset = () => {
         cursor: pointer;
         width: 33%;
         float: left;
-      }
-      span {
-        display: inline-block;
-        vertical-align: -0.15em;
-        fill: currentColor;
-        overflow: hidden;
+        text-align: center;
       }
     }
   }

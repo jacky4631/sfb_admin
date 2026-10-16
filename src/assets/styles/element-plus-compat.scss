@@ -62,6 +62,35 @@
 }
 
 /**
+ * 弹窗内 inline 表单：还原 EU 的列间距，避免两列排版退化成一行一项
+ *
+ * EU: `.el-form--inline .el-form-item { display: inline-block; margin-right: 10px }`
+ * EP: 同一规则的 margin-right 变成了 32px。eladmin 的弹窗表单普遍是 width=580px +
+ * `:inline="true"`，单个 form-item 约 258px（label 80 + 控件 178），按 32px 间距排两项
+ * 合计 548px 已超出弹窗内容区宽度，于是「菜单标题/权限标识」「路由地址/菜单排序」这类
+ * 原本并排两列的字段被挤成各占一行。
+ */
+.el-form--inline .el-form-item.el-form-item {
+  margin-right: 10px;
+}
+
+.el-form--inline .el-form-item.el-form-item:last-child {
+  margin-right: 0;
+}
+
+/**
+ * 单选按钮组：对齐 EU 的 mini 档内边距
+ *
+ * 业务代码里 `<el-radio-group size="mini">` 迁移成了 `size="small"`（见本文件顶部说明），
+ * 但 EP 的 small 内边距是 5px 11px，比 EU mini 的 7px 15px 又小了一圈，
+ * 表现为「目录/菜单/按钮」「是/否」这类按钮组比原版窄、矮。
+ */
+.el-radio-button--small .el-radio-button__inner.el-radio-button__inner {
+  padding: 7px 15px;
+  font-size: 12px;
+}
+
+/**
  * 遗留样式降级了 EP 按钮的 flex 布局，导致图标与文字不在一行（文字偏下）
  *
  * eladmin.scss 里的 `.head-container .filter-item { display: inline-block }` 是为

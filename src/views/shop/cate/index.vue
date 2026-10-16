@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
+    <div class="head-container finance-filters">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
         <el-input v-model="query.cateName" clearable size="small" placeholder="输入分类名称搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
@@ -38,7 +38,7 @@
     </template>
 </el-dialog>
     <!--表格渲染-->
-    <el-table ref="table" v-loading="crud.loading" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" :data="crud.data" row-key="id" @select="crud.selectChange" @select-all="crud.selectAllChange" @selection-change="crud.selectionChangeHandler">
+    <el-table ref="table" class="finance-table" v-loading="crud.loading" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" :data="crud.data" row-key="id" @select="crud.selectChange" @select-all="crud.selectAllChange" @selection-change="crud.selectionChangeHandler">
       <el-table-column :selectable="checkboxT" type="selection" width="55" />
       <el-table-column v-if="columns.visible('cateName')" label="名称" prop="cateName" />
       <el-table-column v-if="columns.visible('pic')" label="图片" width="100" align="center" prop="pic">
