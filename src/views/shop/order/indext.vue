@@ -1,6 +1,7 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page order-page">
 
+    <div class="finance-filters order-status-filters">
     <el-tabs v-model="status" type="card" @tab-click="handleOrder">
       <el-tab-pane name="-9">
         <template #label><el-icon><List /></el-icon> 全部订单</template>
@@ -24,8 +25,9 @@
         <template #label><el-icon><Finished /></el-icon> 已退款</template>
       </el-tab-pane>
     </el-tabs>
+    </div>
     <!--工具栏-->
-    <div class="head-container">
+    <div class="head-container finance-filters">
       <!-- 搜索 -->
       <el-input v-model="query.value" clearable placeholder="输入搜索内容" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
       <el-select v-model="query.type" clearable placeholder="类型" class="filter-item" style="width: 130px">
@@ -52,7 +54,7 @@
     <editOrder ref="form3" :is-add="isAdd" />
     <eRemark ref="form4" :is-add="isAdd" />
     <!--表格渲染-->
-    <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
+    <el-table class="finance-table order-table" v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="storeName" label="所属门店" />
       <el-table-column prop="orderId" width="180" label="订单号">
         <template #default="scope">
@@ -171,6 +173,7 @@
     </el-table>
     <!--分页组件-->
     <el-pagination
+      class="finance-pagination"
       :total="total"
       :current-page="page + 1"
       style="margin-top: 8px;"

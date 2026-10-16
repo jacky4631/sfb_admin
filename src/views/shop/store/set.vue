@@ -1,5 +1,6 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
+    <div class="finance-settings">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="150px">
       <el-form-item label="开启门店自提">
         <el-radio v-model="form.store_self_mention" :value="1">开启</el-radio>
@@ -13,7 +14,7 @@
       </el-form-item>
 
     </el-form>
-
+    </div>
   </div>
 </template>
 

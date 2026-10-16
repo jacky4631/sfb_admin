@@ -136,6 +136,22 @@ body {
   margin: 0;
 }
 
+.app-container.finance-page .order-status-filters .el-tabs {
+  width: 100%;
+  margin: 0;
+}
+
+.app-container.finance-page .finance-settings {
+  flex: 1;
+  min-height: 0;
+  padding: 24px;
+  overflow: auto;
+  border: 1px solid #e8edf4;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(31, 45, 61, 0.04);
+}
+
 .app-container.finance-page .finance-table {
   flex: 1;
   width: 100%;

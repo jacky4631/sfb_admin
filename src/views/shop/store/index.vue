@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
+    <div class="head-container finance-filters">
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
@@ -65,8 +65,9 @@
         </div>
       </template>
 </el-dialog>
+    </div>
       <!--表格渲染-->
-      <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+      <el-table ref="table" class="finance-table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
         <el-table-column v-if="columns.visible('id')" prop="id" label="id" width="50" />
         <el-table-column v-if="columns.visible('name')" prop="name" label="门店名称" />
@@ -97,8 +98,7 @@
         </el-table-column>
       </el-table>
       <!--分页组件-->
-      <pagination />
-    </div>
+    <pagination class="finance-pagination" />
   </div>
 </template>
 
