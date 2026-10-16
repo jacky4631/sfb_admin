@@ -30,7 +30,9 @@ export function createVitePlugins() {
       dirs: ['src/components'],
       extensions: ['vue'],
       dts: 'src/types/auto-components.d.ts',
-      deep: true
+      deep: true,
+      // Crud 目录下组件均通过 @crud/xxx 别名显式导入，排除扫描避免与 Pagination 等同名冲突
+      globs: ['src/components/!(Crud)/**/*.vue']
     }),
     progress()
   ]
