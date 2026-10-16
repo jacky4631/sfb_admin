@@ -189,6 +189,17 @@ export default {
   },
   methods: {
     checkPermission,
+    // 列表按「排序」字段升序展示，树形结构的每一级子节点都递归排序
+    [CRUD.HOOK.afterRefresh]() {
+      this.sortBySort(this.crud.data)
+    },
+    sortBySort(list) {
+      if (!Array.isArray(list)) {
+        return
+      }
+      list.sort((a, b) => (a.sort || 0) - (b.sort || 0))
+      list.forEach(item => this.sortBySort(item.children))
+    },
     // 新增与编辑前做的操作
     [CRUD.HOOK.afterToCU](crud, form) {
       crudMenu.getMenusTree().then(res => {
@@ -196,6 +207,8 @@ export default {
         const menu = { id: 0, label: '顶级类目', children: [] }
         menu.children = res
         this.menus.push(menu)
+        // 上级类目下拉树与列表保持一致的排序规则
+        this.sortBySort(this.menus)
       })
     },
     // 选中图标
