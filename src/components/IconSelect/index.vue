@@ -23,7 +23,7 @@ defineOptions({
   name: 'IconSelect'
 })
 
-defineEmits(['selected'])
+const emit = defineEmits(['selected'])
 
 const name = ref('')
 const iconList = ref([...icons])
