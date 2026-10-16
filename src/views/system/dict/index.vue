@@ -59,11 +59,9 @@
           <el-table ref="dictTable" class="finance-table" size="small" v-loading="loading" :data="data" highlight-current-row style="width: 100%;" @current-change="handleCurrentChange">
             <el-table-column :show-overflow-tooltip="true" prop="name" label="字典名称" min-width="150" />
             <el-table-column :show-overflow-tooltip="true" prop="remark" label="描述" />
-            <el-table-column v-if="checkPermission(['admin','dict:edit','dict:del'])" class-name="table-action-column" label="操作" width="100px" align="center" fixed="right">
+            <el-table-column v-if="checkPermission(['admin','dict:edit','dict:del'])" class-name="table-icon-column" label="操作" width="100px" align="center" fixed="right">
               <template #default="scope">
-                <el-button v-permission="['admin','dict:edit']" size="small" type="primary" link class="table-text-action" @click.stop="showEditFormDialog(scope.row)">
-                  编辑
-                </el-button>
+                <el-button v-permission="['admin','dict:edit']" size="small" type="primary" class="table-icon-action" @click.stop="showEditFormDialog(scope.row)" aria-label="编辑" title="编辑"><el-icon><Edit /></el-icon></el-button>
                 <el-popover trigger="click"
                   :ref="scope.row.id"
                   placement="top"
@@ -75,9 +73,7 @@
                     <el-button :loading="delLoading" type="primary" size="small" @click="delMethod(scope.row.id)">确定</el-button>
                   </div>
                   <template #reference>
-                    <el-button v-permission="['admin','dict:del']" type="danger" size="small" link class="table-text-action" @click.stop>
-                      删除
-                    </el-button>
+                    <el-button v-permission="['admin','dict:del']" type="danger" size="small" class="table-icon-action" @click.stop aria-label="删除" title="删除"><el-icon><Delete /></el-icon></el-button>
                   </template>
                 </el-popover>
               </template>

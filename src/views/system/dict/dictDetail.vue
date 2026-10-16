@@ -37,11 +37,9 @@
         <el-table-column prop="label" label="字典标签" />
         <el-table-column prop="value" label="字典值" />
         <el-table-column prop="sort" label="排序" />
-        <el-table-column v-if="checkPermission(['admin','dict:edit','dict:del'])" class-name="table-action-column" label="操作" width="100px" align="center" fixed="right">
+        <el-table-column v-if="checkPermission(['admin','dict:edit','dict:del'])" class-name="table-icon-column" label="操作" width="100px" align="center" fixed="right">
           <template #default="scope">
-            <el-button v-permission="['admin','dict:edit']" size="small" type="primary" link class="table-text-action" @click="showEditFormDialog(scope.row)">
-              编辑
-            </el-button>
+            <el-button v-permission="['admin','dict:edit']" size="small" type="primary" class="table-icon-action" @click="showEditFormDialog(scope.row)" aria-label="编辑" title="编辑"><el-icon><Edit /></el-icon></el-button>
             <el-popover trigger="click"
               :ref="scope.row.id"
               placement="top"
@@ -53,9 +51,7 @@
                 <el-button :loading="delLoading" type="primary" size="small" @click="delMethod(scope.row.id)">确定</el-button>
               </div>
               <template #reference>
-                <el-button v-permission="['admin','dict:del']" type="danger" size="small" link class="table-text-action">
-                  删除
-                </el-button>
+                <el-button v-permission="['admin','dict:del']" type="danger" size="small" class="table-icon-action" aria-label="删除" title="删除"><el-icon><Delete /></el-icon></el-button>
               </template>
             </el-popover>
           </template>
