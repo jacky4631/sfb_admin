@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container finance-page system-page">
+  <div class="app-container finance-page system-page role-page">
     <!--工具栏-->
     <div class="head-container finance-filters">
       <div v-if="crud.props.searchToggle" class="tool-search">
@@ -70,7 +70,7 @@
             <el-table-column v-if="columns.visible('permission')" prop="permission" label="角色权限" />
             <el-table-column v-if="columns.visible('level')" prop="level" label="角色级别" />
             <el-table-column v-if="columns.visible('remark')" :show-overflow-tooltip="true" prop="remark" label="描述" />
-            <el-table-column v-if="columns.visible('createTime')" :show-overflow-tooltip="true" width="135px" prop="createTime" label="创建日期">
+            <el-table-column v-if="columns.visible('createTime')" :show-overflow-tooltip="true" width="180px" prop="createTime" label="创建日期">
               <template #default="scope">
                 <span>{{ parseTime(scope.row.createTime) }}</span>
               </template>

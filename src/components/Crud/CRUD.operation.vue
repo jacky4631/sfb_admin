@@ -81,6 +81,7 @@
             />
           </el-button>
         </template>
+        <div class="crud-column-options">
         <el-checkbox
           v-model="allColumnsSelected"
           :indeterminate="allColumnsSelectedIndeterminate"
@@ -96,6 +97,7 @@
         >
           {{ item.label }}
         </el-checkbox>
+        </div>
       </el-popover>
     </el-button-group>
   </div>
@@ -181,4 +183,17 @@ const toggleSearch = () => {
   .crud-opts .crud-opts-right {
     margin-left: auto;
   }
+</style>
+
+<style scoped>
+.crud-column-options {
+  display: flex;
+  flex-direction: column;
+  max-height: 360px;
+  overflow: auto;
+}
+.crud-column-options .el-checkbox {
+  flex: none;
+  margin-right: 0;
+}
 </style>

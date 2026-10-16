@@ -391,3 +391,91 @@ body {
     min-height: 420px;
   }
 }
+
+/* Separate system filters from bulk actions and keep utility buttons at right. */
+.app-container.system-page .finance-filters > .tool-search,
+.app-container.system-page .finance-filters > .crud-opts {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+}
+
+.app-container.system-page .finance-filters > .crud-opts {
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+}
+
+.system-page .crud-opts-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.system-page .crud-opts-left .el-button + .el-button {
+  margin-left: 0;
+}
+
+/* A short role list should end at its pagination, beside a scrollable menu tree. */
+.app-container.finance-page.role-page {
+  height: auto;
+  min-height: calc(100vh - 117px);
+  overflow: visible;
+}
+
+.role-page > .system-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 28%);
+  align-items: start;
+  gap: 15px;
+  flex: none;
+  margin: 0 !important;
+}
+
+.role-page > .system-grid > .el-col {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-width: 0;
+  padding: 0 !important;
+}
+
+.role-page .system-card {
+  flex: none;
+  min-width: 0;
+}
+
+.role-page .system-card > .el-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+}
+
+.role-page .system-card > .el-card__body {
+  flex: none;
+  min-width: 0;
+}
+
+.app-container.finance-page.role-page .finance-table {
+  flex: none;
+  height: auto;
+  min-height: 0;
+}
+
+.app-container.finance-page.role-page .finance-pagination {
+  justify-content: flex-start;
+}
+
+.role-page .system-card .el-tree {
+  max-height: calc(100vh - 325px);
+  min-height: 240px;
+  overflow: auto;
+}
+
+@media (max-width: 991px) {
+  .role-page > .system-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,4 +1,4 @@
-import { reactive, onMounted, onBeforeUnmount, provide, inject, ref, getCurrentInstance, hasInjectionContext } from 'vue'
+import { reactive, onMounted, onBeforeUnmount, provide, inject, ref, getCurrentInstance, hasInjectionContext, nextTick } from 'vue'
 import { initData, download } from '../../api/data.js'
 import { parseTime, downloadFile } from '../../utils/index.js'
 import { ElNotification } from 'element-plus'
@@ -575,8 +575,9 @@ function presenter(crudInstance) {
         if (idx !== -1) _crudStack.splice(idx, 1)
         crudInstance.unregisterVM(this)
       },
-      mounted() {
-        const columns = {}
+      async mounted() {
+        await nextTick()
+        const columns = reactive({})
         if (this.$refs.table && this.$refs.table.columns) {
           this.$refs.table.columns.forEach(e => {
             if (!e.property || e.type !== 'default') return
@@ -606,8 +607,10 @@ function presenter(crudInstance) {
   })
   const tableRef = ref(null)
 
-  onMounted(() => {
-    const cols = {}
+  onMounted(async () => {
+    // Element Plus registers table columns during the first render tick.
+    await nextTick()
+    const cols = reactive({})
     const host = hostInstance && hostInstance.proxy
     const table = tableRef.value || (host && (host.$refs.table || host.$refs.tableRef))
     if (table && table.columns) {
