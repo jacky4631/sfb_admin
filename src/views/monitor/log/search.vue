@@ -1,5 +1,5 @@
 <template>
-  <div v-if="crud.props.searchToggle">
+  <div v-if="crud.props.searchToggle" class="monitor-log-search">
     <el-input
       v-model="query.blurry"
       clearable
@@ -34,3 +34,19 @@ defineOptions({
   mixins: [header()]
 })
 </script>
+
+<style scoped>
+.monitor-log-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.monitor-log-search .date-item {
+  flex: none;
+  width: 350px;
+  max-width: 100%;
+  margin: 0;
+}
+</style>

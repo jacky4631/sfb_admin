@@ -1,5 +1,6 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
+    <div class="finance-settings">
     <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="150px">
       <el-form-item label="开启">
         <el-radio v-model="form.exp_enable" :value="1">开启</el-radio>
@@ -15,6 +16,7 @@
         <el-button type="primary" @click="doSubmit">提交</el-button>
       </el-form-item>
     </el-form>
+    </div>
   </div>
 </template>
 

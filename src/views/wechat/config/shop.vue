@@ -1,5 +1,6 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
+    <div class="finance-settings">
     <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="150px">
       <el-form-item label="移动端H5地址">
         <el-input v-model="form.site_url" style="width: 370px;" />
@@ -30,6 +31,7 @@
         <el-button type="primary" @click="doSubmit">提交</el-button>
       </el-form-item>
     </el-form>
+    </div>
   </div>
 </template>
 

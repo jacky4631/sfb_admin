@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
-    <div class="head-container">
-      <div v-if="crud.props.searchToggle">
+  <div class="app-container finance-page">
+    <div class="head-container finance-filters">
+      <div v-if="crud.props.searchToggle" class="monitor-search">
         <el-input v-model="query.filter" clearable size="small" placeholder="全表模糊搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <rrOperation :crud="crud" />
       </div>
@@ -21,7 +21,7 @@
       </crudOperation>
     </div>
     <!--表格渲染-->
-    <el-table ref="tableRef" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+    <el-table class="finance-table" size="small" ref="tableRef" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
       <el-table-column type="selection" width="55" />
       <el-table-column v-if="columns.visible('userName')" prop="userName" label="用户名" />
       <el-table-column v-if="columns.visible('nickName')" prop="nickName" label="用户昵称" />
@@ -54,7 +54,7 @@
       </el-table-column>
     </el-table>
     <!--分页组件-->
-    <pagination />
+    <pagination class="finance-pagination" />
   </div>
 </template>
 
@@ -127,3 +127,12 @@ const delMethod = (key, index) => {
   })
 }
 </script>
+
+<style scoped>
+.monitor-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+</style>

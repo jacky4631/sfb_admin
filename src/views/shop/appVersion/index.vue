@@ -1,9 +1,10 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
+    <div class="head-container finance-filters">
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission"/>
+    </div>
       <!--表单组件-->
       <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :model-value="crud.status.cu > 0"
                  :title="crud.status.title" width="550px" @close="crud.cancelCU">
@@ -45,7 +46,7 @@
       </template>
 </el-dialog>
       <!--表格渲染-->
-      <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;"
+      <el-table class="finance-table" ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;"
                 @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55"/>
         <el-table-column v-if="columns.visible('enable')" prop="enable" label="是否启用">
@@ -95,8 +96,7 @@
         </el-table-column>
       </el-table>
       <!--分页组件-->
-      <pagination/>
-    </div>
+      <pagination class="finance-pagination" />
   </div>
 </template>
 

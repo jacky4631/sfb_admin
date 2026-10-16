@@ -1,8 +1,8 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
-      <div v-if="crud.props.searchToggle">
+    <div class="head-container finance-filters">
+      <div v-if="crud.props.searchToggle" class="customer-search">
         <!-- 搜索 -->
         <el-input
           v-model="query.nickName"
@@ -25,6 +25,7 @@
       </div>
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
+    </div>
       <!--表单组件-->
       <el-dialog
         :close-on-click-modal="false"
@@ -80,6 +81,7 @@
 </el-dialog>
       <!--表格渲染-->
       <el-table
+        class="finance-table"
         ref="table"
         v-loading="crud.loading"
         :data="crud.data"
@@ -115,8 +117,7 @@
         </el-table-column>
       </el-table>
       <!--分页组件-->
-      <pagination />
-    </div>
+      <pagination class="finance-pagination" />
   </div>
 </template>
 
@@ -247,6 +248,13 @@ export default {
 </script>
 
 <style scoped>
+.customer-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
 .qrcode_img {
   width: 250px;
   height: 250px;

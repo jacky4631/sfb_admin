@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container">
-    <div class="head-container">
+  <div class="app-container finance-page">
+    <div class="head-container finance-filters">
       <Search />
       <crudOperation>
         <template #left>
@@ -18,7 +18,7 @@
       </crudOperation>
     </div>
     <!--表格渲染-->
-    <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+    <el-table class="finance-table" size="small" ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
       <el-table-column type="expand">
         <template #default="props">
           <el-form label-position="left" inline class="demo-table-expand">
@@ -51,7 +51,7 @@
       <pre v-highlightjs="errorInfo"><code class="java" /></pre>
     </el-dialog>
     <!--分页组件-->
-    <pagination />
+    <pagination class="finance-pagination" />
   </div>
 </template>
 
@@ -123,7 +123,8 @@ const confirmDelAll = () => {
   width: 100%;
 }
 .demo-table-expand .el-form-item__content {
-  font-size: 12px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
 }
 :deep(.el-dialog__body) {
   padding: 0 20px 10px 20px !important;
