@@ -424,11 +424,10 @@ function handleEditOrder(rowData) {
   isAdd.value = false
   const _this = form3.value
   if (_this) {
-    _this.form = {
+    _this.open({
       orderId: rowData.orderIdStr,
       uid: rowData.uid,
-    }
-    _this.dialog = true
+    })
   }
 }
 

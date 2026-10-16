@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '编辑'" width="500px">
+  <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" title="绑定用户" width="500px">
     <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="80px">
       <el-form-item label="订单号">
         <el-input v-model="form.orderId" :disabled="true" style="width: 370px;" />
@@ -18,8 +18,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
-import { ElNotification } from 'element-plus'
+import { ref, reactive, watch, nextTick } from 'vue'
+import { ElNotification, ElMessage } from 'element-plus'
 import { add, editOrder } from '@/api/mwStoreOrder.js'
 
 const props = defineProps({
@@ -51,6 +51,7 @@ function cancel() {
 }
 
 function doSubmit() {
+  if (loading.value) return
   loading.value = true
   if (props.isAdd) {
     doAdd()
@@ -99,7 +100,19 @@ function resetForm() {
   form.uid = ''
 }
 
+async function open(data) {
+  if (data.orderId === undefined || data.orderId === null || data.orderId === '') {
+    ElMessage.error('订单号为空，无法绑定用户')
+    return
+  }
+  Object.assign(form, { id: '', orderId: data.orderId, uid: data.uid ?? '' })
+  dialog.value = true
+  await nextTick()
+  formRef.value?.clearValidate()
+}
+
 defineExpose({
+  open,
   form,
   dialog
 })
