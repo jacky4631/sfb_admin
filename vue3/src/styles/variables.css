@@ -13,7 +13,8 @@
   --el-text-color-secondary: #909399;
   --el-text-color-placeholder: #c0c4cc;
 
-  --el-border-color-base: #dcdfe6;
+  --el-border-color: #dcdfe6;
+  --el-border-color-base: var(--el-border-color);
   --el-border-color-light: #e4e7ed;
   --el-border-color-lighter: #ebeef5;
   --el-border-color-extra-light: #f2f6fc;
@@ -28,11 +29,13 @@
   --app-content-padding: 20px;
   --top-tool-height: 50px;
   --tags-view-height: 35px;
+  --logo-height: 50px;
   --left-menu-bg-color: #001529;
   --left-menu-bg-light-color: #0f2438;
   --left-menu-text-color: #bfcbd9;
   --left-menu-text-active-color: #ffffff;
   --top-header-bg-color: #ffffff;
+  --top-header-text-color: #606266;
   --top-header-hover-color: #f6f6f6;
 
   --el-mask-color: rgba(255, 255, 255, 0.7);

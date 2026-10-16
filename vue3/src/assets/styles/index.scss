@@ -126,7 +126,7 @@ aside {
 
 //main-container全局样式
 .app-container {
-  padding: 20px 20px 45px 20px;
+  padding: var(--app-content-padding) var(--app-content-padding) 45px;
 }
 
 .main-container {

@@ -26,7 +26,7 @@ count().then((res) => {})
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-editor-container {
-  padding: 20px;
+  padding: var(--app-content-padding);
   background-color: var(--app-content-bg-color);
 }
 </style>
