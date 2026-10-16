@@ -17,6 +17,8 @@ import { setupElementPlus } from '@/plugins/elementPlus'
 import '@/styles/index.scss'
 // 引入布局等完整全局样式（sidebar / main-container / fixed-header 等）
 import '@/assets/styles/index.scss'
+// 引入自定义图标字体（装修等页面 iconfont 字形）
+import '@/assets/font_icon/iconfont.css'
 
 // 路由
 import router from '@/router'
