@@ -6,7 +6,7 @@
             <!-- 商品信息-->
           <el-col :span="24">
             <el-form-item label="选择商品：" prop="good">
-              <cgood v-model="form1.good" ></cgood>
+              <cgood :value="form1.good" ></cgood>
             </el-form-item>
           </el-col>
           <el-col :span="24">

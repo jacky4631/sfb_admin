@@ -3,7 +3,7 @@
     <el-form ref="form" :model="form" :rules="rules" :inline="true" size="small" label-width="140px">
       <el-col :span="24">
         <el-form-item label="选择商品：" prop="good">
-          <cgood v-model="form1.good" :disabled="true" ></cgood>
+          <cgood :value="form1.good" :disabled="true" ></cgood>
         </el-form-item>
       </el-col>
       <el-form-item label="砍价名称">
@@ -84,10 +84,10 @@
         </el-form-item>
       </el-col>
       <el-form-item label="砍价规则">
-        <editor v-model="form.rule" />
+        <editor v-model:value="form.rule" />
       </el-form-item>
       <el-form-item label="砍价详情">
-        <editor v-model="form.description" />
+        <editor v-model:value="form.description" />
       </el-form-item>
     </el-form>
     <template #footer>

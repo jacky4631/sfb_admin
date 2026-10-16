@@ -30,7 +30,7 @@
       <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :model-value="crud.status.cu > 0" :title="crud.status.title" width="800px">
         <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="140px">
           <el-form-item label="选择商品" prop="coverImgeUrl" >
-            <cgood v-model="form.good" :disabled="isdisabled" ></cgood>
+            <cgood :value="form.good" :disabled="isdisabled" ></cgood>
           </el-form-item>
           <el-form-item label="商品封面图：" prop="coverImgeUrl">
             <singlePic v-model="form.coverImgeUrl"  type="image" :num="1" :width="150" :height="150" />

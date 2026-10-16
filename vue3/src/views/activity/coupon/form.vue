@@ -8,7 +8,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="选择商品" v-if="form.type == 1">
-        <cgood v-model="form.product" @selectGoods="getGoods"></cgood>
+        <cgood :value="form.product" @selectGoods="getGoods"></cgood>
       </el-form-item>
       <el-form-item label="优惠券名称">
         <el-input v-model="form.title" style="width: 300px;" />
