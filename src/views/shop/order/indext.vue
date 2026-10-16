@@ -100,7 +100,7 @@
           <span>{{ formatTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="200" align="center" fixed="right">
+      <el-table-column class-name="verify-order-actions" v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="240" align="center" fixed="right">
         <template #default="scope">
           <el-button
             v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
@@ -571,5 +571,17 @@ export default {
 </script>
 
 <style scoped>
-
+:deep(.verify-order-actions .cell) {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+:deep(.verify-order-actions .cell > .el-button),
+:deep(.verify-order-actions .cell > .el-dropdown) {
+  flex: none;
+  margin: 0;
+}
 </style>
