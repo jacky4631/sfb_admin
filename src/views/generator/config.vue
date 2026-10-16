@@ -7,6 +7,7 @@
             <span class="role-span">字段配置：{{ tableName }}</span>
             <el-button
               :loading="genLoading"
+              :disabled="!columnsReady || loading"
               :icon="Promotion"
               size="small"
               style="float: right; padding: 6px 9px;"
@@ -15,6 +16,7 @@
             >保存&生成</el-button>
             <el-button
               :loading="columnLoading"
+              :disabled="!columnsReady || loading"
               :icon="Check"
               size="small"
               style="float: right; padding: 6px 9px;margin-right: 9px"
@@ -28,7 +30,7 @@
                 size="small"
                 style="float: right; padding: 6px 9px;"
                 type="info"
-                @click="sync"
+                @click="syncColumns"
               >同步</el-button>
             </el-tooltip>
           </template>
@@ -174,9 +176,8 @@
 import { Check, Refresh, Promotion } from '@element-plus/icons-vue'
 import { ref, reactive, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import crud from '@/mixins/crud.js'
 import { update, get } from '@/api/generator/genConfig.js'
-import { save, sync, generator } from '@/api/generator/generator.js'
+import { save, sync, generator, getColumns } from '@/api/generator/generator.js'
 import { getDicts } from '@/api/system/dict.js'
 import { ElMessage } from 'element-plus'
 
@@ -231,21 +232,20 @@ const rules = {
   ]
 }
 
-// Mixin properties - extracted from crud mixin
 const data = ref([])
-
-// Mixin methods
-const beforeInit = () => {
-  return true
-}
-
-const init = () => {
-  // This would typically refresh data
+const columnsReady = ref(false)
+const init = async () => {
   loading.value = true
-  // Simulate loading
-  setTimeout(() => {
+  columnsReady.value = false
+  try {
+    const result = await getColumns(tableName.value)
+    data.value = result.content
+    columnsReady.value = true
+  } catch (err) {
+    ElMessage.error(err.response?.data?.message || '字段配置加载失败，请重试')
+  } finally {
     loading.value = false
-  }, 100)
+  }
 }
 
 const notify = (message, type) => {
@@ -263,22 +263,27 @@ onMounted(() => {
     init()
     get(tableName.value).then(resData => {
       Object.assign(form, resData)
-      form.cover = form.cover.toString()
+      form.cover = String(form.cover ?? false)
+    }).catch(err => {
+      ElMessage.error(err.response?.data?.message || '生成配置加载失败，请重试')
     })
     getDicts().then(resData => {
       dicts.value = resData
+    }).catch(err => {
+      ElMessage.error(err.response?.data?.message || '字典加载失败，请重试')
     })
   })
 })
 
 const saveColumnConfig = () => {
+  if (!columnsReady.value || loading.value || columnLoading.value) return
   columnLoading.value = true
   save(data.value).then(() => {
     notify('保存成功', 'success')
     columnLoading.value = false
   }).catch(err => {
     columnLoading.value = false
-    console.log(err.response?.data?.message)
+    ElMessage.error(err.response?.data?.message || '操作失败，请重试')
   })
 }
 
@@ -290,11 +295,11 @@ const doSubmit = () => {
       update(form).then(res => {
         notify('保存成功', 'success')
         Object.assign(form, res)
-        form.cover = form.cover.toString()
+        form.cover = String(form.cover ?? false)
         configLoading.value = false
       }).catch(err => {
         configLoading.value = false
-        console.log(err.response?.data?.message)
+        ElMessage.error(err.response?.data?.message || '操作失败，请重试')
       })
     }
   })
@@ -306,12 +311,14 @@ const syncColumns = () => {
     init()
     notify('同步成功', 'success')
     syncLoading.value = false
-  }).catch(() => {
+  }).catch(err => {
     syncLoading.value = false
+    ElMessage.error(err.response?.data?.message || '同步失败，请重试')
   })
 }
 
 const toGen = () => {
+  if (!columnsReady.value || loading.value || genLoading.value) return
   genLoading.value = true
   save(data.value).then(() => {
     notify('保存成功', 'success')
@@ -321,11 +328,11 @@ const toGen = () => {
       notify('生成成功', 'success')
     }).catch(err => {
       genLoading.value = false
-      console.log(err.response?.data?.message)
+      ElMessage.error(err.response?.data?.message || '操作失败，请重试')
     })
   }).catch(err => {
     genLoading.value = false
-    console.log(err.response?.data?.message)
+    ElMessage.error(err.response?.data?.message || '操作失败，请重试')
   })
 }
 

@@ -49,7 +49,7 @@
           <span>{{ scope.row.createTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWSTORECOUPON_ALL','MWSTORECOUPON_EDIT','MWSTORECOUPON_DELETE'])" width="200" label="操作" align="center">
+      <el-table-column class-name="table-dropdown-actions" v-if="checkPermission(['admin','MWSTORECOUPON_ALL','MWSTORECOUPON_EDIT','MWSTORECOUPON_DELETE'])" width="240" label="操作" align="center">
         <template #default="scope">
           <el-button
             v-permission="['admin','MWSTORECOUPON_ALL','MWSTORECOUPON_EDIT']"
@@ -63,12 +63,12 @@
             操作
             <template #dropdown><el-dropdown-menu>
               <el-dropdown-item>
-                <el-button title="编辑" aria-label="编辑" class="table-icon-action"
+                <el-button title="编辑" aria-label="编辑"
                   v-permission="['admin','MWSTORECOUPON_ALL','MWSTORECOUPON_EDIT']"
                   size="small"
                   type="primary"
                   @click="edit(scope.row)"
-                ><el-icon><Edit /></el-icon></el-button>
+                ><el-icon><Edit /></el-icon>编辑</el-button>
               </el-dropdown-item>
               <el-dropdown-item>
                 <el-popover trigger="click"
@@ -81,7 +81,7 @@
                     <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
                     <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
                   </div>
-                  <template #reference><el-button title="删除" aria-label="删除" class="table-icon-action" v-permission="['admin','MWSTORECOUPON_ALL','MWSTORECOUPON_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon></el-button></template>
+                  <template #reference><el-button title="删除" aria-label="删除"  v-permission="['admin','MWSTORECOUPON_ALL','MWSTORECOUPON_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon>删除</el-button></template>
                 </el-popover>
               </el-dropdown-item>
             </el-dropdown-menu>

@@ -31,3 +31,7 @@ export function sync(tables) {
   })
 }
 
+
+export function getColumns(tableName) {
+  return request({ url: 'api/generator/columns', method: 'get', params: { tableName } })
+}

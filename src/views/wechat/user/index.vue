@@ -15,7 +15,7 @@
       </div>
     </div>
     <!--表单组件-->
-    <eForm ref="formRef" :is-add="isAdd" />
+    <eForm ref="formRef" :is-add="isAdd" @refresh="handleSaved" />
     <!--表格渲染-->
     <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="uid" label="微信用户id" />
@@ -46,13 +46,13 @@
         <template #default="scope">
           <el-button title="编辑" aria-label="编辑" class="table-icon-action" v-permission="['admin','MWWECHATUSER_ALL','MWWECHATUSER_EDIT']" size="small" type="primary" :icon="Icons.Edit" @click="edit(scope.row)" />
           <el-popover trigger="click"
-            :ref="scope.row.uid"
+            :ref="el => setPopoverRef(scope.row.uid, el)"
             placement="top"
             width="180"
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="small" link @click="$refs[scope.row.uid].hide()">取消</el-button>
+              <el-button size="small" link @click="hidePopover(scope.row.uid)">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.uid)">确定</el-button>
             </div>
             <template #reference>
@@ -64,6 +64,7 @@
     </el-table>
     <!--分页组件-->
     <el-pagination
+      :page-size="size"
       :total="total"
       :current-page="page + 1"
       style="margin-top: 8px;"
@@ -75,11 +76,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { ElNotification } from 'element-plus'
+import { ref, onMounted, onActivated } from 'vue'
+import { ElNotification, ElMessage } from 'element-plus'
 import checkPermission from '@/utils/permission.js'
 import { del } from '@/api/mwWechatUser.js'
 import eForm from './form.vue'
+import { initData } from '@/api/data.js'
 import * as Icons from '@element-plus/icons-vue'
 
 const loading = ref(false)
@@ -89,31 +91,42 @@ const page = ref(0)
 const size = ref(10)
 const total = ref(0)
 const data = ref([])
-const url = ref('')
-const params = ref({})
 const formRef = ref(null)
 
-const init = () => {
+let requestVersion = 0
+const init = async () => {
+  const version = ++requestVersion
   loading.value = true
-  // Simulate fetching data - replace with actual API call
-  loading.value = false
+  try {
+    const result = await initData('api/mwWechatUser', { page: page.value, size: size.value, sort: 'uid,desc' })
+    if (version !== requestVersion) return
+    data.value = result.content
+    total.value = result.totalElements
+  } catch (err) {
+    if (version === requestVersion) ElMessage.error(err.response?.data?.message || '列表加载失败，请重试')
+  } finally {
+    if (version === requestVersion) loading.value = false
+  }
 }
-
-const beforeInit = () => {
-  url.value = 'api/mwWechatUser'
-  const sort = 'uid,desc'
-  params.value = { page: page.value, size: size.value, sort: sort }
-  return true
-}
-
-onMounted(() => {
+const handleSaved = () => { page.value = 0; init() }
+onMounted(init)
+let firstActivation = true
+onActivated(() => {
+  if (firstActivation) { firstActivation = false; return }
   init()
 })
+const popoverRefs = new Map()
+const setPopoverRef = (id, el) => {
+  if (el) popoverRefs.set(id, el)
+  else popoverRefs.delete(id)
+}
+const hidePopover = id => popoverRefs.get(id)?.hide()
 
 const subDelete = (uid) => {
   delLoading.value = true
   del(uid).then(res => {
     delLoading.value = false
+    hidePopover(uid)
     dleChangePage()
     init()
     ElNotification({
@@ -123,59 +136,32 @@ const subDelete = (uid) => {
     })
   }).catch(err => {
     delLoading.value = false
-    console.log(err.response?.data?.message || err.message)
+    ElMessage.error(err.response?.data?.message || '删除失败，请重试')
   })
 }
 
 const add = () => {
   isAdd.value = true
-  formRef.value.dialog = true
+  formRef.value.open()
 }
-
-const edit = (rowData) => {
+const edit = row => {
   isAdd.value = false
-  const _this = formRef.value
-  _this.form = {
-    uid: rowData.uid,
-    unionid: rowData.unionid,
-    openid: rowData.openid,
-    routineOpenid: rowData.routineOpenid,
-    nickname: rowData.nickname,
-    headimgurl: rowData.headimgurl,
-    sex: rowData.sex,
-    city: rowData.city,
-    language: rowData.language,
-    province: rowData.province,
-    country: rowData.country,
-    remark: rowData.remark,
-    groupid: rowData.groupid,
-    tagidList: rowData.tagidList,
-    subscribe: rowData.subscribe,
-    subscribeTime: rowData.subscribeTime,
-    addTime: rowData.addTime,
-    stair: rowData.stair,
-    second: rowData.second,
-    orderStair: rowData.orderStair,
-    orderSecond: rowData.orderSecond,
-    nowMoney: rowData.nowMoney,
-    sessionKey: rowData.sessionKey,
-    userType: rowData.userType
-  }
-  _this.dialog = true
+  formRef.value.open(row)
 }
 
 const sizeChange = (val) => {
   size.value = val
+  page.value = 0
   init()
 }
 
 const pageChange = (val) => {
-  page.value = val
+  page.value = val - 1
   init()
 }
 
 const dleChangePage = () => {
-  if (total.value % size.value === 0) {
+  if (data.value.length === 1 && page.value > 0) {
     page.value = Math.max(0, page.value - 1)
   }
 }

@@ -187,7 +187,7 @@ export default {
 
 <style scoped>
 .app-container.finance-page.dict-page {
-  height: calc(100vh - 117px);
+  height: var(--app-page-height, calc(100vh - 117px));
   min-height: 480px;
   overflow: hidden;
 }
@@ -252,7 +252,7 @@ export default {
 @media (max-width: 1100px) {
   .app-container.finance-page.dict-page {
     height: auto;
-    min-height: calc(100vh - 117px);
+    min-height: var(--app-page-height, calc(100vh - 117px));
     overflow: visible;
   }
   .dict-page > .system-grid { grid-template-columns: minmax(0, 1fr); flex: none; }

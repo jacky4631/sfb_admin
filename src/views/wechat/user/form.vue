@@ -81,8 +81,8 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { ElNotification } from 'element-plus'
+import { ref, reactive, nextTick } from 'vue'
+import { ElNotification, ElMessage } from 'element-plus'
 import { add, edit } from '@/api/mwWechatUser.js'
 
 const props = defineProps({
@@ -131,6 +131,7 @@ const cancel = () => {
 }
 
 const doSubmit = () => {
+  if (loading.value) return
   loading.value = true
   if (props.isAdd) {
     doAdd()
@@ -149,7 +150,7 @@ const doAdd = () => {
     emit('refresh')
   }).catch(err => {
     loading.value = false
-    console.log(err.response?.data?.message || err.message)
+    ElMessage.error(err.response?.data?.message || '保存失败，请重试')
   })
 }
 
@@ -165,40 +166,28 @@ const doEdit = () => {
     emit('refresh')
   }).catch(err => {
     loading.value = false
-    console.log(err.response?.data?.message || err.message)
+    ElMessage.error(err.response?.data?.message || '保存失败，请重试')
   })
 }
 
+const defaultForm = JSON.parse(JSON.stringify(form))
 const resetForm = () => {
   dialog.value = false
-  formRef.value?.resetFields()
-  Object.assign(form, {
-    uid: '',
-    unionid: '',
-    openid: '',
-    routineOpenid: '',
-    nickname: '',
-    headimgurl: '',
-    sex: '',
-    city: '',
-    language: '',
-    province: '',
-    country: '',
-    remark: '',
-    groupid: '',
-    tagidList: '',
-    subscribe: '',
-    subscribeTime: '',
-    addTime: '',
-    stair: '',
-    second: '',
-    orderStair: '',
-    orderSecond: '',
-    nowMoney: '',
-    sessionKey: '',
-    userType: ''
-  })
+  for (const key of Object.keys(form)) delete form[key]
+  Object.assign(form, JSON.parse(JSON.stringify(defaultForm)))
+  formRef.value?.clearValidate()
 }
+
+const open = async (row = null) => {
+  resetForm()
+  if (row) Object.assign(form, JSON.parse(JSON.stringify(row)))
+  dialog.value = true
+  await nextTick()
+  formRef.value?.clearValidate()
+}
+
+defineExpose({ open })
+
 </script>
 
 <style scoped>

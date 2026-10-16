@@ -128,7 +128,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="200" align="center" fixed="right">
+        <el-table-column class-name="table-dropdown-actions" v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="240" align="center" fixed="right">
           <template #default="scope">
             <el-button
               v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
@@ -153,7 +153,7 @@
                         <el-button :loading="delLoading" type="primary" size="small" @click="subDelete([scope.row.tradeParentId])">确定</el-button>
                       </div>
                       <template #reference>
-                        <el-button title="删除" aria-label="删除" class="table-icon-action" v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_DELETE']" type="danger" :icon="Delete" size="small"></el-button>
+                        <el-button title="删除" aria-label="删除"  v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_DELETE']" type="danger" :icon="Delete" size="small">删除</el-button>
                       </template>
                     </el-popover>
                   </el-dropdown-item>
@@ -510,7 +510,7 @@ function downloadMethod() {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    height: calc(100vh - 117px);
+    height: var(--app-page-height, calc(100vh - 117px));
     box-sizing: border-box;
     padding: 12px;
     background: #f4f6f9;
@@ -621,7 +621,7 @@ function downloadMethod() {
   .order-page .footer-contains { width: 100% !important; max-width: none !important; }
 
   @media (max-width: 768px) {
-    .order-page { height: auto; min-height: calc(100vh - 117px); padding: 10px; }
+    .order-page { height: auto; min-height: var(--app-page-height, calc(100vh - 117px)); padding: 10px; }
     .order-page .order-content { overflow: visible; }
     .order-page :deep(.order-table) { min-height: 420px; }
     .order-page .footer-contains { flex-wrap: wrap; gap: 8px; padding: 10px; }

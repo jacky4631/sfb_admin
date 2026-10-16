@@ -64,7 +64,7 @@
           </div>
           <div class="menu-editor-footer">
             <span>编辑完成后保存发布至公众号</span>
-            <el-button type="primary" @click="submit">保存发布</el-button>
+            <el-button type="primary" :loading="publishing" @click="submit">保存发布</el-button>
           </div>
         </div>
       </div>
@@ -78,7 +78,7 @@ import { ElMessage } from 'element-plus'
 import { del, add, get } from '@/api/mwWechatMenu.js'
 import eForm from './form.vue'
 
-const delLoading = ref(false)
+const publishing = ref(false)
 const menus = ref([])
 const checkedMenu = ref({
   type: 'click',
@@ -196,6 +196,7 @@ const check = () => {
 }
 
 const submit = () => {
+  if (publishing.value) return
   if (!check()) return false
   if (!menus.value.length) {
     ElMessage({
@@ -205,11 +206,13 @@ const submit = () => {
     })
     return false
   }
-  add({ buttons: menus.value }).then(function(res) {
-    console.log(555)
-    ElMessage({ message: '添加成功', type: 'success' })
-  }).catch(function(err) {
-    // ElMessage.error('错了哦，这是一条错误消息');
+  publishing.value = true
+  return add({ buttons: JSON.parse(JSON.stringify(menus.value)) }).then(() => {
+    ElMessage.success('菜单发布成功')
+  }).catch(err => {
+    ElMessage.error(err.response?.data?.message || '菜单发布失败，请重试')
+  }).finally(() => {
+    publishing.value = false
   })
 }
 </script>

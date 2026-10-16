@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container" style="position: relative; height: calc(100vh - 117px);">
+  <div class="app-container" style="position: relative; height: var(--app-page-height, calc(100vh - 117px));">
     <div class="container">
       <!--工具栏-->
       <div class="head-container">

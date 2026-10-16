@@ -149,7 +149,7 @@
             <span>{{ formatTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column class-name="table-icon-column" v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="200" align="center" fixed="right">
+        <el-table-column class-name="table-dropdown-actions" v-if="checkPermission(['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT','MWSTOREORDER_DELETE'])" label="操作" width="240" align="center" fixed="right">
           <template #default="scope">
             <el-button
               v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_EDIT']"
@@ -218,7 +218,7 @@
                       <el-button size="small" link @click="$refs[scope.row.id].hide()">取消</el-button>
                       <el-button :loading="delLoading" type="primary" size="small" @click="subDelete(scope.row.id)">确定</el-button>
                     </div>
-                    <template #reference><el-button title="删除" aria-label="删除" class="table-icon-action" v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon></el-button></template>
+                    <template #reference><el-button title="删除" aria-label="删除"  v-permission="['admin','MWSTOREORDER_ALL','MWSTOREORDER_DELETE']" type="danger" size="small"><el-icon><Delete /></el-icon>删除</el-button></template>
                   </el-popover>
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -868,7 +868,7 @@ import { ElNotification, ElMessage } from 'element-plus'
     }
   }
 
-  .order-page { display:flex; flex-direction:column; gap:10px; height:calc(100vh - 117px); box-sizing:border-box; padding:12px; background:#f4f6f9; }
+  .order-page { display:flex; flex-direction:column; gap:10px; height:var(--app-page-height, calc(100vh - 117px)); box-sizing:border-box; padding:12px; background:#f4f6f9; }
   .order-page .order-content { position:static; display:flex; flex:1; flex-direction:column; gap:10px; width:100%; height:auto; min-height:0; overflow:hidden; }
   .order-page :deep(.order-tabs), .order-page .order-filters, .order-page .order-summary, .order-page :deep(.order-table) { background:#fff; border:1px solid #e8edf4; border-radius:10px; box-shadow:0 2px 8px rgba(31,45,61,.04); }
   .order-page :deep(.order-tabs) { flex:none; margin:0; padding:0 12px; }
@@ -892,5 +892,5 @@ import { ElNotification, ElMessage } from 'element-plus'
   .order-page .order-content,
   .order-page .footer-contains { width: 100% !important; max-width: none !important; }
 
-  @media (max-width:768px) { .order-page{height:auto;min-height:calc(100vh - 117px);padding:10px}.order-page .order-content{overflow:visible}.order-page :deep(.order-table){min-height:420px}.order-page .footer-contains{flex-wrap:wrap;gap:8px;padding:10px} }
+  @media (max-width:768px) { .order-page{height:auto;min-height:var(--app-page-height, calc(100vh - 117px));padding:10px}.order-page .order-content{overflow:visible}.order-page :deep(.order-table){min-height:420px}.order-page .footer-contains{flex-wrap:wrap;gap:8px;padding:10px} }
 </style>

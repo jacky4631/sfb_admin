@@ -154,7 +154,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column v-if="checkPermission(['admin','MWUSER_ALL','MWUSER_EDIT','MWUSER_DELETE'])" label="操作" width="315" align="center" fixed="right">
+      <el-table-column class-name="table-dropdown-actions" v-if="checkPermission(['admin','MWUSER_ALL','MWUSER_EDIT','MWUSER_DELETE'])" label="操作" width="315" align="center" fixed="right">
         <template #default="scope">
           <el-button
             v-permission="['admin','MWUSER_ALL','MWUSER_EDIT']"

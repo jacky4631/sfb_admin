@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main">
+  <section class="app-main" :style="pageStyle">
     <router-view v-slot="{ Component }">
       <keep-alive :include="cachedViews">
         <component v-if="Component" :is="Component" :key="key" />
@@ -28,6 +28,9 @@ const route = useRoute()
 const cachedViews = computed(() => tagsViewStore.cachedViews || [])
 const key = computed(() => route.path)
 const showFooter = computed(() => settingsStore.showFooter)
+const pageStyle = computed(() => ({
+  '--app-page-height': `calc(100vh - var(--top-tool-height) - ${settingsStore.tagsView ? 'var(--tags-view-height)' : '0px'} - ${settingsStore.showFooter ? '33px' : '0px'})`
+}))
 const footerTxt = computed(() => settingsStore.footerTxt)
 const caseNumber = computed(() => settingsStore.caseNumber)
 </script>

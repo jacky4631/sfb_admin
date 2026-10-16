@@ -92,7 +92,7 @@ body {
   gap: 10px;
   width: 100% !important;
   max-width: none !important;
-  height: calc(100vh - 117px);
+  height: var(--app-page-height, calc(100vh - 117px));
   min-height: 420px;
   padding: 12px;
   overflow: hidden;
@@ -210,7 +210,7 @@ body {
 @media (max-width: 768px) {
   .app-container.finance-page {
     height: auto;
-    min-height: calc(100vh - 117px);
+    min-height: var(--app-page-height, calc(100vh - 117px));
     overflow: visible;
     padding: 10px;
   }
@@ -374,7 +374,7 @@ body {
 @media (max-width: 991px) {
   .app-container.finance-page.system-page {
     height: auto;
-    min-height: calc(100vh - 117px);
+    min-height: var(--app-page-height, calc(100vh - 117px));
     overflow: visible;
   }
 
@@ -453,7 +453,7 @@ body {
 /* A short role list should end at its pagination, beside a scrollable menu tree. */
 .app-container.finance-page.role-page {
   height: auto;
-  min-height: calc(100vh - 117px);
+  min-height: var(--app-page-height, calc(100vh - 117px));
   overflow: visible;
 }
 
@@ -563,4 +563,19 @@ body {
 .el-button.table-icon-action .el-icon {
   margin: 0;
   font-size: 14px;
+}
+
+/* A dropdown action group is a single row, separate from icon-only controls. */
+.el-table .table-dropdown-actions .cell {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.el-table .table-dropdown-actions .cell > .el-button,
+.el-table .table-dropdown-actions .cell > .el-dropdown {
+  flex: none;
+  margin: 0;
 }

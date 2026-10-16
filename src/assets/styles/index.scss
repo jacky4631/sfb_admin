@@ -23,26 +23,28 @@ body {
 
 // Keep content typography at the same readable baseline as TSQ Admin while
 // preserving the compact control heights used by the migrated Vue 3 screens.
-.app-main {
+.app-main,
+.el-dialog,
+.el-drawer {
   font-size: 14px;
 }
 
-.app-main .el-button.el-button--small {
+:is(.app-main, .el-dialog, .el-drawer) .el-button.el-button--small {
   font-size: 14px;
 }
 
-.app-main .el-input.el-input--small,
-.app-main .el-select--small .el-select__wrapper.el-select__wrapper,
-.app-main .el-pagination.el-pagination {
+:is(.app-main, .el-dialog, .el-drawer) .el-input.el-input--small,
+:is(.app-main, .el-dialog, .el-drawer) .el-select--small .el-select__wrapper.el-select__wrapper,
+:is(.app-main, .el-dialog, .el-drawer) .el-pagination.el-pagination {
   font-size: 14px;
 }
 
-.app-main .el-table.el-table--small,
-.app-main .el-table .cell {
+:is(.app-main, .el-dialog, .el-drawer) .el-table.el-table--small,
+:is(.app-main, .el-dialog, .el-drawer) .el-table .cell {
   font-size: 14px;
 }
 
-.app-main .el-tag.el-tag--small {
+:is(.app-main, .el-dialog, .el-drawer) .el-tag.el-tag--small {
   font-size: 14px;
 }
 
