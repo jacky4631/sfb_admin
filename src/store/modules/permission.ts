@@ -3,14 +3,14 @@ import { constantRouterMap } from '@/router/routers.js'
 import Layout from '@/layout/index.vue'
 
 interface PermissionState {
-  routes: any[]
+  routers: any[]
   addRouters: any[]
   loadMenus: boolean
 }
 
 export const usePermissionStore = defineStore('permission', {
   state: (): PermissionState => ({
-    routes: constantRouterMap,
+    routers: constantRouterMap,
     addRouters: [],
     loadMenus: true
   }),
@@ -18,7 +18,7 @@ export const usePermissionStore = defineStore('permission', {
     GenerateRoutes(asyncRouter: any[]) {
       return new Promise(resolve => {
         this.addRouters = asyncRouter
-        this.routes = [...constantRouterMap, ...asyncRouter]
+        this.routers = [...constantRouterMap, ...asyncRouter]
         this.loadMenus = false
         resolve()
       })

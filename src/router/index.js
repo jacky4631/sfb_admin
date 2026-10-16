@@ -48,14 +48,18 @@ router.beforeEach((to, from, next) => {
       NProgress.done()
     } else {
       const userStore = useUserStore()
-      if (userStore.roles && userStore.roles.length === 0) {
-        userStore.GetInfo().then(res => {
-          loadMenus(next, to)
-        }).catch((err) => {
-          console.log(err)
-          userStore.FedLogOut()
-          location.reload()
-        })
+      const permissionStore = usePermissionStore()
+      if (permissionStore.loadMenus) {
+        const fetchMenus = () => loadMenus(next, to)
+        if (userStore.roles && userStore.roles.length > 0) {
+          fetchMenus()
+        } else {
+          userStore.GetInfo().then(fetchMenus).catch((err) => {
+            console.log(err)
+            userStore.FedLogOut()
+            location.reload()
+          })
+        }
       } else {
         next()
       }

@@ -31,7 +31,7 @@ import { highlightjs } from '@/directives/highlightjs'
 import dict from '@/components/Dict'
 
 // 按钮权限指令 v-permission
-import permission from '@/components/Permission/index.vue'
+import permission from '@/components/Permission/index.js'
 
 import { createApp } from 'vue'
 
