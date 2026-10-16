@@ -5,7 +5,7 @@
         <el-input v-model="form.orderId" :disabled="true" style="width: 370px;" />
       </el-form-item>
       <el-form-item label="订单备注">
-        <el-input v-model="form.remark" style="width: 370px;" rows="5" type="textarea" />
+        <el-input v-model="form.remark" style="width: 370px;" :rows="5" type="textarea" />
       </el-form-item>
     </el-form>
     <template #footer><div class="dialog-footer">

@@ -289,7 +289,7 @@
                        @selected="onSelectRegion"></v-distpicker>
        </el-form-item>
        <el-form-item label="详细地址：">
-         <el-input v-model="receiverInfo.receiverDetailAddress" type="textarea" rows="3">
+         <el-input v-model="receiverInfo.receiverDetailAddress" type="textarea" :rows="3">
          </el-input>
        </el-form-item>
      </el-form>
@@ -348,7 +348,7 @@
       <el-form :model="closeInfo"
                label-width="150px">
         <el-form-item label="操作备注：">
-          <el-input v-model="closeInfo.note" type="textarea" rows="3">
+          <el-input v-model="closeInfo.note" type="textarea" :rows="3">
           </el-input>
         </el-form-item>
       </el-form>
@@ -365,7 +365,7 @@
       <el-form :model="markInfo"
                label-width="150px">
         <el-form-item label="操作备注：">
-          <el-input v-model="markInfo.note" type="textarea" rows="3">
+          <el-input v-model="markInfo.note" type="textarea" :rows="3">
           </el-input>
         </el-form-item>
       </el-form>

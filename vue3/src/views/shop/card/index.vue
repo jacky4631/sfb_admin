@@ -16,8 +16,6 @@
         @click="toQuery"
       ><el-icon><Refresh /></el-icon>刷新</el-button>
     </div>
-    <!--表单组件-->
-    <detail ref="formd" />
     <!--表格渲染-->
     <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="uid" label="用户id" />

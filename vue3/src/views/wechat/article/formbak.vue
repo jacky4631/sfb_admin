@@ -11,7 +11,7 @@
         <MaterialList v-model="form.imageArr" style="width: 370px" type="image" :num="1" :width="150" :height="150" />
       </el-form-item>
       <el-form-item label="简介">
-        <el-input v-model="form.synopsis" style="width: 370px;" rows="5" type="textarea" />
+        <el-input v-model="form.synopsis" style="width: 370px;" :rows="5" type="textarea" />
       </el-form-item>
       <el-form-item label="正文">
         <!--<editor v-model="form.content" />-->

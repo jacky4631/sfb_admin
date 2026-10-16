@@ -46,7 +46,7 @@
           <el-tree-select v-model="form.depts" :data="depts" multiple style="width: 380px" placeholder="请选择" />
         </el-form-item>
         <el-form-item label="描述信息" prop="remark">
-          <el-input v-model="form.remark" style="width: 380px;" rows="5" type="textarea" />
+          <el-input v-model="form.remark" style="width: 380px;" :rows="5" type="textarea" />
         </el-form-item>
       </el-form>
       <template #footer>

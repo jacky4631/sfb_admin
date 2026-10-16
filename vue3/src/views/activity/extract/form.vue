@@ -12,7 +12,7 @@
         <el-radio v-model="form.status" :label="1">通过</el-radio>
       </el-form-item>
       <el-form-item label="无效原因">
-        <el-input v-model="form.failMsg" style="width: 300px;" rows="5" type="textarea" />
+        <el-input v-model="form.failMsg" style="width: 300px;" :rows="5" type="textarea" />
       </el-form-item>
     </el-form>
     <template #footer><div class="dialog-footer">

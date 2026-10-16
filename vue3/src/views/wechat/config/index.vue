@@ -39,7 +39,7 @@
         <el-input v-model="form.wechat_share_title" style="width: 370px;" />
       </el-form-item>
       <el-form-item label="微信分享简介">
-        <el-input v-model="form.wechat_share_synopsis" style="width: 370px;" rows="5" type="textarea" />
+        <el-input v-model="form.wechat_share_synopsis" style="width: 370px;" :rows="5" type="textarea" />
       </el-form-item>
       <el-form-item label="">
         <el-button type="primary" @click="doSubmit">提交</el-button>

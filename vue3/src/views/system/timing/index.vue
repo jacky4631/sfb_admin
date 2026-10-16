@@ -56,7 +56,7 @@
           <el-radio v-model="form.isPause" :label="true">暂停</el-radio>
         </el-form-item>
         <el-form-item label="任务描述">
-          <el-input v-model="form.remark" style="width: 460px;" rows="2" type="textarea" />
+          <el-input v-model="form.remark" style="width: 460px;" :rows="2" type="textarea" />
         </el-form-item>
       </el-form>
       <template #footer>

@@ -2,7 +2,7 @@
   <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '编辑'" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
       <el-form-item label="回复内容">
-        <el-input v-model="form.merchantReplyContent" style="width: 370px;" rows="5" type="textarea"/>
+        <el-input v-model="form.merchantReplyContent" style="width: 370px;" :rows="5" type="textarea"/>
       </el-form-item>
     </el-form>
     <template #footer><div class="dialog-footer">

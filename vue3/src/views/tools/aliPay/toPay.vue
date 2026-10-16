@@ -9,7 +9,7 @@
         <span style="color: #C0C0C0;margin-left: 10px;">测试允许区间(0,5000]</span>
       </el-form-item>
       <el-form-item label="商品描述" prop="body">
-        <el-input v-model="form.body" style="width: 35%" rows="8" type="textarea" />
+        <el-input v-model="form.body" style="width: 35%" :rows="8" type="textarea" />
       </el-form-item>
       <el-form-item label="">
         <el-button :loading="loading" size="default" type="primary" @click="doSubmit">去支付</el-button>

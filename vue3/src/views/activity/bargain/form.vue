@@ -10,7 +10,7 @@
         <el-input v-model="form.title" style="width: 500px;" />
       </el-form-item>
       <el-form-item label="砍价简介">
-        <el-input v-model="form.info" style="width: 500px;" rows="5" type="textarea" />
+        <el-input v-model="form.info" style="width: 500px;" :rows="5" type="textarea" />
       </el-form-item>
       <el-form-item label="单位">
         <el-input v-model="form.unitName" style="width: 500px;" />
