@@ -561,18 +561,19 @@ const keyword = ref('')
 }
 
 .wechat-reply-wrapper .ibox-content .control-wrapper .control-title {
-  position: absolute;
-  left: 71px;
-  top: -12px;
-  width: auto;
-  padding: 0 10px;
-  font-size: 20px;
-  background-color: #fff;
+  position: static;
+  padding: 14px 20px;
+  line-height: 22px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #303133;
+  background-color: #f7f9fc;
+  border-bottom: 1px solid #e8edf4;
 }
 
 .wechat-reply-wrapper .ibox-content .control-wrapper .control-body {
-  margin-top: 40px;
-  padding: 0 10px;
+  margin-top: 20px;
+  padding: 0 20px;
 }
 
 .wechat-reply-wrapper .ibox-content .control-wrapper .control-body .form-group label {
