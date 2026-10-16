@@ -79,7 +79,7 @@
                 </el-table-column>
                 <el-table-column align="right">
                   <template #header>
-                    <div style="display:inline-block;float: right;cursor: pointer" @click="init">创建日期<i class="el-icon-refresh" style="margin-left: 40px" /></div>
+                    <div style="display:inline-block;float: right;cursor: pointer" @click="init">创建日期<el-icon style="margin-left: 40px"><Refresh /></el-icon></div>
                   </template>
                   <template #default="scope">
                     <span>{{ parseTime(scope.row.createTime) }}</span>

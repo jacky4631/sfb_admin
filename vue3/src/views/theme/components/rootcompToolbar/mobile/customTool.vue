@@ -794,7 +794,7 @@ export default {
             i {
               margin-top: 10px;
             }
-            .el-icon-plus:before {
+            .avatar-uploader-icon {
               color: $mainColor;
             }
             span {
@@ -821,16 +821,18 @@ export default {
             }
             :deep(.link-select__select){
               flex: 1;
-              .el-input__inner {
+              .el-select__wrapper {
                 border: none;
                 background: none;
+                box-shadow: none;
+                padding: 0;
                 font-size: 12px;
+              }
+              .el-select__placeholder,
+              .el-select__selected-item {
                 color: $mainColor;
               }
-              .el-input__inner::placeholder {
-                color: $mainColor;
-              }
-              .el-icon-arrow-up:before {
+              .el-select__caret {
                 color: $mainColor;
               }
             }

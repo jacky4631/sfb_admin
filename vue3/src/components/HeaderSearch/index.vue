@@ -141,7 +141,8 @@ function generateRoutes(routes, basePath = '/', prefixTitle = []) {
 
 function querySearch(query) {
   if (query !== '') {
-    options.value = fuse.search(query)
+    // fuse v4+ 返回 { item, score } 包装对象，需取 item 才能命中模板里的 item.title
+    options.value = fuse.search(query).map(({ item }) => item)
   } else {
     options.value = []
   }
@@ -168,14 +169,18 @@ function querySearch(query) {
     display: inline-block;
     vertical-align: middle;
 
-    :deep(.el-input__inner) {
+    :deep(.el-input__wrapper) {
       border-radius: 0;
-      border: 0;
+      padding: 0;
+      background: transparent;
+      box-shadow: none !important;
+      border-bottom: 1px solid var(--el-border-color);
+      vertical-align: middle;
+    }
+
+    :deep(.el-input__inner) {
       padding-left: 0;
       padding-right: 0;
-      box-shadow: none !important;
-      border-bottom: 1px solid #d9d9d9;
-      vertical-align: middle;
     }
   }
 

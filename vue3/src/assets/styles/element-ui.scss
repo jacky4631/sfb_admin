@@ -73,7 +73,7 @@
   }
 }
 
-// fix date-picker ui bug in filter-item
-.el-range-editor.el-input__inner {
+// Keep Element Plus date-range controls aligned with neighboring filters.
+.el-date-editor.el-range-editor {
   display: inline-flex !important;
 }
