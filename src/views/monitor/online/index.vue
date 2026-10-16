@@ -36,7 +36,7 @@
       </el-table-column>
       <el-table-column class-name="table-action-column" label="操作" width="100px" fixed="right">
         <template #default="scope">
-          <el-popover
+          <el-popover trigger="click"
             :ref="(el) => setPopoverRef(scope.$index, el)"
             placement="top"
             width="180"

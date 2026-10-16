@@ -35,7 +35,7 @@
       <el-table-column v-if="checkPermission(['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT','MWSTOREPRODUCT_DELETE'])" label="操作" width="150px" align="center">
         <template #default="scope">
           <el-button v-permission="['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT']" size="small" type="primary" @click="edit(scope.row)" ><el-icon><Edit /></el-icon></el-button>
-          <el-popover
+          <el-popover trigger="click"
             :ref="scope.row.id"
             placement="top"
             width="180"

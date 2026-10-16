@@ -71,7 +71,7 @@
                 ><el-icon><Edit /></el-icon>编辑</el-button>
               </el-dropdown-item>
               <el-dropdown-item>
-                <el-popover
+                <el-popover trigger="click"
                   :ref="scope.row.id"
                   placement="top"
                   width="180"

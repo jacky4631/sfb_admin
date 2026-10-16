@@ -92,7 +92,7 @@
           <el-button :type="scope.row.isPause ? 'primary' : 'warning'" class="table-text-action" v-permission="['admin','timing:edit']"  link size="small" @click="updateStatus(scope.row.id,scope.row.isPause ? '恢复' : '暂停')">
             {{ scope.row.isPause ? '恢复' : '暂停' }}
           </el-button>
-          <el-popover
+          <el-popover trigger="click"
             :ref="scope.row.id"
             placement="top"
             width="200"

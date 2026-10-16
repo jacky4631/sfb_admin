@@ -151,7 +151,7 @@
                   修改订单</el-button>
               </el-dropdown-item>
               <el-dropdown-item v-if="scope.row._status == 1">
-                <el-popover
+                <el-popover trigger="click"
                   :ref="scope.row.id"
                   placement="top"
                   width="180"

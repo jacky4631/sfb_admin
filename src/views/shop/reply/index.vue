@@ -51,7 +51,7 @@
             @click="edit(scope.row)"
           >
             回复</el-button>
-          <el-popover
+          <el-popover trigger="click"
             :ref="scope.row.id"
             placement="top"
             width="180"

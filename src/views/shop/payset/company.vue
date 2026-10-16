@@ -66,7 +66,7 @@
       <el-table-column v-if="checkPermission(['admin','PAYCOMPANY_ALL','PAYCOMPANY_EDIT','PAYCOMPANY_DELETE'])" label="操作" width="150px" align="center">
         <template #default="scope">
           <el-button v-permission="['admin','PAYCOMPANY_ALL','PAYCOMPANY_EDIT']" size="small" type="primary" @click="edit(scope.row)" ><el-icon><Edit /></el-icon></el-button>
-          <el-popover
+          <el-popover trigger="click"
             :ref="scope.row.id"
             placement="top"
             width="180"

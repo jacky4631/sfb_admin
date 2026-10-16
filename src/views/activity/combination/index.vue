@@ -68,7 +68,7 @@
           >
               <el-icon><Edit /></el-icon>编辑
           </el-button>
-          <el-popover
+          <el-popover trigger="click"
             :ref="scope.row.id"
             placement="top"
             width="180"

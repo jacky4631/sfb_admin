@@ -145,7 +145,7 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item >
-                    <el-popover
+                    <el-popover trigger="click"
                       :ref="el => popoverRefs[scope.row.id] = el"
                       placement="top"
                       width="180"

@@ -103,7 +103,7 @@
               操作
               <template #dropdown><el-dropdown-menu>
                 <el-dropdown-item >
-                  <el-popover
+                  <el-popover trigger="click"
                     :ref="scope.row.id"
                     placement="top"
                     width="180"

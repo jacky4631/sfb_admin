@@ -43,7 +43,7 @@
               编辑
             </router-link>
           </el-button>
-          <el-popover
+          <el-popover trigger="click"
             :ref="'popover-' + scope.row.id"
             placement="top"
             width="180"
@@ -57,7 +57,7 @@
               <el-button v-permission="['admin','MWARTICLE_ALL','MWARTICLE_DELETE']" type="danger" :icon="Icons.Delete" size="small" />
             </template>
           </el-popover>
-          <el-popover
+          <el-popover trigger="click"
             :ref="'item' + scope.row.id"
             placement="top"
             width="180"

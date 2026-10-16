@@ -50,7 +50,7 @@
           <el-button v-permission="['admin','MWSTOREPRODUCT_ALL','MWSTOREPRODUCT_EDIT']" size="small" type="primary">
             <el-icon><Edit /></el-icon><router-link :to="'/shop/goodsEdit/'+scope.row.id">编辑</router-link>
           </el-button>
-          <el-popover
+          <el-popover trigger="click"
             :ref="scope.row.id"
             placement="top"
             width="180"

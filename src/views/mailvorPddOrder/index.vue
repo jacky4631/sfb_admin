@@ -204,7 +204,7 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item >
-                    <el-popover
+                    <el-popover trigger="click"
                       :ref="el => popoverRefs[scope.row.orderSn] = el"
                       placement="top"
                       width="180"
