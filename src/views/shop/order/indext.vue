@@ -54,7 +54,7 @@
     <!--表格渲染-->
     <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="storeName" label="所属门店" />
-      <el-table-column prop="orderId" width="150" label="订单号">
+      <el-table-column prop="orderId" width="180" label="订单号">
         <template #default="scope">
           <span>{{ scope.row.orderId }}</span>
           <p>{{ scope.row.pinkName }}</p>

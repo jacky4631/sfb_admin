@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container" >
+    <div class="head-container finance-filters" >
       <div style="display: inline-block;margin: 0px 2px;">
         <el-button
           class="filter-item"
@@ -20,7 +20,7 @@
     <!--表单组件-->
     <eForm ref="form" :is-add="isAdd" />
     <!--表格渲染-->
-    <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
+    <el-table class="finance-table" v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="id" label="砍价产品ID" />
       <el-table-column prop="title" label="砍价名称" />
       <el-table-column prop="image" label="砍价图片">
@@ -70,6 +70,7 @@
     </el-table>
     <!--分页组件-->
     <el-pagination
+      class="finance-pagination"
       :total="total"
       :current-page="page + 1"
       style="margin-top: 8px;"
