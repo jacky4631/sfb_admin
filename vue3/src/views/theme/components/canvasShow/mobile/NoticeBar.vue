@@ -18,20 +18,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:math';
 .noticeBar {
   display: flex;
   width: 100%;
   box-sizing: border-box;
   flex-direction: row;
   align-items: center;
-  padding: 6/750 * 500px 12/750 * 500px;
-  margin-bottom: 10/750 * 500px;
+  padding: math.div(6, 750) * 500px math.div(12, 750) * 500px;
+  margin-bottom: math.div(10, 750) * 500px;
   background-color: rgb(255, 251, 232);
-  height: 60/750 * 500px;
+  height: math.div(60, 750) * 500px;
   .noticeBar-icon {
-    width: 14/750 * 500px;
-    height: 14/750 * 500px;
-    margin-right: 5/750 * 500px;
+    width: math.div(14, 750) * 500px;
+    height: math.div(14, 750) * 500px;
+    margin-right: math.div(5, 750) * 500px;
   }
   .noticeBar-text {
     flex: 1;

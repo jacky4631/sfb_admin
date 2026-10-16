@@ -5,12 +5,8 @@
     <div class="editorSeckillProduct">
         <h2>秒杀专区</h2>
         <ul class="editorList">
-            <draggable v-model="activeComponent.componentContent.product">
-            <li
-            class="item"
-            v-for="(item, index) in activeComponent.componentContent.product"
-            :key="index"
-            >
+            <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.product">
+            <template #item="{ element: item, index: index }"><li class="item">
             <DraggableSlot :obj="item" :index="index" @deleteIt="deleteIt">
                 <div class="addContent">
                     <ToolSingleImg
@@ -46,7 +42,8 @@
                 </div>
             </DraggableSlot>
             </li>
-            </draggable>
+            </template>
+</draggable>
             <div
             class="addImgBtn"
             @click="addImgText(activeComponent.componentContent.product.length)">

@@ -329,11 +329,11 @@ export default {
   .block {
     height: 30px;
   }
-  >>> .el-color-picker__trigger {
+  :deep(.el-color-picker__trigger) {
     width: 45px;
     height: 26px;
   }
-  >>> .el-icon-arrow-down:before {
+  :deep(.el-icon-arrow-down:before) {
     display: none;
   }
 }

@@ -5,7 +5,7 @@
       <p>{{ msg }}</p>
       <div style="text-align: right; margin: 0">
         <el-button size="small" link @click="doCancel">取消</el-button>
-        <el-button :loading="crud.dataStatus[data.id]?.delete === 2" type="primary" size="small" @click="crud.doDelete(data)">确定</el-button>
+        <el-button :loading="crud.dataStatus[data.id]?.delete === 2" type="primary" size="small" @click="doDelete">确定</el-button>
       </div>
       <template #reference>
         <el-button v-permission="permission.del" :disabled="disabledDle" type="danger" :icon="Delete" size="small" @click.stop="toDelete" />
@@ -16,7 +16,7 @@
 <script setup>
 import { ref } from 'vue'
 import { Edit, Delete } from '@element-plus/icons-vue'
-import CRUD, { crud as crudComposable } from '@crud/crud'
+import { crud as crudComposable } from '@crud/crud'
 
 defineOptions({
   name: 'UDOperation'
@@ -59,11 +59,10 @@ const toDelete = () => {
   pop.value = true
 }
 
-// 注册 afterDelete 钩子：删除完成后自动关闭弹窗
-const hookRef = crud.HOOK || CRUD.HOOK
-hookRef[CRUD.HOOK.afterDelete] = (crudInst, data) => {
-  if (data === props.data) {
+// 删除成功后关闭当前行的确认弹窗
+const doDelete = () => {
+  crud.doDelete(props.data).then(() => {
     pop.value = false
-  }
+  })
 }
 </script>

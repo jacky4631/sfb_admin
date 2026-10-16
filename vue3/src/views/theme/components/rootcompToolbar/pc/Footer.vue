@@ -5,12 +5,8 @@
   <div class="editorFooter">
     <h2>联系方式</h2>
     <ul class="editorList">
-      <draggable v-model="activeComponent.componentContent.publicList">
-        <li
-        class="item"
-        v-for="(item, index) in activeComponent.componentContent.publicList"
-        :key="index"
-        >
+      <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.publicList">
+        <template #item="{ element: item, index: index }"><li class="item">
           <DraggableSlot :obj="item" :index="index" @deleteIt="deleteIt">
             <div class="addContent">
               <ToolSingleImg
@@ -25,7 +21,8 @@
             </div>
           </DraggableSlot>
         </li>
-      </draggable>
+        </template>
+</draggable>
     </ul>
     <el-dialog
       title="提示"

@@ -5,11 +5,8 @@
       <div class="toolBox">
         <div class="modelTit">内容设置</div>
         <div class="imgListBox">
-          <draggable v-model="activeComponent.componentContent.roll">
-            <div
-              v-for="(item, index) in activeComponent.componentContent.roll"
-              :key="index"
-              class="item">
+          <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.roll">
+            <template #item="{ element: item, index: index }"><div class="item">
               <div class="listItemBox">
                 <div class="addImgTit" @click="openAddImg(item, index)">
                   <div class="titLeft">
@@ -58,7 +55,8 @@
                 </div>
               </div>
             </div>
-          </draggable>
+            </template>
+</draggable>
         </div>
         <!-- <div class="addImgBtn" @click="addImgText">
           <span class="iconfont">&#xe64a;</span>添加图文
@@ -342,7 +340,7 @@ export default {
       font-weight: bold;
     }
   }
-  >>> .el-select {
+  :deep(.el-select) {
     width: 100%;
   }
   .addImgBtn {

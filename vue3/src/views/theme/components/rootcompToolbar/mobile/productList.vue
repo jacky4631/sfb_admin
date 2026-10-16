@@ -63,8 +63,8 @@
     <div class="labelListWarp" v-show="activeComponent.componentContent.labelShow">
       <div class="labelList">
         <div class="imgListBox">
-          <draggable v-model="activeComponent.componentContent.labelList">
-            <div v-for="(item, index) in activeComponent.componentContent.labelList" :key="index" class="item">
+          <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.labelList">
+            <template #item="{ element: item, index: index }"><div class="item">
               <div class="listItemBox">
                 <div class="addImgTit" @click="openAddLabel(item, index)">
                   <div class="titLeft">
@@ -86,7 +86,8 @@
                 </div>
               </div>
             </div>
-          </draggable>
+            </template>
+</draggable>
         </div>
       </div>
       <div class="addImgBtn" @click="addLabel"><span class="iconfont">&#xe64a;</span>添加标签</div>
@@ -346,7 +347,7 @@ export default {
       }
     }
   }
-  >>> .el-select {
+  :deep(.el-select) {
     width: 100%;
   }
   .addImgBtn {
@@ -427,7 +428,7 @@ export default {
               line-height: 40px;
             }
           }
-          >>> .module-box{
+          :deep(.module-box) {
             margin-bottom: 10px;
           }
         }

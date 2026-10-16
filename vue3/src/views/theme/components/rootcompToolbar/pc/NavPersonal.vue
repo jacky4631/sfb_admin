@@ -5,13 +5,8 @@
     <div class="editorNavPersonal">
       <!-- <h2>个人中心</h2>
       <ul class="editorList">
-        <draggable v-model="activeComponent.componentContent.txtRoute">
-          <li
-          class="item"
-          v-for="(item, index) in activeComponent.componentContent
-          .txtRoute"
-          :key="index"
-          >
+        <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.txtRoute">
+          <template #item="{ element: item, index: index }"><li class="item">
             <DraggableSlot :obj="item" :index="index" @deleteIt="deleteIt">
               <div class="addContent">
                 <div class="titleBox">{{ '测试' }}</div>
@@ -30,7 +25,8 @@
               </div>
             </DraggableSlot>
           </li>
-        </draggable>
+          </template>
+</draggable>
         <div class="addImgBtn" @click="addImgText">
           <span class="iconfont">&#xe64a;</span>添加图文
         </div>

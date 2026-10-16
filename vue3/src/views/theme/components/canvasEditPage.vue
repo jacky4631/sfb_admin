@@ -1,16 +1,7 @@
 <template>
   <div class="layout hom-layout">
-    <draggable
-      class="dragArea list-group"
-      :list="componentsData"
-      group="pageEdit"
-      @change="pageChange"
-    >
-      <div
-      class="list-group-item"
-      v-for="(item,index) in componentsData"
-      :key="index" :class="{'on':activeComponent == index}"
-      @click="selectComponent(item,index)">
+    <draggable :item-key="(item) => item" class="dragArea list-group" :list="componentsData" group="pageEdit" @change="pageChange">
+      <template #item="{ element: item, index: index }"><div class="list-group-item" :class="{'on':activeComponent == index}" @click="selectComponent(item,index)">
         <component
         :is="componentMap[terminal-3].get(item.type)"
         :componentContent="item.componentContent"
@@ -21,7 +12,8 @@
             </span>
         </div>
       </div>
-    </draggable>
+      </template>
+</draggable>
   </div>
 </template>
 
@@ -94,7 +86,7 @@ import { ElMessageBox } from 'element-plus'
 <style lang="scss" scoped>
 .hom-layout{
   background-color: #fff;
-  >>> .sortable-chosen{
+  :deep(.sortable-chosen) {
     .contentBox {
       display: none;
     }

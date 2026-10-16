@@ -9,10 +9,7 @@
         >
           <div class="labelList">
             <div class="imgListBox">
-              <draggable >
-                <div
-                  class="item"
-                >
+              <div class="item">
                   <div class="listItemBox">
                     <div class="addLabelBox" >
                       <div class="itemBox">
@@ -25,7 +22,7 @@
                     </div>
                   </div>
                 </div>
-              </draggable>
+              </div>
             </div>
           </div>
           <div class="addImgBtn" @click="addLabel">
@@ -33,7 +30,6 @@
           </div>
         </div>
       </div>
-    </div>
     <el-dialog
       title="提示"
       v-model="dialogVisible"
@@ -56,7 +52,6 @@
 
 <script>
 import { ElMessageBox } from 'element-plus'
-import Draggable from 'vuedraggable'
 import { toolMixin } from '@/mixins/tool.js'
 import ToolSelectLink from '@/views/theme/components/rootcompToolbar/toolModule/tool-select-link.vue'
 import ToolSelectCategory from '@/views/theme/components/rootcompToolbar/toolModule/tool-select-category.vue'
@@ -68,7 +63,6 @@ export default {
     ToolSingleImg,
     ToolSelectCategory,
     ToolSelectLink,
-    Draggable
   },
   data () {
     return {
@@ -312,7 +306,7 @@ export default {
       font-weight: bold;
     }
   }
-  >>> .el-select {
+  :deep(.el-select) {
     width: 100%;
   }
   .addImgBtn {

@@ -19,8 +19,8 @@
       </div>
       <div class="textTit">内容</div>
       <div class="imgListBox">
-        <draggable v-model="activeComponent.componentContent.imgList">
-          <div v-for="(item, index) in activeComponent.componentContent.imgList" :key="index" class="item">
+        <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.imgList">
+          <template #item="{ element: item, index: index }"><div class="item">
             <div class="listItemBox">
               <div class="addImgTit" @click="openAddImg(item, index)">
                 <div class="titLeft">
@@ -46,7 +46,8 @@
               </div>
             </div>
           </div>
-        </draggable>
+          </template>
+</draggable>
       </div>
     </div>
     <div class="addImgBtn" @click="addImgText"><span class="iconfont">&#xe64a;</span>添加品牌图</div>
@@ -246,7 +247,7 @@ export default {
           }
           .addImgBox {
             margin-bottom: 10px;
-            >>> .el-upload {
+            :deep(.el-upload) {
               width: 100%;
               .el-upload-dragger {
                 width: 100%;
@@ -303,7 +304,7 @@ export default {
       font-weight: bold;
     }
   }
-  >>> .el-select {
+  :deep(.el-select) {
     width: 100%;
   }
   .addImgBtn {

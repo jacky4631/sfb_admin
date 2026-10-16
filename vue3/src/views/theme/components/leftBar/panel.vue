@@ -18,20 +18,8 @@
         <div class="itemBox" v-for="(item, index) of categoryList" :key="index">
           <h3>{{ item.title }}</h3>
           <div class="childList">
-            <draggable
-              class="dragArea list-group"
-              :list="item.classList"
-              :clone="cloneItem"
-              :group="{ name: 'pageEdit', pull: 'clone', put: false }"
-              :options="{ sort: false }"
-            >
-              <div
-                @mouseover="hoverItem(classItem)"
-                @mouseout="hoverItemOut"
-                class="childItem list-group-item"
-                v-for="(classItem, index) of item.classList"
-                :key="index"
-              >
+            <draggable :item-key="(item) => item" class="dragArea list-group" :list="item.classList" :clone="cloneItem" :group="{ name: 'pageEdit', pull: 'clone', put: false }" :sort="false">
+              <template #item="{ element: classItem, index: index }"><div @mouseover="hoverItem(classItem)" @mouseout="hoverItemOut" class="childItem list-group-item">
                 <div class="contentBox">
                   <img
                     :src="
@@ -45,7 +33,8 @@
                 </div>
                 <div class="cloneText">组件放置区域</div>
               </div>
-            </draggable>
+              </template>
+</draggable>
           </div>
         </div>
       </div>

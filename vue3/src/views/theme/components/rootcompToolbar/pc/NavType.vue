@@ -5,12 +5,8 @@
   <div class="editorNavType">
     <h2>专区导航</h2>
     <ul class="editorList">
-      <draggable v-model="activeComponent.componentContent.typeRoute">
-        <li
-        class="item"
-        v-for="(item, index) in activeComponent.componentContent.typeRoute"
-        :key="index"
-        >
+      <draggable :item-key="(item) => item" v-model="activeComponent.componentContent.typeRoute">
+        <template #item="{ element: item, index: index }"><li class="item">
           <DraggableSlot :obj="item" :index="index" @deleteIt="deleteIt">
             <div class="addContent">
                 <!-- 文本编辑 -->
@@ -32,7 +28,8 @@
             </div>
           </DraggableSlot>
         </li>
-      </draggable>
+        </template>
+</draggable>
       <div class="addImgBtn" @click="addImgText">
         <span class="iconfont">&#xe64a;</span>添加图文
       </div>

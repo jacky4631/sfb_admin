@@ -587,24 +587,24 @@ export default {
       .block {
         flex: 1;
       }
-      >>> .el-slider__input {
+      :deep(.el-slider__input) {
         width: 50px;
       }
-      >>> .el-slider__runway {
+      :deep(.el-slider__runway) {
         height: 4px;
         margin: 18px 65px 18px 0;
       }
-      >>> .el-slider__bar {
+      :deep(.el-slider__bar) {
         height: 4px;
       }
-      >>> .el-slider__button-wrapper {
+      :deep(.el-slider__button-wrapper) {
         top: -17px;
       }
-      >>> .el-slider__button {
+      :deep(.el-slider__button) {
         width: 12px;
         height: 12px;
       }
-      >>> .el-input-number.is-without-controls .el-input__inner {
+      :deep(.el-input-number.is-without-controls .el-input__inner) {
         padding: 10px;
       }
     }
@@ -783,7 +783,7 @@ export default {
           width: 60px;
           height: 60px;
           margin-right: 10px;
-          >>> .el-upload-dragger {
+          :deep(.el-upload-dragger) {
             width: 60px;
             height: 60px;
             text-align: center;
@@ -807,7 +807,7 @@ export default {
           }
         }
         .addLink {
-          >>> .link-select{
+          :deep(.link-select) {
             display: flex;
             margin-bottom: 0;
             line-height: 60px;
@@ -819,7 +819,7 @@ export default {
                 line-height: 60px;
               }
             }
-            &__select{
+            :deep(.link-select__select){
               flex: 1;
               .el-input__inner {
                 border: none;
@@ -834,7 +834,7 @@ export default {
                 color: $mainColor;
               }
             }
-            &__confirm{
+            :deep(.link-select__confirm){
               position: absolute;
               bottom: 0;
               left: 0;

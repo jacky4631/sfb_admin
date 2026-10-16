@@ -132,6 +132,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:math';
 .y-f {
   display: flex;
   flex-direction: column;
@@ -144,7 +145,7 @@ export default {
 }
 .adv-box {
   background-color: #fff;
-  border-radius: 20/750 * 500px;
+  border-radius: math.div(20, 750) * 500px;
   overflow: hidden;
   image {
     width: 100%;
@@ -152,7 +153,7 @@ export default {
   .type1 {
     .type1-img {
       flex: 1;
-      height: 220/750 * 500px;
+      height: math.div(220, 750) * 500px;
       &:first-child {
         border-right: 1px solid #f6f6f6;
       }
@@ -175,11 +176,11 @@ export default {
   }
   .type3 {
     .type3-box {
-      width: (710/750 * 500px);
+      width: (math.div(710, 750) * 500px);
       border-right: 1px solid #f6f6f6;
       .type3-img1 {
         flex: 1;
-        height: (340/750 * 500px);
+        height: (math.div(340, 750) * 500px);
         &:first-child {
           border-bottom: 1px solid #f6f6f6;
         }
@@ -187,8 +188,8 @@ export default {
     }
     .type3-img2 {
       flex: 1;
-      height: 340/750 * 500px;
-      width: (710/750 * 500px);
+      height: math.div(340, 750) * 500px;
+      width: (math.div(710, 750) * 500px);
     }
   }
   .type4 {
@@ -196,7 +197,7 @@ export default {
       border-bottom: 1px solid #f6f6f6;
       .type4-img1 {
         flex: 1;
-        height: (340/750 * 500px);
+        height: (math.div(340, 750) * 500px);
         &:first-child {
           border-right: 1px solid #f6f6f6;
         }
@@ -204,22 +205,22 @@ export default {
     }
     .type4-img2 {
       flex: 1;
-      height: (340/750 * 500px);
-      width: 710/750 * 500px;
+      height: (math.div(340, 750) * 500px);
+      width: math.div(710, 750) * 500px;
     }
   }
   .type5 {
     .type5-img1 {
-      width: 710/750 * 500px;
-      height: (340/750 * 500px);
+      width: math.div(710, 750) * 500px;
+      height: (math.div(340, 750) * 500px);
       border-bottom: 1px solid #f6f6f6;
     }
     .type5-box {
       flex: 1;
-      height: (340/750 * 500px);
-      width: 710/750 * 500px;
+      height: (math.div(340, 750) * 500px);
+      width: math.div(710, 750) * 500px;
       .type5-img2 {
-        height: (340/750 * 500px);
+        height: (math.div(340, 750) * 500px);
         &:first-child {
           border-right: 1px solid #f6f6f6;
         }
@@ -229,8 +230,8 @@ export default {
   .type6 {
     .type6-box1 {
       .type6-img1 {
-        width: (710/750 * 500px);
-        height: (340/750 * 500px);
+        width: (math.div(710, 750) * 500px);
+        height: (math.div(340, 750) * 500px);
         &:first-child {
           border-right: 1px solid #f6f6f6;
         }
@@ -239,8 +240,8 @@ export default {
     .type6-box2 {
       border-top: 1px solid #f6f6f6;
       .type6-img2 {
-        width: (710/750 * 500 / 3) px;
-        height: (340/750 * 500px);
+        width: (math.div(math.div(710, 750) * 500, 3))px;
+        height: (math.div(340, 750) * 500px);
         border-right: 1px solid #f6f6f6;
         &:last-child {
           border-right: 0;

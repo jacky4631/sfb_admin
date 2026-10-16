@@ -94,17 +94,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:math';
 .recommended-title-card {
   width: 100%;
-  margin-bottom: 5/375 * 500px;
+  margin-bottom: math.div(5, 375) * 500px;
 }
 
 .title-box {
-  width: 389/375 * 500px;
-  height: 48/375 * 500px;
+  width: math.div(389, 375) * 500px;
+  height: math.div(48, 375) * 500px;
   margin: 0 auto;
   position: relative;
-  border-radius: 16/375 * 500px;
+  border-radius: math.div(16, 375) * 500px;
   text-align: center;
   .title-bg {
     width: 100%;
@@ -114,9 +115,9 @@ export default {
     left: 0;
     right: 0;
     top: 0;
-    line-height: 48/375 * 500px;
+    line-height: math.div(48, 375) * 500px;
     font-weight: 700;
-    font-size: 20/375 * 500px;
+    font-size: math.div(20, 375) * 500px;
   }
 }
 .recommended-body {
@@ -132,13 +133,13 @@ export default {
     .tag {
       position: absolute;
       left: 0;
-      bottom: 0/375 * 500px;
+      bottom: math.div(0, 375) * 500px;
       z-index: 2;
-      line-height: 19/375 * 500px;
+      line-height: math.div(19, 375) * 500px;
       background: linear-gradient(132deg, #f3dfb1, #f3dfb1, #ecbe60);
-      border-radius: 0 9/375 * 500px 9/375 * 500px 0;
-      padding: 0 5/375 * 500px;
-      font-size: 13/375 * 500px;
+      border-radius: 0 math.div(9, 375) * 500px math.div(9, 375) * 500px 0;
+      padding: 0 math.div(5, 375) * 500px;
+      font-size: math.div(13, 375) * 500px;
       font-family: PingFang SC;
       font-weight: 700;
       color: #784f06;
@@ -151,18 +152,18 @@ export default {
   }
   .price-box {
     width: 100%;
-    margin-top: 5/375 * 500px;
+    margin-top: math.div(5, 375) * 500px;
     .seckill-current {
-      font-size: 16/375 * 500px;
+      font-size: math.div(16, 375) * 500px;
       font-weight: 500;
       color: #e1212b;
     }
     .original {
-      font-size: 10/375 * 500px;
+      font-size: math.div(10, 375) * 500px;
       font-weight: 400;
       text-decoration: line-through;
       color: #999;
-      margin-left: 7/375 * 500px;
+      margin-left: math.div(7, 375) * 500px;
     }
   }
 }
@@ -170,22 +171,22 @@ export default {
 .goods-list {
   display: flex;
   justify-content: space-between;
-  padding: 0 7.5/375 * 500px;
+  padding: 0 math.div(7.5, 375) * 500px;
   flex-wrap: wrap;
   .min-goods {
     width: 50%;
     flex: 0 0 50%;
-    padding: 0 7.5/375 * 500px;
+    padding: 0 math.div(7.5, 375) * 500px;
   }
   .min-goods-box {
-    margin-right: 10/375 * 500px;
-    margin-bottom: 10/375 * 500px;
-    width: 189/375 * 500px;
+    margin-right: math.div(10, 375) * 500px;
+    margin-bottom: math.div(10, 375) * 500px;
+    width: math.div(189, 375) * 500px;
     box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
-    border-radius: 10/375 * 500px;
+    border-radius: math.div(10, 375) * 500px;
     width: 100%;
     overflow: hidden;
-    padding-bottom: 10/375 * 500px;
+    padding-bottom: math.div(10, 375) * 500px;
     img {
       width: 100%;
     }
@@ -199,44 +200,44 @@ export default {
     text-overflow: ellipsis;
     transition: all linear 0.2s;
     width: 100%;
-    line-height: 30/375 * 500px;
+    line-height: math.div(30, 375) * 500px;
     background: #f6f2ea;
-    font-size: 12/375 * 500px;
+    font-size: math.div(12, 375) * 500px;
     font-family: PingFang SC;
     font-weight: 400;
     color: #a8700d;
-    padding: 0 10/375 * 500px;
+    padding: 0 math.div(10, 375) * 500px;
   }
   .title {
     overflow: hidden;
     text-overflow: ellipsis;
     transition: all linear 0.2s;
-    font-size: 13/375 * 500px;
+    font-size: math.div(13, 375) * 500px;
     font-family: PingFang SC;
     font-weight: 500;
-    line-height: 19/375 * 500px;
-    height: 39/375 * 500px;
-    margin: 10/375 * 500px 10/375 * 500px 5/375 * 500px;
+    line-height: math.div(19, 375) * 500px;
+    height: math.div(39, 375) * 500px;
+    margin: math.div(10, 375) * 500px math.div(10, 375) * 500px math.div(5, 375) * 500px;
   }
   .price-box {
-    padding: 5/375 * 500px 10/375 * 500px 0;
-    width: 188/375 * 500px;
+    padding: math.div(5, 375) * 500px math.div(10, 375) * 500px 0;
+    width: math.div(188, 375) * 500px;
     box-sizing: border-box;
   }
   .seckill-current {
-    font-size: 16/375 * 500px;
+    font-size: math.div(16, 375) * 500px;
     font-weight: 500;
     color: #e1212b;
-    line-height: 16/375 * 500px;
-    margin-bottom: 10/375 * 500px;
+    line-height: math.div(16, 375) * 500px;
+    margin-bottom: math.div(10, 375) * 500px;
   }
   .original {
-    font-size: 10/375 * 500px;
+    font-size: math.div(10, 375) * 500px;
     font-family: PingFang SC;
     font-weight: 400;
     color: #999;
-    line-height: 10/375 * 500px;
-    margin-bottom: 10/375 * 500px;
+    line-height: math.div(10, 375) * 500px;
+    margin-bottom: math.div(10, 375) * 500px;
   }
 }
 </style>
