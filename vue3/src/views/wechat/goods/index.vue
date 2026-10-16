@@ -102,9 +102,9 @@
         <el-table-column v-if="columns.visible('priceType')" prop="priceType" label="价格类型" >
           <template #default="scope">
             <div>
-              <el-tag v-if="scope.row.priceType == 1" :type="''">一口价</el-tag>
-              <el-tag v-else-if="scope.row.priceType == 2" :type="''">价格区间</el-tag>
-              <el-tag v-else-if="scope.row.priceType == 3" :type="''">显示折扣价</el-tag>
+              <el-tag v-if="scope.row.priceType == 1" type="primary">一口价</el-tag>
+              <el-tag v-else-if="scope.row.priceType == 2" type="primary">价格区间</el-tag>
+              <el-tag v-else-if="scope.row.priceType == 3" type="primary">显示折扣价</el-tag>
             </div>
           </template>
         </el-table-column>
@@ -114,10 +114,10 @@
           <!--          //0：未审核，1：审核中，2:审核通过，3审核失败-->
           <template #default="scope">
             <div>
-              <el-tag v-if="scope.row.auditStatus === 0" :type="''">未审核</el-tag>
-              <el-tag v-else-if="scope.row.auditStatus === 1" :type="''">审核中</el-tag>
-              <el-tag v-else-if="scope.row.auditStatus === 2" :type="''">审核通过</el-tag>
-              <el-tag v-else-if="scope.row.auditStatus === 3" :type="''">审核失败</el-tag>
+              <el-tag v-if="scope.row.auditStatus === 0" type="primary">未审核</el-tag>
+              <el-tag v-else-if="scope.row.auditStatus === 1" type="primary">审核中</el-tag>
+              <el-tag v-else-if="scope.row.auditStatus === 2" type="primary">审核通过</el-tag>
+              <el-tag v-else-if="scope.row.auditStatus === 3" type="primary">审核失败</el-tag>
             </div>
           </template>
         </el-table-column>
@@ -125,8 +125,8 @@
         <el-table-column v-if="columns.visible('thirdPartyTag')" prop="thirdPartyTag" label="添加途径" >
           <template #default="scope">
             <div>
-              <el-tag v-if="scope.row.thirdPartyTag == 0" :type="''">api添加</el-tag>
-              <el-tag v-else-if="scope.row.thirdPartyTag == 2" :type="''">控制台</el-tag>
+              <el-tag v-if="scope.row.thirdPartyTag == 0" type="primary">api添加</el-tag>
+              <el-tag v-else-if="scope.row.thirdPartyTag == 2" type="primary">控制台</el-tag>
             </div>
           </template>
         </el-table-column>

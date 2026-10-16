@@ -21,7 +21,7 @@
       <el-table-column prop="status" label="消息类型">
         <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.type == 'template'" :type="''">模板消息</el-tag>
+            <el-tag v-if="scope.row.type == 'template'" type="primary">模板消息</el-tag>
             <el-tag v-else :type=" 'info' ">订阅消息</el-tag>
           </div>
         </template>
@@ -33,7 +33,7 @@
       <el-table-column prop="status" label="状态">
         <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.status === 1" :type="''">可用</el-tag>
+            <el-tag v-if="scope.row.status === 1" type="primary">可用</el-tag>
             <el-tag v-else :type=" 'info' ">禁用</el-tag>
           </div>
         </template>

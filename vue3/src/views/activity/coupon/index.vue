@@ -23,7 +23,7 @@
       <el-table-column prop="type" label="优惠券类型">
         <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.type === 1" style="cursor: pointer" :type="''">商品券</el-tag>
+            <el-tag v-if="scope.row.type === 1" style="cursor: pointer" type="primary">商品券</el-tag>
             <el-tag v-else :type=" 'info' ">普通券</el-tag>
           </div>
         </template>
@@ -39,7 +39,7 @@
       <el-table-column label="状态" width="100" align="center">
         <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.status === 1" style="cursor: pointer" :type="''">开启</el-tag>
+            <el-tag v-if="scope.row.status === 1" style="cursor: pointer" type="primary">开启</el-tag>
             <el-tag v-else :type=" 'info' ">关闭</el-tag>
           </div>
         </template>

@@ -82,7 +82,7 @@
         <el-table-column v-if="columns.visible('isShow')" prop="isShow" label="是否显示" >
           <template #default="scope">
             <div>
-              <el-tag v-if="scope.row.isShow === 1" :type="''">显示</el-tag>
+              <el-tag v-if="scope.row.isShow === 1" type="primary">显示</el-tag>
               <el-tag v-else :type=" 'info' ">隐藏</el-tag>
             </div>
           </template>

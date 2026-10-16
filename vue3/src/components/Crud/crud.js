@@ -670,9 +670,6 @@ function header() {
 
 function _headerMixin() {
   return {
-    inject: {
-      crud: { from: 'crud' }
-    },
     computed: {
       query() {
         return (this.crud || resolveCrud(this) || {}).query || {}
@@ -713,9 +710,6 @@ function pagination() {
 
 function _paginationMixin() {
   return {
-    inject: {
-      crud: { from: 'crud' }
-    },
     computed: {
       page() {
         return (this.crud || resolveCrud(this) || {}).page || {}
@@ -752,9 +746,6 @@ function form(defaultForm) {
 
 function _formMixin(defaultForm) {
   return {
-    inject: {
-      crud: { from: 'crud' }
-    },
     computed: {
       form() {
         return (this.crud || resolveCrud(this) || {}).form || {}
@@ -798,9 +789,6 @@ function crud(options = {}) {
 
 function _crudMixin(options) {
   return {
-    inject: {
-      crud: { from: 'crud' }
-    },
     computed: {
       query() {
         return (this.crud || resolveCrud(this) || {}).query || {}

@@ -125,14 +125,14 @@
       <el-table-column prop="integral" label="用户积分" />
       <el-table-column label="支付宝授权" align="center" width="100" >
         <template #default="scope">
-            <el-tag v-if="scope.row.aliProfile != null" style="cursor: pointer" :type="''">是</el-tag>
+            <el-tag v-if="scope.row.aliProfile != null" style="cursor: pointer" type="primary">是</el-tag>
             <el-tag v-else style="cursor: pointer" :type=" 'info' ">否</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column label="微信授权" align="center">
         <template #default="scope">
-          <el-tag v-if="scope.row.wxProfile != null" style="cursor: pointer" :type="''">是</el-tag>
+          <el-tag v-if="scope.row.wxProfile != null" style="cursor: pointer" type="primary">是</el-tag>
           <el-tag v-else style="cursor: pointer" :type=" 'info' ">否</el-tag>
         </template>
       </el-table-column>
@@ -149,7 +149,7 @@
       <el-table-column label="状态" align="center">
         <template #default="scope">
           <div @click="onStatus(scope.row.uid,scope.row.status)">
-            <el-tag v-if="scope.row.status == 1" style="cursor: pointer" :type="''">正常</el-tag>
+            <el-tag v-if="scope.row.status == 1" style="cursor: pointer" type="primary">正常</el-tag>
             <el-tag v-else style="cursor: pointer" :type=" 'info' ">禁用</el-tag>
           </div>
         </template>

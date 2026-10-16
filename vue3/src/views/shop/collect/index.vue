@@ -26,7 +26,7 @@
       <el-table-column prop="type" label="类型">
         <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.type == 'collect'" :type="''">收藏</el-tag>
+            <el-tag v-if="scope.row.type == 'collect'" type="primary">收藏</el-tag>
             <el-tag v-else :type=" 'info' ">足迹</el-tag>
           </div>
         </template>

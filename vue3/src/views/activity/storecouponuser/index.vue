@@ -37,7 +37,7 @@
       <el-table-column label="获取方式">
         <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.type == 'get'" style="cursor: pointer" :type="''">手动领取</el-tag>
+            <el-tag v-if="scope.row.type == 'get'" style="cursor: pointer" type="primary">手动领取</el-tag>
             <el-tag v-else :type=" 'info' ">后台发放</el-tag>
           </div>
         </template>
@@ -45,7 +45,7 @@
       <el-table-column label="是否可用">
         <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.status == 0 && scope.row.isFail == 0" style="cursor: pointer" :type="''">可用</el-tag>
+            <el-tag v-if="scope.row.status == 0 && scope.row.isFail == 0" style="cursor: pointer" type="primary">可用</el-tag>
             <el-tag v-else :type=" 'info' ">不可用</el-tag>
           </div>
         </template>

@@ -40,7 +40,7 @@
       <el-table-column label="状态" align="center">
         <template #default="scope">
           <div @click="onSale(scope.row.id,scope.row.isShow)">
-            <el-tag v-if="scope.row.isShow === 1" style="cursor: pointer" :type="''">已上架</el-tag>
+            <el-tag v-if="scope.row.isShow === 1" style="cursor: pointer" type="primary">已上架</el-tag>
             <el-tag v-else style="cursor: pointer" :type=" 'info' ">已下架</el-tag>
           </div>
         </template>

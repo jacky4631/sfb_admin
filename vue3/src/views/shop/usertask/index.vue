@@ -14,7 +14,7 @@
       <el-table-column prop="sort" label="排序" />
       <el-table-column prop="isShow" label="是否显示">
         <template #default="scope">
-          <el-tag v-if="scope.row.isShow === 1" style="cursor: pointer" :type="''">是</el-tag>
+          <el-tag v-if="scope.row.isShow === 1" style="cursor: pointer" type="primary">是</el-tag>
           <el-tag v-else style="cursor: pointer" :type=" 'info' ">否</el-tag>
         </template>
       </el-table-column>

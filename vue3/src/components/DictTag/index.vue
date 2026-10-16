@@ -7,8 +7,8 @@ const props = defineProps<{
   value: string | number
 }>()
 
-// el-tag 仅接受空字符串/success/info/warning/danger/primary，非法值（如 null、色值）回退为 primary
-const VALID_TYPES = ['', 'primary', 'success', 'info', 'warning', 'danger']
+// el-tag 仅接受 primary/success/info/warning/danger，空串或非法值（如 null、色值）回退为 primary
+const VALID_TYPES = ['primary', 'success', 'info', 'warning', 'danger']
 
 const currentTag = computed(() => {
   const item = props.dictData?.find((d: any) => d.value === props.value)

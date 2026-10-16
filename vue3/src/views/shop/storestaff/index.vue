@@ -62,7 +62,7 @@
         <el-table-column v-if="columns.visible('verifyStatus')" prop="verifyStatus" label="核销开关" >
           <template #default="scope">
             <div>
-              <el-tag v-if="scope.row.verifyStatus === 1" :type="''">开启</el-tag>
+              <el-tag v-if="scope.row.verifyStatus === 1" type="primary">开启</el-tag>
               <el-tag v-else :type=" 'info' ">关闭</el-tag>
             </div>
           </template>

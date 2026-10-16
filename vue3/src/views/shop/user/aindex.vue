@@ -39,7 +39,7 @@
       <el-table-column label="状态" align="center">
         <template #default="scope">
           <div @click="onStatus(scope.row.uid,scope.row.status)">
-            <el-tag v-if="scope.row.status == 1" style="cursor: pointer" :type="''">正常</el-tag>
+            <el-tag v-if="scope.row.status == 1" style="cursor: pointer" type="primary">正常</el-tag>
             <el-tag v-else style="cursor: pointer" :type=" 'info' ">禁用</el-tag>
           </div>
         </template>

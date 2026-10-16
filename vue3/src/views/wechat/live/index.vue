@@ -145,13 +145,13 @@
         <el-table-column v-if="columns.visible('liveStatus')" prop="liveStatus" label="直播间状态" >
           <template #default="scope">
             <div>
-              <el-tag v-if="scope.row.liveStatus === 101" :type="''">直播中</el-tag>
-              <el-tag v-if="scope.row.liveStatus === 102" :type="''">未开始</el-tag>
-              <el-tag v-if="scope.row.liveStatus === 103" :type="''">已结束</el-tag>
-              <el-tag v-if="scope.row.liveStatus === 104" :type="''">禁播</el-tag>
-              <el-tag v-if="scope.row.liveStatus === 105" :type="''">暂停</el-tag>
-              <el-tag v-if="scope.row.liveStatus === 106" :type="''">异常</el-tag>
-              <el-tag v-if="scope.row.liveStatus === 107" :type="''">已过期</el-tag>
+              <el-tag v-if="scope.row.liveStatus === 101" type="primary">直播中</el-tag>
+              <el-tag v-if="scope.row.liveStatus === 102" type="primary">未开始</el-tag>
+              <el-tag v-if="scope.row.liveStatus === 103" type="primary">已结束</el-tag>
+              <el-tag v-if="scope.row.liveStatus === 104" type="primary">禁播</el-tag>
+              <el-tag v-if="scope.row.liveStatus === 105" type="primary">暂停</el-tag>
+              <el-tag v-if="scope.row.liveStatus === 106" type="primary">异常</el-tag>
+              <el-tag v-if="scope.row.liveStatus === 107" type="primary">已过期</el-tag>
             </div>
           </template>
         </el-table-column>
@@ -175,15 +175,15 @@
         <el-table-column v-if="columns.visible('type')" prop="type" label="直播类型" >
           <template #default="scope">
             <div>
-              <el-tag v-if="scope.row.type === 1" :type="''">推流</el-tag>
-              <el-tag v-else :type="''">手机直播</el-tag>
+              <el-tag v-if="scope.row.type === 1" type="primary">推流</el-tag>
+              <el-tag v-else type="primary">手机直播</el-tag>
             </div>
           </template>
         </el-table-column>
           <el-table-column v-if="columns.visible('closeReplay')" prop="closeReplay" label="回放" >
             <template #default="scope">
               <div>
-                <el-tag v-if="scope.row.closeReplay === 1" :type="''">关闭</el-tag>
+                <el-tag v-if="scope.row.closeReplay === 1" type="primary">关闭</el-tag>
                 <el-tag v-else :type=" '' ">开启</el-tag>
               </div>
             </template>

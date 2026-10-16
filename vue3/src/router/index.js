@@ -16,7 +16,9 @@ const whiteList = ['/login']
 const router = createRouter({
   history: createWebHistory(),
   scrollBehavior: () => ({ top: 0 }),
-  routes: constantRouterMap
+  // 注册兜底路由，避免动态菜单加载前初始导航触发 "No match found" 警告；
+  // 注意不能用 redirect，否则解析阶段就跳走会丢失原始路径，破坏深层链接刷新
+  routes: [...constantRouterMap, { path: '/:pathMatch(.*)*', component: () => import('@/views/features/404.vue'), hidden: true }]
 })
 
 export const loadMenus = (next, to) => {
@@ -24,7 +26,6 @@ export const loadMenus = (next, to) => {
   const permissionStore = usePermissionStore()
   buildMenus().then(res => {
     const asyncRouter = filterAsyncRouter(res)
-    asyncRouter.push({ path: '/:pathMatch(.*)*', redirect: '/404', hidden: true })
     permissionStore.GenerateRoutes(asyncRouter).then(() => {
       asyncRouter.forEach(route => router.addRoute(route))
       next({ ...to, replace: true })

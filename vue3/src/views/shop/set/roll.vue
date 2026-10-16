@@ -26,7 +26,7 @@
       <el-table-column label="状态" align="center">
         <template #default="scope">
           <div>
-            <el-tag v-if="scope.row.status === 1" style="cursor: pointer" :type="''">显示</el-tag>
+            <el-tag v-if="scope.row.status === 1" style="cursor: pointer" type="primary">显示</el-tag>
             <el-tag v-else style="cursor: pointer" :type=" 'info' ">不显示</el-tag>
           </div>
         </template>

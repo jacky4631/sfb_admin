@@ -33,13 +33,13 @@
       <el-table-column prop="validDate" label="有效时间" />
       <el-table-column prop="isForever" label="是否永久">
         <template #default="scope">
-          <el-tag v-if="scope.row.isForever === 1" style="cursor: pointer" :type="''">是</el-tag>
+          <el-tag v-if="scope.row.isForever === 1" style="cursor: pointer" type="primary">是</el-tag>
           <el-tag v-else style="cursor: pointer" :type=" 'info' ">否</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="isShow" label="是否显示">
         <template #default="scope">
-          <el-tag v-if="scope.row.isShow === 1" style="cursor: pointer" :type="''">是</el-tag>
+          <el-tag v-if="scope.row.isShow === 1" style="cursor: pointer" type="primary">是</el-tag>
           <el-tag v-else style="cursor: pointer" :type=" 'info' ">否</el-tag>
         </template>
       </el-table-column>

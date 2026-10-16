@@ -49,7 +49,7 @@
       <el-table-column label="通道类型" align="center" width="140">
         <template #default="scope">
           <div>
-            <el-tag style="cursor: pointer" :type="''">
+            <el-tag style="cursor: pointer" type="primary">
               {{ getTypeLabel(scope.row.type)}}
             </el-tag>
           </div>
@@ -58,7 +58,7 @@
       <el-table-column prop="channelKey" label="通道商" width="150px">
         <template #default="scope">
           <div>
-            <el-tag style="cursor: pointer" :type="''">
+            <el-tag style="cursor: pointer" type="primary">
               {{ getChannelLabel(scope.row.channelKey)}}
             </el-tag>
           </div>
