@@ -78,7 +78,7 @@
             width="200"
             trigger="hover"
           >
-            <template #default>
+            <template #reference>
               <a
                 :href="baseApi + '/file/' + scope.row.type + '/' + scope.row.realName"
                 class="el-link--primary"

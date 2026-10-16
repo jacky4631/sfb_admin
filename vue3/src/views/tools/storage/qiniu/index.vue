@@ -85,7 +85,7 @@
 
 <script setup>
 import { Upload, Tools } from '@element-plus/icons-vue'
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, shallowRef, computed, onMounted, watch } from 'vue'
 import { getToken } from '@/utils/auth'
 import crudQiNiu from '@/api/tools/qiniu'
 import eForm from './form.vue'
@@ -103,7 +103,8 @@ const permission = ref({
 })
 const title = ref('文件')
 const dialog = ref(false)
-const icon = ref(Refresh)
+// 用 shallowRef 存组件，避免 ref 深度响应式包装组件对象触发 Vue 性能警告
+const icon = shallowRef(Refresh)
 const url = ref('')
 const headers = ref({ 'Authorization': getToken() })
 const dialogImageUrl = ref('')
