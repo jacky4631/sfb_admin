@@ -141,7 +141,7 @@ body {
   width: 100%;
   height: 100%;
   min-height: 240px;
-  padding: 4px 12px 12px;
+  padding: 4px 0 12px;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -159,6 +159,12 @@ body {
 
 .app-container.finance-page .finance-table td.el-table__cell {
   padding: 4px 0;
+}
+
+/* Keep Element Plus column width calculations within the card on order lists too. */
+.app-container.order-page .order-table {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
 }
 
 .app-container.finance-page .finance-pagination {

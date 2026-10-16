@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
+    <div class="head-container finance-filters">
       <!-- 新增 -->
       <div style="display: inline-block;margin: 0px 2px;">
         <el-button
@@ -25,7 +25,7 @@
     <!--表单组件-->
     <eForm ref="form" :is-add="isAdd" />
     <!--表格渲染-->
-    <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
+    <el-table class="finance-table" v-loading="loading" :data="data" size="small" style="width: 100%;">
       <el-table-column prop="id" label="ID" />
       <el-table-column prop="money" label="支出金额(元)" />
       <el-table-column prop="mark" label="备注" />
@@ -63,7 +63,7 @@
       </el-table-column>
     </el-table>
     <!--分页组件-->
-    <el-pagination
+    <el-pagination class="finance-pagination"
       :total="total"
       :current-page="page + 1"
       style="margin-top: 8px;"
