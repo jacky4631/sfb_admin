@@ -1,10 +1,10 @@
 <template>
-  <div class="app-container" style="padding: 8px;">
+  <div class="app-container finance-page">
     <!--表单组件-->
     <eForm ref="formRef" />
     <!-- 工具栏 -->
-    <div class="head-container">
-      <div v-if="crud.props.searchToggle">
+    <div class="head-container finance-filters">
+      <div v-if="crud.props.searchToggle" class="tool-search">
         <!-- 搜索 -->
         <el-input v-model="query.key" clearable size="small" placeholder="输入文件名称搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <el-date-picker
@@ -36,6 +36,7 @@
           >配置</el-button>
         </template>
       </crudOperation>
+    </div>
       <!-- 文件上传 -->
       <el-dialog v-model="dialog" :close-on-click-modal="false" append-to-body width="500px" @close="doSubmit">
         <el-upload
@@ -60,7 +61,7 @@
         </template>
       </el-dialog>
       <!--表格渲染-->
-      <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+      <el-table class="finance-table" size="small" ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
         <el-table-column v-if="columns.visible('name')" prop="name" :show-overflow-tooltip="true" label="文件名">
           <template #default="scope">
@@ -78,8 +79,7 @@
         </el-table-column>
       </el-table>
       <!--分页组件-->
-      <pagination />
-    </div>
+      <pagination class="finance-pagination" />
   </div>
 </template>
 

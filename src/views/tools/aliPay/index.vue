@@ -1,12 +1,13 @@
 <template>
-  <el-tabs v-model="activeName" style="padding-left: 5px;">
-    <el-tab-pane label="参数配置" name="first">
+  <div class="app-container finance-page tools-tab-page">
+  <el-tabs v-model="activeName" class="tools-tabs">
+    <el-tab-pane class="tool-settings-pane" label="参数配置" name="first">
       <Config />
     </el-tab-pane>
-    <el-tab-pane label="支付测试" name="second">
+    <el-tab-pane class="tool-settings-pane" label="支付测试" name="second">
       <ToPay />
     </el-tab-pane>
-    <el-tab-pane label="使用说明" name="third">
+    <el-tab-pane class="tool-settings-pane" label="使用说明" name="third">
       <div>
         <blockquote class="my-blockquote">注意</blockquote>
         <pre class="my-code">
@@ -28,6 +29,7 @@ if (/(Android)/i.test(navigator.userAgent)){     // 判断是否为Android手机
       </div>
     </el-tab-pane>
   </el-tabs>
+  </div>
 </template>
 
 <script setup>

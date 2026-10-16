@@ -1,8 +1,8 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page system-page">
     <!--工具栏-->
-    <div class="head-container">
-      <div v-if="crud.props.searchToggle">
+    <div class="head-container finance-filters">
+      <div v-if="crud.props.searchToggle" class="tool-search">
         <!-- 搜索 -->
         <el-input v-model="query.blurry" size="small" clearable placeholder="输入名称或者描述搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <el-date-picker
@@ -56,14 +56,14 @@
         </div>
       </template>
     </el-dialog>
-    <el-row :gutter="15">
+    <el-row class="system-grid" :gutter="15">
       <!--角色管理-->
-      <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="17" style="margin-bottom: 10px">
-        <el-card class="box-card" shadow="never">
+      <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="17" >
+        <el-card class="box-card system-card" shadow="never">
           <template #header>
             <span class="role-span">角色列表</span>
           </template>
-          <el-table ref="table" v-loading="crud.loading" highlight-current-row style="width: 100%;" :data="crud.data" @selection-change="crud.selectionChangeHandler" @current-change="handleCurrentChange">
+          <el-table class="finance-table" size="small" ref="table" v-loading="crud.loading" highlight-current-row style="width: 100%;" :data="crud.data" @selection-change="crud.selectionChangeHandler" @current-change="handleCurrentChange">
             <el-table-column :selectable="checkboxT" type="selection" width="55" />
             <el-table-column v-if="columns.visible('name')" prop="name" label="名称" />
             <el-table-column v-if="columns.visible('dataScope')" prop="dataScope" label="数据权限" />
@@ -86,12 +86,12 @@
             </el-table-column>
           </el-table>
           <!--分页组件-->
-          <pagination />
+          <pagination class="finance-pagination" />
         </el-card>
       </el-col>
       <!-- 菜单授权 -->
       <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="7">
-        <el-card class="box-card" shadow="never">
+        <el-card class="box-card system-card" shadow="never">
           <template #header>
             <el-tooltip class="item" effect="dark" content="选择指定角色分配菜单" placement="top">
               <span class="role-span">菜单分配</span>

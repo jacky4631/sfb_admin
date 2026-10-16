@@ -1,12 +1,12 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page system-page">
     <!--工具栏-->
-    <div class="head-container">
+    <div class="head-container finance-filters">
       <eHeader :dict="dict" :permission="permission" />
       <crudOperation :permission="permission" />
     </div>
     <!--表格渲染-->
-    <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+    <el-table class="finance-table" size="small" ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
       <el-table-column type="selection" width="55" />
       <el-table-column v-if="columns.visible('name')" prop="name" label="名称" />
       <el-table-column v-if="columns.visible('dept')" prop="dept" label="所属部门">
@@ -51,7 +51,7 @@
       </el-table-column>
     </el-table>
     <!--分页组件-->
-    <pagination />
+    <pagination class="finance-pagination" />
     <!--表单渲染-->
     <eForm :job-status="dict.job_status" />
   </div>

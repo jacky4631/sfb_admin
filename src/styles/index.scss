@@ -228,3 +228,166 @@ body {
     gap: 8px;
   }
 }
+
+/* Tool tabs keep their active list or settings panel within the page height. */
+.app-container.finance-page .tool-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-container.finance-page .tool-search .date-item {
+  flex: none;
+  width: 350px;
+  max-width: 100%;
+  margin: 0;
+}
+
+.tools-tab-page > .tools-tabs {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.tools-tab-page > .tools-tabs > .el-tabs__header {
+  flex: none;
+  margin: 0 0 10px;
+  padding: 0 16px;
+  border: 1px solid #e8edf4;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(31, 45, 61, 0.04);
+}
+
+.tools-tab-page > .tools-tabs > .el-tabs__content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.tools-tab-page > .tools-tabs > .el-tabs__content > .el-tab-pane {
+  height: 100%;
+}
+
+.tools-tab-page .el-tab-pane > .app-container.finance-page {
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+}
+
+.tools-tab-page .tool-settings-pane {
+  padding: 24px;
+  overflow: auto;
+  border: 1px solid #e8edf4;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(31, 45, 61, 0.04);
+}
+
+.tools-tab-page .tool-settings-pane .el-input,
+.tools-tab-page .tool-settings-pane .el-textarea {
+  max-width: 100%;
+}
+
+.tools-tab-page .my-code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 768px) {
+  .tools-tab-page > .tools-tabs > .el-tabs__content {
+    overflow: visible;
+  }
+
+  .tools-tab-page .el-tab-pane > .app-container.finance-page {
+    height: auto;
+  }
+
+  .tools-tab-page .tool-settings-pane {
+    padding: 16px;
+  }
+}
+
+/* System management keeps trees and related lists in aligned cards. */
+.system-page > .system-grid {
+  flex: 1;
+  min-height: 0;
+}
+
+.system-page > .system-grid > .el-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  min-height: 0;
+}
+
+.system-page .system-sidebar > .el-tree {
+  flex: 1;
+  min-height: 0;
+  padding: 12px;
+  overflow: auto;
+  border: 1px solid #e8edf4;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(31, 45, 61, 0.04);
+}
+
+.system-page .system-card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  border-color: #e8edf4;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(31, 45, 61, 0.04);
+}
+
+.system-page .system-card > .el-card__header {
+  flex: none;
+  padding: 12px 16px;
+  border-color: #e8edf4;
+  background: #f7f9fc;
+}
+
+.system-page .system-card > .el-card__body,
+.system-page .system-dict-detail,
+.system-page .system-detail-list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.system-page .system-card > .el-card__body {
+  padding: 12px;
+  overflow: auto;
+}
+
+.system-page .system-card .finance-table {
+  height: auto;
+}
+
+@media (max-width: 991px) {
+  .app-container.finance-page.system-page {
+    height: auto;
+    min-height: calc(100vh - 117px);
+    overflow: visible;
+  }
+
+  .system-page > .system-grid > .el-col {
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .system-page .system-sidebar > .el-tree {
+    max-height: 320px;
+  }
+
+  .system-page .finance-table {
+    min-height: 420px;
+  }
+}

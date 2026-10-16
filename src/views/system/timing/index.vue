@@ -1,8 +1,8 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
-      <div v-if="crud.props.searchToggle">
+    <div class="head-container finance-filters">
+      <div v-if="crud.props.searchToggle" class="tool-search">
         <!-- 搜索 -->
         <el-input v-model="query.jobName" clearable size="small" placeholder="输入任务名称搜索" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
         <el-date-picker
@@ -67,7 +67,7 @@
       </template>
     </el-dialog>
     <!--表格渲染-->
-    <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+    <el-table class="finance-table" size="small" ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
       <el-table-column :selectable="checkboxT" type="selection" width="55" />
       <el-table-column v-if="columns.visible('jobName')" :show-overflow-tooltip="true" prop="jobName" width="200px" label="任务名称" />
       <el-table-column v-if="columns.visible('beanName')" :show-overflow-tooltip="true" prop="beanName" label="Bean名称" />
@@ -110,7 +110,7 @@
       </el-table-column>
     </el-table>
     <!--分页组件-->
-    <pagination />
+    <pagination class="finance-pagination" />
   </div>
 </template>
 

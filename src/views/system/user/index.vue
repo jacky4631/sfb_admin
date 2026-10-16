@@ -1,9 +1,9 @@
 <template>
-  <div class="app-container">
-    <el-row :gutter="20">
+  <div class="app-container finance-page system-page">
+    <el-row class="system-grid" :gutter="20">
       <!--侧边部门数据-->
-      <el-col :xs="9" :sm="6" :md="4" :lg="4" :xl="4">
-        <div class="head-container">
+      <el-col class="system-sidebar" :xs="24" :sm="6" :md="4" :lg="4" :xl="4">
+        <div class="head-container finance-filters">
           <el-input
             v-model="deptName"
             clearable
@@ -26,10 +26,10 @@
         />
       </el-col>
       <!--用户数据-->
-      <el-col :xs="15" :sm="18" :md="20" :lg="20" :xl="20">
+      <el-col class="system-list" :xs="24" :sm="18" :md="20" :lg="20" :xl="20">
         <!--工具栏-->
-        <div class="head-container">
-          <div v-if="crud.props.searchToggle">
+        <div class="head-container finance-filters">
+          <div v-if="crud.props.searchToggle" class="tool-search">
             <!-- 搜索 -->
             <el-input
               v-model="query.blurry"
@@ -171,7 +171,7 @@
           </template>
         </el-dialog>
         <!--表格渲染-->
-        <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+        <el-table class="finance-table" size="small" ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
           <el-table-column :selectable="checkboxT" type="selection" width="55" />
           <el-table-column v-if="columns.visible('username')" :show-overflow-tooltip="true" prop="username" label="用户名" />
           <el-table-column v-if="columns.visible('nickName')" :show-overflow-tooltip="true" prop="nickName" label="昵称" />
@@ -216,7 +216,7 @@
           </el-table-column>
         </el-table>
         <!--分页组件-->
-        <pagination />
+        <pagination class="finance-pagination" />
       </el-col>
     </el-row>
   </div>

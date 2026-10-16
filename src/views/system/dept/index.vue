@@ -1,8 +1,8 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page system-page">
     <!--工具栏-->
-    <div class="head-container">
-      <div v-if="crud.props.searchToggle">
+    <div class="head-container finance-filters">
+      <div v-if="crud.props.searchToggle" class="tool-search">
         <!-- 搜索 -->
         <el-input v-model="query.name" clearable size="small" placeholder="输入部门名称搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <el-date-picker
@@ -44,7 +44,7 @@
       </template>
     </el-dialog>
     <!--表格渲染-->
-    <el-table ref="table" v-loading="crud.loading" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" default-expand-all :data="crud.data" row-key="id" @select="crud.selectChange" @select-all="crud.selectAllChange" @selection-change="crud.selectionChangeHandler">
+    <el-table class="finance-table" size="small" ref="table" v-loading="crud.loading" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" default-expand-all :data="crud.data" row-key="id" @select="crud.selectChange" @select-all="crud.selectAllChange" @selection-change="crud.selectionChangeHandler">
       <el-table-column :selectable="checkboxT" type="selection" width="55" />
       <el-table-column v-if="columns.visible('name')" label="名称" prop="name" />
       <el-table-column v-if="columns.visible('enabled')" label="状态" align="center" prop="enabled">

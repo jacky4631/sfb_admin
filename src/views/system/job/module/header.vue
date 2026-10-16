@@ -1,5 +1,6 @@
 <template>
   <div
+    class="tool-search"
     v-if="crud.props.searchToggle"
   >
     <el-input v-model="query.name" clearable size="small" placeholder="输入岗位名称搜索" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />

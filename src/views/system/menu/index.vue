@@ -1,8 +1,8 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page system-page">
     <!--工具栏-->
-    <div class="head-container">
-      <div v-if="crud.props.searchToggle">
+    <div class="head-container finance-filters">
+      <div v-if="crud.props.searchToggle" class="tool-search">
         <!-- 搜索 -->
         <el-input v-model="query.blurry" clearable size="small" placeholder="模糊搜索" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
         <el-date-picker
@@ -99,7 +99,7 @@
       </template>
     </el-dialog>
     <!--表格渲染-->
-    <el-table ref="table" v-loading="crud.loading" :data="crud.data" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id" @select="crud.selectChange" @select-all="crud.selectAllChange" @selection-change="crud.selectionChangeHandler">
+    <el-table class="finance-table" size="small" ref="table" v-loading="crud.loading" :data="crud.data" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id" @select="crud.selectChange" @select-all="crud.selectAllChange" @selection-change="crud.selectionChangeHandler">
       <el-table-column type="selection" width="55" />
       <el-table-column v-if="columns.visible('name')" :show-overflow-tooltip="true" label="菜单名称" width="125px" prop="name" />
       <el-table-column v-if="columns.visible('icon')" prop="icon" label="图标" align="center" width="60px">

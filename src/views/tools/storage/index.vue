@@ -1,5 +1,6 @@
 <template>
-  <el-tabs v-model="activeName" style="padding-left: 8px;" @tab-click="tabClick">
+  <div class="app-container finance-page tools-tab-page">
+  <el-tabs v-model="activeName" class="tools-tabs" @tab-click="tabClick">
     <el-tab-pane label="本地存储" name="first">
       <Local ref="localRef" />
     </el-tab-pane>
@@ -7,6 +8,7 @@
       <QiNiu ref="qiNiuRef" />
     </el-tab-pane>
   </el-tabs>
+  </div>
 </template>
 
 <script setup>

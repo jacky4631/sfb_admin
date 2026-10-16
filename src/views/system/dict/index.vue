@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page system-page">
     <!--表单组件-->
     <el-dialog v-model="dialog" append-to-body :close-on-click-modal="false" :before-close="cancel" :title="getFormTitle()" width="500px">
       <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
@@ -18,9 +18,9 @@
       </template>
     </el-dialog>
     <!-- 字典列表 -->
-    <el-row :gutter="10">
-      <el-col :xs="24" :sm="24" :md="10" :lg="10" :xl="10" style="margin-bottom: 10px">
-        <el-card class="box-card">
+    <el-row class="system-grid" :gutter="10">
+      <el-col :xs="24" :sm="24" :md="10" :lg="10" :xl="10" >
+        <el-card class="box-card system-card">
           <template #header>
             <div class="clearfix">
               <span>字典列表</span>
@@ -38,7 +38,7 @@
             </div>
           </template>
           <!--工具栏-->
-          <div class="head-container">
+          <div class="head-container finance-filters">
             <!-- 搜索 -->
             <el-input v-model="query.blurry" clearable size="small" placeholder="输入名称或者描述搜索" style="width: 200px;" class="filter-item" @keyup.enter="toQuery" />
             <el-button class="filter-item" size="small" type="success" @click="toQuery">
@@ -56,7 +56,7 @@
             </el-button>
           </div>
           <!--表格渲染-->
-          <el-table v-loading="loading" :data="data" highlight-current-row style="width: 100%;" @current-change="handleCurrentChange">
+          <el-table class="finance-table" size="small" v-loading="loading" :data="data" highlight-current-row style="width: 100%;" @current-change="handleCurrentChange">
             <el-table-column :show-overflow-tooltip="true" prop="name" label="名称" />
             <el-table-column :show-overflow-tooltip="true" prop="remark" label="描述" />
             <el-table-column v-if="checkPermission(['admin','dict:edit','dict:del'])" label="操作" width="130px" align="center" fixed="right">
@@ -85,6 +85,7 @@
           </el-table>
           <!--分页组件-->
           <el-pagination
+            class="finance-pagination"
             :total="total"
             :current-page="page + 1"
             style="margin-top: 8px;"
@@ -96,7 +97,7 @@
       </el-col>
       <!-- 字典详情列表 -->
       <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
-        <el-card class="box-card">
+        <el-card class="box-card system-card">
           <template #header>
             <div class="clearfix">
               <span>字典详情</span>
@@ -112,7 +113,7 @@
               </el-button>
             </div>
           </template>
-          <dictDetail ref="dictDetail" />
+          <dictDetail class="system-dict-detail" ref="dictDetail" />
         </el-card>
       </el-col>
     </el-row>

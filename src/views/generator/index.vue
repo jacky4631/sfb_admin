@@ -1,8 +1,8 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
     <!--工具栏-->
-    <div class="head-container">
-      <div v-if="crud.props.searchToggle">
+    <div class="head-container finance-filters">
+      <div v-if="crud.props.searchToggle" class="tool-search">
         <el-input v-model="query.name" clearable size="small" placeholder="请输入表名" style="width: 200px;" class="filter-item" @keyup.enter="crud.toQuery" />
         <rrOperation :crud="crud" />
       </div>
@@ -24,6 +24,8 @@
     </div>
     <!--表格渲染-->
     <el-table
+      class="finance-table"
+      size="small"
       ref="table"
       v-loading="crud.loading"
       :data="crud.data"
@@ -57,7 +59,7 @@
       </el-table-column>
     </el-table>
     <!--分页组件-->
-    <pagination />
+    <pagination class="finance-pagination" />
   </div>
 </template>
 
