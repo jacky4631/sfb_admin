@@ -1,7 +1,8 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
+    <div class="finance-settings">
     <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="150px">
-      <p style="color: red">该功能已废弃，使用"财务管理"->"支付通道设置"，新建通道</p>
+      <el-alert title="该功能已废弃，请前往「财务管理 → 支付通道设置」新建通道。" type="info" :closable="false" show-icon />
 <!--      <el-form-item label="微信APP支付AppID">-->
 <!--        <el-input v-model="form.wx_native_app_appId" style="width: 370px;" />-->
 <!--        <p style="color: red">微信开放平台审核通过的应用APPID（请登录open.weixin.qq.com查看，注意与公众号的APPID不同）</p>-->
@@ -20,6 +21,7 @@
 <!--      </el-form-item>-->
 
     </el-form>
+    </div>
 
   </div>
 </template>

@@ -1,5 +1,6 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
+    <div class="finance-settings">
     <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="80px">
       <el-form-item label="标题">
         <el-input v-model="form.title" style="width: 370px;" />
@@ -22,6 +23,7 @@
         <el-button :loading="loading" type="primary" @click="doSubmit">保存</el-button>
       </el-form-item>
     </el-form>
+    </div>
     <!--<div slot="footer" class="dialog-footer">-->
       <!--<el-button link @click="cancel">取消</el-button>-->
       <!--<el-button :loading="loading" type="primary" @click="doSubmit">确认</el-button>-->

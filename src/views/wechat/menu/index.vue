@@ -1,9 +1,9 @@
 <template>
-  <div class="app-container">
-    <div class="wechat-reply-wrapper wechat-menu">
+  <div class="app-container finance-page wechat-editor-page">
+    <div class="finance-settings wechat-reply-wrapper wechat-menu">
       <div class="ibox-content clearfix">
         <el-row :gutter="20">
-          <el-col :span="8">
+          <el-col :xs="24" :lg="10" :xl="8">
             <div class="view-wrapper col-sm-4">
               <div class="mobile-header">公众号</div>
               <section class="view-body">
@@ -27,7 +27,7 @@
               </div>
             </div>
           </el-col>
-          <el-col :span="12">
+          <el-col :xs="24" :lg="14" :xl="16">
             <div v-show="checkedMenuId !== null" class="control-wrapper menu-control col-sm-8">
               <section>
                 <div class="control-main">
@@ -94,7 +94,7 @@
         </el-row>
       </div>
       <div class="ibox-content submit">
-        <button class="el-button el-button--primary" @click="submit">保存发布</button>
+        <el-button type="primary" @click="submit">保存发布</el-button>
       </div>
     </div>
   </div>
@@ -617,5 +617,45 @@ const submit = () => {
   .menu-control-box .show {
     display: block;
   }
+
+
+/* Match the shared settings cards while keeping the phone preview intact. */
+.wechat-editor-page .wechat-reply-wrapper .ibox-content {
+  padding: 0;
+  font-size: 14px;
+}
+
+.wechat-editor-page .wechat-reply-wrapper .ibox-content .control-wrapper {
+  width: 100%;
+  height: auto;
+  min-height: 565px;
+  margin-left: 0;
+  overflow: hidden;
+  border-color: #e8edf4;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.wechat-editor-page .form-group {
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.wechat-editor-page .group-item input,
+.wechat-editor-page .group-item select {
+  max-width: 100%;
+}
+
+.wechat-editor-page .ibox-content.submit {
+  margin-top: 20px;
+  text-align: right;
+}
+
+@media (max-width: 1199px) {
+  .wechat-editor-page .wechat-reply-wrapper .ibox-content .view-wrapper {
+    margin: 0 auto 24px;
+    max-width: 100%;
+  }
+}
 
 </style>

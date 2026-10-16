@@ -1,5 +1,6 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
+    <div class="finance-settings">
     <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="150px">
       <el-form-item label="公众号AppID">
         <el-input v-model="form.wechat_appid" style="width: 370px;" />
@@ -46,6 +47,7 @@
       </el-form-item>
 
     </el-form>
+    </div>
 
   </div>
 </template>

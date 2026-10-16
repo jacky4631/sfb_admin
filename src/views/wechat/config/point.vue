@@ -1,5 +1,6 @@
 <template>
-  <div class="app-container">
+  <div class="app-container finance-page">
+    <div class="finance-settings">
     <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="150px">
       <el-form-item label="积分抵用比例">
         <el-input v-model="form.integral_ratio" style="width: 370px;" />
@@ -17,6 +18,7 @@
         <el-button type="primary" @click="doSubmit">提交</el-button>
       </el-form-item>
     </el-form>
+    </div>
   </div>
 </template>
 

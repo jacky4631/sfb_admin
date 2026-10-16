@@ -1,10 +1,10 @@
 <template>
-  <div class="app-container">
-    <div class="wechat-reply-wrapper">
+  <div class="app-container finance-page wechat-editor-page">
+    <div class="finance-settings wechat-reply-wrapper">
       <div class="ibox-title"><p>{{ msg }}</p></div>
       <div class="ibox-content clearfix">
         <el-row :gutter="20">
-          <el-col :span="8">
+          <el-col :xs="24" :lg="10" :xl="8">
             <div class="view-wrapper col-sm-4">
               <div class="mobile-header">公众号</div>
               <section class="view-body" style="overflow:scroll;">
@@ -51,7 +51,7 @@
               </section>
             </div>
           </el-col>
-          <el-col :span="12">
+          <el-col :xs="24" :lg="14" :xl="16">
             <div class="control-wrapper col-sm-8">
               <section>
                 <form action="" method="post" enctype="multipart/form-data">
@@ -112,7 +112,7 @@
                       </div>
                     </div>
                   </div>
-                  <div style="text-align: center;"><button type="button" class="el-button el-button--primary" @click="submit">提交</button></div>
+                  <div style="text-align: center;"><el-button type="primary" @click="submit">提交</el-button></div>
                 </form>
               </section>
             </div>
@@ -753,6 +753,46 @@ const keyword = ref('')
 
 .menu-control-box .show {
   display: block;
+}
+
+
+/* Match the shared settings cards while keeping the phone preview intact. */
+.wechat-editor-page .wechat-reply-wrapper .ibox-content {
+  padding: 0;
+  font-size: 14px;
+}
+
+.wechat-editor-page .wechat-reply-wrapper .ibox-content .control-wrapper {
+  width: 100%;
+  height: auto;
+  min-height: 565px;
+  margin-left: 0;
+  overflow: hidden;
+  border-color: #e8edf4;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.wechat-editor-page .form-group {
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.wechat-editor-page .group-item input,
+.wechat-editor-page .group-item select {
+  max-width: 100%;
+}
+
+.wechat-editor-page .ibox-content.submit {
+  margin-top: 20px;
+  text-align: right;
+}
+
+@media (max-width: 1199px) {
+  .wechat-editor-page .wechat-reply-wrapper .ibox-content .view-wrapper {
+    margin: 0 auto 24px;
+    max-width: 100%;
+  }
 }
 
 </style>
