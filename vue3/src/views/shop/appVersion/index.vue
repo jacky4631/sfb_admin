@@ -21,13 +21,13 @@
             <el-input v-model="form.androidUrl" style="width: 370px;"/>
           </el-form-item>
           <el-form-item label="强制升级*">
-            <el-radio v-for="item in dict.force_update" :key="item.id" v-model="form.forceUpdate" :label="item.value">
+            <el-radio v-for="item in dict.force_update" :key="item.id" v-model="form.forceUpdate" :value="item.value">
               {{ item.label }}
             </el-radio>
           </el-form-item>
 
           <el-form-item label="是否启用*">
-            <el-radio v-for="item in dict.is_enable" :key="item.id" v-model="form.enable" :label="item.value">
+            <el-radio v-for="item in dict.is_enable" :key="item.id" v-model="form.enable" :value="item.value">
               {{ item.label }}
             </el-radio>
           </el-form-item>

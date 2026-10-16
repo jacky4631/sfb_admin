@@ -279,7 +279,8 @@ function getQueryParame() {
 }
 
 function handleOrder(tab) {
-  status.value = tab.name
+  // Element Plus 的 tab-click 回调参数是 pane 上下文，name 在 paneName 上（Vue2 里才是 tab.name）
+  status.value = tab.paneName
   toQuery()
 }
 

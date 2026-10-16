@@ -70,8 +70,8 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="活动状态">
-              <el-radio v-model="formValidate.status" :label="1">开启</el-radio>
-              <el-radio v-model="formValidate.status" :label="0" style="width: 200px;">关闭</el-radio>
+              <el-radio v-model="formValidate.status" :value="1">开启</el-radio>
+              <el-radio v-model="formValidate.status" :value="0" style="width: 200px;">关闭</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -82,8 +82,8 @@
           <el-col :span="24">
             <el-form-item label="商品规格：" props="spec_type">
               <el-radio-group v-model="formValidate.spec_type"  @change="changeSpec" :disabled="true">
-                <el-radio :label="0" class="radio">单规格</el-radio>
-                <el-radio :label="1">多规格{{formValidate.spec_typ}}</el-radio>
+                <el-radio :value="0" class="radio">单规格</el-radio>
+                <el-radio :value="1">多规格{{formValidate.spec_typ}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>

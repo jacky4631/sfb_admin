@@ -345,7 +345,8 @@ import { ElNotification, ElMessage } from 'element-plus'
       formatTime,
       checkPermission,
       handleOrder(tab, event) {
-        this.status = tab.name
+        // Element Plus 的 tab-click 回调参数是 pane 上下文，name 在 paneName 上（Vue2 里才是 tab.name）
+        this.status = tab.paneName
         this.toQuery()
       },
       beforeInit() {

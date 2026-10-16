@@ -3,9 +3,9 @@
   <div class="selectMode">
     <div>添加优惠券</div>
     <el-radio-group class="modeRight" v-model="modeValue" @change="modeChange">
-      <el-radio label="1">手动添加</el-radio>
+      <el-radio value="1">手动添加</el-radio>
       <div class="mode2">
-        <el-radio label="2">自动获取</el-radio>
+        <el-radio value="2">自动获取</el-radio>
         <el-tooltip class="item" effect="dark" content="系统自动获取仅设置为&quot;公开领取&quot;的店铺优惠券，新创建的券排在前面" placement="bottom">
         <span class="iconfont">&#xe60a;</span>
         </el-tooltip>

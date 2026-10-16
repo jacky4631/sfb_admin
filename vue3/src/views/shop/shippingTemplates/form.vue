@@ -14,9 +14,9 @@
         <el-col :xl="18" :lg="18" :md="18" :sm="24" :xs="24">
           <el-form-item label="计费方式：" props="state" >
             <el-radio-group class="radio" v-model="formData.type" >
-              <el-radio :label="1">按件数</el-radio>
-              <el-radio :label="2">按重量</el-radio>
-              <el-radio :label="3">按体积</el-radio>
+              <el-radio :value="1">按件数</el-radio>
+              <el-radio :value="2">按重量</el-radio>
+              <el-radio :value="3">按体积</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -80,8 +80,8 @@
         <el-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
           <el-form-item label="指定包邮：" prop="store_name">
             <el-radio-group class="radio" v-model="formData.appoint_check">
-              <el-radio :label="1">开启</el-radio>
-              <el-radio :label="0">关闭</el-radio>
+              <el-radio :value="1">开启</el-radio>
+              <el-radio :value="0">关闭</el-radio>
             </el-radio-group>
             <el-table
               ref="table"

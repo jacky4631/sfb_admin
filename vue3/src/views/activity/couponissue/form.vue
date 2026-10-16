@@ -30,12 +30,12 @@
         <el-input v-model="form.totalCount" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="是否不限量">
-        <el-radio v-model="form.isPermanent" :label="1">不限量</el-radio>
-        <el-radio v-model="form.isPermanent" :label="0">限量</el-radio>
+        <el-radio v-model="form.isPermanent" :value="1">不限量</el-radio>
+        <el-radio v-model="form.isPermanent" :value="0">限量</el-radio>
       </el-form-item>
       <el-form-item label="状态">
-        <el-radio v-model="form.status" :label="1">开启</el-radio>
-        <el-radio v-model="form.status" :label="0">关闭</el-radio>
+        <el-radio v-model="form.status" :value="1">开启</el-radio>
+        <el-radio v-model="form.status" :value="0">关闭</el-radio>
       </el-form-item>
     </el-form>
     <template #footer><div class="dialog-footer">

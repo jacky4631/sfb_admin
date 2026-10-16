@@ -5,8 +5,8 @@
         <el-input v-model="form.nickname" :disabled="true" style="width: 370px;" />
       </el-form-item>
       <el-form-item label="修改积分">
-        <el-radio v-model="form.ptype" :label="1">增加</el-radio>
-        <el-radio v-model="form.ptype" :label="2">减少</el-radio>
+        <el-radio v-model="form.ptype" :value="1">增加</el-radio>
+        <el-radio v-model="form.ptype" :value="2">减少</el-radio>
       </el-form-item>
       <el-form-item label="用户积分">
         <el-input v-model="form.integral" style="width: 370px;" />

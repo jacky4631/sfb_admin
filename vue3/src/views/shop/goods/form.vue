@@ -45,16 +45,16 @@
           <el-col :span="24">
             <el-form-item label="商品规格：" props="spec_type">
               <el-radio-group v-model="formValidate.spec_type"  @change="changeSpec">
-                <el-radio :label="0" class="radio">单规格</el-radio>
-                <el-radio :label="1">多规格{{formValidate.spec_typ}}</el-radio>
+                <el-radio :value="0" class="radio">单规格</el-radio>
+                <el-radio :value="1">多规格{{formValidate.spec_typ}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="开启积分兑换：" props="is_integral">
               <el-radio-group v-model="formValidate.is_integral"  @change="changeSpec">
-                <el-radio :label="0" class="radio">不开启</el-radio>
-                <el-radio :label="1">开启</el-radio>
+                <el-radio :value="0" class="radio">不开启</el-radio>
+                <el-radio :value="1">开启</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -227,8 +227,8 @@
           <el-col :span="24">
             <el-form-item label="佣金设置：">
               <el-radio-group v-model="formValidate.is_sub">
-                <el-radio :label="1" class="radio">单独设置</el-radio>
-                <el-radio :label="0">默认设置</el-radio>
+                <el-radio :value="1" class="radio">单独设置</el-radio>
+                <el-radio :value="0">默认设置</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -304,40 +304,40 @@
           <el-col v-bind="grid">
             <el-form-item label="商品状态：">
               <el-radio-group v-model="formValidate.is_show" >
-                <el-radio :label="1" class="radio">上架</el-radio>
-                <el-radio :label="0">下架</el-radio>
+                <el-radio :value="1" class="radio">上架</el-radio>
+                <el-radio :value="0">下架</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col v-bind="grid">
             <el-form-item label="热卖单品：">
               <el-radio-group v-model="formValidate.is_hot" >
-                <el-radio :label="1" class="radio">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
+                <el-radio :value="1" class="radio">开启</el-radio>
+                <el-radio :value="0">关闭</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col v-bind="grid">
             <el-form-item label="猜你喜欢：">
               <el-radio-group v-model="formValidate.is_benefit" >
-                <el-radio :label="1" class="radio">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
+                <el-radio :value="1" class="radio">开启</el-radio>
+                <el-radio :value="0">关闭</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col v-bind="grid">
             <el-form-item label="精品推荐：">
               <el-radio-group v-model="formValidate.is_best" >
-                <el-radio :label="1" class="radio">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
+                <el-radio :value="1" class="radio">开启</el-radio>
+                <el-radio :value="0">关闭</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col v-bind="grid">
             <el-form-item label="首发新品：">
               <el-radio-group v-model="formValidate.is_new" >
-                <el-radio :label="1" class="radio">开启</el-radio>
-                <el-radio :label="0">关闭</el-radio>
+                <el-radio :value="1" class="radio">开启</el-radio>
+                <el-radio :value="0">关闭</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>

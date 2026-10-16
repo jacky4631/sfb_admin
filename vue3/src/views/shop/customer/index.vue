@@ -69,7 +69,7 @@
             <el-input v-model="form.remark" style="width: 485px;" />
           </el-form-item>
           <el-form-item label="是否启用">
-            <el-radio v-for="item in dict.is_enable" :key="item.id" v-model="form.isEnable" :label="item.value">{{ item.label }}</el-radio>
+            <el-radio v-for="item in dict.is_enable" :key="item.id" v-model="form.isEnable" :value="item.value">{{ item.label }}</el-radio>
           </el-form-item>
         </el-form>
         <template #footer><div class="dialog-footer">

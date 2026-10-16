@@ -8,8 +8,8 @@
         <el-input v-model="form.sort" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="是否显示">
-        <el-radio v-model="form.status" :label="1">是</el-radio>
-        <el-radio v-model="form.status" :label="0" style="width: 200px;">否</el-radio>
+        <el-radio v-model="form.status" :value="1">是</el-radio>
+        <el-radio v-model="form.status" :value="0" style="width: 200px;">否</el-radio>
       </el-form-item>
     </el-form>
     <template #footer><div class="dialog-footer">

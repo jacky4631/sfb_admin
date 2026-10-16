@@ -64,8 +64,8 @@
         <el-input-number v-model="form.bargainNum" />
       </el-form-item>
       <el-form-item label="砍价状态">
-        <el-radio v-model="form.status" :label="1">开启</el-radio>
-        <el-radio v-model="form.status" :label="0" style="width: 110px;">关闭</el-radio>
+        <el-radio v-model="form.status" :value="1">开启</el-radio>
+        <el-radio v-model="form.status" :value="0" style="width: 110px;">关闭</el-radio>
       </el-form-item>
       <el-form-item label="成本价">
         <el-input-number v-model="form.cost" />

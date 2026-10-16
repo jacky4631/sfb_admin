@@ -33,6 +33,15 @@
   font-size: 13px;
 }
 
+// 下拉框：EP 的 select small 档是硬编码 24px（不走 --el-component-size-small），
+// 上面的变量重映射覆盖不到它，这里单独对齐回 EU small 档度量，
+// 否则同一行筛选栏里下拉框会比输入框、按钮、日期选择器矮一截、字号也小一号
+// （重复 .el-select__wrapper 提升一级特异性，压过 EP 的 .el-select--small .el-select__wrapper）
+.el-select--small .el-select__wrapper.el-select__wrapper {
+  min-height: 32px;
+  font-size: 13px;
+}
+
 // 标签：对齐 EU .el-tag--small { height: 24px; padding: 0 8px; line-height: 22px }
 .el-tag.el-tag--small {
   height: 24px;

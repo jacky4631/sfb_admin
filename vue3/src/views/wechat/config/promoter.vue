@@ -2,18 +2,18 @@
   <div class="app-container">
     <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="200px">
       <el-form-item label="多会员开关">
-        <el-radio v-model="form.store_multi_vip_open" :label="1">开启</el-radio>
-        <el-radio v-model="form.store_multi_vip_open" :label="2">关闭</el-radio>
+        <el-radio v-model="form.store_multi_vip_open" :value="1">开启</el-radio>
+        <el-radio v-model="form.store_multi_vip_open" :value="2">关闭</el-radio>
         <p style="color: red">我的特权多会员</p>
       </el-form-item>
       <el-form-item label="分销开关">
-        <el-radio v-model="form.store_brokerage_open" :label="1">开启</el-radio>
-        <el-radio v-model="form.store_brokerage_open" :label="2">关闭</el-radio>
+        <el-radio v-model="form.store_brokerage_open" :value="1">开启</el-radio>
+        <el-radio v-model="form.store_brokerage_open" :value="2">关闭</el-radio>
         <p style="color: red">订单分销和会员升级分销</p>
       </el-form-item>
       <el-form-item label="登录强制跳转邀请码页面">
-        <el-radio v-model="form.login_must_code" :label="1">开启</el-radio>
-        <el-radio v-model="form.login_must_code" :label="2">关闭</el-radio>
+        <el-radio v-model="form.login_must_code" :value="1">开启</el-radio>
+        <el-radio v-model="form.login_must_code" :value="2">关闭</el-radio>
         <p style="color: red">关闭的时候，app端登录直接跳过邀请码页面</p>
       </el-form-item>
       <el-form-item label="淘宝扣除服务费后比例">

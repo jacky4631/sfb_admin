@@ -2,8 +2,8 @@
   <div class="app-container">
     <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="150px">
       <el-form-item label="开启短信">
-        <el-radio v-model="form.sms_enable" :label="1">开启</el-radio>
-        <el-radio v-model="form.sms_enable" :label="2">关闭</el-radio>
+        <el-radio v-model="form.sms_enable" :value="1">开启</el-radio>
+        <el-radio v-model="form.sms_enable" :value="2">关闭</el-radio>
       </el-form-item>
       <el-form-item label="签名">
         <el-input v-model="form.sms_sign" style="width: 370px;" />

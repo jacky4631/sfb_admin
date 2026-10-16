@@ -55,51 +55,51 @@
 
           <el-form-item label="直播间类型" prop="type" >
             <el-radio-group v-model="form.type" :disabled="isDisabled" >
-              <el-radio :label="1" class="radio">推流</el-radio>
-              <el-radio :label="0">手机直播</el-radio>
+              <el-radio :value="1" class="radio">推流</el-radio>
+              <el-radio :value="0">手机直播</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="横屏、竖屏" prop="screenType" >
             <el-radio-group v-model="form.screenType" :disabled="isDisabled">
-              <el-radio :label="1" class="radio">横屏</el-radio>
-              <el-radio :label="0">竖屏</el-radio>
+              <el-radio :value="1" class="radio">横屏</el-radio>
+              <el-radio :value="0">竖屏</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否关闭点赞" prop="closeLike" >
             <el-radio-group v-model="form.closeLike" :disabled="isDisabled">
-              <el-radio :label="1" class="radio">关闭</el-radio>
-              <el-radio :label="0">开启</el-radio>
+              <el-radio :value="1" class="radio">关闭</el-radio>
+              <el-radio :value="0">开启</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否关闭货架" prop="closeGoods" >
             <el-radio-group v-model="form.closeGoods" :disabled="isDisabled">
-              <el-radio :label="1" class="radio">关闭</el-radio>
-              <el-radio :label="0">开启</el-radio>
+              <el-radio :value="1" class="radio">关闭</el-radio>
+              <el-radio :value="0">开启</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否关闭评论" prop="closeComment" >
             <el-radio-group v-model="form.closeComment" :disabled="isDisabled">
-              <el-radio :label="1" class="radio">关闭</el-radio>
-              <el-radio :label="0">开启</el-radio>
+              <el-radio :value="1" class="radio">关闭</el-radio>
+              <el-radio :value="0">开启</el-radio>
             </el-radio-group>
           </el-form-item>
 
           <el-form-item label="是否关闭回放" prop="closeLike" >
             <el-radio-group v-model="form.closeReplay" :disabled="isDisabled">
-              <el-radio :label="1" class="radio">关闭</el-radio>
-              <el-radio :label="0">开启</el-radio>
+              <el-radio :value="1" class="radio">关闭</el-radio>
+              <el-radio :value="0">开启</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否关闭分享" prop="closeGoods" >
             <el-radio-group v-model="form.closeShare" :disabled="isDisabled">
-              <el-radio :label="1" class="radio">关闭</el-radio>
-              <el-radio :label="0">开启</el-radio>
+              <el-radio :value="1" class="radio">关闭</el-radio>
+              <el-radio :value="0">开启</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="是否关闭客服" prop="closeComment" >
             <el-radio-group v-model="form.closeKf" :disabled="isDisabled">
-              <el-radio :label="1" class="radio">关闭</el-radio>
-              <el-radio :label="0">开启</el-radio>
+              <el-radio :value="1" class="radio">关闭</el-radio>
+              <el-radio :value="0">开启</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>

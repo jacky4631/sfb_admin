@@ -17,8 +17,8 @@
         <el-input-number v-model="form.sort" style="width: 370px;" />
       </el-form-item>
       <el-form-item label="是否显示">
-        <el-radio v-model="form.isShow" :label="1">是</el-radio>
-        <el-radio v-model="form.isShow" :label="0" style="width: 200px;">否</el-radio>
+        <el-radio v-model="form.isShow" :value="1">是</el-radio>
+        <el-radio v-model="form.isShow" :value="0" style="width: 200px;">否</el-radio>
       </el-form-item>
       <el-form-item label="任务说明">
         <el-input v-model="form.illustrate" :rows="3" type="textarea" />

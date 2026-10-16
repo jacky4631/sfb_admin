@@ -18,8 +18,8 @@
         </el-select>
     </el-form-item>
       <el-form-item label="是否永久">
-        <el-radio v-model="form.isForever" :label="1">是</el-radio>
-        <el-radio v-model="form.isForever" :label="0" style="width: 200px;">否</el-radio>
+        <el-radio v-model="form.isForever" :value="1">是</el-radio>
+        <el-radio v-model="form.isForever" :value="0" style="width: 200px;">否</el-radio>
       </el-form-item>
       <el-form-item label="有效时间(天)">
         <el-input-number v-model="form.validDate" style="width: 370px;" />
@@ -37,8 +37,8 @@
         <el-input-number v-model="form.discountTwo" style="width: 370px;" />
       </el-form-item>
       <el-form-item label="是否显示">
-        <el-radio v-model="form.isShow" :label="1">是</el-radio>
-        <el-radio v-model="form.isShow" :label="0" style="width: 200px;">否</el-radio>
+        <el-radio v-model="form.isShow" :value="1">是</el-radio>
+        <el-radio v-model="form.isShow" :value="0" style="width: 200px;">否</el-radio>
       </el-form-item>
       <el-form-item label="说明">
         <el-input v-model="form.explain" :rows="3" type="textarea" />

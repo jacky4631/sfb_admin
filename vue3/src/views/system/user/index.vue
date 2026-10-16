@@ -93,7 +93,7 @@
                 :props="{ children: 'children', label: 'name' }"
                 node-key="id"
                 check-strictly
-                render-after-expand=false
+                :render-after-expand="false"
                 style="width: 178px"
                 placeholder="选择部门"
                 @node-click="selectFun"
@@ -111,8 +111,8 @@
             </el-form-item>
             <el-form-item label="性别">
               <el-radio-group v-model="form.sex" style="width: 178px">
-                <el-radio label="男">男</el-radio>
-                <el-radio label="女">女</el-radio>
+                <el-radio value="男">男</el-radio>
+                <el-radio value="女">女</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="状态">
@@ -120,7 +120,7 @@
                 <el-radio
                   v-for="item in dict.user_status"
                   :key="item.id"
-                  :label="item.value"
+                  :value="item.value"
                 >{{ item.label }}</el-radio>
               </el-radio-group>
             </el-form-item>

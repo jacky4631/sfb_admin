@@ -44,7 +44,7 @@
           v-for="item in jobStatus"
           :key="item.id"
           v-model="form.enabled"
-          :label="item.value === 'true'"
+          :value="item.value === 'true'"
         >
           {{ item.label }}
         </el-radio>
@@ -60,7 +60,7 @@
           :props="{ children: 'children', label: 'label' }"
           node-key="id"
           check-strictly
-          render-after-expand=false
+          :render-after-expand="false"
           style="width: 370px"
           placeholder="选择部门"
         />

@@ -45,8 +45,8 @@
         </el-select>
       </el-form-item>
       <el-form-item label="通道开关">
-        <el-radio v-model="form.status" :label="8">开</el-radio>
-        <el-radio v-model="form.status" :label="0" style="width: 200px;">关</el-radio>
+        <el-radio v-model="form.status" :value="8">开</el-radio>
+        <el-radio v-model="form.status" :value="0" style="width: 200px;">关</el-radio>
       </el-form-item>
 
       <el-form-item label="证书信息">

@@ -54,8 +54,8 @@
           </el-form-item>
           <el-form-item label="是否显示" prop="isShow">
             <el-radio-group v-model="form.isShow" style="width: 178px">
-              <el-radio :label="1">显示</el-radio>
-              <el-radio :label="0">隐藏</el-radio>
+              <el-radio :value="1">显示</el-radio>
+              <el-radio :value="0">隐藏</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>

@@ -8,8 +8,8 @@
         <el-input-number v-model="form.extractPrice" disabled style="width: 370px;" />
       </el-form-item>
       <el-form-item label="审核状态">
-        <el-radio v-model="form.status" :label="-1">无效</el-radio>
-        <el-radio v-model="form.status" :label="1">通过</el-radio>
+        <el-radio v-model="form.status" :value="-1">无效</el-radio>
+        <el-radio v-model="form.status" :value="1">通过</el-radio>
       </el-form-item>
       <el-form-item label="无效原因">
         <el-input v-model="form.failMsg" style="width: 300px;" :rows="5" type="textarea" />

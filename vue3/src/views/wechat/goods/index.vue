@@ -48,9 +48,9 @@
           </el-form-item>
           <el-form-item label="价格类型" prop="priceType" >
             <el-radio-group v-model="form.priceType" >
-              <el-radio :label="'1'" class="radio">一口价</el-radio>
-              <el-radio :label="'2'" class="radio">价格区间</el-radio>
-              <el-radio :label="'3'" class="radio">显示折扣价</el-radio>
+              <el-radio :value="'1'" class="radio">一口价</el-radio>
+              <el-radio :value="'2'" class="radio">价格区间</el-radio>
+              <el-radio :value="'3'" class="radio">显示折扣价</el-radio>
             </el-radio-group>
             <p v-if="isdisabled" style="color: #cf0f0f">商品审核通过已入库，只能修改价格</p>
           </el-form-item>

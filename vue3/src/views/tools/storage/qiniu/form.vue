@@ -24,8 +24,8 @@
         </el-select>
       </el-form-item>
       <el-form-item label="空间类型" prop="host">
-        <el-radio v-model="form.type" label="公开">公开</el-radio>
-        <el-radio v-model="form.type" label="私有">私有</el-radio>
+        <el-radio v-model="form.type" value="公开">公开</el-radio>
+        <el-radio v-model="form.type" value="私有">私有</el-radio>
       </el-form-item>
     </el-form>
     <template #footer>

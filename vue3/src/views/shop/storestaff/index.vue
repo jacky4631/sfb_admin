@@ -36,8 +36,8 @@
           </el-form-item>
           <el-form-item label="核销开关" prop="verifyStatus">
             <el-radio-group v-model="form.verifyStatus" style="width: 178px">
-              <el-radio :label="1">开启</el-radio>
-              <el-radio :label="0">关闭</el-radio>
+              <el-radio :value="1">开启</el-radio>
+              <el-radio :value="0">关闭</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>

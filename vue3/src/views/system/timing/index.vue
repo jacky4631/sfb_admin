@@ -52,8 +52,8 @@
           <el-input v-model="form.cronExpression" style="width: 460px;" />
         </el-form-item>
         <el-form-item label="任务状态">
-          <el-radio v-model="form.isPause" :label="false">启用</el-radio>
-          <el-radio v-model="form.isPause" :label="true">暂停</el-radio>
+          <el-radio v-model="form.isPause" :value="false">启用</el-radio>
+          <el-radio v-model="form.isPause" :value="true">暂停</el-radio>
         </el-form-item>
         <el-form-item label="任务描述">
           <el-input v-model="form.remark" style="width: 460px;" :rows="2" type="textarea" />

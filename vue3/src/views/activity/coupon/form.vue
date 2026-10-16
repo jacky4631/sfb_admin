@@ -3,8 +3,8 @@
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="140px">
       <el-form-item label="优惠券类型">
         <el-radio-group v-model="form.type" @change="couponsType">
-          <el-radio :label=0>通用券</el-radio>
-          <el-radio :label=1>商品券</el-radio>
+          <el-radio :value=0>通用券</el-radio>
+          <el-radio :value=1>商品券</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="选择商品" v-if="form.type == 1">
@@ -26,8 +26,8 @@
         <el-input-number v-model="form.sort" style="width: 300px;" />
       </el-form-item>
       <el-form-item label="状态">
-        <el-radio v-model="form.status" :label="1">开启</el-radio>
-        <el-radio v-model="form.status" :label="0">关闭</el-radio>
+        <el-radio v-model="form.status" :value="1">开启</el-radio>
+        <el-radio v-model="form.status" :value="0">关闭</el-radio>
       </el-form-item>
     </el-form>
     <template #footer><div class="dialog-footer">

@@ -20,15 +20,15 @@
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.isShow" style="width: 178px">
-            <el-radio :label="1">显示</el-radio>
-            <el-radio :label="0">隐藏</el-radio>
+            <el-radio :value="1">显示</el-radio>
+            <el-radio :value="0">隐藏</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="排序">
           <el-input v-model="form.sort" style="width: 370px;" />
         </el-form-item>
         <el-form-item style="margin-bottom: 0;" label="上级分类" prop="pid">
-          <el-tree-select v-model="form.pid" :data="depts" :props="{ children: 'children', label: 'label' }" node-key="id" check-strictly render-after-expand=false style="width: 370px;" placeholder="选择上级分类" />
+          <el-tree-select v-model="form.pid" :data="depts" :props="{ children: 'children', label: 'label' }" node-key="id" check-strictly :render-after-expand="false" style="width: 370px;" placeholder="选择上级分类" />
         </el-form-item>
       </el-form>
       <template #footer><div class="dialog-footer">

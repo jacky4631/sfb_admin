@@ -2,8 +2,8 @@
   <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '编辑'" width="500px">
     <el-form ref="formRef" :model="form" :rules="rules" size="small" label-width="80px">
       <el-form-item label="状态">
-        <el-radio v-model="form.type" :label="'template'">模板消息</el-radio>
-        <el-radio v-model="form.type" :label="'subscribe'">订阅消息</el-radio>
+        <el-radio v-model="form.type" :value="'template'">模板消息</el-radio>
+        <el-radio v-model="form.type" :value="'subscribe'">订阅消息</el-radio>
       </el-form-item>
       <el-form-item label="模板编号">
         <el-input v-model="form.tempkey" style="width: 370px;" />
@@ -15,8 +15,8 @@
         <el-input v-model="form.tempid" style="width: 370px;" />
       </el-form-item>
       <el-form-item label="状态">
-        <el-radio v-model="form.status" :label="1">可用</el-radio>
-        <el-radio v-model="form.status" :label="0">禁用</el-radio>
+        <el-radio v-model="form.status" :value="1">可用</el-radio>
+        <el-radio v-model="form.status" :value="0">禁用</el-radio>
       </el-form-item>
     </el-form>
     <template #footer>

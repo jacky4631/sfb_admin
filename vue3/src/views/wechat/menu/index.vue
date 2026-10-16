@@ -117,7 +117,8 @@ const parentMenuId = ref(null)
 
 onMounted(() => {
   get().then(res => {
-    menus.value = JSON.parse(res.result)
+    // 未发布过菜单时 result 为空，判空避免 JSON.parse(undefined) 崩溃
+    menus.value = (res && res.result) ? JSON.parse(res.result) : []
   })
 })
 

@@ -158,8 +158,8 @@
             </el-form-item>
             <el-form-item label="是否覆盖" prop="cover">
               <el-radio-group v-model="form.cover" size="small" style="width: 40%">
-                <el-radio-button label="true">是</el-radio-button>
-                <el-radio-button label="false">否</el-radio-button>
+                <el-radio-button value="true">是</el-radio-button>
+                <el-radio-button value="false">否</el-radio-button>
               </el-radio-group>
               <span style="color: #C0C0C0;margin-left: 10px;">谨防误操作，请慎重选择</span>
             </el-form-item>

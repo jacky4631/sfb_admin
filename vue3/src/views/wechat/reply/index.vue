@@ -168,11 +168,12 @@ onMounted(() => {
     result.value = rese
     type.value = rese.type
     status.value = rese.status
-    const newData = JSON.parse(rese.data)
+    // 未配置回复时 data 为空，判空避免 JSON.parse(undefined) 崩溃
+    const newData = JSON.parse(rese.data || '{}')
     if (rese.type == 'image') {
-      dataGroup.image.src = newData.src
+      dataGroup.image.src = newData.src || ''
     } else if (rese.type == 'text') {
-      dataGroup.text.content = newData.content
+      dataGroup.text.content = newData.content || ''
     }
     if (used_key.value) {
       keyword.value = result.value.key

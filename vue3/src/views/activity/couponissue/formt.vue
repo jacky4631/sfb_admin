@@ -2,8 +2,8 @@
   <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="isAdd ? '新增' : '修改状态'" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
       <el-form-item label="状态">
-        <el-radio v-model="form.status" :label="1">开启</el-radio>
-        <el-radio v-model="form.status" :label="0">关闭</el-radio>
+        <el-radio v-model="form.status" :value="1">开启</el-radio>
+        <el-radio v-model="form.status" :value="0">关闭</el-radio>
       </el-form-item>
     </el-form>
     <template #footer><div class="dialog-footer">

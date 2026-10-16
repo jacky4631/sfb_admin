@@ -26,22 +26,22 @@
         <el-input v-model="form.extractFeeDesc" style="width: 370px;" />
       </el-form-item>
       <el-form-item label="自动提现" label-width="200px">
-        <el-radio v-model="form.auto" :label="1">开启</el-radio>
-        <el-radio v-model="form.auto" :label="2">关闭</el-radio>
+        <el-radio v-model="form.auto" :value="1">开启</el-radio>
+        <el-radio v-model="form.auto" :value="2">关闭</el-radio>
       </el-form-item>
       <el-form-item label="微信提现" label-width="200px">
-        <el-radio v-model="form.weixin" :label="1">开启</el-radio>
-        <el-radio v-model="form.weixin" :label="0">关闭</el-radio>
+        <el-radio v-model="form.weixin" :value="1">开启</el-radio>
+        <el-radio v-model="form.weixin" :value="0">关闭</el-radio>
       </el-form-item>
 
       <el-form-item label="支付宝提现" label-width="200px">
-        <el-radio v-model="form.alipay" :label="1">开启</el-radio>
-        <el-radio v-model="form.alipay" :label="0">关闭</el-radio>
+        <el-radio v-model="form.alipay" :value="1">开启</el-radio>
+        <el-radio v-model="form.alipay" :value="0">关闭</el-radio>
       </el-form-item>
 
       <el-form-item label="银行卡提现" label-width="200px">
-        <el-radio v-model="form.bank" :label="1">开启</el-radio>
-        <el-radio v-model="form.bank" :label="0">关闭</el-radio>
+        <el-radio v-model="form.bank" :value="1">开启</el-radio>
+        <el-radio v-model="form.bank" :value="0">关闭</el-radio>
         <p style="color: red">银行卡需要对接银盛支付，app端已经实现银盛绑卡</p>
       </el-form-item>
 

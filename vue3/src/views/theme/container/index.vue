@@ -124,7 +124,8 @@ export default {
     async canvasGet () {
       // var res = await getCanvasData({'terminal': 3})
       var res = await getCanvasData({'terminal': this.terminal})
-      if (JSON.stringify(res) !== '{}') {
+      // 后端未保存过画布时返回空记录（无 json 字段），需判空避免 JSON.parse(undefined)
+      if (res && res.json) {
         this.canvasId = res.canvasId
         var componentsData = JSON.parse(res.json)
         for (let i = 0; i < componentsData.length; i++) {

@@ -3,42 +3,42 @@
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
 
       <el-form-item label="支付宝支付" label-width="200px">
-        <el-radio v-model="form.alipay" :label="`1`">开启</el-radio>
-        <el-radio v-model="form.alipay" :label="`0`">关闭</el-radio>
+        <el-radio v-model="form.alipay" :value="`1`">开启</el-radio>
+        <el-radio v-model="form.alipay" :value="`0`">关闭</el-radio>
       </el-form-item>
       <el-form-item label="微信支付" label-width="200px">
-        <el-radio v-model="form.wechat" :label="`1`">开启</el-radio>
-        <el-radio v-model="form.wechat" :label="`0`">关闭</el-radio>
+        <el-radio v-model="form.wechat" :value="`1`">开启</el-radio>
+        <el-radio v-model="form.wechat" :value="`0`">关闭</el-radio>
       </el-form-item>
 
       <el-form-item label="银行卡支付" label-width="200px">
-        <el-radio v-model="form.bank" :label="`1`">开启</el-radio>
-        <el-radio v-model="form.bank" :label="`0`">关闭</el-radio>
+        <el-radio v-model="form.bank" :value="`1`">开启</el-radio>
+        <el-radio v-model="form.bank" :value="`0`">关闭</el-radio>
       </el-form-item>
 
       <el-form-item label="银行卡绑卡支付" label-width="200px">
-        <el-radio v-model="form.bankBind" :label="`1`">开启</el-radio>
-        <el-radio v-model="form.bankBind" :label="`0`">关闭</el-radio>
+        <el-radio v-model="form.bankBind" :value="`1`">开启</el-radio>
+        <el-radio v-model="form.bankBind" :value="`0`">关闭</el-radio>
       </el-form-item>
 
       <el-form-item label="支付宝支付减免" label-width="200px">
-        <el-radio v-model="form.ac" :label="`1`">开启</el-radio>
-        <el-radio v-model="form.ac" :label="`0`">关闭</el-radio>
+        <el-radio v-model="form.ac" :value="`1`">开启</el-radio>
+        <el-radio v-model="form.ac" :value="`0`">关闭</el-radio>
       </el-form-item>
 
       <el-form-item label="微信支付减免" label-width="200px">
-        <el-radio v-model="form.wc" :label="`1`">开启</el-radio>
-        <el-radio v-model="form.wc" :label="`0`">关闭</el-radio>
+        <el-radio v-model="form.wc" :value="`1`">开启</el-radio>
+        <el-radio v-model="form.wc" :value="`0`">关闭</el-radio>
       </el-form-item>
 
       <el-form-item label="银行卡支付减免" label-width="200px">
-        <el-radio v-model="form.bc" :label="`1`">开启</el-radio>
-        <el-radio v-model="form.bc" :label="`0`">关闭</el-radio>
+        <el-radio v-model="form.bc" :value="`1`">开启</el-radio>
+        <el-radio v-model="form.bc" :value="`0`">关闭</el-radio>
       </el-form-item>
 
       <el-form-item label="银行卡绑卡支付减免" label-width="200px">
-        <el-radio v-model="form.bbc" :label="`1`">开启</el-radio>
-        <el-radio v-model="form.bbc" :label="`0`">关闭</el-radio>
+        <el-radio v-model="form.bbc" :value="`1`">开启</el-radio>
+        <el-radio v-model="form.bbc" :value="`0`">关闭</el-radio>
       </el-form-item>
 
     </el-form>
