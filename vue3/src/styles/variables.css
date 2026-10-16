@@ -28,6 +28,10 @@
   --el-fill-color-blank: #ffffff;
   --el-card-border-radius: var(--el-border-radius-base);
   --el-dialog-border-radius: var(--el-border-radius-base);
+  --el-table-border-color: var(--el-border-color-lighter);
+  --el-table-header-bg-color: var(--el-fill-color-light);
+  --el-table-header-text-color: var(--el-text-color-primary);
+  --el-table-row-hover-bg-color: var(--el-fill-color-light);
 
   /* TSQ Admin aligned shell colors */
   --app-content-bg-color: #f5f7f9;
