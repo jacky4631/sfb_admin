@@ -20,6 +20,10 @@
   --el-component-size-small: 32px;
 }
 
+.el-dialog.el-dialog {
+  border-radius: var(--el-dialog-border-radius);
+}
+
 // 按钮：对齐 EU .el-button--small { padding: 9px 15px; font-size: 12px } 实测高 32px
 .el-button.el-button--small {
   --el-button-size: 32px;

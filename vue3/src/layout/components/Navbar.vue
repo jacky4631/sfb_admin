@@ -113,13 +113,21 @@ const open = () => {
     }
 
     .avatar-container {
+      display: inline-flex;
+      align-items: center;
+      height: 100%;
       margin-right: 16px;
+      vertical-align: top;
 
       .avatar-wrapper {
-        margin-top: 0;
-        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 100%;
+        line-height: normal;
 
         .user-avatar {
+          display: block;
           cursor: pointer;
           width: 30px;
           height: 30px;
@@ -128,9 +136,6 @@ const open = () => {
 
         .el-icon {
           cursor: pointer;
-          position: absolute;
-          right: -16px;
-          top: 20px;
           font-size: 12px;
         }
       }
