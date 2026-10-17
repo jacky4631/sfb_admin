@@ -2,10 +2,10 @@
   <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" v-model="dialog" :title="'APP基础信息配置'" width="900px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
 
-      <el-form-item label="好单库cms的cid*" label-width="200px">
-        <el-input v-model="form.kuCid" style="width: 470px;" />
+      <el-form-item label="好单库 CMS 完整地址" prop="kuCid" label-width="200px">
+        <el-input v-model="form.kuCid" placeholder="http://jkj.mailvor.com/?cid=FazG6352" style="width: 470px;" />
         <p style="color: red">申请链接：<a href="https://user.cms.haodanku.com/record">https://user.cms.haodanku.com/record</a></p>
-        <p style="color: red">例如：https://renyigo8.kuaizhan.com/?cid=6bpB4iTC#/     kuCid=6bpB4iTC</p>
+        <p style="color: red">填写完整地址，例如：http://jkj.mailvor.com/?cid=FazG6352</p>
       </el-form-item>
       <el-form-item label="app分享地址*" label-width="200px">
         <el-input v-model="form.share" style="width: 470px;" />
@@ -94,6 +94,23 @@ export default {
           spreadLevel: 3
         },
       rules: {
+        kuCid: [{
+          required: true,
+          trigger: 'blur',
+          validator: (_, value, callback) => {
+            try {
+              const url = new URL((value || '').trim())
+              const cids = url.searchParams.getAll('cid')
+              if (!['http:', 'https:'].includes(url.protocol) || !url.hostname ||
+                  url.username || url.password || cids.length !== 1 || !/^[A-Za-z0-9_-]+$/.test(cids[0])) {
+                throw new Error('invalid CMS address')
+              }
+              callback()
+            } catch (_) {
+              callback(new Error('请填写包含 cid 参数的完整 CMS 地址'))
+            }
+          }
+        }]
       }
     }
   },
@@ -103,8 +120,11 @@ export default {
       this.resetForm()
     },
     doSubmit() {
-      this.loading = true
-      this.doEdit()
+      this.$refs.form.validate(valid => {
+        if (!valid) return
+        this.loading = true
+        this.doEdit()
+      })
     },
     doEdit() {
       setAppDataConfig(this.form).then(res => {
