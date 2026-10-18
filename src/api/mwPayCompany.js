@@ -23,9 +23,10 @@ export function edit(data) {
   })
 }
 
-export function get() {
+export function get(params) {
   return request({
     url: 'api/paycompany',
-    method: 'get'
+    method: 'get',
+    params
   })
 }

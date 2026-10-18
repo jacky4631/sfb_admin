@@ -46,6 +46,11 @@
       <el-table-column prop="id" label="通道id" />
       <el-table-column prop="channelName" label="通道名称" width="250px"/>
 <!--      <el-table-column prop="name" label="app简称" width="250px"/>-->
+      <el-table-column prop="companyName" label="所属主体">
+        <template #default="scope">
+          <span>{{ scope.row.companyName || '—' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="通道类型" align="center" width="140">
         <template #default="scope">
           <div>
@@ -74,12 +79,6 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="maxAmount" label="最大额度(元)" />
-      <el-table-column prop="amount" label="剩余额度(元)" >
-        <template #default="scope">
-          <span>{{ scope.row.amount.toFixed(1) }}</span>
-        </template>
-      </el-table-column>
       <el-table-column prop="extract" label="可提现">
         <template #default="scope">
           <div>
@@ -88,13 +87,19 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="notifyUrl" label="回调地址" :show-overflow-tooltip="true" />
-      <el-table-column prop="companyId" label="主体id" />
-      <el-table-column  prop="updateTime" label="刷新时间" width="140">
+      <el-table-column prop="maxAmount" label="最大额度(元)" width="100"/>
+      <el-table-column prop="amount" label="剩余额度(元)" width="100">
+        <template #default="scope">
+          <span>{{ scope.row.amount.toFixed(1) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column  prop="updateTime" label="重置时间" width="140">
         <template #default="scope">
           <span>{{ scope.row.cycleTime }}</span>
         </template>
       </el-table-column>
+      <el-table-column prop="notifyUrl" label="回调地址" :show-overflow-tooltip="true" />
+
       <el-table-column  prop="createTime" label="创建时间" width="140">
         <template #default="scope">
           <span>{{ scope.row.createTime }}</span>
