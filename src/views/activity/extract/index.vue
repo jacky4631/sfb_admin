@@ -77,11 +77,22 @@
           <el-tag v-else style="cursor: pointer" :type="'warning'">未提现</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="status" label="失败原因">
+      <el-table-column prop="failMsg" label="失败原因" width="260">
         <template #default="scope">
-            失败原因：{{ scope.row.failMsg }}
-            <br>
-            失败时间：{{ formatTimeTwo(scope.row.failTime) }}
+          <div class="extract-fail-cell">
+            <el-popover
+              v-if="scope.row.failMsg"
+              placement="top-start"
+              trigger="hover"
+              :width="420">
+              <template #reference>
+                <span class="extract-fail-msg">失败原因：{{ scope.row.failMsg }}</span>
+              </template>
+              <div :style="'max-height: 260px; overflow: auto; white-space: pre-wrap; word-break: break-all;'">{{ scope.row.failMsg }}</div>
+            </el-popover>
+            <span v-else class="extract-fail-msg">失败原因：无</span>
+            <span class="extract-fail-time">失败时间：{{ formatTimeTwo(scope.row.failTime) }}</span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column v-if="checkPermission(['admin','MWUSEREXTRACT_ALL','MWUSEREXTRACT_EDIT','MWUSEREXTRACT_DELETE'])" label="操作" width="150px" align="center">
@@ -256,5 +267,15 @@ export default {
 </script>
 
 <style scoped>
-
+.extract-fail-cell {
+  display: flex;
+  flex-direction: column;
+}
+.extract-fail-msg,
+.extract-fail-time {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 </style>
