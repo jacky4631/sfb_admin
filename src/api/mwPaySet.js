@@ -44,3 +44,7 @@ export function setAppPayConfig(data) {
     data
   })
 }
+
+export function getCertificateMetadata(id) {
+  return request({ url: `api/payset/${id}/certificate`, method: 'get' })
+}

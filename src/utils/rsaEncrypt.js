@@ -34,3 +34,25 @@ export function decrypt(txt) {
   return encryptor.decrypt(txt)
 }
 
+// Certificate profiles span many RSA blocks. Preserve each ciphertext block's
+// modulus width; encryptlong concatenates variable-width hexadecimal values.
+export function encryptPaymentProfile(text) {
+  return encryptPaymentProfileWithKey(text, publicKey)
+}
+
+export function encryptPaymentProfileWithKey(text, key) {
+  const encryptor = new JSEncrypt()
+  encryptor.setPublicKey(key)
+  const rsa = encryptor.getKey()
+  const width = Math.ceil(rsa.n.bitLength() / 8)
+  // JSON escapes keep chunks ASCII and avoid splitting UTF-8 characters.
+  const ascii = text.replace(/[\u007f-\uffff]/g, char =>
+    '\\u' + char.charCodeAt(0).toString(16).padStart(4, '0'))
+  let hex = ''
+  for (let offset = 0; offset < ascii.length; offset += width - 11) {
+    const block = rsa.encrypt(ascii.slice(offset, offset + width - 11))
+    if (!block) throw new Error('支付配置加密失败')
+    hex += block.padStart(width * 2, '0')
+  }
+  return btoa(hex.match(/../g).map(byte => String.fromCharCode(parseInt(byte, 16))).join(''))
+}

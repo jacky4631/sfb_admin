@@ -39,7 +39,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="通道商">
-        <el-select v-model="form.channelKey" clearable class="filter-item" style="width: 40%">
+        <el-select v-model="form.channelKey" @change="loadCertificate" clearable class="filter-item" style="width: 40%">
           <el-option v-for="item in channelKeyOptions" :key="item.key" :label="item.label" :value="item.key"
                      :disabled="item.parent.indexOf(form.type)<0"/>
         </el-select>
@@ -49,10 +49,7 @@
         <el-radio v-model="form.status" :value="0" style="width: 200px;">关</el-radio>
       </el-form-item>
 
-      <el-form-item label="证书信息">
-        <el-input v-model="form.certProfileEnc" type="textarea" rows= '6' style="height: 150px"/>
-        <p style="color: red">证书信息不再展示，需要更新通过印笔复制json串保存</p>
-      </el-form-item>
+      <PayCertificateEditor ref="certificateEditor" :channel-key="form.channelKey || ''" />
     </el-form>
     <template #footer><div class="dialog-footer">
       <!--<el-input v-model="form.groupName" />-->
@@ -64,13 +61,12 @@
 </template>
 
 <script>
-import { ElNotification } from 'element-plus'
-import { encrypt } from '@/utils/rsaEncrypt.js'
+import { ElNotification, ElMessage } from 'element-plus'
 import { add, edit } from '@/api/mwPaySet.js'
-import picUpload from '@/components/pic-upload/index.vue'
+import PayCertificateEditor from './PayCertificateEditor.vue'
 import {getChannelKeyOptions, getTypeOptions} from "@/utils/tk-order-parse.js";
 export default {
-  components: { picUpload },
+  components: { PayCertificateEditor },
   props: {
     isAdd: {
       type: Boolean,
@@ -87,7 +83,7 @@ export default {
         { key: 1, display_name: '是' },
         { key: 0, display_name: '否' },
       ],
-      loading: false, dialog: false,
+      loading: false, dialog: false, originalRow: {},
       form: {
         id: '',
         channelName: '',
@@ -112,61 +108,41 @@ export default {
     getTypeOptions,
     onTypeChange() {
       this.form.channelKey = ''
+      this.loadCertificate()
     },
     cancel() {
       this.resetForm()
     },
-    doSubmit() {
-      this.loading = true
-      if (this.isAdd) {
-        this.doAdd()
-      } else this.doEdit()
+    async open(row = {}) {
+      this.resetForm()
+      this.originalRow = { ...row }
+      this.form = { ...this.form, ...row, certProfileE: '', certProfileEnc: '' }
+      this.dialog = true
+      await this.$nextTick()
+      await this.loadCertificate()
     },
-    doAdd() {
-      const cert = this.form.certProfileEnc;
-
-      this.form.certProfileE = encrypt(cert)
-      add(this.form).then(res => {
-        this.resetForm()
-        ElNotification({
-          title: '添加成功',
-          type: 'success',
-          duration: 2500
-        })
-        this.loading = false
-        this.$parent.init()
-      }).catch(err => {
-        this.loading = false
-        console.log(err.response.data.message)
-      })
+    async loadCertificate() {
+      await this.$nextTick()
+      await this.$refs.certificateEditor?.load(this.originalRow)
     },
-    doEdit() {
-      let cert = this.form.certProfileEnc;
-      //如果解析报错，说明是加密内容，不做加密
+    async doSubmit() {
+      if (this.loading) return
       try {
-        JSON.parse(cert);
-        this.form.certProfileE = encrypt(cert)
-
-      }catch (e) {
-
-      }
-      edit(this.form).then(res => {
+        const certificate = this.$refs.certificateEditor.buildPayload()
+        this.loading = true
+        const payload = { ...this.form, ...certificate }
+        if (this.isAdd) await add(payload)
+        else await edit(payload)
         this.resetForm()
-        ElNotification({
-          title: '修改成功',
-          type: 'success',
-          duration: 2500
-        })
-        this.loading = false
+        ElNotification({ title: this.isAdd ? '添加成功' : '修改成功', type: 'success', duration: 2500 })
         this.$parent.init()
-      }).catch(err => {
-        this.loading = false
-        console.log(err.response.data.message)
-      })
+      } catch (error) {
+        ElMessage.error(error.response?.data?.message || error.message || '保存失败')
+      } finally { this.loading = false }
     },
     resetForm() {
       this.dialog = false
-      this.$refs['form'].resetFields()
+      this.$refs['form']?.resetFields()
       this.form = {
         id: '',
         channelName: '',

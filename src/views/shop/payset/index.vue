@@ -197,13 +197,11 @@ export default {
     },
     add() {
       this.isAdd = true
-      this.$refs.form.dialog = true
+      this.$refs.form.open()
     },
     edit(data) {
       this.isAdd = false
-      const _this = this.$refs.form
-      _this.form = data
-      _this.dialog = true
+      this.$refs.form.open(data)
     },
     async config() {
       const _this = this.$refs.formconfig
