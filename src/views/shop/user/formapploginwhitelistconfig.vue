@@ -45,7 +45,12 @@ export default {
 
     // 提交
     handleSubmit (name) {
-      setAppLoginWhitelistConfig(this.whitelistStr).then(async res => {
+      // 后端按 JSON 数组接收，避免以裸字符串提交时被当成表单参数（会多出一个等号）
+      const whitelist = (this.whitelistStr || '')
+        .split(',')
+        .map(item => item.trim())
+        .filter(item => item)
+      setAppLoginWhitelistConfig(whitelist).then(async res => {
         this.resetForm()
         ElNotification({
           title: '操作成功',
